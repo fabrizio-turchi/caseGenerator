@@ -1,0 +1,334 @@
+object formTraceComputer: TformTraceComputer
+  Left = 0
+  Top = 0
+  Caption = 'Trace Computer'
+  ClientHeight = 615
+  ClientWidth = 791
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Panel1: TPanel
+    Position.X = 16.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 345.000000000000000000
+    Size.Height = 120.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'calloutpanelstyle'
+    TabOrder = 34
+  end
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 16.000000000000000000
+    Position.Y = 358.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Trace'
+    TabOrder = 0
+  end
+  object edDeviceManufacturer: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 6
+    Position.X = 112.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label2: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 56.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Manufacturer'
+    TabOrder = 17
+  end
+  object Label3: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 88.000000000000000000
+    Size.Width = 57.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Model'
+    TabOrder = 12
+  end
+  object btnClose: TButton
+    Position.X = 352.000000000000000000
+    Position.Y = 574.000000000000000000
+    TabOrder = 22
+    Text = 'Close'
+    OnClick = btnCloseClick
+  end
+  object btnAddTool: TButton
+    Position.X = 256.000000000000000000
+    Position.Y = 365.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 23
+    Text = 'Add trace'
+    OnClick = btnAddToolClick
+  end
+  object btnDeleteTool: TButton
+    Position.X = 392.000000000000000000
+    Position.Y = 365.000000000000000000
+    Size.Width = 120.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 24
+    Text = 'Delete trace'
+    OnClick = btnDeleteToolClick
+  end
+  object Label5: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 120.000000000000000000
+    Size.Width = 57.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Serial no.'
+    TabOrder = 16
+  end
+  object edDeviceSerial: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 2
+    Position.X = 112.000000000000000000
+    Position.Y = 112.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object lbTrace: TListBox
+    Position.X = 16.000000000000000000
+    Position.Y = 391.000000000000000000
+    Size.Width = 769.000000000000000000
+    Size.Height = 177.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 26
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 769.000000000000000000
+    Viewport.Height = 177.000000000000000000
+  end
+  object edDeviceModel: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 31
+    Position.X = 112.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label6: TLabel
+    Position.X = 167.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 44.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Device'
+    TabOrder = 35
+  end
+  object Label4: TLabel
+    Position.X = 538.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 84.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'MAC addresss'
+    TabOrder = 32
+  end
+  object Panel2: TPanel
+    Position.X = 372.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 417.000000000000000000
+    Size.Height = 65.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'calloutpanelstyle'
+    TabOrder = 30
+  end
+  object Label9: TLabel
+    Position.X = 388.000000000000000000
+    Position.Y = 56.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'MAC address'
+    TabOrder = 7
+  end
+  object edMacAddress: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    Position.X = 500.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 281.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Panel3: TPanel
+    Position.X = 16.000000000000000000
+    Position.Y = 177.000000000000000000
+    Size.Width = 345.000000000000000000
+    Size.Height = 97.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'calloutpanelstyle'
+    TabOrder = 33
+  end
+  object edBIOSmanufacturer: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 5
+    Position.X = 112.000000000000000000
+    Position.Y = 193.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label10: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 201.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Manufacturer'
+    TabOrder = 15
+  end
+  object Label11: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 233.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Version'
+    TabOrder = 11
+  end
+  object edBIOSversion: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 25
+    Position.X = 112.000000000000000000
+    Position.Y = 228.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label13: TLabel
+    Position.X = 147.000000000000000000
+    Position.Y = 161.000000000000000000
+    Size.Width = 134.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'BIOS specification'
+    TabOrder = 29
+  end
+  object Label12: TLabel
+    Position.X = 523.000000000000000000
+    Position.Y = 160.000000000000000000
+    Size.Width = 102.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Operating System'
+    TabOrder = 28
+  end
+  object Label14: TLabel
+    Position.X = 400.000000000000000000
+    Position.Y = 200.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Unique ID'
+    TabOrder = 13
+  end
+  object Label15: TLabel
+    Position.X = 400.000000000000000000
+    Position.Y = 232.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Owner name'
+    TabOrder = 10
+  end
+  object Edit5: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Position.X = 488.000000000000000000
+    Position.Y = 192.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Edit7: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 20
+    Position.X = 488.000000000000000000
+    Position.Y = 227.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Panel4: TPanel
+    Position.X = 392.000000000000000000
+    Position.Y = 176.000000000000000000
+    Size.Width = 393.000000000000000000
+    Size.Height = 121.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'calloutpanelstyle'
+    TabOrder = 27
+  end
+  object Label16: TLabel
+    Position.X = 400.000000000000000000
+    Position.Y = 208.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Name'
+    TabOrder = 14
+  end
+  object edOsName: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 4
+    Position.X = 488.000000000000000000
+    Position.Y = 200.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label17: TLabel
+    Position.X = 400.000000000000000000
+    Position.Y = 240.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Manufacturer'
+    TabOrder = 9
+  end
+  object edOsManufacturer: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 21
+    Position.X = 488.000000000000000000
+    Position.Y = 235.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label18: TLabel
+    Position.X = 400.000000000000000000
+    Position.Y = 272.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Version'
+    TabOrder = 8
+  end
+  object edOsVersion: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 19
+    Position.X = 488.000000000000000000
+    Position.Y = 267.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

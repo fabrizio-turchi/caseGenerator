@@ -1,0 +1,361 @@
+object formMain: TformMain
+  Left = 0
+  Top = 0
+  Caption = 'Case investigation: generate JSON/CASE'
+  ClientHeight = 534
+  ClientWidth = 694
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Label1: TLabel
+    StyledSettings = [Family]
+    Position.X = 232.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 281.000000000000000000
+    Size.Height = 18.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 14.000000000000000000
+    TextSettings.FontColor = claBrown
+    Text = 'General data of the investigative case'
+    TabOrder = 5
+  end
+  object btnInvestigativeAction: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 323.000000000000000000
+    Size.Width = 137.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    Text = 'Investigative Action'
+    OnClick = btnInvestigativeActionClick
+  end
+  object cbActions: TComboBox
+    Hint = 'Action (seize,acquisition,...)'
+    Items.Strings = (
+      'Search and Seizure'
+      'Transfer'
+      'Forensic Acquisition'
+      'Forensic Extraction'
+      'Forensic Analysis')
+    Position.X = 176.000000000000000000
+    Position.Y = 323.000000000000000000
+    Size.Width = 153.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+    ParentShowHint = False
+    ShowHint = True
+  end
+  object btnIdentity: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 363.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 11
+    Text = '&Identity'
+    OnClick = btnIdentityClick
+  end
+  object btnLocation: TButton
+    Position.X = 105.000000000000000000
+    Position.Y = 363.000000000000000000
+    Size.Width = 72.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 12
+    Text = 'Location'
+    OnClick = btnLocationClick
+  end
+  object btnRole: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 395.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 17
+    Text = 'Role'
+    OnClick = btnRoleClick
+  end
+  object btnTool: TButton
+    Position.X = 105.000000000000000000
+    Position.Y = 395.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 15
+    Text = 'Tool'
+    OnClick = btnToolClick
+  end
+  object btnGenerateJSON: TButton
+    Position.X = 440.000000000000000000
+    Position.Y = 432.000000000000000000
+    Size.Width = 65.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 19
+    Text = 'Open JSON'
+    OnClick = btnGenerateJSONClick
+  end
+  object memoJSON: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 368.000000000000000000
+    Position.Y = 320.000000000000000000
+    Size.Width = 305.000000000000000000
+    Size.Height = 105.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 20
+    Viewport.Width = 305.000000000000000000
+    Viewport.Height = 105.000000000000000000
+  end
+  object Button5: TButton
+    Position.X = 512.000000000000000000
+    Position.Y = 432.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 21
+    Text = 'Save to CaseTest.JSON'
+    OnClick = Button5Click
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 464
+    Top = 328
+  end
+  object btnTrace: TButton
+    Position.X = 104.000000000000000000
+    Position.Y = 427.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 14
+    Text = 'Trace'
+    OnClick = btnTraceClick
+  end
+  object cbTrace: TComboBox
+    Items.Strings = (
+      'Mobile Device'
+      'SIM'
+      'Computer'
+      'File'
+      'Disk Partition'
+      'Phone account'
+      'Message')
+    Position.X = 184.000000000000000000
+    Position.Y = 425.000000000000000000
+    Size.Width = 153.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 23
+  end
+  object btnRelationship: TButton
+    Position.X = 186.000000000000000000
+    Position.Y = 394.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 13
+    Text = 'Relationship'
+    OnClick = btnRelationshipClick
+  end
+  object btnPR: TButton
+    Position.X = 184.000000000000000000
+    Position.Y = 362.000000000000000000
+    Size.Width = 121.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 25
+    Text = 'Provenance Record'
+    OnClick = btnPRClick
+  end
+  object cbActionsName: TComboBox
+    Items.Strings = (
+      'preserved'
+      'transferred'
+      'extracted'
+      'extracted'
+      'parsed')
+    Position.X = 288.000000000000000000
+    Position.Y = 393.000000000000000000
+    Size.Width = 34.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 26
+  end
+  object lbObjects: TListBox
+    Enabled = False
+    Position.X = 300.000000000000000000
+    Position.Y = 483.000000000000000000
+    Size.Width = 365.000000000000000000
+    Size.Height = 30.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 28
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 365.000000000000000000
+    Viewport.Height = 30.000000000000000000
+    object Label2: TLabel
+      Position.X = 275.000000000000000000
+      Position.Y = 171.000000000000000000
+      Size.Width = 102.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Cases mangement'
+      TabOrder = 0
+    end
+  end
+  object btnWarrant: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 427.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 16
+    Text = 'Warrant'
+    OnClick = btnWarrantClick
+  end
+  object btnGenerateCaseJson: TButton
+    Position.X = 48.000000000000000000
+    Position.Y = 455.000000000000000000
+    Size.Width = 185.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 30
+    Text = 'Generate CASE/JSON'
+    OnClick = btnGenerateCaseJsonClick
+  end
+  object panelCase: TPanel
+    Position.X = 24.000000000000000000
+    Position.Y = 234.000000000000000000
+    Size.Width = 649.000000000000000000
+    Size.Height = 81.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'panelstyle'
+    TabOrder = 32
+    object btnNewCase: TButton
+      Position.X = 232.000000000000000000
+      Position.Y = 51.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      Text = '&New Case'
+      OnClick = btnNewCaseClick
+    end
+    object cbCases: TComboBox
+      Position.X = 56.000000000000000000
+      Position.Y = 19.000000000000000000
+      Size.Width = 585.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      OnChange = cbCasesChange
+    end
+    object Label3: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 22.000000000000000000
+      Size.Width = 57.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Cases'
+      TabOrder = 2
+    end
+  end
+  object lblProcessing: TLabel
+    Position.X = 272.000000000000000000
+    Position.Y = 467.000000000000000000
+    Size.Width = 369.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = '...'
+    TabOrder = 33
+  end
+  object Label4: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 37.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Name'
+    TabOrder = 0
+  end
+  object edName: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    TextSettings.Font.Size = 16.000000000000000000
+    Position.X = 112.000000000000000000
+    Position.Y = 37.000000000000000000
+    Size.Width = 561.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label5: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 69.000000000000000000
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Focus'
+    TabOrder = 2
+  end
+  object edFocus: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    TextSettings.Font.Size = 16.000000000000000000
+    Position.X = 112.000000000000000000
+    Position.Y = 69.000000000000000000
+    Size.Width = 561.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label6: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 109.000000000000000000
+    Size.Width = 113.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Short description'
+    TabOrder = 10
+  end
+  object memoShortDescription: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    TextSettings.Font.Size = 16.000000000000000000
+    Position.X = 112.000000000000000000
+    Position.Y = 98.000000000000000000
+    Size.Width = 561.000000000000000000
+    Size.Height = 49.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Viewport.Width = 561.000000000000000000
+    Viewport.Height = 49.000000000000000000
+  end
+  object Label7: TLabel
+    Position.X = 16.000000000000000000
+    Position.Y = 171.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Description'
+    TabOrder = 4
+  end
+  object memoDescription: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    TextSettings.Font.Size = 16.000000000000000000
+    Position.X = 112.000000000000000000
+    Position.Y = 152.000000000000000000
+    Size.Width = 561.000000000000000000
+    Size.Height = 73.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Viewport.Width = 561.000000000000000000
+    Viewport.Height = 73.000000000000000000
+  end
+end

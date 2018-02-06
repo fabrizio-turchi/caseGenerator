@@ -1,0 +1,79 @@
+object formTracePhoneAccount: TformTracePhoneAccount
+  Left = 0
+  Top = 0
+  Caption = 'Trace Phone Account'
+  ClientHeight = 307
+  ClientWidth = 583
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 24.000000000000000000
+    Position.Y = 68.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Trace'
+    TabOrder = 0
+  end
+  object lbPhoneAccount: TListBox
+    Position.X = 24.000000000000000000
+    Position.Y = 100.000000000000000000
+    Size.Width = 553.000000000000000000
+    Size.Height = 157.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 549.000000000000000000
+    Viewport.Height = 153.000000000000000000
+  end
+  object edPhoneNumber: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 2
+    FilterChar = '+0123456789'
+    Position.X = 120.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label3: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 40.000000000000000000
+    Text = 'Phone number'
+    TabOrder = 3
+  end
+  object btnClose: TButton
+    Position.X = 256.000000000000000000
+    Position.Y = 280.000000000000000000
+    TabOrder = 5
+    Text = 'Close'
+    OnClick = btnCloseClick
+  end
+  object btnAddPhoneAccount: TButton
+    Position.X = 200.000000000000000000
+    Position.Y = 68.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Text = 'Add trace'
+    OnClick = btnAddPhoneAccountClick
+  end
+  object btnDeletePhoneAccount: TButton
+    Position.X = 320.000000000000000000
+    Position.Y = 68.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Text = 'Delete trace'
+    OnClick = btnDeletePhoneAccountClick
+  end
+end

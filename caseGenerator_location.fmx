@@ -1,0 +1,173 @@
+object formLocation: TformLocation
+  Left = 0
+  Top = 0
+  Caption = 'Location'
+  ClientHeight = 586
+  ClientWidth = 753
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 40.000000000000000000
+    Position.Y = 248.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Location'
+    TabOrder = 0
+  end
+  object lbLocation: TListBox
+    Position.X = 40.000000000000000000
+    Position.Y = 280.000000000000000000
+    Size.Width = 689.000000000000000000
+    Size.Height = 249.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbLocationChange
+    Viewport.Width = 689.000000000000000000
+    Viewport.Height = 249.000000000000000000
+  end
+  object edLocality: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 2
+    Position.X = 120.000000000000000000
+    Position.Y = 72.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object edRegion: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 7
+    Position.X = 120.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label2: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 80.000000000000000000
+    Text = 'Locality'
+    TabOrder = 13
+  end
+  object Label3: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 40.000000000000000000
+    Text = 'Region'
+    TabOrder = 12
+  end
+  object Label4: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 117.000000000000000000
+    Text = 'Postal code'
+    TabOrder = 11
+  end
+  object Label5: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 152.000000000000000000
+    Text = 'Street'
+    TabOrder = 10
+  end
+  object btnClose: TButton
+    Position.X = 320.000000000000000000
+    Position.Y = 552.000000000000000000
+    TabOrder = 15
+    Text = 'Close'
+    OnClick = btnCloseClick
+  end
+  object btnAddLocation: TButton
+    Position.X = 216.000000000000000000
+    Position.Y = 248.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 16
+    Text = 'Add location'
+    OnClick = btnAddLocationClick
+  end
+  object btnDeleteLocation: TButton
+    Position.X = 440.000000000000000000
+    Position.Y = 248.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 17
+    Text = 'Delete location'
+    OnClick = btnDeleteLocationClick
+  end
+  object edPostalCode: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 6
+    FilterChar = '0123456789'
+    Position.X = 120.000000000000000000
+    Position.Y = 109.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object edStreet: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 5
+    Position.X = 120.000000000000000000
+    Position.Y = 144.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object lblLatitude: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 184.000000000000000000
+    Size.Width = 65.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Latitude'
+    TabOrder = 9
+  end
+  object edLatitude: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 4
+    FilterChar = '0123456789.0123456789'
+    Position.X = 120.000000000000000000
+    Position.Y = 176.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label6: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 216.000000000000000000
+    Size.Width = 65.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Longitude'
+    TabOrder = 8
+  end
+  object edLongitude: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    FilterChar = '0123456789.0123456789'
+    Position.X = 120.000000000000000000
+    Position.Y = 208.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object btnModifyLocation: TButton
+    Position.X = 317.000000000000000000
+    Position.Y = 248.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 18
+    Text = 'Modify Location'
+    OnClick = btnModifyLocationClick
+  end
+end

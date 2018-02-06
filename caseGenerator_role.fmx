@@ -1,0 +1,107 @@
+object formRole: TformRole
+  Left = 0
+  Top = 0
+  Caption = 'Role'
+  ClientHeight = 359
+  ClientWidth = 551
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 16.000000000000000000
+    Position.Y = 139.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Role'
+    TabOrder = 0
+  end
+  object lbRole: TListBox
+    Position.X = 16.000000000000000000
+    Position.Y = 168.000000000000000000
+    Size.Width = 521.000000000000000000
+    Size.Height = 137.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbRoleChange
+    Viewport.Width = 517.000000000000000000
+    Viewport.Height = 133.000000000000000000
+  end
+  object edName: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Position.X = 136.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 353.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label2: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 88.000000000000000000
+    Text = 'Name'
+    TabOrder = 4
+  end
+  object btnClose: TButton
+    Position.X = 224.000000000000000000
+    Position.Y = 328.000000000000000000
+    TabOrder = 6
+    Text = 'Close'
+    OnClick = btnCloseClick
+  end
+  object btnAddRole: TButton
+    Position.X = 128.000000000000000000
+    Position.Y = 136.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Text = 'Add role'
+    OnClick = btnAddRoleClick
+  end
+  object btnDeleteRole: TButton
+    Position.X = 312.000000000000000000
+    Position.Y = 136.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    Text = 'Delete role'
+    OnClick = btnDeleteRoleClick
+  end
+  object Label3: TLabel
+    Position.X = 40.000000000000000000
+    Position.Y = 48.000000000000000000
+    Text = 'Default names'
+    TabOrder = 2
+  end
+  object cbDefaultNames: TComboBox
+    Items.Strings = (
+      'Investigator'
+      'Offender'
+      'Victim'
+      'Judge')
+    Position.X = 136.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 353.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+    OnChange = cbDefaultNamesChange
+  end
+  object btnModifyRole: TButton
+    Position.X = 216.000000000000000000
+    Position.Y = 136.000000000000000000
+    TabOrder = 10
+    Text = 'Modify Role'
+    OnClick = btnModifyRoleClick
+  end
+end

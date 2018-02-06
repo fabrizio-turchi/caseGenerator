@@ -1,0 +1,222 @@
+object formProvenanceRecord: TformProvenanceRecord
+  Left = 0
+  Top = 0
+  Caption = 'Provenance Record'
+  ClientHeight = 497
+  ClientWidth = 731
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object panelPR: TPanel
+    Position.X = 16.000000000000000000
+    Position.Y = 41.000000000000000000
+    Size.Width = 697.000000000000000000
+    Size.Height = 176.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'panelstyle'
+    TabOrder = 6
+    object cbObject: TComboBox
+      Position.X = 88.000000000000000000
+      Position.Y = 133.000000000000000000
+      Size.Width = 593.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+    end
+    object Label14: TLabel
+      Position.X = 9.000000000000000000
+      Position.Y = 28.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Description'
+      TabOrder = 2
+    end
+    object Label12: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 62.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Exhibit No.'
+      TabOrder = 4
+    end
+    object Label13: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 136.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Object'
+      TabOrder = 5
+    end
+    object edDescription: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 7
+      Position.X = 88.000000000000000000
+      Position.Y = 24.000000000000000000
+      Size.Width = 593.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label11: TLabel
+      Position.X = 296.000000000000000000
+      Size.Width = 117.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Provenance record'
+      TabOrder = 8
+    end
+    object edExhibitNumber: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 6
+      Position.X = 88.000000000000000000
+      Position.Y = 56.000000000000000000
+      Size.Width = 593.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label2: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 94.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Creation time'
+      TabOrder = 3
+    end
+    object cbPRDay: TComboBox
+      Items.Strings = (
+        '01'
+        '02'
+        '03'
+        '04'
+        '05'
+        '06'
+        '07'
+        '08'
+        '09'
+        '10'
+        '11'
+        '12'
+        '13'
+        '14'
+        '15'
+        '16'
+        '17'
+        '18'
+        '19'
+        '20'
+        '21'
+        '22'
+        '23'
+        '24'
+        '25'
+        '26'
+        '27'
+        '28'
+        '29'
+        '30'
+        '31')
+      Position.X = 88.000000000000000000
+      Position.Y = 92.000000000000000000
+      Size.Width = 41.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 15
+    end
+    object cbPRMonth: TComboBox
+      Items.Strings = (
+        '01'
+        '02'
+        '03'
+        '04'
+        '05'
+        '06'
+        '07'
+        '08'
+        '09'
+        '10'
+        '11'
+        '12')
+      Position.X = 132.000000000000000000
+      Position.Y = 92.000000000000000000
+      TabOrder = 13
+    end
+    object cbPRYear: TComboBox
+      Items.Strings = (
+        '1950'
+        '1951'
+        '1952'
+        '1953'
+        '1954'
+        '1955'
+        '1956')
+      Position.X = 234.000000000000000000
+      Position.Y = 92.000000000000000000
+      TabOrder = 12
+    end
+    object timePR: TTimeEdit
+      Time = 0.675166099537036900
+      TimeFormatKind = Long
+      Position.X = 337.000000000000000000
+      Position.Y = 92.000000000000000000
+      TabOrder = 9
+    end
+  end
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 24.000000000000000000
+    Position.Y = 224.000000000000000000
+    Size.Width = 161.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Provenance Record'
+    TabOrder = 0
+  end
+  object lbProvenanceRecord: TListBox
+    Position.X = 24.000000000000000000
+    Position.Y = 251.000000000000000000
+    Size.Width = 697.000000000000000000
+    Size.Height = 209.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbProvenanceRecordChange
+    Viewport.Width = 693.000000000000000000
+    Viewport.Height = 205.000000000000000000
+  end
+  object btnClose: TButton
+    Position.X = 331.000000000000000000
+    Position.Y = 465.000000000000000000
+    TabOrder = 3
+    Text = 'Close'
+    OnClick = btnCloseClick
+  end
+  object btnAddPR: TButton
+    Position.X = 208.000000000000000000
+    Position.Y = 225.000000000000000000
+    Size.Width = 160.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    Text = 'Add provenance record'
+    OnClick = btnAddPRClick
+  end
+  object btnDeletePR: TButton
+    Position.X = 376.000000000000000000
+    Position.Y = 225.000000000000000000
+    Size.Width = 153.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    Text = 'Delete provenance record'
+    OnClick = btnDeletePRClick
+  end
+end

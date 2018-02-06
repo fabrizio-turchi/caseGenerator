@@ -1,0 +1,37 @@
+object Form2: TForm2
+  Left = 0
+  Top = 0
+  Caption = 'Form2'
+  ClientHeight = 275
+  ClientWidth = 299
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object btnSave: TButton
+    Position.X = 88.000000000000000000
+    Position.Y = 240.000000000000000000
+    TabOrder = 0
+    Text = 'Save'
+    OnClick = btnSaveClick
+  end
+  object lbLines: TListBox
+    Position.X = 32.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 201.000000000000000000
+    Size.Height = 209.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    DisableFocusEffect = True
+    Items.Strings = (
+      'Junkware Removal Tool (JRT) by Malwarebytes'
+      'Version: 8.1.2 (03.10.2017)'
+      'Operating System: Windows 8.1 Pro x64 '
+      'Ran by Fabrizio (Administrator) on 31/03/2017 at 15:20:10,94')
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 197.000000000000000000
+    Viewport.Height = 205.000000000000000000
+  end
+end
