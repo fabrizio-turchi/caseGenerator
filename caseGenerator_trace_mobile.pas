@@ -57,11 +57,13 @@ type
     Label20: TLabel;
     edAccountMSISDN: TEdit;
     Panel5: TPanel;
+    btnModifyTrace: TButton;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
+    procedure btnModifyTraceClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -71,6 +73,7 @@ type
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
     function ExtractField(line, subLine: String): String;
+    function prepareItemTrace: String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -90,6 +93,12 @@ uses StrUtils;
 procedure TformTraceMobile.btnDeleteToolClick(Sender: TObject);
 begin
   lbTrace.Items.Delete(lbTrace.ItemIndex);
+end;
+
+procedure TformTraceMobile.btnModifyTraceClick(Sender: TObject);
+begin
+  if lbTrace.ItemIndex > -1  then
+    lbTrace.Items[lbTrace.ItemIndex] := prepareItemTrace();
 end;
 
 function TformTraceMobile.ExtractField(line, subLine: String): String;
@@ -152,63 +161,62 @@ end;
 
 procedure TformTraceMobile.lbTraceChange(Sender: TObject);
 var
-  line: String;
+  line, mobileDateTime, sDate, sDay, sMonth, sYear: String;
+  idx: Integer;
 begin
-  line := lbTrace.Items[lbTrace.ItemIndex];
-
-  eddeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
-  edDeviceModel.Text :=  ExtractField(line, '"model":"');
-  edDeviceSerial.Text :=  ExtractField(line, '"serialNumber":"');
-  edMobileIMEI.Text := ExtractField(line, '"IMEI":"');
-  edMobileStorage.Text := ExtractField(line, '"storageCapacity":"');
-  edAccountMSISDN.Text := ExtractField(line, '"MSISDN":"');
-end;
-
-procedure TformTraceMobile.btnCloseClick(Sender: TObject);
-var
-  fileJSON: TextFile;
-  line, recSep, crlf:string;
-  idx: integer;
-begin
-  if lbTrace.Items.Count > 0 then
+  if lbTrace.ItemIndex > -1 then
   begin
-    crlf := #13 + #10;
-    recSep := #30 + #30;
-    idx:= 0;
-    //dir := GetCurrentDir;
-  // create file JSON uuidCase-traceMOBILE.json
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMOBILE.json');
-    Rewrite(fileJSON);  // create new file
-    WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_TRACE":[';
-    WriteLn(fileJSON, line);
+    line := lbTrace.Items[lbTrace.ItemIndex];
 
-    for idx:= 0 to lbTrace.Items.Count - 2 do
-      WriteLn(fileJSON, lbTrace.Items[idx] + ',');
+    eddeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
+    edDeviceModel.Text :=  ExtractField(line, '"model":"');
+    edDeviceSerial.Text :=  ExtractField(line, '"serialNumber":"');
+    edMobileIMEI.Text := ExtractField(line, '"IMEI":"');
+    edMobileStorage.Text := ExtractField(line, '"storageCapacity":"');
+    edAccountMSISDN.Text := ExtractField(line, '"MSISDN":"');
+    mobileDateTime := ExtractField(line, '"clockSetting":"');
+    sDate := Copy(mobileDateTime, 1, 10);
+    sDay := Copy(sDate, 9, 2);
+    for idx:=0 to cbMobileDay.Items.Count - 1 do
+    begin
+      if cbMobileDay.Items[idx] = sDay then
+      begin
+        cbMobileDay.ItemIndex := idx;
+        break;
+      end;
+    end;
 
-    if lbTrace.Items.Count > 0 then
-      WriteLn(fileJSON, lbTrace.Items[idx]);
+    sMonth := Copy(sDate, 6, 2);
+    for idx:=0 to cbMobileMonth.Items.Count - 1 do
+    begin
+      if cbMobileMonth.Items[idx] = sMonth then
+      begin
+        cbMobileMonth.ItemIndex := idx;
+        break;
+      end;
+    end;
 
-    WriteLn(fileJSON, #9#9 + ']');  // it's important write in separate lines
-    WriteLn(fileJSON, #9#9 + '}');
-    CloseFile(fileJSON);
+    sYear := Copy(sDate, 1, 4);
+    for idx:=0 to cbMobileYear.Items.Count - 1 do
+    begin
+      if cbMobileYear.Items[idx] = sYear then
+      begin
+        cbMobileYear.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    timeMobile.Text := Copy(mobileDateTime, 12, 8);
   end;
-
-  formTraceMobile.Close;
 end;
 
-procedure TformTraceMobile.btnAddToolClick(Sender: TObject);
+function TformTraceMobile.prepareItemTrace: String;
 var
   line, recSep: string;
   Uid: TGUID;
   idx: integer;
 begin
-  if (Trim(edDeviceManufacturer.Text) = '') or (Trim(edMobileIMEI.Text) = '')  then
-    ShowMessage('Manufacturer and/or IMEI are missing!')
-  else
-  begin
-    //cr := #13  +#10;
-    recSep := #30 + #30;
+  recSep := #30 + #30;
     CreateGUID(Uid);
     line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
     line := line +  recSep + '"propertyBundle":[' + recSep + '{' + recSep;
@@ -245,9 +253,47 @@ begin
     end;
 
     line := line + recSep + #9 + ']' + recSep + '}';
+end;
+
+procedure TformTraceMobile.btnCloseClick(Sender: TObject);
+var
+  fileJSON: TextFile;
+  line, recSep, crlf:string;
+  idx: integer;
+begin
+  if lbTrace.Items.Count > 0 then
+  begin
+    crlf := #13 + #10;
+    recSep := #30 + #30;
+    idx:= 0;
+    //dir := GetCurrentDir;
+  // create file JSON uuidCase-traceMOBILE.json
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMOBILE.json');
+    Rewrite(fileJSON);  // create new file
+    WriteLn(fileJSON, '{');
+    line := #9 + '"OBJECTS_TRACE":[';
+    WriteLn(fileJSON, line);
+
+    for idx:= 0 to lbTrace.Items.Count - 2 do
+      WriteLn(fileJSON, lbTrace.Items[idx] + ',');
+
+    if lbTrace.Items.Count > 0 then
+      WriteLn(fileJSON, lbTrace.Items[idx]);
+
+    WriteLn(fileJSON, #9#9 + ']');  // it's important write in separate lines
+    WriteLn(fileJSON, #9#9 + '}');
+    CloseFile(fileJSON);
   end;
 
-  lbTrace.Items.Add(line);
+  formTraceMobile.Close;
+end;
+
+procedure TformTraceMobile.btnAddToolClick(Sender: TObject);
+begin
+  if (Trim(edDeviceManufacturer.Text) = '') or (Trim(edMobileIMEI.Text) = '')  then
+    ShowMessage('Manufacturer and/or IMEI are missing!')
+  else
+  lbTrace.Items.Add(prepareItemTrace());
   edDeviceManufacturer.Text := '';
   edDeviceModel.Text := '';
   edDeviceSerial.Text := '';

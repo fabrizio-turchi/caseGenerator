@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  System.JSON.Readers, System.JSON.Types, System.JSON;
+  System.JSON.Readers, System.JSON.Types, System.JSON, caseGenerator_util;
 
 type
   TformTool = class(TForm)
@@ -33,12 +33,16 @@ type
     Label9: TLabel;
     btnAddItem: TButton;
     lbTool: TListBox;
+    btnModifyItem: TButton;
+    btnDeleteItem: TButton;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnAddItemClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbToolChange(Sender: TObject);
+    procedure btnDeleteItemClick(Sender: TObject);
+    procedure btnModifyItemClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -47,7 +51,8 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    function ExtractField(line, subLine: String): String;
+    function prepareItemSettingTool: String;
+    //function ExtractField(line, subLine: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -65,20 +70,23 @@ uses StrUtils;
 
 { TForm1 }
 
+procedure TformTool.btnDeleteItemClick(Sender: TObject);
+begin
+  if lbConfigurationSettingTool.ItemIndex > -1 then
+    lbConfigurationSettingTool.Items.Delete(lbConfigurationSettingTool.ItemIndex);
+
+end;
+
 procedure TformTool.btnDeleteToolClick(Sender: TObject);
 begin
   lbTool.Items.Delete(lbTool.ItemIndex);
 end;
 
-function TformTool.ExtractField(line, subLine: String): String;
-var
-  fieldValue: String;
-  fieldStart, fieldEnd: Integer;
+
+procedure TformTool.btnModifyItemClick(Sender: TObject);
 begin
-  fieldStart := Pos(subLine, line); // search pos of subLine inside line
-  fieldValue := Copy(line, fieldStart + Length(subLine), Length(line));
-  fieldEnd   := Pos('"', fieldValue);
-  Result := Copy(fieldValue, 1, fieldEnd - 1);
+  if lbConfigurationSettingTool.ItemIndex > - 1 then
+    lbConfigurationSettingTool.Items.Add(prepareItemSettingTool());
 end;
 
 procedure TformTool.FormShow(Sender: TObject);
@@ -118,8 +126,9 @@ end;
 
 procedure TformTool.lbToolChange(Sender: TObject);
 var
-  line, cbValue: String;
+  line, cbValue, itemName, itemValue, itemTool, recSep: String;
   idx: Integer;
+  itemFound: Boolean;
 begin
 
   line := lbTool.Items[lbTool.ItemIndex];
@@ -136,6 +145,32 @@ begin
   end;
   edCreator.Text := ExtractField(line, '"creator":"');
   edVersion.Text := ExtractField(line, '"version":"');
+
+  lbConfigurationSettingTool.Items.Clear;
+  itemFound :=  AnsiContainsStr(line, '"itemName":"');
+  recSep := #30 + #30;
+  while itemFound do
+  begin
+    itemName := ExtractField(line, '"itemName":"');
+    itemValue := ExtractField(line, '"itemValue":"');
+    itemTool := '{' + recSep + #9 + '"@type":"ConfigurationSetting", ' + #9;
+    itemTool := itemTool + '"itemName":"' + itemName + '",' + recSep;
+    itemTool := itemTool + '"itemValue":"' + itemValue + '"' + #9 + '}';
+    lbConfigurationSettingTool.Items.Add(itemTool);
+    line := Copy(line, Pos('"itemName":"', line) + 10, Length(line));
+    itemFound :=  AnsiContainsStr(line, '"itemName":"');
+  end;
+end;
+
+function TformTool.prepareItemSettingTool: String;
+var
+  recSep, itemTool: string;
+begin
+  recSep := #30 + #30;
+  itemTool := '{' + recSep + #9 + '"@type":"ConfigurationSetting", ' + #9;
+  itemTool := itemTool + '"itemName":"' + edItemName.Text + '",' + recSep;
+  itemTool := itemTool + '"itemValue":"' + edItemValue.Text + '"' + #9 + '}';
+  Result := itemTool;
 end;
 
 procedure TformTool.btnCloseClick(Sender: TObject);
@@ -175,13 +210,9 @@ end;
 procedure TformTool.btnAddItemClick(Sender: TObject);
 var
   itemTool: string;
-  recSep: string;
 begin
   //cr := #13 + #10;
-  recSep := #30 + #30;
-  itemTool := '{' + recSep + #9 + '"@type":"ConfigurationSetting", ' + #9;
-  itemTool := itemTool + '"itemName":"' + edItemName.Text + '",' + recSep;
-  itemTool := itemTool + '"itemValue":"' + edItemValue.Text + '"' + #9 + '}';
+  itemTool := prepareItemSettingTool();
   lbConfigurationSettingTool.Items.Add(itemTool);
   edItemName.Text := '';
   edItemValue.Text := '';

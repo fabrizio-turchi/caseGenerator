@@ -30,7 +30,7 @@ object formTraceMobile: TformTraceMobile
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
-    Position.Y = 358.000000000000000000
+    Position.Y = 374.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
@@ -73,9 +73,9 @@ object formTraceMobile: TformTraceMobile
     OnClick = btnCloseClick
   end
   object btnAddTool: TButton
-    Position.X = 256.000000000000000000
-    Position.Y = 365.000000000000000000
-    Size.Width = 120.000000000000000000
+    Position.X = 192.000000000000000000
+    Position.Y = 381.000000000000000000
+    Size.Width = 89.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 27
@@ -83,9 +83,9 @@ object formTraceMobile: TformTraceMobile
     OnClick = btnAddToolClick
   end
   object btnDeleteTool: TButton
-    Position.X = 392.000000000000000000
-    Position.Y = 365.000000000000000000
-    Size.Width = 120.000000000000000000
+    Position.X = 397.000000000000000000
+    Position.Y = 380.000000000000000000
+    Size.Width = 92.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 28
@@ -112,9 +112,9 @@ object formTraceMobile: TformTraceMobile
   end
   object lbTrace: TListBox
     Position.X = 16.000000000000000000
-    Position.Y = 391.000000000000000000
+    Position.Y = 408.000000000000000000
     Size.Width = 769.000000000000000000
-    Size.Height = 177.000000000000000000
+    Size.Height = 160.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 30
     DisableFocusEffect = True
@@ -123,7 +123,7 @@ object formTraceMobile: TformTraceMobile
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
     Viewport.Width = 765.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    Viewport.Height = 156.000000000000000000
   end
   object edDeviceModel: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -193,8 +193,8 @@ object formTraceMobile: TformTraceMobile
         '29'
         '30'
         '31')
-      Position.X = 128.000000000000000000
-      Position.Y = 82.000000000000000000
+      Position.X = 110.000000000000000000
+      Position.Y = 86.000000000000000000
       Size.Width = 41.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -210,8 +210,8 @@ object formTraceMobile: TformTraceMobile
         '1955'
         '1956')
       Position.X = 221.000000000000000000
-      Position.Y = 82.000000000000000000
-      Size.Width = 84.000000000000000000
+      Position.Y = 86.000000000000000000
+      Size.Width = 100.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 10
@@ -230,8 +230,8 @@ object formTraceMobile: TformTraceMobile
         '10'
         '11'
         '12')
-      Position.X = 172.000000000000000000
-      Position.Y = 82.000000000000000000
+      Position.X = 154.000000000000000000
+      Position.Y = 86.000000000000000000
       Size.Width = 61.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -240,8 +240,11 @@ object formTraceMobile: TformTraceMobile
     object timeMobile: TTimeEdit
       Time = 0.675166099537036900
       TimeFormatKind = Long
-      Position.X = 311.000000000000000000
-      Position.Y = 82.000000000000000000
+      Position.X = 328.000000000000000000
+      Position.Y = 86.000000000000000000
+      Size.Width = 83.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 7
     end
   end
@@ -478,5 +481,15 @@ object formTraceMobile: TformTraceMobile
     Size.Width = 241.000000000000000000
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
+  end
+  object btnModifyTrace: TButton
+    Position.X = 296.000000000000000000
+    Position.Y = 380.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 43
+    Text = 'Modify Trace'
+    OnClick = btnModifyTraceClick
   end
 end

@@ -199,8 +199,8 @@ object formTool: TformTool
     TabOrder = 14
   end
   object btnAddItem: TButton
-    Position.X = 662.000000000000000000
-    Position.Y = 156.000000000000000000
+    Position.X = 470.000000000000000000
+    Position.Y = 158.000000000000000000
     TabOrder = 22
     Text = 'Add item'
     OnClick = btnAddItemClick
@@ -219,5 +219,19 @@ object formTool: TformTool
     OnChange = lbToolChange
     Viewport.Width = 996.000000000000000000
     Viewport.Height = 181.000000000000000000
+  end
+  object btnModifyItem: TButton
+    Position.X = 558.000000000000000000
+    Position.Y = 158.000000000000000000
+    TabOrder = 25
+    Text = 'Modify item'
+    OnClick = btnModifyItemClick
+  end
+  object btnDeleteItem: TButton
+    Position.X = 646.000000000000000000
+    Position.Y = 158.000000000000000000
+    TabOrder = 24
+    Text = 'Delete item'
+    OnClick = btnDeleteItemClick
   end
 end
