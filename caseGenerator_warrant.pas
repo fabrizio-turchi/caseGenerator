@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, System.JSON, System.JSON.Types,
-  System.JSON.Readers;
+  System.JSON.Readers, caseGenerator_util;
 
 type
   TformWarrant = class(TForm)
@@ -28,10 +28,13 @@ type
     cbYear: TComboBox;
     Label3: TLabel;
     edIdentifier: TEdit;
+    btnModify: TButton;
     procedure btnAddWarrantClick(Sender: TObject);
     procedure btnRemoveWarrantClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure lbWarrantChange(Sender: TObject);
+    procedure btnModifyClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -40,8 +43,11 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    procedure readRoleFromFile;
+    function readIdRoleFromFile: TStringList;
+    function readIdentityFromRelationshipFile(idRoles: TStringList): TStringList;
     function extractID(line: String): String;
+    function prepareItemWarrant: String;
+    procedure readIdentityFromFile(idValues: TStringList);
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -72,15 +78,26 @@ end;
 procedure TformWarrant.FormShow(Sender: TObject);
 var
   idx: Integer;
+  idValues: TStringList;
 begin
   cbYear.Items.Clear;
   for idx:=2000 to 2020 do
     cbYear.Items.Add(IntToStr(idx));
 {
-  - Judicial Authorities values/ID are taken from Role with "name":"judge"
-  - Applicant values/ID are taken from Role with "name":"investogator"
+  - the cbAuthority values must be taken combining Role and Relationship:
+    1.  extracting of the idRoles with name="Judge" or "Judicial Authority"
+    2.  extracting idIdentities as value of the "source" property where the above
+        idRoles[idx] appears in the "target" property
+    3.  extracting name and familyName of the idIdentities[idx] above identified
 }
-  readRoleFromFile;
+    idValues := TStringList.Create;
+    // idRole Judge/Authority
+    idValues := readIdRoleFromFile;
+    //idIdentities of Judge/Authority
+    idValues := readIdentityFromRelationshipFile(idValues);
+    readIdentityFromFile(idValues);
+
+
 end;
 
 function TformWarrant.JsonTokenToString(const t: TJsonToken): string;
@@ -115,24 +132,230 @@ begin
 end;
 
 
-procedure TformWarrant.readRoleFromFile;
+procedure TformWarrant.lbWarrantChange(Sender: TObject);
 var
-  json, dir, recSep, crlf: string;
+  line, issuedDate, sDate, sDay, sMonth, sYear: String;
+  idx: Integer;
+begin
+  if lbWarrant.ItemIndex > - 1 then
+  begin
+    line := lbWarrant.Items[lbWarrant.ItemIndex];
+    edAuthorizationType.Text := ExtractField(line, '"@authorizationType":"');
+    edIdentifier.Text := ExtractField(line, '"authorizationIdentifier":"');
+    issuedDate := ExtractField(line, '"authorizationIssuedDate":"');
+    sDate := Copy(issuedDate, 1, 10);
+    sDay := Copy(sDate, 7, 2);
+    for idx:=0 to cbDay.Items.Count - 1 do
+    begin
+      if cbDay.Items[idx] = sDay then
+      begin
+        cbDay.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sMonth := Copy(sDate, 5, 2);
+    for idx:=0 to cbMonth.Items.Count - 1 do
+    begin
+      if cbMonth.Items[idx] = sMonth then
+      begin
+        cbMonth.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sYear := Copy(sDate, 1, 4);
+    for idx:=0 to cbYear.Items.Count - 1 do
+    begin
+      if cbYear.Items[idx] = sYear then
+      begin
+        cbYear.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    line := ExtractField(line, '"authorizationAuthority":"');
+    for idx:=0 to cbAuthority.Items.Count - 1 do
+    begin
+      if AnsiContainsStr(cbAuthority.Items[idx],  line) then
+      begin
+        cbAuthority.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+  end;
+end;
+
+function TformWarrant.prepareItemWarrant: String;
+var
+  line, recSep, lineID: string;
+  Uid: TGUID;
+begin
+  CreateGUID(Uid);
+  recSep := #30 + #30;
+  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  line := line + '"@type":"Authorization",' + recSep;
+  line := line + '"propertyBundle":[' + recSep;
+  line := line + '{"@authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
+  line := line + '"authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
+  lineID := extractID(cbAuthority.Items[cbAuthority.ItemIndex]);
+  line := line + '"authorizationAuthority":"' + lineID + '",' + recSep;
+  line := line + '"authorizationIssuedDate":"' + cbYear.Items[cbYear.ItemIndex];
+  line := line + cbMonth.Items[cbMonth.ItemIndex];
+  line := line + cbDay.Items[cbDay.ItemIndex] + '"}' + recSep;
+  line := line + ']}' + recSep;
+  Result := line;
+end;
+
+procedure TformWarrant.readIdentityFromFile(idValues: TStringList);
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inName, inFamilyName, inID: Boolean;
+  name, familyName, idIdentity: string;
+  idIdentities: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-identity.json') then
+  begin
+    idIdentities := TStringList.Create;
+    idIdentities.LoadFromFile(FpathCase + FuuidCase + '-identity.json');
+    //JSON string here
+    json := stringreplace(idIdentities.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'givenName' then
+            inName := True
+          else
+            inName := False;
+
+          if jreader.Value.AsString = 'familyName' then
+            inFamilyName := True
+          else
+            inFamilyName := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then begin
+            idIdentity := jreader.Value.AsString;
+          end;
+
+          if inName then
+            name := jreader.Value.AsString;
+
+          if inFamilyName then
+          begin
+            familyName := jreader.Value.AsString;
+            for idx:=0 to idValues.Count - 1 do
+              if idValues[idx] = idIdentity then
+                cbAuthority.Items.Add(name + ' ' + familyName + '@' + idIdentity)
+          end;
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+end;
+
+function TformWarrant.readIdentityFromRelationshipFile(idRoles: TStringList): TStringList;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inSource, inTarget: Boolean;
+  source, target: string;
+  listRelationship, idIdentities: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  idIdentities := TStringList.Create;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-relationship.json') then
+  begin
+    listRelationship := TStringList.Create;
+    listRelationship.LoadFromFile(FpathCase + FuuidCase + '-relationship.json');
+    //JSON string here
+    json := stringreplace(listRelationship.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+      inSource := False;
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'source' then
+            inSource := True
+          else
+            inSource := False;
+
+          if jreader.Value.AsString = 'target' then
+            inTarget := True
+          else
+            inTarget := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inTarget then begin
+            target := jreader.Value.AsString;
+            for idx:=0 to idRoles.Count - 1 do
+              if idRoles[idx] =  target then
+                idIdentities.Add(source);
+          end;
+
+          if inSource then
+            source := jreader.Value.AsString;;
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+  Result := idIdentities;
+
+end;
+
+function TformWarrant.readIdRoleFromFile: TSTringList;
+var
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inName, inID: Boolean;
   id, name: string;
-  listRole: TStringList;
+  listRole, idRoles: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
+  idRoles := TStringList.Create;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-role.json') then
+  if FileExists(FpathCase + FuuidCase + '-role.json') then
   begin
     listRole := TStringList.Create;
-    listRole.LoadFromFile(dir + '\' + FuuidCase + '-role.json');
+    listRole.LoadFromFile(FpathCase + FuuidCase + '-role.json');
     //JSON string here
     json := stringreplace(listRole.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -157,8 +380,9 @@ begin
         begin
           if inName then begin
             name := jreader.Value.AsString;
-            if (name = 'Judge') then
-              cbAuthority.Items.Add(name + ' ' + '@' + id);
+            if (name = 'Judge') or (name='Judicial Authority') then
+              //cbAuthority.Items.Add(name + ' ' + '@' + id);
+              idRoles.Add(id);
             //if (name = 'Investigator') then
                 //cbApplicant.Items.Add(name + ' ' + '@' + id);
           end;
@@ -172,7 +396,7 @@ begin
       sreader.Free;
     end;
   end;
-
+  Result := idRoles;
 end;
 
 
@@ -204,6 +428,12 @@ begin
   formWarrant.Close;
 end;
 
+procedure TformWarrant.btnModifyClick(Sender: TObject);
+begin
+  if lbWarrant.ItemIndex > - 1 then
+    lbWarrant.Items[lbWarrant.ItemIndex] := prepareItemWarrant();
+end;
+
 procedure TformWarrant.btnAddWarrantClick(Sender: TObject);
 var
   line, recSep, lineID: string;
@@ -213,20 +443,7 @@ begin
     ShowMessage('Authority and/or AuthorizationType are empty')
   else
   begin
-    CreateGUID(Uid);
-    recSep := #30 + #30;
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
-    line := line + '"@type":"Authorization",' + recSep;
-    line := line + '"propertyBundle":[' + recSep;
-    line := line + '{"@authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
-    line := line + '"authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
-    lineID := extractID(cbAuthority.Items[cbAuthority.ItemIndex]);
-    line := line + '"authorizationAuthority":"' + lineID + '",' + recSep;
-    line := line + '"authorizationIssuedDate":"' + cbYear.Items[cbYear.ItemIndex];
-    line := line + cbMonth.Items[cbMonth.ItemIndex];
-    line := line + cbDay.Items[cbDay.ItemIndex] + '"}' + recSep;
-    line := line + ']}' + recSep;
-    lbWarrant.Items.Add(line);
+    lbWarrant.Items.Add(prepareItemWarrant());
     cbAuthority.ItemIndex := -1;
     cbDay.ItemIndex := -1;
     cbMonth.ItemIndex := -1;

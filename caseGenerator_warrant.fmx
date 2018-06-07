@@ -147,7 +147,7 @@ object formWarrant: TformWarrant
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
     Position.Y = 225.000000000000000000
-    Size.Width = 105.000000000000000000
+    Size.Width = 73.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
@@ -165,8 +165,9 @@ object formWarrant: TformWarrant
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 697.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    OnChange = lbWarrantChange
+    Viewport.Width = 693.000000000000000000
+    Viewport.Height = 169.000000000000000000
   end
   object btnClose: TButton
     Position.X = 323.000000000000000000
@@ -178,7 +179,7 @@ object formWarrant: TformWarrant
   object btnAddWarrant: TButton
     Position.X = 200.000000000000000000
     Position.Y = 226.000000000000000000
-    Size.Width = 160.000000000000000000
+    Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 4
@@ -186,9 +187,9 @@ object formWarrant: TformWarrant
     OnClick = btnAddWarrantClick
   end
   object btnRemoveWarrant: TButton
-    Position.X = 368.000000000000000000
+    Position.X = 424.000000000000000000
     Position.Y = 226.000000000000000000
-    Size.Width = 129.000000000000000000
+    Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
@@ -212,5 +213,15 @@ object formWarrant: TformWarrant
     Size.Width = 273.000000000000000000
     Size.Height = 23.000000000000000000
     Size.PlatformDefault = False
+  end
+  object btnModify: TButton
+    Position.X = 312.000000000000000000
+    Position.Y = 226.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    Text = 'Modify warrant'
+    OnClick = btnModifyClick
   end
 end
