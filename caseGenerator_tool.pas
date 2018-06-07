@@ -43,6 +43,7 @@ type
     procedure lbToolChange(Sender: TObject);
     procedure btnDeleteItemClick(Sender: TObject);
     procedure btnModifyItemClick(Sender: TObject);
+    procedure lbConfigurationSettingToolChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -124,6 +125,17 @@ begin
   end;
 end;
 
+procedure TformTool.lbConfigurationSettingToolChange(Sender: TObject);
+var
+line: String;
+begin
+  line := lbConfigurationSettingTool.Items[lbConfigurationSettingTool.ItemIndex];
+
+  edItemName.Text := ExtractField(line, '"itemName":"');
+  edItemValue.Text := ExtractField(line, '"itemValue":"');
+
+end;
+
 procedure TformTool.lbToolChange(Sender: TObject);
 var
   line, cbValue, itemName, itemValue, itemTool, recSep: String;
@@ -131,34 +143,38 @@ var
   itemFound: Boolean;
 begin
 
-  line := lbTool.Items[lbTool.ItemIndex];
-
-  edName.Text := ExtractField(line, '"name":"');
-  cbValue  := ExtractField(line, '"toolType":"');
-  for idx := 0 to cbToolType.Count-1 do
+  if lbTool.ItemIndex > -1 then
   begin
-    if AnsiContainsStr(cbToolType.Items[idx], cbValue) then
+    line := lbTool.Items[lbTool.ItemIndex];
+    edName.Text := ExtractField(line, '"name":"');
+    cbValue  := ExtractField(line, '"toolType":"');
+    for idx := 0 to cbToolType.Count-1 do
     begin
-      cbToolType.ItemIndex := idx;
-      break;
+      if AnsiContainsStr(cbToolType.Items[idx], cbValue) then
+      begin
+        cbToolType.ItemIndex := idx;
+        break;
+      end;
     end;
-  end;
-  edCreator.Text := ExtractField(line, '"creator":"');
-  edVersion.Text := ExtractField(line, '"version":"');
+    edCreator.Text := ExtractField(line, '"creator":"');
+    edVersion.Text := ExtractField(line, '"version":"');
 
-  lbConfigurationSettingTool.Items.Clear;
-  itemFound :=  AnsiContainsStr(line, '"itemName":"');
-  recSep := #30 + #30;
-  while itemFound do
-  begin
-    itemName := ExtractField(line, '"itemName":"');
-    itemValue := ExtractField(line, '"itemValue":"');
-    itemTool := '{' + recSep + #9 + '"@type":"ConfigurationSetting", ' + #9;
-    itemTool := itemTool + '"itemName":"' + itemName + '",' + recSep;
-    itemTool := itemTool + '"itemValue":"' + itemValue + '"' + #9 + '}';
-    lbConfigurationSettingTool.Items.Add(itemTool);
-    line := Copy(line, Pos('"itemName":"', line) + 10, Length(line));
+    lbConfigurationSettingTool.Items.Clear;
     itemFound :=  AnsiContainsStr(line, '"itemName":"');
+    recSep := #30 + #30;
+    while itemFound do
+    begin
+      itemName := ExtractField(line, '"itemName":"');
+      itemValue := ExtractField(line, '"itemValue":"');
+      itemTool := '{' + recSep + #9 + '"@type":"ConfigurationSetting", ' + #9;
+      itemTool := itemTool + '"itemName":"' + itemName + '",' + recSep;
+      itemTool := itemTool + '"itemValue":"' + itemValue + '"' + #9 + '}';
+      lbConfigurationSettingTool.Items.Add(itemTool);
+      line := Copy(line, Pos('"itemValue":"', line) + 12, Length(line));
+      itemFound :=  AnsiContainsStr(line, '"itemName":"');
+    end;
+    if lbConfigurationSettingTool.Items.Count > 0 then
+      lbConfigurationSettingTool.ItemIndex := 0;
   end;
 end;
 

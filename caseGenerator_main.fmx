@@ -90,7 +90,7 @@ object formMain: TformMain
     OnClick = btnToolClick
   end
   object btnGenerateJSON: TButton
-    Position.X = 440.000000000000000000
+    Position.X = 416.000000000000000000
     Position.Y = 432.000000000000000000
     Size.Width = 65.000000000000000000
     Size.Height = 22.000000000000000000
@@ -112,7 +112,7 @@ object formMain: TformMain
     Viewport.Height = 105.000000000000000000
   end
   object Button5: TButton
-    Position.X = 512.000000000000000000
+    Position.X = 496.000000000000000000
     Position.Y = 432.000000000000000000
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
@@ -187,9 +187,9 @@ object formMain: TformMain
   end
   object lbObjects: TListBox
     Enabled = False
-    Position.X = 300.000000000000000000
-    Position.Y = 483.000000000000000000
-    Size.Width = 365.000000000000000000
+    Position.X = 24.000000000000000000
+    Position.Y = 454.000000000000000000
+    Size.Width = 313.000000000000000000
     Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 28
@@ -197,7 +197,7 @@ object formMain: TformMain
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 365.000000000000000000
+    Viewport.Width = 313.000000000000000000
     Viewport.Height = 30.000000000000000000
     object Label2: TLabel
       Position.X = 275.000000000000000000
@@ -220,8 +220,8 @@ object formMain: TformMain
     OnClick = btnWarrantClick
   end
   object btnGenerateCaseJson: TButton
-    Position.X = 48.000000000000000000
-    Position.Y = 455.000000000000000000
+    Position.X = 424.000000000000000000
+    Position.Y = 463.000000000000000000
     Size.Width = 185.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
@@ -238,7 +238,7 @@ object formMain: TformMain
     StyleLookup = 'panelstyle'
     TabOrder = 32
     object btnNewCase: TButton
-      Position.X = 232.000000000000000000
+      Position.X = 272.000000000000000000
       Position.Y = 51.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 22.000000000000000000
@@ -265,15 +265,6 @@ object formMain: TformMain
       Text = 'Cases'
       TabOrder = 2
     end
-  end
-  object lblProcessing: TLabel
-    Position.X = 272.000000000000000000
-    Position.Y = 467.000000000000000000
-    Size.Width = 369.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    Text = '...'
-    TabOrder = 33
   end
   object Label4: TLabel
     Position.X = 16.000000000000000000

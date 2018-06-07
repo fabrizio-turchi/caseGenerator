@@ -34,7 +34,6 @@ type
     panelCase: TPanel;
     Label2: TLabel;
     Label3: TLabel;
-    lblProcessing: TLabel;
     Label4: TLabel;
     edName: TEdit;
     Label5: TLabel;
@@ -543,6 +542,7 @@ begin
   firstTreeViewItem.Text := 'My Tree';
   tvObjects.InsertObject(0, firstTreeViewItem);
   }
+
 end;
 
 procedure TformMain.FormShow(Sender: TObject);
@@ -558,7 +558,7 @@ begin
   cbActionsName.Visible := False;
 
   ExtractAllFiles(FHomeCases);
-
+  lbObjects.Visible := False;
 
 
   {
