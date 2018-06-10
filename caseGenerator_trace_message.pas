@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, System.JSON, System.JSON.Types,
-  System.JSON.Readers, FMX.ScrollBox, FMX.Memo;
+  System.JSON.Readers, FMX.ScrollBox, FMX.Memo, caseGenerator_util;
 
 type
   TformTraceMessage = class(TForm)
@@ -42,6 +42,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnAddMobileClick(Sender: TObject);
     procedure btnRemoveMobileClick(Sender: TObject);
+    procedure lbMessageChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -53,6 +54,7 @@ type
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
     function  extractID(line: String): String;
+    function prepareItemMessage: String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -129,6 +131,57 @@ begin
 end;
 
 
+procedure TformTraceMessage.lbMessageChange(Sender: TObject);
+var
+  line: String;
+  idx: Integer;
+begin
+  line := lbMessage.Items[lbMessage.ItemIndex];
+  edApplication.Text := ExtractField(line, '"application":"');
+  memoMessageText.Lines.Text := ExtractField(line, '"messageText":"');
+  line := ExtractField(line, '"from":"');
+  for idx:=0 to cbMobileFrom.Items.Count - 1 do
+  begin  
+    if AnsiContainsStr(cbMobileFrom.Items[idx], line) then
+    begin
+      cbMobileFrom.ItemIndex := idx;
+      Break;
+    end;
+  end;
+    line := ExtractArray(line, '"to":[');
+
+
+end;
+
+function TformTraceMessage.prepareItemMessage: String;
+var
+  line, recSep, idLine: string;
+  Uid: TGUID;
+  idx: Integer;
+begin
+  idx:= 0;
+  CreateGUID(Uid);
+  recSep := #30 + #30;
+  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  line := line + '"@type":"Trace",' + recSep;
+  line := line + '"propertyBundle":["' + recSep;
+  line := line + '{"@type":"Message",' + recSep;
+  line := line + '"application":"' + edApplication.Text + '",' + recSep;
+  line := line + '"messageText":"' + memoMessageText.Text + '"' + recSep;
+  idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
+  line := line + '"from":"' + extractID(idLine) + '"' + recSep;
+  line := line + '"to":[' + recSep;
+  for idx:=0 to lbMobile.Items.Count - 2 do
+    line := line  + lbMobile.Items[idx] + ',';
+
+  line := line  + lbMobile.Items[idx] + '],' + recSep;
+  line := line + '"sentTime":"' + cbSentYear.Items[cbSentYear.ItemIndex];
+  line := line + cbSentMonth.Items[cbSentMonth.ItemIndex];
+  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T';
+  line := line + '}]}' + recSep;
+  Result := line;
+end;
+
 procedure TformTraceMessage.readTraceFromFile;
 
 begin
@@ -137,7 +190,7 @@ end;
 
 procedure TformTraceMessage.readTraceMobileFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inID, inModel, inMSISDN: Boolean;
@@ -145,14 +198,14 @@ var
   listTrace: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-traceMOBILE.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceMOBILE.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(dir + '\' + FuuidCase + '-traceMOBILE.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMOBILE.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -257,26 +310,7 @@ begin
     ShowMessage('Mobile FROM or/and Mobile Source empty!')
   else
   begin
-    CreateGUID(Uid);
-    recSep := #30 + #30;
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
-    line := line + '"@type":"Trace",' + recSep;
-    line := line + '"propertyBundle":["' + recSep;
-    line := line + '{"@type":"Message",' + recSep;
-    line := line + '"application":"' + edApplication.Text + '",' + recSep;
-    line := line + '"messageText":"' + memoMessageText.Text + '"' + recSep;
-    idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
-    line := line + '"from":"' + extractID(idLine) + '"' + recSep;
-    line := line + '"to":[' + recSep;
-    for idx:=0 to lbMobile.Items.Count - 1 do
-      line := line  + lbMobile.Items[idx];
-
-    line := line + '],' + recSep;
-    line := line + '"sentTime":"' + cbSentYear.Items[cbSentYear.ItemIndex];
-    line := line + cbSentMonth.Items[cbSentMonth.ItemIndex];
-    line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T';
-    line := line + '}]}' + recSep;
-    lbMessage.Items.Add(line);
+    lbMessage.Items.Add(prepareItemMessage());
     edApplication.Text := '';
     memoMessageText.Lines.Clear;
     cbMobileFrom.ItemIndex := -1;

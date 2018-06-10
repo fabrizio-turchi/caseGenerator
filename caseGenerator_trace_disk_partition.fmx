@@ -141,6 +141,7 @@ object formTraceDiskPartition: TformTraceDiskPartition
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbTraceChange
     Viewport.Width = 765.000000000000000000
     Viewport.Height = 173.000000000000000000
   end

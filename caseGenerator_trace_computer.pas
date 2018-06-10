@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  System.JSON.Readers, System.JSON.Types, System.JSON;
+  System.JSON.Readers, System.JSON.Types, System.JSON, caseGenerator_util;
 
 type
   TformTraceComputer = class(TForm)
@@ -50,6 +50,7 @@ type
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure lbTraceChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -112,6 +113,14 @@ begin
     TJsonToken.MinKey: Result := 'MinKey' ;
     TJsonToken.MaxKey: Result := 'MaxKey' ;
   end;
+end;
+
+procedure TformTraceComputer.lbTraceChange(Sender: TObject);
+var
+line: String;
+begin
+  line := lbTrace.Items[lbTrace.ItemIndex];
+  edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
 end;
 
 procedure TformTraceComputer.btnCloseClick(Sender: TObject);
