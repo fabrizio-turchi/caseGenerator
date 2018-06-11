@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  System.JSON.Readers, System.JSON.Types, System.JSON;
+  System.JSON.Readers, System.JSON.Types, System.JSON, caseGenerator_util;
 
 type
   TformTraceFile = class(TForm)
@@ -44,11 +44,15 @@ type
     cbCreationYear: TComboBox;
     timeCreation: TTimeEdit;
     Label5: TLabel;
+    btnModifyTrace: TButton;
+    btnCancel: TButton;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
+    procedure btnModifyTraceClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -57,7 +61,8 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    function ExtractField(line, subLine: String): String;
+    //function ExtractField(line, subLine: String): String;
+    function PrepareItemTrace: String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -79,15 +84,11 @@ begin
   lbTrace.Items.Delete(lbTrace.ItemIndex);
 end;
 
-function TformTraceFile.ExtractField(line, subLine: String): String;
-var
-  fieldValue: String;
-  fieldStart, fieldEnd: Integer;
+
+procedure TformTraceFile.btnModifyTraceClick(Sender: TObject);
 begin
-  fieldStart := Pos(subLine, line); // search pos of subLine inside line
-  fieldValue := Copy(line, fieldStart + Length(subLine), Length(line));
-  fieldEnd   := Pos('"', fieldValue);
-  Result := Copy(fieldValue, 1, fieldEnd - 1);
+  if lbTrace.ItemIndex > - 1 then
+    lbTrace.Items[lbTrace.ItemIndex] := prepareItemTrace();
 end;
 
 procedure TformTraceFile.FormShow(Sender: TObject);
@@ -168,41 +169,7 @@ begin
   edHashSize.Text :=   ExtractField(line, '"SizeInBytes":"');
 end;
 
-procedure TformTraceFile.btnCloseClick(Sender: TObject);
-var
-  fileJSON: TextFile;
-  line, recSep:string;
-  idx: integer;
-begin
-  //dir := GetCurrentDir;
-  // create file JSON uuidCase-traceFILE.json
-  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceFILE.json');
-  if lbTrace.Items.Count > 0 then
-  begin
-    recSep := #30 + #30;
-    idx:= 0;
-    Rewrite(fileJSON);  // create new file
-    WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_TRACE":[';
-    WriteLn(fileJSON, line);
-
-    for idx:= 0 to lbTrace.Items.Count - 2 do
-      WriteLn(fileJSON, lbTrace.Items[idx] + ',');
-
-    if lbTrace.Items.Count > 0 then
-      WriteLn(fileJSON, lbTrace.Items[idx]);
-
-    WriteLn(fileJSON, #9#9 + ']');  // it's important write in separate lines
-    WriteLn(fileJSON, #9#9 + '}');
-    CloseFile(fileJSON);
-  end
-  else
-    deleteFile(FpathCase + FuuidCase + '-traceFILE.json');
-
-  formTraceFile.Close;
-end;
-
-procedure TformTraceFile.btnAddToolClick(Sender: TObject);
+function TformTraceFile.PrepareItemTrace: String;
 var
   line, recSep: string;
   Uid: TGUID;
@@ -238,7 +205,57 @@ begin
     line := line + '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
     line := line + '}]}';
 
-    lbTrace.Items.Add(line);
+    Result := line;
+  end;
+
+end;
+
+procedure TformTraceFile.btnCancelClick(Sender: TObject);
+begin
+   formTraceFile.Close;
+end;
+
+procedure TformTraceFile.btnCloseClick(Sender: TObject);
+var
+  fileJSON: TextFile;
+  line, recSep:string;
+  idx: integer;
+begin
+  //dir := GetCurrentDir;
+  // create file JSON uuidCase-traceFILE.json
+  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceFILE.json');
+  if lbTrace.Items.Count > 0 then
+  begin
+    recSep := #30 + #30;
+    idx:= 0;
+    Rewrite(fileJSON);  // create new file
+    WriteLn(fileJSON, '{');
+    line := #9 + '"OBJECTS_TRACE":[';
+    WriteLn(fileJSON, line);
+
+    for idx:= 0 to lbTrace.Items.Count - 2 do
+      WriteLn(fileJSON, lbTrace.Items[idx] + ',');
+
+    if lbTrace.Items.Count > 0 then
+      WriteLn(fileJSON, lbTrace.Items[idx]);
+
+    WriteLn(fileJSON, #9#9 + ']');  // it's important write in separate lines
+    WriteLn(fileJSON, #9#9 + '}');
+    CloseFile(fileJSON);
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-traceFILE.json');
+
+  formTraceFile.Close;
+end;
+
+procedure TformTraceFile.btnAddToolClick(Sender: TObject);
+begin
+  if (Trim(edName.Text) = '') or (Trim(edPath.Text) = '')  then
+    ShowMessage('Name and/or Path are missing!')
+  else
+  begin
+    lbTrace.Items.Add(prepareItemTrace());
     edName.Text := '';
     edSystemType.Text := '';
     edExtension.Text := '';

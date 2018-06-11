@@ -35,6 +35,8 @@ type
     lbTool: TListBox;
     btnModifyItem: TButton;
     btnDeleteItem: TButton;
+    btnModifyTool: TButton;
+    btnCancel: TButton;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -44,6 +46,8 @@ type
     procedure btnDeleteItemClick(Sender: TObject);
     procedure btnModifyItemClick(Sender: TObject);
     procedure lbConfigurationSettingToolChange(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnModifyToolClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -53,6 +57,7 @@ type
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
     function prepareItemSettingTool: String;
+    function prepareItemTool: String;
     //function ExtractField(line, subLine: String): String;
     { Private declarations }
   public
@@ -88,6 +93,12 @@ procedure TformTool.btnModifyItemClick(Sender: TObject);
 begin
   if lbConfigurationSettingTool.ItemIndex > - 1 then
     lbConfigurationSettingTool.Items.Add(prepareItemSettingTool());
+end;
+
+procedure TformTool.btnModifyToolClick(Sender: TObject);
+begin
+  if lbTool.ItemIndex > -1 then
+    lbTool.Items[lbTool.ItemIndex] := prepareItemTool();
 end;
 
 procedure TformTool.FormShow(Sender: TObject);
@@ -189,6 +200,39 @@ begin
   Result := itemTool;
 end;
 
+function TformTool.prepareItemTool: String;
+var
+  line, recSep: string;
+  Uid: TGUID;
+  idx: integer;
+begin
+    //cr := #13  +#10;
+  recSep := #30 + #30;
+  CreateGUID(Uid);
+  line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Tool", "name":"' + edName.Text;
+  line := line +  '", "toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ';
+  line := line + '"creator":"' + edCreator.Text + '", "version":"' + edVersion.Text + '"';
+  if lbConfigurationSettingTool.Items.Count > 0 then
+  begin
+    line := line + ',' + recSep + '"propertyBundle":[' + recSep + '{' + recSep;
+    line := line + #9 + '"@type":"ToolConfiguration",' + recSep + #9 + '"configurationSetting":[' + recSep;
+    for idx:=0 to  lbConfigurationSettingTool.Items.Count - 2 do
+      line := line + #9 + lbConfigurationSettingTool.Items[idx] + ',' + recSep;
+
+    line := line + #9 + lbConfigurationSettingTool.Items[idx] + recSep;
+    line := line + recSep + #9 + ']' + recSep + '}' + recSep + ']' + recSep + '}';
+  end
+  else
+    line := line + '}';
+
+  Result := line;
+end;
+
+procedure TformTool.btnCancelClick(Sender: TObject);
+begin
+  formTool.Close;
+end;
+
 procedure TformTool.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
@@ -235,36 +279,12 @@ begin
 end;
 
 procedure TformTool.btnAddToolClick(Sender: TObject);
-var
-  line, recSep: string;
-  Uid: TGUID;
-  idx: integer;
 begin
   if (Trim(edName.Text) = '') or (cbToolType.ItemIndex = -1)  then
     ShowMessage('Name and/or type tool is missing!')
   else
-  begin
-    //cr := #13  +#10;
-    recSep := #30 + #30;
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Tool", "name":"' + edName.Text;
-    line := line +  '", "toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ';
-    line := line + '"creator":"' + edCreator.Text + '", "version":"' + edVersion.Text + '"';
-    if lbConfigurationSettingTool.Items.Count > 0 then
-    begin
-      line := line + ',' + recSep + '"propertyBundle":[' + recSep + '{' + recSep;
-      line := line + #9 + '"@type":"ToolConfiguration",' + recSep + #9 + '"configurationSetting":[' + recSep;
-      for idx:=0 to  lbConfigurationSettingTool.Items.Count - 2 do
-        line := line + #9 + lbConfigurationSettingTool.Items[idx] + ',' + recSep;
+    lbTool.Items.Add(prepareItemTool());
 
-      line := line + #9 + lbConfigurationSettingTool.Items[idx] + recSep;
-      line := line + recSep + #9 + ']' + recSep + '}' + recSep + ']' + recSep + '}';
-    end
-    else
-      line := line + '}';
-
-    lbTool.Items.Add(line);
-  end;
   edName.Text := '';
   edCreator.Text := '';
   edVersion.Text := '';

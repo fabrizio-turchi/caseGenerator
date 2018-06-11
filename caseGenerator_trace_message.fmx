@@ -73,8 +73,8 @@ object formTraceMessage: TformTraceMessage
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
-      Viewport.Width = 669.000000000000000000
-      Viewport.Height = 84.000000000000000000
+      Viewport.Width = 673.000000000000000000
+      Viewport.Height = 88.000000000000000000
     end
   end
   object panelFrom: TPanel
@@ -222,8 +222,8 @@ object formTraceMessage: TformTraceMessage
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbMessageChange
-    Viewport.Width = 693.000000000000000000
-    Viewport.Height = 205.000000000000000000
+    Viewport.Width = 697.000000000000000000
+    Viewport.Height = 209.000000000000000000
   end
   object Label2: TLabel
     Position.X = 16.000000000000000000
@@ -288,7 +288,7 @@ object formTraceMessage: TformTraceMessage
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 11
-    Viewport.Width = 597.000000000000000000
-    Viewport.Height = 46.000000000000000000
+    Viewport.Width = 601.000000000000000000
+    Viewport.Height = 50.000000000000000000
   end
 end

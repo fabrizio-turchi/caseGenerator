@@ -58,12 +58,14 @@ type
     edAccountMSISDN: TEdit;
     Panel5: TPanel;
     btnModifyTrace: TButton;
+    btnCancel: TButton;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
     procedure btnModifyTraceClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -253,6 +255,11 @@ begin
     end;
 
     line := line + recSep + #9 + ']' + recSep + '}';
+end;
+
+procedure TformTraceMobile.btnCancelClick(Sender: TObject);
+begin
+   formTraceMobile.Close;
 end;
 
 procedure TformTraceMobile.btnCloseClick(Sender: TObject);

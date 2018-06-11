@@ -135,6 +135,7 @@ procedure TformTraceMessage.lbMessageChange(Sender: TObject);
 var
   line: String;
   idx: Integer;
+  mobileTo: TStringList;
 begin
   line := lbMessage.Items[lbMessage.ItemIndex];
   edApplication.Text := ExtractField(line, '"application":"');
@@ -148,7 +149,9 @@ begin
       Break;
     end;
   end;
-    line := ExtractArray(line, '"to":[');
+    mobileTo := ExtractArray(line, '"to":[');
+
+    // read trace-MOBILE fro extracting all ID with model and MSISDN
 
 
 end;

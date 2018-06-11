@@ -1,12 +1,14 @@
 unit caseGenerator_util;
 
 interface
-
-function ExtractField(line, subLine: String): String;
-
-implementation
 uses
   System.Classes;
+
+function ExtractField(line, subLine: String): String;
+function ExtractArray(line, subline: String): TStringList;
+
+implementation
+
 
 { utlCase }
 
@@ -43,7 +45,7 @@ begin
     commaPos := Pos(',', itemsArray);
   end;
   itemsList.Add(itemsArray);
-  Result := itemsArray;
+  Result := itemsList;
 
 
 end;

@@ -66,10 +66,13 @@ object formTraceMobile: TformTraceMobile
     TabOrder = 15
   end
   object btnClose: TButton
-    Position.X = 352.000000000000000000
+    Position.X = 280.000000000000000000
     Position.Y = 574.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 26
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddTool: TButton
@@ -122,8 +125,8 @@ object formTraceMobile: TformTraceMobile
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 769.000000000000000000
-    Viewport.Height = 160.000000000000000000
+    Viewport.Width = 765.000000000000000000
+    Viewport.Height = 156.000000000000000000
   end
   object edDeviceModel: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -491,5 +494,12 @@ object formTraceMobile: TformTraceMobile
     TabOrder = 43
     Text = 'Modify Trace'
     OnClick = btnModifyTraceClick
+  end
+  object btnCancel: TButton
+    Position.X = 384.000000000000000000
+    Position.Y = 576.000000000000000000
+    TabOrder = 45
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

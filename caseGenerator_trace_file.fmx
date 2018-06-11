@@ -219,14 +219,17 @@ object formTraceFile: TformTraceFile
     TabOrder = 0
   end
   object btnClose: TButton
-    Position.X = 352.000000000000000000
+    Position.X = 280.000000000000000000
     Position.Y = 574.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 4
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddTool: TButton
-    Position.X = 256.000000000000000000
+    Position.X = 216.000000000000000000
     Position.Y = 365.000000000000000000
     Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
@@ -236,7 +239,7 @@ object formTraceFile: TformTraceFile
     OnClick = btnAddToolClick
   end
   object btnDeleteTool: TButton
-    Position.X = 392.000000000000000000
+    Position.X = 464.000000000000000000
     Position.Y = 365.000000000000000000
     Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
@@ -360,5 +363,22 @@ object formTraceFile: TformTraceFile
     Size.PlatformDefault = False
     Text = 'Hash file'
     TabOrder = 9
+  end
+  object btnModifyTrace: TButton
+    Position.X = 344.000000000000000000
+    Position.Y = 365.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 13
+    Text = 'Modify trace'
+    OnClick = btnModifyTraceClick
+  end
+  object btnCancel: TButton
+    Position.X = 399.000000000000000000
+    Position.Y = 574.000000000000000000
+    TabOrder = 15
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

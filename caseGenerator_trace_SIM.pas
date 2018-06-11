@@ -32,11 +32,13 @@ type
     edICCID: TEdit;
     Label9: TLabel;
     edPhoneNumber: TEdit;
+    btnModifyTrace: TButton;
     procedure btnAddTraceClick(Sender: TObject);
     procedure btnDeleteTraceClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
+    procedure btnModifyTraceClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -46,6 +48,7 @@ type
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
     function ExtractField(line, subLine: String): String;
+    function PrepareItemTrace: String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -65,6 +68,13 @@ uses StrUtils;
 procedure TformTraceSIM.btnDeleteTraceClick(Sender: TObject);
 begin
   lbTrace.Items.Delete(lbTrace.ItemIndex);
+end;
+
+procedure TformTraceSIM.btnModifyTraceClick(Sender: TObject);
+begin
+  if lbTrace.ItemIndex > -1 then
+    lbTrace.Items[lbTrace.ItemIndex] := PrepareItemTrace();
+
 end;
 
 function TformTraceSIM.ExtractField(line, subLine: String): String;
@@ -146,6 +156,33 @@ begin
   edPUK.Text :=  ExtractField(line, '"PUK":"');
 end;
 
+function TformTraceSIM.PrepareItemTrace: String;
+var
+  line, recSep: string;
+  Uid: TGUID;
+  idx: integer;
+begin
+  recSep := #30 + #30;
+  CreateGUID(Uid);
+  line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",' + recSep;
+  line := line + #9 + '"propertyBundle":[' + recSep + '{' + recSep;
+  line := line + #9 + '"SIMType":"' + edType.Text + '", ' + recSep;
+  line := line + #9 + '"SIMForm":"' + cbForm.Items[cbForm.ItemIndex] + '", ' + recSep;
+  line := line + #9 + '"StorageCapacity":"' + edCapacity.Text + '", ' + recSep;
+  line := line + #9 + '"Carrier":"' + edCarrier.Text + '", ';
+  line := line + #9 + '"ICCID":"' + edICCID.Text + '", ';
+  line := line + #9 + '"PhoneNumber":"' + edPhoneNumber.Text + '" ';
+  if Trim(edPIN.Text) <> '' then
+     line := line + ', ' + recSep + #9 + '"PIN":"' + edPIN.Text + '" ' ;
+
+  if Trim(edPUK.Text) <> '' then
+     line := line + ', ' + recSep + #9 + '"PUK":"' + edPUK.Text + '" ' ;
+
+  line := line + '}' + recSep + #9 + ']' + recSep + '}';
+  Result := line;
+
+end;
+
 procedure TformTraceSIM.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
@@ -179,44 +216,21 @@ begin
 end;
 
 procedure TformTraceSIM.btnAddTraceClick(Sender: TObject);
-var
-  line, recSep: string;
-  Uid: TGUID;
-  idx: integer;
 begin
   if (Trim(edType.Text) = '') or (cbForm.ItemIndex = -1)  then
     ShowMessage('Type and/or Form SIM are missing!')
   else
   begin
-    //cr := #13  +#10;
-    recSep := #30 + #30;
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",' + recSep;
-    line := line + #9 + '"propertyBundle":[' + recSep + '{' + recSep;
-    line := line + #9 + '"SIMType":"' + edType.Text + '", ' + recSep;
-    line := line + #9 + '"SIMForm":"' + cbForm.Items[cbForm.ItemIndex] + '", ' + recSep;
-    line := line + #9 + '"StorageCapacity":"' + edCapacity.Text + '", ' + recSep;
-    line := line + #9 + '"Carrier":"' + edCarrier.Text + '", ';
-    line := line + #9 + '"ICCID":"' + edICCID.Text + '", ';
-    line := line + #9 + '"PhoneNumber":"' + edPhoneNumber.Text + '" ';
-    if Trim(edPIN.Text) <> '' then
-       line := line + ', ' + recSep + #9 + '"PIN":"' + edPIN.Text + '" ' ;
-
-    if Trim(edPUK.Text) <> '' then
-       line := line + ', ' + recSep + #9 + '"PUK":"' + edPIN.Text + '" ' ;
-
-    line := line + '}' + recSep + #9 + ']' + recSep + '}';
-    lbTrace.Items.Add(line);
-
+    lbTrace.Items.Add(PrepareItemTrace());
+    edType.Text := '';
+    cbForm.ItemIndex := -1;
+    edCapacity.Text := '';
+    edCarrier.Text := '';
+    edPIN.Text := '';
+    edPUK.Text := '';
+    edICCID.Text := '';
+    edPhoneNumber.Text := '';
   end;
-  edType.Text := '';
-  cbForm.ItemIndex := -1;
-  edCapacity.Text := '';
-  edCarrier.Text := '';
-  edPIN.Text := '';
-  edPUK.Text := '';
-  edICCID.Text := '';
-  edPhoneNumber.Text := '';
 end;
 
 procedure TformTraceSIM.SetpathCase(const Value: String);
