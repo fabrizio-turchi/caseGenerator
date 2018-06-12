@@ -92,6 +92,7 @@ type
     procedure readTraceSIMFromFile;
     procedure readTraceFileFromFile;
     procedure readProvenanceRecordFromFile;
+    procedure extractProvenanceRecordDescription(ListIdProvenance: TStringList);
     procedure readWarrantFromFile;
     { Private declarations }
   public
@@ -124,6 +125,72 @@ end;
 procedure TformInvestigativeAction.Button1Click(Sender: TObject);
 begin
   lbProvenanceRecords.Items.Delete(lbProvenanceRecords.ItemIndex);
+end;
+
+procedure TformInvestigativeAction.extractProvenanceRecordDescription(ListIdProvenance: TStringList);
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inDescription, inExhibitNumber, inID: Boolean;
+  description, exhibitNumber, ID: string;
+  listLocation: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-provenance_record.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-provenance_record.json') then
+  begin
+    listLocation := TStringList.Create;
+    listLocation.LoadFromFile(FpathCase + FuuidCase + '-provenance_record.json');
+    //JSON string here
+    json := stringreplace(listLocation.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'description' then
+            inDescription := True
+          else
+            inDescription := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'exhibitNumber' then
+            inExhibitNumber := True
+          else
+            inExhibitNumber := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inDescription then
+            description := jreader.Value.AsString;
+
+          if inID then
+            id := jreader.Value.AsString;
+          if inExhibitNumber then begin
+            exhibitNumber := jreader.Value.AsString;
+            for idx:= 0 to  ListIdProvenance.Count - 1 do
+              if AnsiContainsStr(ListIdProvenance[idx], id) then
+                lbProvenanceRecords.Items.Add(description + ' ' + exhibitNumber + ' ' + '@' + id);
+          end;
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
 end;
 
 procedure TformInvestigativeAction.FormShow(Sender: TObject);
@@ -193,7 +260,9 @@ end;
 procedure TformInvestigativeAction.lbInvestigativeActionChange(Sender: TObject);
 var
   line, startTime, endTime, sDate, sDay, sMonth, sYear, sField: String;
-  idx: Integer;
+  idx, idy: Integer;
+  provenanceStringList, objectList: TStringList;
+  exitLoop: Boolean;
 begin
   if lbInvestigativeAction.ItemIndex > -1  then
   begin
@@ -277,13 +346,54 @@ begin
       end;
     end;
 
+    sField := ExtractField(line, '"performer":"');
+    for idx := 0 to cbPerformer.Items.Count -1 do
+    begin
+      if AnsiContainsStr(cbPerformer.Items[idx], sField) then
+      begin
+        cbPerformer.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sField := ExtractField(line, '"location":"');
+    for idx := 0 to cbLocation.Items.Count -1 do
+    begin
+      if AnsiContainsStr(cbLocation.Items[idx], sField) then
+      begin
+        cbLocation.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    objectList := ExtractArray(line, '"object":[');
+    exitLoop := false;
+
+    for idx := 0 to cbObject.Items.Count -1 do
+    begin
+      for idy:=0 to objectList.Count - 1 do
+      begin
+        if AnsiContainsStr(cbObject.Items[idx], objectList[idy]) then
+        begin
+          cbObject.ItemIndex := idx;
+          exitLoop :=  True;
+          break;
+        end;
+        if exitLoop then
+          break;
+      end;
+    end;
+
+    provenanceStringList := TStringList.Create;
+    provenanceStringList := ExtractArrayID(line, '"result":[');
+    extractProvenanceRecordDescription(provenanceStringList);
 
   end;
 end;
 
 procedure TformInvestigativeAction.readLocationFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inName, inID, inLocality, inRegion, inStreet: Boolean;
@@ -291,14 +401,14 @@ var
   listLocation: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-location.json') then
+  if FileExists(FpathCase + FuuidCase + '-location.json') then
   begin
     listLocation := TStringList.Create;
-    listLocation.LoadFromFile(dir + '\' + FuuidCase + '-location.json');
+    listLocation.LoadFromFile(FpathCase + FuuidCase + '-location.json');
     //JSON string here
     json := stringreplace(listLocation.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -372,7 +482,7 @@ end;
 
 procedure TformInvestigativeAction.readProvenanceRecordFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inDescription, inExhibitNumber, inID: Boolean;
@@ -380,14 +490,14 @@ var
   listLocation: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-provenance_record.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-provenance_record.json') then
+  if FileExists(FpathCase + FuuidCase + '-provenance_record.json') then
   begin
     listLocation := TStringList.Create;
-    listLocation.LoadFromFile(dir + '\' + FuuidCase + '-provenance_record.json');
+    listLocation.LoadFromFile(FpathCase + FuuidCase + '-provenance_record.json');
     //JSON string here
     json := stringreplace(listLocation.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -440,7 +550,7 @@ end;
 
 procedure TformInvestigativeAction.readRoleFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inName, inFamilyName, inID: Boolean;
@@ -448,14 +558,14 @@ var
   listRole: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-role.json') then
+  if FileExists(FpathCase + FuuidCase + '-role.json') then
   begin
     listRole := TStringList.Create;
-    listRole.LoadFromFile(dir + '\' + FuuidCase + '-role.json');
+    listRole.LoadFromFile(FpathCase + FuuidCase + '-role.json');
     //JSON string here
     json := stringreplace(listRole.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -500,7 +610,7 @@ end;
 
 procedure TformInvestigativeAction.readToolFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inID, inName, inVersion, inToolType: Boolean;
@@ -508,14 +618,14 @@ var
   listTrace: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-tool.json') then
+  if FileExists(FpathCase + FuuidCase + '-tool.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(dir + '\' + FuuidCase + '-tool.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-tool.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -577,7 +687,7 @@ end;
 
 procedure TformInvestigativeAction.readTraceFileFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inID, inName, inPath: Boolean;
@@ -585,14 +695,14 @@ var
   listTrace: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-traceFILE.json: fill in cbObject component
-  if FileExists(dir + '\' + FuuidCase + '-traceFILE.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceFILE.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(dir + '\' + FuuidCase + '-traceFILE.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceFILE.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -662,7 +772,7 @@ end;
 
 procedure TformInvestigativeAction.readTraceMobileFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inID, inManufacturer, inModel, inSerial: Boolean;
@@ -670,14 +780,14 @@ var
   listTrace: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-traceMOBILE.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceMOBILE.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(dir + '\' + FuuidCase + '-traceMOBILE.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMOBILE.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -736,7 +846,7 @@ end;
 
 procedure TformInvestigativeAction.readTraceSIMFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inID, inSimType, inICCID: Boolean;
@@ -744,14 +854,14 @@ var
   listTrace: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-traceSIM.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceSIM.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(dir + '\' + FuuidCase + '-traceSIM.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceSIM.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -805,7 +915,7 @@ end;
 
 procedure TformInvestigativeAction.readWarrantFromFile;
 var
-  json, dir, recSep, crlf: string;
+  json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
   inID, inType, inIssuedDate: Boolean;
@@ -813,14 +923,14 @@ var
   listTrace: TStringList;
   idx:integer;
 begin
-  dir := GetCurrentDir;
+  //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(dir + '\' + FuuidCase + '-warrant.json') then
+  if FileExists(FpathCase + FuuidCase + '-warrant.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(dir + '\' + FuuidCase + '-warrant.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-warrant.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -1012,7 +1122,7 @@ begin
       idx := 0;
       nameTool := cbInstrument.Items[cbInstrument.ItemIndex];
       nameTool := Copy(nameTool, 1, Pos('#', nameTool) - 1);
-      line := line + ',{' + '"@type":"' + nameTool + ':ToolArguments",' + recSep;
+      line := line + ',{' + '"@type":"ConfigurationSetting",' + recSep;
       for idx := 0 to lbArguments.Items.Count - 2 do
         line := line + lbArguments.Items[idx] + ',' + recSep;
 
