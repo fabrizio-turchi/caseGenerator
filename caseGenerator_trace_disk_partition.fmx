@@ -68,8 +68,8 @@ object formTraceDiskPartition: TformTraceDiskPartition
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
-      Viewport.Width = 524.000000000000000000
-      Viewport.Height = 93.000000000000000000
+      Viewport.Width = 528.000000000000000000
+      Viewport.Height = 97.000000000000000000
     end
     object btnAddPartition: TButton
       Position.X = 48.000000000000000000
@@ -104,10 +104,13 @@ object formTraceDiskPartition: TformTraceDiskPartition
     TabOrder = 2
   end
   object btnClose: TButton
-    Position.X = 352.000000000000000000
+    Position.X = 216.000000000000000000
     Position.Y = 574.000000000000000000
+    Size.Width = 113.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 5
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddTrace: TButton
@@ -142,8 +145,8 @@ object formTraceDiskPartition: TformTraceDiskPartition
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 765.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    Viewport.Width = 769.000000000000000000
+    Viewport.Height = 177.000000000000000000
   end
   object Label6: TLabel
     Position.X = 354.000000000000000000
@@ -263,5 +266,12 @@ object formTraceDiskPartition: TformTraceDiskPartition
     Size.Width = 107.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
+  end
+  object btnCancel: TButton
+    Position.X = 344.000000000000000000
+    Position.Y = 576.000000000000000000
+    TabOrder = 14
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

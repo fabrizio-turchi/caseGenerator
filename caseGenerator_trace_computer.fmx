@@ -57,16 +57,19 @@ object formTraceComputer: TformTraceComputer
     TabOrder = 12
   end
   object btnClose: TButton
-    Position.X = 352.000000000000000000
+    Position.X = 272.000000000000000000
     Position.Y = 574.000000000000000000
+    Size.Width = 104.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 22
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddTool: TButton
-    Position.X = 256.000000000000000000
+    Position.X = 232.000000000000000000
     Position.Y = 365.000000000000000000
-    Size.Width = 120.000000000000000000
+    Size.Width = 81.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 23
@@ -74,9 +77,9 @@ object formTraceComputer: TformTraceComputer
     OnClick = btnAddToolClick
   end
   object btnDeleteTool: TButton
-    Position.X = 392.000000000000000000
+    Position.X = 416.000000000000000000
     Position.Y = 365.000000000000000000
-    Size.Width = 120.000000000000000000
+    Size.Width = 96.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 24
@@ -113,8 +116,8 @@ object formTraceComputer: TformTraceComputer
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 765.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    Viewport.Width = 769.000000000000000000
+    Viewport.Height = 177.000000000000000000
   end
   object edDeviceModel: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -331,5 +334,22 @@ object formTraceComputer: TformTraceComputer
     Size.Width = 241.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
+  end
+  object btnModifyTrace: TButton
+    Position.X = 324.000000000000000000
+    Position.Y = 365.000000000000000000
+    Size.Width = 85.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 36
+    Text = 'Modify trace'
+    OnClick = btnModifyTraceClick
+  end
+  object btnCancel: TButton
+    Position.X = 392.000000000000000000
+    Position.Y = 576.000000000000000000
+    TabOrder = 37
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

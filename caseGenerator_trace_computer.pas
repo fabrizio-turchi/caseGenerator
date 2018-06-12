@@ -46,11 +46,15 @@ type
     edOsManufacturer: TEdit;
     Label18: TLabel;
     edOsVersion: TEdit;
+    btnModifyTrace: TButton;
+    btnCancel: TButton;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
+    procedure btnModifyTraceClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -59,6 +63,7 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
+    function prepareItemTrace: String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -78,6 +83,12 @@ uses StrUtils;
 procedure TformTraceComputer.btnDeleteToolClick(Sender: TObject);
 begin
   lbTrace.Items.Delete(lbTrace.ItemIndex);
+end;
+
+procedure TformTraceComputer.btnModifyTraceClick(Sender: TObject);
+begin
+  if lbTrace.ItemIndex > -1 then
+    lbTrace.Items[lbTrace.ItemIndex] := prepareItemTrace();
 end;
 
 procedure TformTraceComputer.FormShow(Sender: TObject);
@@ -123,36 +134,7 @@ begin
   edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
 end;
 
-procedure TformTraceComputer.btnCloseClick(Sender: TObject);
-var
-  fileJSON: TextFile;
-  line, recSep, crlf:string;
-  idx: integer;
-begin
-  if lbTrace.Items.Count > 0 then
-  begin
-    crlf := #13 + #10;
-    recSep := #30 + #30;
-    idx:= 0;
-    //dir := GetCurrentDir;
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceCOMPUTER.json');
-    Rewrite(fileJSON);  // create new file
-    WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_TRACE":[';
-    WriteLn(fileJSON, line);
-
-    for idx:= 0 to lbTrace.Items.Count - 2 do
-      WriteLn(fileJSON, lbTrace.Items[idx] + ',');
-
-    WriteLn(fileJSON, lbTrace.Items[idx]);
-    WriteLn(fileJSON, #9#9 + ']}');
-    CloseFile(fileJSON);
-  end;
-
-  formTraceComputer.Close;
-end;
-
-procedure TformTraceComputer.btnAddToolClick(Sender: TObject);
+function TformTraceComputer.prepareItemTrace: String;
 var
   line, recSep: string;
   Uid: TGUID;
@@ -185,7 +167,48 @@ begin
     line := line + #9 + '"biosVersion":"' + edBiosVersion.Text + '" ' + recSep;
     line := line + #9 + '}' + recSep;
     line := line + #9 + ']}' + recSep;
-    lbTrace.Items.Add(line);
+    Result := line;
+  end;
+
+end;
+
+procedure TformTraceComputer.btnCancelClick(Sender: TObject);
+begin
+  formTraceComputer.Close;
+end;
+
+procedure TformTraceComputer.btnCloseClick(Sender: TObject);
+var
+  fileJSON: TextFile;
+  line, recSep, crlf:string;
+  idx: integer;
+begin
+  if lbTrace.Items.Count > 0 then
+  begin
+    crlf := #13 + #10;
+    recSep := #30 + #30;
+    idx:= 0;
+    //dir := GetCurrentDir;
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceCOMPUTER.json');
+    Rewrite(fileJSON);  // create new file
+    WriteLn(fileJSON, '{');
+    line := #9 + '"OBJECTS_TRACE":[';
+    WriteLn(fileJSON, line);
+
+    for idx:= 0 to lbTrace.Items.Count - 2 do
+      WriteLn(fileJSON, lbTrace.Items[idx] + ',');
+
+    WriteLn(fileJSON, lbTrace.Items[idx]);
+    WriteLn(fileJSON, #9#9 + ']}');
+    CloseFile(fileJSON);
+  end;
+
+  formTraceComputer.Close;
+end;
+
+procedure TformTraceComputer.btnAddToolClick(Sender: TObject);
+begin
+    lbTrace.Items.Add(prepareItemTrace());
     edDeviceManufacturer.Text := '';
     edDeviceModel.Text := '';
     edDeviceSerial.Text := '';
@@ -195,9 +218,6 @@ begin
     edOsName.Text := '';
     edOsVersion.Text := '';
     edOsManufacturer.Text := '';
-  end;
-
-
 end;
 
 procedure TformTraceComputer.SetpathCase(const Value: String);

@@ -2,8 +2,8 @@ object formLocation: TformLocation
   Left = 0
   Top = 0
   Caption = 'Location'
-  ClientHeight = 586
-  ClientWidth = 753
+  ClientHeight = 517
+  ClientWidth = 739
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -23,7 +23,7 @@ object formLocation: TformLocation
     Position.X = 40.000000000000000000
     Position.Y = 280.000000000000000000
     Size.Width = 689.000000000000000000
-    Size.Height = 249.000000000000000000
+    Size.Height = 193.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     DisableFocusEffect = True
@@ -31,8 +31,8 @@ object formLocation: TformLocation
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbLocationChange
-    Viewport.Width = 689.000000000000000000
-    Viewport.Height = 249.000000000000000000
+    Viewport.Width = 685.000000000000000000
+    Viewport.Height = 189.000000000000000000
   end
   object edLocality: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -77,10 +77,13 @@ object formLocation: TformLocation
     TabOrder = 10
   end
   object btnClose: TButton
-    Position.X = 320.000000000000000000
-    Position.Y = 552.000000000000000000
+    Position.X = 288.000000000000000000
+    Position.Y = 488.000000000000000000
+    Size.Width = 104.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 15
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddLocation: TButton
@@ -169,5 +172,12 @@ object formLocation: TformLocation
     TabOrder = 18
     Text = 'Modify Location'
     OnClick = btnModifyLocationClick
+  end
+  object btnCancel: TButton
+    Position.X = 400.000000000000000000
+    Position.Y = 488.000000000000000000
+    TabOrder = 19
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

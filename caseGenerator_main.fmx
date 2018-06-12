@@ -108,8 +108,8 @@ object formMain: TformMain
     Size.Height = 105.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 20
-    Viewport.Width = 301.000000000000000000
-    Viewport.Height = 101.000000000000000000
+    Viewport.Width = 305.000000000000000000
+    Viewport.Height = 105.000000000000000000
   end
   object Button5: TButton
     Position.X = 496.000000000000000000
@@ -197,8 +197,8 @@ object formMain: TformMain
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 309.000000000000000000
-    Viewport.Height = 26.000000000000000000
+    Viewport.Width = 313.000000000000000000
+    Viewport.Height = 30.000000000000000000
     object Label2: TLabel
       Position.X = 275.000000000000000000
       Position.Y = 171.000000000000000000
@@ -323,8 +323,8 @@ object formMain: TformMain
     Size.Height = 49.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 7
-    Viewport.Width = 493.000000000000000000
-    Viewport.Height = 45.000000000000000000
+    Viewport.Width = 497.000000000000000000
+    Viewport.Height = 49.000000000000000000
   end
   object Label7: TLabel
     Position.X = 16.000000000000000000
@@ -346,7 +346,7 @@ object formMain: TformMain
     Size.Height = 73.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 6
-    Viewport.Width = 493.000000000000000000
-    Viewport.Height = 69.000000000000000000
+    Viewport.Width = 497.000000000000000000
+    Viewport.Height = 73.000000000000000000
   end
 end

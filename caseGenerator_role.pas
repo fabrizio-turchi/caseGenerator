@@ -21,6 +21,7 @@ type
     Label3: TLabel;
     cbDefaultNames: TComboBox;
     btnModifyRole: TButton;
+    btnCancel: TButton;
     procedure FormShow(Sender: TObject);
     procedure btnAddRoleClick(Sender: TObject);
     procedure btnDeleteRoleClick(Sender: TObject);
@@ -28,6 +29,7 @@ type
     procedure cbDefaultNamesChange(Sender: TObject);
     procedure lbRoleChange(Sender: TObject);
     procedure btnModifyRoleClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -71,6 +73,11 @@ procedure TformRole.cbDefaultNamesChange(Sender: TObject);
 begin
   if cbDefaultNames.ItemIndex > -1 then
     edName.Text := cbDefaultNames.Items[cbDefaultNames.ItemIndex];
+end;
+
+procedure TformRole.btnCancelClick(Sender: TObject);
+begin
+  formRole.Close;
 end;
 
 procedure TformRole.btnCloseClick(Sender: TObject);

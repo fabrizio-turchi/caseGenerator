@@ -193,10 +193,13 @@ object formProvenanceRecord: TformProvenanceRecord
     Viewport.Height = 205.000000000000000000
   end
   object btnClose: TButton
-    Position.X = 331.000000000000000000
+    Position.X = 235.000000000000000000
     Position.Y = 465.000000000000000000
+    Size.Width = 110.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 3
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddPR: TButton
@@ -218,5 +221,12 @@ object formProvenanceRecord: TformProvenanceRecord
     TabOrder = 5
     Text = 'Delete provenance record'
     OnClick = btnDeletePRClick
+  end
+  object btnCancel: TButton
+    Position.X = 357.000000000000000000
+    Position.Y = 466.000000000000000000
+    TabOrder = 8
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

@@ -33,12 +33,14 @@ type
     Label9: TLabel;
     edPhoneNumber: TEdit;
     btnModifyTrace: TButton;
+    btnCancel: TButton;
     procedure btnAddTraceClick(Sender: TObject);
     procedure btnDeleteTraceClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
     procedure btnModifyTraceClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -181,6 +183,11 @@ begin
   line := line + '}' + recSep + #9 + ']' + recSep + '}';
   Result := line;
 
+end;
+
+procedure TformTraceSIM.btnCancelClick(Sender: TObject);
+begin
+  formTraceSIM.Close;
 end;
 
 procedure TformTraceSIM.btnCloseClick(Sender: TObject);

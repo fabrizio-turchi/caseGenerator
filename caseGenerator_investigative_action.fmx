@@ -2,8 +2,8 @@ object formInvestigativeAction: TformInvestigativeAction
   Left = 0
   Top = 0
   Caption = 'Investigative Action'
-  ClientHeight = 624
-  ClientWidth = 727
+  ClientHeight = 644
+  ClientWidth = 735
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -136,15 +136,16 @@ object formInvestigativeAction: TformInvestigativeAction
     Position.X = 16.000000000000000000
     Position.Y = 535.000000000000000000
     Size.Width = 697.000000000000000000
-    Size.Height = 42.000000000000000000
+    Size.Height = 66.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 10
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbInvestigativeActionChange
     Viewport.Width = 693.000000000000000000
-    Viewport.Height = 38.000000000000000000
+    Viewport.Height = 62.000000000000000000
   end
   object Label2: TLabel
     Position.X = 320.000000000000000000
@@ -156,10 +157,13 @@ object formInvestigativeAction: TformInvestigativeAction
     TabOrder = 14
   end
   object btnClose: TButton
-    Position.X = 323.000000000000000000
-    Position.Y = 595.000000000000000000
+    Position.X = 227.000000000000000000
+    Position.Y = 611.000000000000000000
+    Size.Width = 110.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 15
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddAction: TButton
@@ -513,5 +517,12 @@ object formInvestigativeAction: TformInvestigativeAction
       Text = 'Remove'
       OnClick = btnArgumentRemoveClick
     end
+  end
+  object btnCancel: TButton
+    Position.X = 350.000000000000000000
+    Position.Y = 611.000000000000000000
+    TabOrder = 26
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

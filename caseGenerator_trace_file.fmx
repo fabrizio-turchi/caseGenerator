@@ -260,8 +260,8 @@ object formTraceFile: TformTraceFile
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 765.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    Viewport.Width = 769.000000000000000000
+    Viewport.Height = 177.000000000000000000
   end
   object Label6: TLabel
     Position.X = 380.000000000000000000

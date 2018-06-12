@@ -36,6 +36,7 @@ type
     timeSent: TTimeEdit;
     cbSentYear: TComboBox;
     Label3: TLabel;
+    btnCancel: TButton;
     procedure btnAddMessageClick(Sender: TObject);
     procedure btnRemoveMessageClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -43,6 +44,7 @@ type
     procedure btnAddMobileClick(Sender: TObject);
     procedure btnRemoveMobileClick(Sender: TObject);
     procedure lbMessageChange(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -272,6 +274,11 @@ begin
     lbMobile.Items.Add(line);
   end;
 
+end;
+
+procedure TformTraceMessage.btnCancelClick(Sender: TObject);
+begin
+  formTraceMessage.Close;
 end;
 
 procedure TformTraceMessage.btnCloseClick(Sender: TObject);

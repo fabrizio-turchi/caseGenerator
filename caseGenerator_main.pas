@@ -449,8 +449,8 @@ begin
     memoDescription.Lines.Add(ExtractField(line, '"description":"'));
     line := Copy(line, Pos('"description"', line) + 12, Length(line));
     memoShortDescription.Lines.Add(ExtractField(line, '"description":"'));
-    lbObjects.Items.Add(caseListString.Text);
-    //lbObjects.Items.LoadFromFile(FHomeCases + FPathCase + caseID + '-CASE.json');
+    //lbObjects.Items.Add(caseListString.Text);
+    lbObjects.Items.LoadFromFile(FHomeCases + FPathCase + caseID + '-CASE.json');
   end;
 
 end;
@@ -621,7 +621,7 @@ end;
 
 procedure TformMain.WriteObjectCASE;
 var
-  path, caseName, objectID, line: String;
+  caseName, objectID, line: String;
   recSep, crlf, space4, space8: String;
   resFiles, idx, idy, casePos: Integer;
   caseList, objectsList, IDList, listFiles: TStringList;
@@ -635,8 +635,8 @@ begin
   listFiles := TStringList.Create;
   listFiles.Sorted := True;   // files ordered by name
 
-  path := GetCurrentDir + '\';
-  resFiles := FindFirst(path + FuuidCase + '*.json', faAnyfile, searchResult);
+  //path := GetCurrentDir + '\';
+  resFiles := FindFirst(FHomeCases + FpathCase + FuuidCase + '*.json', faAnyfile, searchResult);
   if resFiles = 0 then
   try
     while resFiles = 0 do
@@ -648,7 +648,7 @@ begin
           // skip to the read next file
         else
         begin
-          listFiles.Add(path + searchResult.Name);
+          listFiles.Add(FHomeCases + Fpathcase + searchResult.Name);
         end;
       end;
       resFiles := FindNext(searchResult);

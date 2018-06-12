@@ -27,6 +27,7 @@ type
     cbMonth: TComboBox;
     cbYear: TComboBox;
     btnModifyIdentity: TButton;
+    btnCancel: TButton;
     procedure btnMenoClick(Sender: TObject);
     procedure btnPiuClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -36,6 +37,7 @@ type
     procedure btnCloseClick(Sender: TObject);
     procedure lbIdentityChange(Sender: TObject);
     procedure btnModifyIdentityClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -100,6 +102,11 @@ end;
 procedure TformIdentity.btnModifyIdentityClick(Sender: TObject);
 begin
   lbIdentity.Items[lbIdentity.ItemIndex] := prepareObjectCaseLine();
+end;
+
+procedure TformIdentity.btnCancelClick(Sender: TObject);
+begin
+  formIdentity.Close;
 end;
 
 procedure TformIdentity.btnCloseClick(Sender: TObject);

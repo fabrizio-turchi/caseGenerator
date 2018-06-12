@@ -37,12 +37,14 @@ type
     lbPartition: TListBox;
     btnAddPartition: TButton;
     btnRemovePartition: TButton;
+    btnCancel: TButton;
     procedure btnAddTraceClick(Sender: TObject);
     procedure btnDeleteTraceClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnAddPartitionClick(Sender: TObject);
     procedure btnRemovePartitionClick(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -114,6 +116,11 @@ begin
   line := lbTrace.Items[lbTrace.ItemIndex];
   edID.Text := ExtractField(line, '"id":"');
 
+end;
+
+procedure TformTraceDiskPartition.btnCancelClick(Sender: TObject);
+begin
+  formTraceDiskPartition.Close;
 end;
 
 procedure TformTraceDiskPartition.btnCloseClick(Sender: TObject);

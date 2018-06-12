@@ -39,10 +39,13 @@ object formTraceSIM: TformTraceSIM
     TabOrder = 7
   end
   object btnClose: TButton
-    Position.X = 272.000000000000000000
+    Position.X = 176.000000000000000000
     Position.Y = 454.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 9
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddTrace: TButton
@@ -219,5 +222,12 @@ object formTraceSIM: TformTraceSIM
     TabOrder = 23
     Text = 'Modify trace'
     OnClick = btnModifyTraceClick
+  end
+  object btnCancel: TButton
+    Position.X = 296.000000000000000000
+    Position.Y = 456.000000000000000000
+    TabOrder = 25
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

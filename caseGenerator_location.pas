@@ -28,12 +28,14 @@ type
     Label6: TLabel;
     edLongitude: TEdit;
     btnModifyLocation: TButton;
+    btnCancel: TButton;
     procedure btnPiuClick(Sender: TObject);
     procedure btnAddLocationClick(Sender: TObject);
     procedure btnDeleteLocationClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure lbLocationChange(Sender: TObject);
     procedure btnModifyLocationClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -151,6 +153,11 @@ begin
   Result := Copy(fieldValue, 1, fieldEnd - 1);
 end;
 }
+procedure TformLocation.btnCancelClick(Sender: TObject);
+begin
+  formLocation.Close;
+end;
+
 procedure TformLocation.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;

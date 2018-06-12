@@ -170,10 +170,13 @@ object formWarrant: TformWarrant
     Viewport.Height = 169.000000000000000000
   end
   object btnClose: TButton
-    Position.X = 323.000000000000000000
+    Position.X = 195.000000000000000000
     Position.Y = 434.000000000000000000
+    Size.Width = 118.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 3
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddWarrant: TButton
@@ -223,5 +226,12 @@ object formWarrant: TformWarrant
     TabOrder = 8
     Text = 'Modify warrant'
     OnClick = btnModifyClick
+  end
+  object btnCancel: TButton
+    Position.X = 336.000000000000000000
+    Position.Y = 435.000000000000000000
+    TabOrder = 9
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

@@ -29,12 +29,14 @@ type
     Label3: TLabel;
     edIdentifier: TEdit;
     btnModify: TButton;
+    btnCancel: TButton;
     procedure btnAddWarrantClick(Sender: TObject);
     procedure btnRemoveWarrantClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbWarrantChange(Sender: TObject);
     procedure btnModifyClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -399,6 +401,11 @@ begin
   Result := idRoles;
 end;
 
+
+procedure TformWarrant.btnCancelClick(Sender: TObject);
+begin
+  formWarrant.Close;
+end;
 
 procedure TformWarrant.btnCloseClick(Sender: TObject);
 var

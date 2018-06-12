@@ -29,11 +29,13 @@ type
     cbPRMonth: TComboBox;
     cbPRYear: TComboBox;
     timePR: TTimeEdit;
+    btnCancel: TButton;
     procedure btnAddPRClick(Sender: TObject);
     procedure btnDeletePRClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbProvenanceRecordChange(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -384,6 +386,11 @@ begin
       sreader.Free;
     end;
   end;
+end;
+
+procedure TformProvenanceRecord.btnCancelClick(Sender: TObject);
+begin
+  formProvenanceRecord.Close;
 end;
 
 procedure TformProvenanceRecord.btnCloseClick(Sender: TObject);

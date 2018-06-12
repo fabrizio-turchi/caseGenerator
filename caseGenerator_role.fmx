@@ -51,10 +51,13 @@ object formRole: TformRole
     TabOrder = 4
   end
   object btnClose: TButton
-    Position.X = 224.000000000000000000
+    Position.X = 168.000000000000000000
     Position.Y = 328.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 6
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddRole: TButton
@@ -103,5 +106,12 @@ object formRole: TformRole
     TabOrder = 10
     Text = 'Modify Role'
     OnClick = btnModifyRoleClick
+  end
+  object btnCancel: TButton
+    Position.X = 280.000000000000000000
+    Position.Y = 328.000000000000000000
+    TabOrder = 12
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

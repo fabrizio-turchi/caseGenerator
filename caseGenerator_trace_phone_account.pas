@@ -17,9 +17,11 @@ type
     btnClose: TButton;
     btnAddPhoneAccount: TButton;
     btnDeletePhoneAccount: TButton;
+    btnCancel: TButton;
     procedure btnAddPhoneAccountClick(Sender: TObject);
     procedure btnDeletePhoneAccountClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -48,6 +50,11 @@ begin
   lbPhoneAccount.Items.Delete(lbPhoneAccount.ItemIndex);
 end;
 
+
+procedure TformTracePhoneAccount.btnCancelClick(Sender: TObject);
+begin
+  formTracePhoneAccount.Close;
+end;
 
 procedure TformTracePhoneAccount.btnCloseClick(Sender: TObject);
 var

@@ -205,7 +205,7 @@ object formRelationship: TformRelationship
     Position.X = 16.000000000000000000
     Position.Y = 451.000000000000000000
     Size.Width = 697.000000000000000000
-    Size.Height = 209.000000000000000000
+    Size.Height = 174.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     DisableFocusEffect = True
@@ -214,7 +214,7 @@ object formRelationship: TformRelationship
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbRelationshipChange
     Viewport.Width = 693.000000000000000000
-    Viewport.Height = 205.000000000000000000
+    Viewport.Height = 170.000000000000000000
   end
   object edNameRelationship: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -236,10 +236,13 @@ object formRelationship: TformRelationship
     TabOrder = 4
   end
   object btnClose: TButton
-    Position.X = 323.000000000000000000
-    Position.Y = 665.000000000000000000
+    Position.X = 275.000000000000000000
+    Position.Y = 641.000000000000000000
+    Size.Width = 94.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 6
-    Text = 'Close'
+    Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddRelationship: TButton
@@ -315,5 +318,12 @@ object formRelationship: TformRelationship
     TabOrder = 14
     Text = 'Modify Relationship'
     OnClick = btnModifyRelationshipClick
+  end
+  object btnCancel: TButton
+    Position.X = 381.000000000000000000
+    Position.Y = 640.000000000000000000
+    TabOrder = 16
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

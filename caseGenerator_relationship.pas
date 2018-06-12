@@ -43,6 +43,7 @@ type
     Label4: TLabel;
     cbDirectional: TComboBox;
     btnModifyRelationship: TButton;
+    btnCancel: TButton;
     procedure btnAddRelationshipClick(Sender: TObject);
     procedure btnDeleteRelationshipClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -56,6 +57,7 @@ type
     procedure cbTargetTraceChange(Sender: TObject);
     procedure lbRelationshipChange(Sender: TObject);
     procedure btnModifyRelationshipClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -769,6 +771,11 @@ begin
       sreader.Free;
     end;
   end;
+end;
+
+procedure TformRelationship.btnCancelClick(Sender: TObject);
+begin
+  formRelationship.Close;
 end;
 
 procedure TformRelationship.btnCloseClick(Sender: TObject);

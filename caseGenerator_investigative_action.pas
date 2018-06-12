@@ -17,7 +17,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, System.JSON, System.JSON.Types,
-  System.JSON.Readers;
+  System.JSON.Readers, caseGenerator_util;
 
 type
   TformInvestigativeAction = class(TForm)
@@ -65,6 +65,7 @@ type
     lbArguments: TListBox;
     btnArgumentAdd: TButton;
     btnArgumentRemove: TButton;
+    btnCancel: TButton;
     procedure btnAddActionClick(Sender: TObject);
     procedure btnDeleteActionClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -73,6 +74,8 @@ type
     procedure Button1Click(Sender: TObject);
     procedure btnArgumentAddClick(Sender: TObject);
     procedure btnArgumentRemoveClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+    procedure lbInvestigativeActionChange(Sender: TObject);
   private
     FuuidCase: string;
     FPathCase: String;
@@ -186,6 +189,97 @@ begin
 
 end;
 
+
+procedure TformInvestigativeAction.lbInvestigativeActionChange(Sender: TObject);
+var
+  line, startTime, endTime, sDate, sDay, sMonth, sYear, sField: String;
+  idx: Integer;
+begin
+  if lbInvestigativeAction.ItemIndex > -1  then
+  begin
+    line := lbInvestigativeAction.Items[lbInvestigativeAction.ItemIndex];
+    edInvestigativeAction.Text := ExtractField(line, '"name":"');
+    startTime := ExtractField(line, '"startTime":"');
+    sDate := Copy(startTime, 1, 10);
+    sDay := Copy(sDate, 9, 2);
+    for idx:=0 to cbStartDay.Items.Count - 1 do
+    begin
+      if cbStartDay.Items[idx] = sDay then
+      begin
+        cbStartDay.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sMonth := Copy(sDate, 6, 2);
+    for idx:=0 to cbStartMonth.Items.Count - 1 do
+    begin
+      if cbStartMonth.Items[idx] = sMonth then
+      begin
+        cbStartMonth.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sYear := Copy(sDate, 1, 4);
+    for idx:=0 to cbStartYear.Items.Count - 1 do
+    begin
+      if cbStartYear.Items[idx] = sYear then
+      begin
+        cbStartYear.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    timeStart.Text := Copy(startTime, 12, 8);
+
+    endTime := ExtractField(line, '"endTime":"');
+    sDate := Copy(endTime, 1, 10);
+    sDay := Copy(sDate, 9, 2);
+    for idx:=0 to cbEndDay.Items.Count - 1 do
+    begin
+      if cbEndDay.Items[idx] = sDay then
+      begin
+        cbEndDay.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sMonth := Copy(sDate, 6, 2);
+    for idx:=0 to cbEndMonth.Items.Count - 1 do
+    begin
+      if cbEndMonth.Items[idx] = sMonth then
+      begin
+        cbEndMonth.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sYear := Copy(sDate, 1, 4);
+    for idx:=0 to cbEndYear.Items.Count - 1 do
+    begin
+      if cbEndYear.Items[idx] = sYear then
+      begin
+        cbEndYear.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    timeEnd.Text := Copy(endTime, 12, 8);
+
+    sField := ExtractField(line, '"instrument":"');
+    for idx := 0 to cbInstrument.Items.Count -1 do
+    begin
+      if AnsiContainsStr(cbInstrument.Items[idx], sField) then
+      begin
+        cbInstrument.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+
+  end;
+end;
 
 procedure TformInvestigativeAction.readLocationFromFile;
 var
@@ -799,6 +893,11 @@ procedure TformInvestigativeAction.btnArgumentRemoveClick(Sender: TObject);
 begin
   if lbArguments.ItemIndex > -1 then
     lbArguments.Items.Delete(lbArguments.ItemIndex);
+end;
+
+procedure TformInvestigativeAction.btnCancelClick(Sender: TObject);
+begin
+  formInvestigativeAction.Close;
 end;
 
 procedure TformInvestigativeAction.btnCloseClick(Sender: TObject);
