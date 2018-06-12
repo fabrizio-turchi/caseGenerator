@@ -259,8 +259,8 @@ end;
 
 procedure TformInvestigativeAction.lbInvestigativeActionChange(Sender: TObject);
 var
-  line, startTime, endTime, sDate, sDay, sMonth, sYear, sField: String;
-  idx, idy: Integer;
+  line, recSep, startTime, endTime, sDate, sDay, sMonth, sYear, sField: String;
+  idx, idy, commaPos: Integer;
   provenanceStringList, objectList: TStringList;
   exitLoop: Boolean;
 begin
@@ -345,6 +345,21 @@ begin
         break;
       end;
     end;
+
+    recSep := #30 + #30;
+    sField := Copy(line, Pos('"@type":"ConfigurationSetting",', line) + 31, Length(line));
+    sField := stringreplace(sField, recSep, '',[rfReplaceAll]);
+    commaPos := Pos(',', sField);
+    while commaPos > 0 do
+    begin
+      lbArguments.Items.Add(Copy(sField, 1, commaPos - 1));
+      sField := Copy(sField, commaPos + 1, Length(sField));
+      commaPos := Pos(',', sField);
+    end;
+    sField := stringreplace(sField, ']', '',[rfReplaceAll]);
+    sField := stringreplace(sField, '}', '',[rfReplaceAll]);
+    lbArguments.Items.Add(sField);
+
 
     sField := ExtractField(line, '"performer":"');
     for idx := 0 to cbPerformer.Items.Count -1 do

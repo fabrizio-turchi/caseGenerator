@@ -15,11 +15,13 @@ implementation
 
 function ExtractField(line, subLine: String): String;
 var
-  fieldValue: String;
+  fieldValue, recSep: String;
   fieldStart, fieldEnd: Integer;
 begin
+  recSep := #30 + #30;
   fieldStart := Pos(subLine, line); // search pos of subLine inside line
   fieldValue := Copy(line, fieldStart + Length(subLine), Length(line));
+  fieldValue := stringreplace(fieldValue, recSep, '',[rfReplaceAll]);
   fieldEnd   := Pos('"', fieldValue);
   Result := Copy(fieldValue, 1, fieldEnd - 1);
 
@@ -27,14 +29,17 @@ end;
 
 function ExtractArray(line, subLine: String): TStringList;
 var
-  fieldValue: String;
+  fieldValue, recSep: String;
   fieldStart, fieldEnd: Integer;
   itemsArray: String;
   commaPos: Integer;
   itemsList: TStringList;
 begin
+  recSep := #30 + #30;
   fieldStart := Pos(subLine, line); // search pos of subLine inside line
   fieldValue := Copy(line, fieldStart + Length(subLine), Length(line));
+  fieldValue := stringreplace(fieldValue, recSep, '',[rfReplaceAll]);
+  fieldValue := stringreplace(fieldValue, '"', '',[rfReplaceAll]);
   fieldEnd   := Pos(']', fieldValue);
   itemsArray := Copy(fieldValue, 1, fieldEnd - 1);
   itemsList := TStringList.Create;
