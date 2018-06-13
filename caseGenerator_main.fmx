@@ -23,79 +23,62 @@ object formMain: TformMain
     TabOrder = 5
   end
   object btnInvestigativeAction: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 323.000000000000000000
-    Size.Width = 137.000000000000000000
+    Position.X = 152.000000000000000000
+    Position.Y = 429.000000000000000000
+    Size.Width = 121.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 8
     Text = 'Investigative Action'
     OnClick = btnInvestigativeActionClick
   end
-  object cbActions: TComboBox
-    Hint = 'Action (seize,acquisition,...)'
-    Items.Strings = (
-      'Search and Seizure'
-      'Transfer'
-      'Forensic Acquisition'
-      'Forensic Extraction'
-      'Forensic Analysis')
-    Position.X = 176.000000000000000000
-    Position.Y = 323.000000000000000000
-    Size.Width = 153.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 9
-    ParentShowHint = False
-    ShowHint = True
-  end
   object btnIdentity: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 363.000000000000000000
+    Position.X = 25.000000000000000000
+    Position.Y = 332.000000000000000000
     Size.Width = 73.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 11
+    TabOrder = 10
     Text = '&Identity'
     OnClick = btnIdentityClick
   end
   object btnLocation: TButton
-    Position.X = 105.000000000000000000
-    Position.Y = 363.000000000000000000
+    Position.X = 26.000000000000000000
+    Position.Y = 364.000000000000000000
     Size.Width = 72.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 12
+    TabOrder = 11
     Text = 'Location'
     OnClick = btnLocationClick
   end
   object btnRole: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 395.000000000000000000
+    Position.X = 105.000000000000000000
+    Position.Y = 332.000000000000000000
     Size.Width = 73.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 17
+    TabOrder = 16
     Text = 'Role'
     OnClick = btnRoleClick
   end
   object btnTool: TButton
-    Position.X = 105.000000000000000000
-    Position.Y = 395.000000000000000000
+    Position.X = 106.000000000000000000
+    Position.Y = 364.000000000000000000
     Size.Width = 73.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 15
+    TabOrder = 14
     Text = 'Tool'
     OnClick = btnToolClick
   end
   object btnGenerateJSON: TButton
-    Position.X = 416.000000000000000000
-    Position.Y = 432.000000000000000000
+    Position.X = 296.000000000000000000
+    Position.Y = 328.000000000000000000
     Size.Width = 65.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 19
+    TabOrder = 18
     Text = 'Open JSON'
     OnClick = btnGenerateJSONClick
   end
@@ -107,17 +90,17 @@ object formMain: TformMain
     Size.Width = 305.000000000000000000
     Size.Height = 105.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 20
+    TabOrder = 19
     Viewport.Width = 305.000000000000000000
     Viewport.Height = 105.000000000000000000
   end
   object Button5: TButton
-    Position.X = 496.000000000000000000
+    Position.X = 520.000000000000000000
     Position.Y = 432.000000000000000000
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 21
+    TabOrder = 20
     Text = 'Save to CaseTest.JSON'
     OnClick = Button5Click
   end
@@ -126,12 +109,12 @@ object formMain: TformMain
     Top = 328
   end
   object btnTrace: TButton
-    Position.X = 104.000000000000000000
-    Position.Y = 427.000000000000000000
+    Position.X = 26.000000000000000000
+    Position.Y = 396.000000000000000000
     Size.Width = 73.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 14
+    TabOrder = 13
     Text = 'Trace'
     OnClick = btnTraceClick
   end
@@ -144,55 +127,41 @@ object formMain: TformMain
       'Disk Partition'
       'Phone account'
       'Message')
-    Position.X = 184.000000000000000000
-    Position.Y = 425.000000000000000000
-    Size.Width = 153.000000000000000000
+    Position.X = 107.000000000000000000
+    Position.Y = 395.000000000000000000
+    Size.Width = 166.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 23
+    TabOrder = 22
   end
   object btnRelationship: TButton
-    Position.X = 186.000000000000000000
-    Position.Y = 394.000000000000000000
+    Position.X = 187.000000000000000000
+    Position.Y = 331.000000000000000000
     Size.Width = 89.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 13
+    TabOrder = 12
     Text = 'Relationship'
     OnClick = btnRelationshipClick
   end
   object btnPR: TButton
-    Position.X = 184.000000000000000000
-    Position.Y = 362.000000000000000000
-    Size.Width = 121.000000000000000000
+    Position.X = 25.000000000000000000
+    Position.Y = 429.000000000000000000
+    Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 25
+    TabOrder = 24
     Text = 'Provenance Record'
     OnClick = btnPRClick
-  end
-  object cbActionsName: TComboBox
-    Items.Strings = (
-      'preserved'
-      'transferred'
-      'extracted'
-      'extracted'
-      'parsed')
-    Position.X = 288.000000000000000000
-    Position.Y = 393.000000000000000000
-    Size.Width = 34.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 26
   end
   object lbObjects: TListBox
     Enabled = False
     Position.X = 24.000000000000000000
-    Position.Y = 454.000000000000000000
+    Position.Y = 462.000000000000000000
     Size.Width = 313.000000000000000000
     Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 28
+    TabOrder = 26
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
@@ -210,22 +179,22 @@ object formMain: TformMain
     end
   end
   object btnWarrant: TButton
-    Position.X = 24.000000000000000000
-    Position.Y = 427.000000000000000000
-    Size.Width = 73.000000000000000000
+    Position.X = 192.000000000000000000
+    Position.Y = 363.000000000000000000
+    Size.Width = 83.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 16
+    TabOrder = 15
     Text = 'Warrant'
     OnClick = btnWarrantClick
   end
   object btnGenerateCaseJson: TButton
-    Position.X = 424.000000000000000000
-    Position.Y = 463.000000000000000000
-    Size.Width = 185.000000000000000000
-    Size.Height = 33.000000000000000000
+    Position.X = 376.000000000000000000
+    Position.Y = 431.000000000000000000
+    Size.Width = 137.000000000000000000
+    Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 30
+    TabOrder = 28
     Text = 'Generate CASE/JSON'
     OnClick = btnGenerateCaseJsonClick
   end
@@ -236,7 +205,7 @@ object formMain: TformMain
     Size.Height = 81.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 32
+    TabOrder = 30
     object btnNewCase: TButton
       Position.X = 272.000000000000000000
       Position.Y = 51.000000000000000000
@@ -311,7 +280,7 @@ object formMain: TformMain
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
     Text = 'Short description'
-    TabOrder = 10
+    TabOrder = 9
   end
   object memoShortDescription: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -348,5 +317,15 @@ object formMain: TformMain
     TabOrder = 6
     Viewport.Width = 497.000000000000000000
     Viewport.Height = 73.000000000000000000
+  end
+  object Button1: TButton
+    Position.X = 376.000000000000000000
+    Position.Y = 480.000000000000000000
+    Size.Width = 209.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 32
+    Text = 'Timeline Overview'
+    OnClick = Button1Click
   end
 end

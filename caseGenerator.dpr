@@ -20,7 +20,8 @@ uses
   caseGenerator_trace_phone_account in 'caseGenerator_trace_phone_account.pas' {formTracePhoneAccount},
   caseGenerator_trace_message in 'caseGenerator_trace_message.pas' {formTraceMessage},
   caseGenerator_warrant in 'caseGenerator_warrant.pas' {formWarrant},
-  caseGenerator_util in 'caseGenerator_util.pas';
+  caseGenerator_util in 'caseGenerator_util.pas',
+  caseGenerator_overview in 'caseGenerator_overview.pas' {formOverview};
 
 {$R *.res}
 
@@ -43,5 +44,6 @@ begin
   Application.CreateForm(TformTracePhoneAccount, formTracePhoneAccount);
   Application.CreateForm(TformTraceMessage, formTraceMessage);
   Application.CreateForm(TformWarrant, formWarrant);
+  Application.CreateForm(TformOverview, formOverview);
   Application.Run;
 end.

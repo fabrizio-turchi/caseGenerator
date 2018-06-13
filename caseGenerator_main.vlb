@@ -1,7 +1,4 @@
-﻿[cbActions]
-Coordinates=10,10,101,146
-
-[Label1]
+﻿[Label1]
 Coordinates=190,10,53,58
 
 [btnLocation]
@@ -17,7 +14,7 @@ Coordinates=338,166,59,58
 Coordinates=415,78,90,36
 
 []
-Coordinates=147,234,68,36
+Coordinates=10,10,101,146
 
 [btnGenerateJSON]
 Coordinates=121,10,59,58

@@ -41,7 +41,6 @@ type
     Label11: TLabel;
     Label13: TLabel;
     Label14: TLabel;
-    edInvestigativeAction: TEdit;
     cbStartDay: TComboBox;
     cbStartMonth: TComboBox;
     cbStartYear: TComboBox;
@@ -66,6 +65,11 @@ type
     btnArgumentAdd: TButton;
     btnArgumentRemove: TButton;
     btnCancel: TButton;
+    btnModifyInvestigativeAction: TButton;
+    btnModifyProvenanceRecord: TButton;
+    btnModify: TButton;
+    cbActions: TComboBox;
+    cbActionsName: TComboBox;
     procedure btnAddActionClick(Sender: TObject);
     procedure btnDeleteActionClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -76,6 +80,11 @@ type
     procedure btnArgumentRemoveClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure lbInvestigativeActionChange(Sender: TObject);
+    procedure btnModifyInvestigativeActionClick(Sender: TObject);
+    procedure btnModifyProvenanceRecordClick(Sender: TObject);
+    procedure btnModifyClick(Sender: TObject);
+    procedure lbArgumentsChange(Sender: TObject);
+    procedure lbProvenanceRecordsChange(Sender: TObject);
   private
     FuuidCase: string;
     FPathCase: String;
@@ -94,9 +103,10 @@ type
     procedure readProvenanceRecordFromFile;
     procedure extractProvenanceRecordDescription(ListIdProvenance: TStringList);
     procedure readWarrantFromFile;
+    function prepareItemInvestigativeAction: String;
     { Private declarations }
   public
-    procedure ShowWithParamater(pathCase:String; uuidCase: String; investigativeAction:String);
+    procedure ShowWithParamater(pathCase:String; uuidCase: String);
     { Public declarations }
   end;
 
@@ -121,6 +131,72 @@ begin
 
 end;
 
+
+procedure TformInvestigativeAction.btnModifyClick(Sender: TObject);
+begin
+  if lbArguments.ItemIndex > - 1  then
+  begin
+      if (Trim(edArgumentValue.Text) = '') or (Trim(edArgumentName.Text) = '') then
+        ShowMessage('Name and/or Value Argument are empty')
+      else
+      begin
+        lbArguments.Items[lbArguments.ItemIndex] := '"' + edArgumentName.Text + '":"' + edArgumentValue.Text + '"';
+        edArgumentName.Text := '';
+        edArgumentValue.Text := '';
+      end;
+  end;
+
+end;
+
+procedure TformInvestigativeAction.btnModifyInvestigativeActionClick(
+  Sender: TObject);
+begin
+
+  if (cbInstrument.ItemIndex = -1) then
+  begin
+    ShowMessage('Instrument is missing');
+    Exit;
+  end;
+
+  if (cbPerformer.ItemIndex = -1) then
+  begin
+    ShowMessage('Performer is missing');
+    Exit;
+  end;
+
+  if (cbLocation.ItemIndex = -1) then
+  begin
+    ShowMessage('Location is missing');
+    Exit;
+  end;
+
+  if (cbObject.ItemIndex = -1) then
+  begin
+    ShowMessage('Object is missing');
+    Exit;
+  end;
+
+  if (lbProvenanceRecords.Items.Count = 0) then
+  begin
+    ShowMessage('No prevenance record has been inserted in the list');
+    Exit;
+  end;
+
+  if lbInvestigativeAction.ItemIndex > -1 then
+  begin
+    lbInvestigativeAction.Items[lbInvestigativeAction.ItemIndex] := prepareItemInvestigativeAction();
+    btnAddAction.Enabled := False;  // only one single InbestigativeAction can be added to the list
+  end;
+
+end;
+
+procedure TformInvestigativeAction.btnModifyProvenanceRecordClick(
+  Sender: TObject);
+begin
+  if cbProvenanceRecord.ItemIndex > -1 then
+    lbProvenanceRecords.Items[lbProvenanceRecords.ItemIndex] := cbProvenanceRecord.Items[cbProvenanceRecord.ItemIndex];
+
+end;
 
 procedure TformInvestigativeAction.Button1Click(Sender: TObject);
 begin
@@ -208,6 +284,7 @@ begin
   cbStartYear.ItemIndex := 0;
   cbEndYear.ItemIndex := 0;
 
+  cbActionsName.Visible := False;
   cbInstrument.Items.Clear;
   lbArguments.Items.Clear;
   edArgumentName.Text := '';
@@ -257,6 +334,23 @@ begin
 end;
 
 
+procedure TformInvestigativeAction.lbArgumentsChange(Sender: TObject);
+var
+  line : String;
+  colonPos: Integer;
+begin
+  if lbArguments.ItemIndex > - 1 then
+  begin
+      line := lbArguments.Items[lbArguments.ItemIndex];
+      colonPos := Pos(':', line);
+      edArgumentName.Text := Copy(line, 1, colonPos - 1);
+      edArgumentName.Text := stringreplace(edArgumentName.Text, '"', '',[rfReplaceAll]);
+      edArgumentValue.Text := Copy(line, colonPos + 1, Length(line));
+      edArgumentValue.Text := stringreplace(edArgumentValue.Text, '"', '',[rfReplaceAll]);
+  end;
+
+end;
+
 procedure TformInvestigativeAction.lbInvestigativeActionChange(Sender: TObject);
 var
   line, recSep, startTime, endTime, sDate, sDay, sMonth, sYear, sField: String;
@@ -267,7 +361,17 @@ begin
   if lbInvestigativeAction.ItemIndex > -1  then
   begin
     line := lbInvestigativeAction.Items[lbInvestigativeAction.ItemIndex];
-    edInvestigativeAction.Text := ExtractField(line, '"name":"');
+    sField := ExtractField(line, '"name":"');
+    for idx:= 0 to cbActions.Items.Count - 1 do
+    begin
+      if AnsiContainsStr(cbActionsName.Items[idx], sField) then
+      begin
+        cbActions.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+
     startTime := ExtractField(line, '"startTime":"');
     sDate := Copy(startTime, 1, 10);
     sDay := Copy(sDate, 9, 2);
@@ -404,6 +508,97 @@ begin
     extractProvenanceRecordDescription(provenanceStringList);
 
   end;
+end;
+
+procedure TformInvestigativeAction.lbProvenanceRecordsChange(Sender: TObject);
+var
+  line, idValue: String;
+  idPos, idx: Integer;
+begin
+  if lbProvenanceRecords.ItemIndex > - 1 then
+  begin
+    line := lbProvenanceRecords.Items[lbProvenanceRecords.ItemIndex];
+    idPos := Pos('@', line);
+    idValue := Copy(line, idPos + 1, Length(line));
+    for idx:= 0 to cbProvenanceRecord.Items.Count - 1 do
+    begin
+      if AnsiContainsStr(cbProvenanceRecord.Items[idx], idValue) then
+      begin
+        cbProvenanceRecord.ItemIndex := idx;
+        break;
+      end;
+    end;
+  end;
+end;
+
+function TformInvestigativeAction.prepareItemInvestigativeAction: String;
+var
+  line, recSep, nameTool, idValue: string;
+  Uid: TGUID;
+  idx: Integer;
+begin
+
+    idx := 0;
+    CreateGUID(Uid);
+    recSep := #30 + #30;
+    line := '{"@id":"' + GuidToString(Uid) + '",';
+    line := line + '"@type":"InvestigativeAction",';
+    line := line + '"name":"' + cbActionsName.Items[cbActions.ItemIndex] + '",';
+    line := line + '"startTime":"' + cbStartYear.Items[cbStartYear.ItemIndex] + '-';
+    line := line + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
+    line := line + cbStartDay.Items[cbStartDay.ItemIndex] + 'T';
+    line := line + TimeToStr(timeStart.Time) + 'Z", ' + recSep;
+    line := line + '"endTime":"' + cbEndYear.Items[cbEndYear.ItemIndex] + '-';
+    line := line + cbEndMonth.Items[cbEndMonth.ItemIndex] + '-';
+    line := line + cbEndDay.Items[cbEndDay.ItemIndex] + 'T';
+    line := line + TimeToStr(timeEnd.Time) + 'Z", ';
+    line := line + '"propertyBundle":[';
+    line := line + '{"@type":"ActionReferences",';
+    idValue :=  cbInstrument.Items[cbInstrument.ItemIndex];
+    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+    line := line + '"instrument":"' + idValue + '",';
+    idValue := cbLocation.Items[cbLocation.ItemIndex];
+    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+    line := line + '"location":"' + idValue + '",';
+    idValue :=  cbPerformer.Items[cbPerformer.ItemIndex];
+    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+    line := line + '"performer":"' + idValue + '",';
+    idValue := cbObject.Items[cbObject.ItemIndex];
+    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+    line := line + '"object":[' + recSep + '"' + idValue + '"],';
+    line := line + '"result":[';
+
+
+    for idx:= 0 to lbProvenanceRecords.Items.Count - 2 do
+    begin
+      idValue := lbProvenanceRecords.Items[idx];
+      idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+      line := line + '"' + idValue + '",';
+    end;
+
+    if lbProvenanceRecords.Items.Count > 0 then
+    begin
+      idValue := lbProvenanceRecords.Items[idx];
+      idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+      line := line + '"' + idValue + '"]}';
+    end;
+
+    if lbArguments.Items.Count > 0 then
+    begin
+      idx := 0;
+      nameTool := cbInstrument.Items[cbInstrument.ItemIndex];
+      nameTool := Copy(nameTool, 1, Pos('#', nameTool) - 1);
+      line := line + ',{' + '"@type":"ConfigurationSetting",' + recSep;
+      for idx := 0 to lbArguments.Items.Count - 2 do
+        line := line + lbArguments.Items[idx] + ',' + recSep;
+
+      line := line + lbArguments.Items[idx] + '}'
+    end;
+    //else
+      //line := line + '}' + recSep;
+
+    line := line + ']}';
+    Result := line;
 end;
 
 procedure TformInvestigativeAction.readLocationFromFile;
@@ -773,14 +968,14 @@ begin
   case of search and seizure (preserved) in all other case the values must come from
   ProvenanceRecord
 }
-  if edInvestigativeAction.Text = 'preserved' then
-  begin
+//  if cbActionsName.Items[cbActions.ItemIndex] = 'preserved' then
+//  begin
     readTraceMobileFromFile;
     readTraceSIMFromFile;
     readTraceFileFromFile;
   //readTraceFromComputer;
   // readTraceDiskPartitionFromFile;
-  end;
+//  end;
 
 
 end;
@@ -1055,11 +1250,13 @@ begin
 end;
 
 procedure TformInvestigativeAction.btnAddActionClick(Sender: TObject);
-var
-  line, recSep, nameTool, idValue: string;
-  Uid: TGUID;
-  idx: Integer;
 begin
+    if (cbActions.ItemIndex = -1) then
+    begin
+      ShowMessage('Type of investigative action is missing');
+      Exit;
+    end;
+
     if (cbInstrument.ItemIndex = -1) then
     begin
       ShowMessage('Instrument is missing');
@@ -1086,68 +1283,7 @@ begin
       Exit;
     end;
 
-    idx := 0;
-
-    CreateGUID(Uid);
-    recSep := #30 + #30;
-    line := '{"@id":"' + GuidToString(Uid) + '",';
-    line := line + '"@type":"InvestigativeAction",';
-    line := line + '"name":"' + edInvestigativeAction.Text + '",';
-    line := line + '"startTime":"' + cbStartYear.Items[cbStartYear.ItemIndex] + '-';
-    line := line + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
-    line := line + cbStartDay.Items[cbStartDay.ItemIndex] + 'T';
-    line := line + TimeToStr(timeStart.Time) + 'Z", ' + recSep;
-    line := line + '"endTime":"' + cbEndYear.Items[cbEndYear.ItemIndex] + '-';
-    line := line + cbEndMonth.Items[cbEndMonth.ItemIndex] + '-';
-    line := line + cbEndDay.Items[cbEndDay.ItemIndex] + 'T';
-    line := line + TimeToStr(timeEnd.Time) + 'Z", ';
-    line := line + '"propertyBundle":[';
-    line := line + '{"@type":"ActionReferences",';
-    idValue :=  cbInstrument.Items[cbInstrument.ItemIndex];
-    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"instrument":"' + idValue + '",';
-    idValue := cbLocation.Items[cbLocation.ItemIndex];
-    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"location":"' + idValue + '",';
-    idValue :=  cbPerformer.Items[cbPerformer.ItemIndex];
-    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"performer":"' + idValue + '",';
-    idValue := cbObject.Items[cbObject.ItemIndex];
-    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"object":[' + recSep + '"' + idValue + '"],';
-    line := line + '"result":[';
-
-
-    for idx:= 0 to lbProvenanceRecords.Items.Count - 2 do
-    begin
-      idValue := lbProvenanceRecords.Items[idx];
-      idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-      line := line + '"' + idValue + '",';
-    end;
-
-    if lbProvenanceRecords.Items.Count > 0 then
-    begin
-      idValue := lbProvenanceRecords.Items[idx];
-      idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-      line := line + '"' + idValue + '"]}';
-    end;
-
-    if lbArguments.Items.Count > 0 then
-    begin
-      idx := 0;
-      nameTool := cbInstrument.Items[cbInstrument.ItemIndex];
-      nameTool := Copy(nameTool, 1, Pos('#', nameTool) - 1);
-      line := line + ',{' + '"@type":"ConfigurationSetting",' + recSep;
-      for idx := 0 to lbArguments.Items.Count - 2 do
-        line := line + lbArguments.Items[idx] + ',' + recSep;
-
-      line := line + lbArguments.Items[idx] + '}'
-    end;
-    //else
-      //line := line + '}' + recSep;
-
-    line := line + ']}';
-    lbInvestigativeAction.Items.Add(line);
+    lbInvestigativeAction.Items.Add(prepareItemInvestigativeAction());
     btnAddAction.Enabled := False;  // only one single InbestigativeAction can be added to the list
 end;
 
@@ -1161,7 +1297,7 @@ begin
   FuuidCase := Value;
 end;
 
-procedure TformInvestigativeAction.ShowWithParamater(pathCase:String; uuidCase: String; investigativeAction: String);
+procedure TformInvestigativeAction.ShowWithParamater(pathCase:String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine, dir:string;
@@ -1194,7 +1330,7 @@ begin
   end;
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
-  edInvestigativeAction.Text := investigativeAction;
+  //edInvestigativeAction.Text := investigativeAction;
   formInvestigativeAction.ShowModal;
 end;
 

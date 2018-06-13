@@ -13,7 +13,6 @@ type
     btnNewCase: TButton;
     Label1: TLabel;
     btnInvestigativeAction: TButton;
-    cbActions: TComboBox;
     btnIdentity: TButton;
     btnLocation: TButton;
     btnRole: TButton;
@@ -26,7 +25,6 @@ type
     cbTrace: TComboBox;
     btnRelationship: TButton;
     btnPR: TButton;
-    cbActionsName: TComboBox;
     cbCases: TComboBox;
     lbObjects: TListBox;
     btnWarrant: TButton;
@@ -42,6 +40,7 @@ type
     memoShortDescription: TMemo;
     Label7: TLabel;
     memoDescription: TMemo;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnNewCaseClick(Sender: TObject);
     procedure btnIdentityClick(Sender: TObject);
@@ -61,6 +60,7 @@ type
     procedure btnGenerateCaseJsonClick(Sender: TObject);
     procedure btnExtendCaseClick(Sender: TObject);
     procedure cbCasesChange(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     FuuidCase: String;
     FPathCase: String;
@@ -94,7 +94,7 @@ uses
   caseGenerator_role, caseGenerator_tool, caseGenerator_trace_mobile,
   caseGenerator_trace_SIM, caseGenerator_trace_computer, caseGenerator_relationship,
   caseGenerator_investigative_action, caseGenerator_trace_file, caseGenerator_provenance_record,
-  caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_warrant;
+  caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_warrant, caseGenerator_overview;
 {$R *.fmx}
 
 procedure TformMain.addRootChildren(Sender: TObject);
@@ -308,11 +308,11 @@ end;
 
 procedure TformMain.btnInvestigativeActionClick(Sender: TObject);
 begin
-  if lbObjects.Items.Count = 0 then
-    ShowMessage('Select a case or create a new case')
-  else
-    if cbActions.ItemIndex > - 1 then
-      formInvestigativeAction.ShowWithParamater(FHomeCases + FPathCase, FuuidCase, cbActionsName.Items[cbActions.ItemIndex]);
+//  if lbObjects.Items.Count = 0 then
+//    ShowMessage('Select a case or create a new case')
+//  else
+//    if cbActions.ItemIndex > - 1 then
+  formInvestigativeAction.ShowWithParamater(FHomeCases + FPathCase, FuuidCase);
 end;
 
 procedure TformMain.btnIdentityClick(Sender: TObject);
@@ -415,9 +415,15 @@ begin
 
 end;
 
+procedure TformMain.Button1Click(Sender: TObject);
+begin
+  formOverview.ShowModal;
+end;
+
 procedure TformMain.Button5Click(Sender: TObject);
 begin
-  memoJSON.Lines.SaveToFile('CaseTest.json');
+  memoJSON.Lines.SaveToFile(FHomeCases  + 'CaseTest.json');
+
 end;
 
 
@@ -555,10 +561,9 @@ begin
     //TDirectory.CreateDirectory('test');
     ForceDirectories(FHomeCases);
 
-  cbActionsName.Visible := False;
-
   ExtractAllFiles(FHomeCases);
   lbObjects.Visible := False;
+  btnGenerateJson.Visible := False;
 
 
   {
@@ -627,8 +632,6 @@ var
   caseList, objectsList, IDList, listFiles: TStringList;
   searchResult: TSearchRec;
 begin
-  cbActionsName.Visible := False;
-
   caseList := TStringList.Create;
   objectsList := TStringList.Create;
   IDList    := TStringList.Create;
