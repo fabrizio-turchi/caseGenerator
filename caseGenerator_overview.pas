@@ -12,7 +12,6 @@ type
   TformOverview = class(TForm)
     tvActions: TTreeView;
     tvSearchAndSeizure: TTreeViewItem;
-    tvTransfer: TTreeViewItem;
     tvExtraction: TTreeViewItem;
     Label1: TLabel;
     Label2: TLabel;
@@ -24,8 +23,6 @@ type
     edWhere: TEdit;
     edWhen: TEdit;
     Button1: TButton;
-    Label4: TLabel;
-    edWhat: TEdit;
     Label7: TLabel;
     Edit1: TEdit;
     Label8: TLabel;
@@ -43,8 +40,14 @@ type
     btnAddItem: TButton;
     btnAddChild: TButton;
     edItemName: TEdit;
+    tvTransfer: TTreeViewItem;
+    TreeViewItem3: TTreeViewItem;
+    TreeViewItem6: TTreeViewItem;
+    TreeViewItem7: TTreeViewItem;
+    TreeViewItem8: TTreeViewItem;
     procedure btnAddItemClick(Sender: TObject);
     procedure btnAddChildClick(Sender: TObject);
+    procedure tvActionsChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -90,6 +93,17 @@ begin
   //addChildren(itemContext, '"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",' + recSep);
   //addChildren(itemContext, '"rdfs": "http://www.w3.org/2000/01/rdf-schema#",' + recSep);
   //addChildren(itemContext, '"xsd": "http://www.w3.org/2001/XMLSchema#"},' + recSep);
+end;
+
+procedure TformOverview.tvActionsChange(Sender: TObject);
+var
+  itemGeneric: TTreeViewItem;
+  idx: Integer;
+begin
+  itemGeneric := tvActions.Selected;
+  idx := tvActions.Selected.GlobalIndex;
+  ShowMessage('text: ' + itemGeneric.Text + 'index: ' + IntToStr(idx));
+
 end;
 
 end.
