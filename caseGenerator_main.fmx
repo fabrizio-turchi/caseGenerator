@@ -3,7 +3,7 @@ object formMain: TformMain
   Top = 0
   Caption = 'Case investigation: generate JSON/CASE'
   ClientHeight = 534
-  ClientWidth = 694
+  ClientWidth = 687
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]

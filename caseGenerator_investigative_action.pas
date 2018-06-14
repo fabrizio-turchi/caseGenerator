@@ -70,6 +70,8 @@ type
     btnModify: TButton;
     cbActions: TComboBox;
     cbActionsName: TComboBox;
+    Label16: TLabel;
+    edDescription: TEdit;
     procedure btnAddActionClick(Sender: TObject);
     procedure btnDeleteActionClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -371,6 +373,7 @@ begin
       end;
     end;
 
+    edDescription.Text := ExtractField(line, '"description":"');
 
     startTime := ExtractField(line, '"startTime":"');
     sDate := Copy(startTime, 1, 10);
@@ -450,19 +453,24 @@ begin
       end;
     end;
 
+    lbArguments.Items.Clear;
     recSep := #30 + #30;
-    sField := Copy(line, Pos('"@type":"ConfigurationSetting",', line) + 31, Length(line));
-    sField := stringreplace(sField, recSep, '',[rfReplaceAll]);
-    commaPos := Pos(',', sField);
-    while commaPos > 0 do
+    if (Pos('"@type":"ConfigurationSetting",', line) > 0) then
     begin
-      lbArguments.Items.Add(Copy(sField, 1, commaPos - 1));
-      sField := Copy(sField, commaPos + 1, Length(sField));
+      sField := Copy(line, Pos('"@type":"ConfigurationSetting",', line) + 31, Length(line));
+      sField := stringreplace(sField, recSep, '',[rfReplaceAll]);
       commaPos := Pos(',', sField);
+      while commaPos > 0 do
+      begin
+        lbArguments.Items.Add(Copy(sField, 1, commaPos - 1));
+        sField := Copy(sField, commaPos + 1, Length(sField));
+        commaPos := Pos(',', sField);
+      end;
+      sField := stringreplace(sField, ']', '',[rfReplaceAll]);
+      sField := stringreplace(sField, '}', '',[rfReplaceAll]);
+      lbArguments.Items.Add(sField);
     end;
-    sField := stringreplace(sField, ']', '',[rfReplaceAll]);
-    sField := stringreplace(sField, '}', '',[rfReplaceAll]);
-    lbArguments.Items.Add(sField);
+
 
 
     sField := ExtractField(line, '"performer":"');
@@ -544,6 +552,7 @@ begin
     line := '{"@id":"' + GuidToString(Uid) + '",';
     line := line + '"@type":"InvestigativeAction",';
     line := line + '"name":"' + cbActionsName.Items[cbActions.ItemIndex] + '",';
+    line := line + '"description":"' + edDescription.Text + '",';
     line := line + '"startTime":"' + cbStartYear.Items[cbStartYear.ItemIndex] + '-';
     line := line + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
     line := line + cbStartDay.Items[cbStartDay.ItemIndex] + 'T';
@@ -1254,6 +1263,12 @@ begin
     if (cbActions.ItemIndex = -1) then
     begin
       ShowMessage('Type of investigative action is missing');
+      Exit;
+    end;
+
+    if (Trim(edDescription.Text) = '') then
+    begin
+      ShowMessage('Description of investigative action is missing');
       Exit;
     end;
 
