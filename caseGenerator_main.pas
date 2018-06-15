@@ -417,7 +417,7 @@ end;
 
 procedure TformMain.Button1Click(Sender: TObject);
 begin
-  formOverview.ShowModal;
+  formOverview.ShowWithParamater(FHomeCases + FPathCase, FuuidCase);
 end;
 
 procedure TformMain.Button5Click(Sender: TObject);

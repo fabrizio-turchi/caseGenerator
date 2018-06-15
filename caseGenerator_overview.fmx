@@ -3,84 +3,57 @@ object formOverview: TformOverview
   Top = 0
   Caption = 'Digital Evidence Timeline - Overview'
   ClientHeight = 531
-  ClientWidth = 879
+  ClientWidth = 868
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
-  OnShow = FormShow
   DesignerMasterStyle = 0
   object tvActions: TTreeView
     ClipChildren = True
     ClipParent = True
     Position.X = 8.000000000000000000
     Position.Y = 22.000000000000000000
-    Size.Width = 377.000000000000000000
-    Size.Height = 363.000000000000000000
+    Size.Width = 841.000000000000000000
+    Size.Height = 235.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'treeviewstyle'
     TabOrder = 0
     ShowSizeGrip = True
     OnChange = tvActionsChange
-    Viewport.Width = 373.000000000000000000
-    Viewport.Height = 359.000000000000000000
+    Viewport.Width = 837.000000000000000000
+    Viewport.Height = 231.000000000000000000
     object DigitalEvidence: TTreeViewItem
       IsChecked = False
       IsExpanded = False
       IsSelected = False
       TabOrder = 0
       Text = 'Digital Evidence timeline'
-      object tvSearchAndSeizure: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 0
-        Text = 'Search and seizure (2018 April 20)'
-      end
-      object tvTransfer: TTreeViewItem
-        StyledSettings = [Family, Size, Style]
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 2
-        Text = 'Transfer (2018 April 24)'
-      end
-      object tvExtraction: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 1
-        Text = 'Extraction - Logical Acquisition (2018 May 15)'
-      end
-      object TreeViewItem8: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 3
-        Text = 'Extracrtion - Physical Acquisition'
-      end
     end
   end
   object Label1: TLabel
-    Position.X = 408.000000000000000000
-    Position.Y = 18.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 266.000000000000000000
     Text = 'Who'
     TabOrder = 11
   end
   object Label2: TLabel
-    Position.X = 408.000000000000000000
-    Position.Y = 82.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 330.000000000000000000
     Text = 'Where'
     TabOrder = 6
   end
   object Label3: TLabel
-    Position.X = 408.000000000000000000
-    Position.Y = 130.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 378.000000000000000000
     Text = 'When'
     TabOrder = 5
   end
   object Label5: TLabel
-    Position.X = 400.000000000000000000
+    Position.X = 390.000000000000000000
     Position.Y = 404.000000000000000000
+    Size.Width = 91.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
     Text = 'Result/Output'
     TabOrder = 2
   end
@@ -88,15 +61,15 @@ object formOverview: TformOverview
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 15
     Text = 'Marta Pentagora'
-    Position.X = 504.000000000000000000
-    Position.Y = 18.000000000000000000
-    Size.Width = 350.000000000000000000
+    Position.X = 88.000000000000000000
+    Position.Y = 266.000000000000000000
+    Size.Width = 289.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
   object Label6: TLabel
-    Position.X = 407.000000000000000000
-    Position.Y = 50.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 298.000000000000000000
     Text = 'Role'
     TabOrder = 9
   end
@@ -104,9 +77,9 @@ object formOverview: TformOverview
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 14
     Text = 'Forensic Expert'
-    Position.X = 507.000000000000000000
-    Position.Y = 47.000000000000000000
-    Size.Width = 350.000000000000000000
+    Position.X = 91.000000000000000000
+    Position.Y = 295.000000000000000000
+    Size.Width = 286.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
@@ -114,9 +87,9 @@ object formOverview: TformOverview
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 13
     Text = 'Roma, piazza Navona 12'
-    Position.X = 504.000000000000000000
-    Position.Y = 82.000000000000000000
-    Size.Width = 350.000000000000000000
+    Position.X = 88.000000000000000000
+    Position.Y = 330.000000000000000000
+    Size.Width = 289.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
@@ -124,24 +97,24 @@ object formOverview: TformOverview
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 12
     Text = '2018-04-16 14:35:14'
-    Position.X = 504.000000000000000000
-    Position.Y = 122.000000000000000000
-    Size.Width = 350.000000000000000000
+    Position.X = 88.000000000000000000
+    Position.Y = 370.000000000000000000
+    Size.Width = 289.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
   object Button1: TButton
-    Position.X = 120.000000000000000000
-    Position.Y = 392.000000000000000000
-    Size.Width = 129.000000000000000000
+    Position.X = 168.000000000000000000
+    Position.Y = 480.000000000000000000
+    Size.Width = 105.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 16
     Text = 'Generate Report'
   end
   object Label7: TLabel
-    Position.X = 408.000000000000000000
-    Position.Y = 178.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 426.000000000000000000
     Text = 'What'
     TabOrder = 4
   end
@@ -149,15 +122,15 @@ object formOverview: TformOverview
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 10
     Text = 'Physical Acquisition'
-    Position.X = 504.000000000000000000
-    Position.Y = 173.000000000000000000
-    Size.Width = 350.000000000000000000
+    Position.X = 88.000000000000000000
+    Position.Y = 421.000000000000000000
+    Size.Width = 289.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
   object Label8: TLabel
-    Position.X = 408.000000000000000000
-    Position.Y = 212.000000000000000000
+    Position.X = 8.000000000000000000
+    Position.Y = 460.000000000000000000
     Text = 'Instrument'
     TabOrder = 3
   end
@@ -165,22 +138,22 @@ object formOverview: TformOverview
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 8
     Text = 'UFED 4PC (Physical A.)'
-    Position.X = 504.000000000000000000
-    Position.Y = 207.000000000000000000
-    Size.Width = 350.000000000000000000
+    Position.X = 88.000000000000000000
+    Position.Y = 455.000000000000000000
+    Size.Width = 289.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
   object TreeView1: TTreeView
-    Position.X = 504.000000000000000000
+    Position.X = 472.000000000000000000
     Position.Y = 304.000000000000000000
-    Size.Width = 350.000000000000000000
-    Size.Height = 214.000000000000000000
+    Size.Width = 382.000000000000000000
+    Size.Height = 169.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 18
     ShowSizeGrip = True
-    Viewport.Width = 346.000000000000000000
-    Viewport.Height = 210.000000000000000000
+    Viewport.Width = 378.000000000000000000
+    Viewport.Height = 165.000000000000000000
     object tvMobile: TTreeViewItem
       IsChecked = False
       IsExpanded = False
@@ -253,8 +226,8 @@ object formOverview: TformOverview
     end
   end
   object Label9: TLabel
-    Position.X = 400.000000000000000000
-    Position.Y = 263.000000000000000000
+    Position.X = 390.000000000000000000
+    Position.Y = 271.000000000000000000
     Size.Width = 89.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -265,24 +238,14 @@ object formOverview: TformOverview
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 7
     Text = 'Samsung SM-G900F of Lamberto Laudisi transferred to FEG'
-    Position.X = 504.000000000000000000
-    Position.Y = 258.000000000000000000
-    Size.Width = 350.000000000000000000
+    Position.X = 472.000000000000000000
+    Position.Y = 266.000000000000000000
+    Size.Width = 377.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-  end
-  object btnAddItem: TButton
-    Position.X = 16.000000000000000000
-    Position.Y = 464.000000000000000000
-    Size.Width = 177.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 20
-    Text = 'Add item to root'
-    OnClick = btnAddItemClick
   end
   object btnAddChild: TButton
-    Position.X = 16.000000000000000000
+    Position.X = 472.000000000000000000
     Position.Y = 496.000000000000000000
     Size.Width = 177.000000000000000000
     Size.Height = 22.000000000000000000
@@ -293,9 +256,9 @@ object formOverview: TformOverview
   end
   object edItemName: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 21
-    Position.X = 208.000000000000000000
-    Position.Y = 477.000000000000000000
+    TabOrder = 20
+    Position.X = 664.000000000000000000
+    Position.Y = 493.000000000000000000
     Size.Width = 185.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
