@@ -20,7 +20,7 @@ type
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
-    Label5: TLabel;
+    lblResult: TLabel;
     edWho: TEdit;
     Label6: TLabel;
     edRole: TEdit;
@@ -28,24 +28,14 @@ type
     edWhen: TEdit;
     Button1: TButton;
     Label7: TLabel;
-    Edit1: TEdit;
+    edWhat: TEdit;
     Label8: TLabel;
-    Edit2: TEdit;
-    TreeView1: TTreeView;
-    tvMobile: TTreeViewItem;
-    tvSIM: TTreeViewItem;
-    tvFiles: TTreeViewItem;
+    edInstrument: TEdit;
+    tvTraces: TTreeView;
     Label9: TLabel;
     edObject: TEdit;
-    TreeViewItem1: TTreeViewItem;
-    TreeViewItem2: TTreeViewItem;
-    TreeViewItem4: TTreeViewItem;
-    TreeViewItem5: TTreeViewItem;
     btnAddChild: TButton;
     edItemName: TEdit;
-    TreeViewItem3: TTreeViewItem;
-    TreeViewItem6: TTreeViewItem;
-    TreeViewItem7: TTreeViewItem;
     procedure btnAddChildClick(Sender: TObject);
     procedure tvActionsChange(Sender: TObject);
   private
@@ -62,6 +52,7 @@ type
     FlistLocations: TStringList;
     FlistMobiles: TStringList;
     FlistTools: TStringList;
+    FaMonth: TStringList;
     procedure SetPathCase(const Value: String);
     procedure SetuuidCase(const Value: string);
     procedure SetlistActions(const Value: TStringList);
@@ -75,6 +66,7 @@ type
     procedure SetlistSIMs(const Value: TStringList);
     procedure SetlistTools(const Value: TStringList);
     procedure SetlistWarrants(const Value: TSTringList);
+    procedure SetaMonth(const Value: TStringList);
     property UuidCase: string read FuuidCase write SetuuidCase;
     property PathCase: String read FPathCase write SetPathCase;
     property listActions: TStringList read FlistActions write SetlistActions;
@@ -89,7 +81,9 @@ type
     property listTools: TStringList read FlistTools write SetlistTools;
     property listRelationships: TSTringList read FlistRelationships write SetlistRelationships;
     function readObjectsFromFile(fileObject: String): TStringList;
-    procedure addTreeViewItemActionToRoot(actionName: String);
+    procedure addTreeViewItemToRoot(childText: String; tvComponent: TTreeView);
+    procedure addTreeViewRoot(rootText: String; tvComponent: TTreeView);
+    property aMonth : TStringList read FaMonth write SetaMonth;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase:String; uuidCase: String);
@@ -103,14 +97,24 @@ implementation
 
 {$R *.fmx}
 
-procedure TformOverview.addTreeViewItemActionToRoot(actionName: String);
+procedure TformOverview.addTreeViewItemToRoot(childText: String; tvComponent: TTreeView);
 var
   itemRoot, itemNode: TTreeViewItem;
 begin
-  itemRoot := tvActions.ItemByText('Digital Evidence timeline');
+  itemRoot := tvComponent.ItemByIndex(0);
   itemNode := TTreeViewItem.Create(Self);
-  itemNode.Text := actionName;
+  itemNode.Text := childText;
   itemNode.Parent := itemRoot;
+end;
+
+procedure TformOverview.addTreeViewRoot(rootText: String;
+  tvComponent: TTreeView);
+var
+  itemNode: TTreeViewItem;
+begin
+  itemNode := TTreeViewItem.Create(Self);
+  itemNode.Text := rootText;
+  itemNode.Parent := tvComponent;
 end;
 
 procedure TformOverview.btnAddChildClick(Sender: TObject);
@@ -159,6 +163,11 @@ begin
   end;
 
   Result := listObjects;
+end;
+
+procedure TformOverview.SetaMonth(const Value: TStringList);
+begin
+  FaMonth := Value;
 end;
 
 procedure TformOverview.SetlistActions(const Value: TStringList);
@@ -247,9 +256,27 @@ procedure TformOverview.ShowWithParamater(pathCase, uuidCase: String);
 var
   sDescription, sDate, sTime:string;
   idx : Integer;
+  aMonths: TStringList;
 begin
   SetUuidCase(uuidCase);
   SetPathCase(pathCase);
+
+  aMonths := TStringList.Create;
+  aMonths.Add('Jan');
+  aMonths.Add('Feb');
+  aMonths.Add('Mar');
+  aMonths.Add('Apr');
+  aMonths.Add('May');
+  aMonths.Add('Jun');
+  aMonths.Add('Jul');
+  aMonths.Add('Aug');
+  aMonths.Add('Sep');
+  aMonths.Add('Oct');
+  aMonths.Add('Nov');
+  aMonths.Add('Dec');
+
+  //FaMonth := TStringList.Create;
+  SetaMonth(aMonths);
 
   FListActions := TStringList.Create;  // create of the property containing the investigative actions
 
@@ -262,7 +289,7 @@ begin
     sDate   := Copy(ExtractField(FListActions[idx], '"startTime":"'), 1, 10);
     sTime := Copy(ExtractField(FListActions[idx], '"startTime":"'), 12, 8);
 
-    addTreeViewItemActionToRoot(sDescription + ' (' + sDate + ' ' + sTime + ')');
+    addTreeViewItemToRoot(sDescription + ' (' + sDate + ' ' + sTime + ')', tvActions);
   end;
 
   SetListIdentities(readObjectsFromFile('-identity.json'));
@@ -271,9 +298,20 @@ begin
   SetListLocations(readObjectsFromFile('-location.json'));
   SetListWarrants(readObjectsFromFile('-warrant.json'));
   SetListTools(readObjectsFromFile('-tool.json'));
+  SetListProvenanceRecords(readObjectsFromFile('-provenance_record.json'));
   SetListMobiles(readObjectsFromFile('-traceMOBILE.json'));
   SetListSIMs(readObjectsFromFile('-traceSIM.json'));
   SetListFiles(readObjectsFromFile('-traceFILE.json'));
+
+  //  The Result/Object TreeView component contains all thr Traces of the Case, when a
+  //  specific Investigative_Action is selectes it only contains the Result/Output of the
+  //  related Provenance_Record generated from that Investigative Action (Search and seizure,
+  //  forensics acquistion, forensic extraction, etc.
+    lblResult.Text := 'Traces';
+
+    addTreeViewRoot('Traces', tvTraces);
+    if FlistMobiles.Count > 0 then
+      addTreeViewItemtoRoot('Mobile devices (' + IntToStr(FlistMobiles.Count) + ')', tvTraces);
 
 
   formOverview.ShowModal;
@@ -281,24 +319,109 @@ end;
 
 procedure TformOverview.tvActionsChange(Sender: TObject);
 var
-  itemGeneric: TTreeViewItem;
-  idx: Integer;
+  //itemGeneric: TTreeViewItem;
+  idx, nMonth: Integer;
   line, IdPerformer, IdLocation, IdInstrument, description: String;
+  name, IdRole, IdIdentity, sDateTime, startTime, endTime: String;
   IdResult, IdObject: TStringList;
 begin
-  itemGeneric := tvActions.Selected;
+  //itemGeneric := TTreeViewItem.Create(Self);
+  //itemGeneric := tvActions.Selected;
   idx := tvActions.Selected.GlobalIndex;
   if idx = 0 then  // root - Digital Evidence Timeline,
-    ShowMessage('text: ' + itemGeneric.Text + 'index: ' + IntToStr(idx))
+    ShowMessage('text: ' + tvActions.Selected.Text + 'index: ' + IntToStr(idx))
   else
   begin
     line := FListActions[idx - 1];
     IdPerformer := ExtractField(line, '"performer":"');
+    name := ExtractField(line, '"name":"');
     IdLocation := ExtractField(line, '"location":"');
     IdInstrument := ExtractField(line, '"instrument":"');
+    startTime := ExtractField(line, '"startTime":"');
+    endTime := ExtractField(line, '"endTime":"');
     description := ExtractField(line, '"description":"');
     IdObject := ExtractArray(line, '"object":[');
     IdResult := ExtractArray(line, '"result":[');
+    // extract IdRole from Relationship
+    for idx := 0 to FlistRelationships.Count - 1 do
+    begin
+      if AnsiContainsStr(FlistRelationships[idx], IdPerformer) then
+      begin
+        IdIdentity := ExtractField(FlistRelationships[idx], '"source":"');
+        IdRole   := ExtractField(FlistRelationships[idx], '"target":"');
+        break
+      end;
+    end;
+
+    for idx := 0 to FlistIdentities.Count - 1 do
+    begin
+      if AnsiContainsStr(FlistIdentities[idx], IdIdentity) then
+      begin
+        edWho.Text := ExtractField(FlistIdentities[idx], '"givenName":"') + ' ' +
+                      ExtractField(FlistIdentities[idx], '"familyName":"');
+        break
+      end;
+    end;
+
+    for idx := 0 to FlistRoles.Count - 1 do
+    begin
+      if AnsiContainsStr(FlistRoles[idx], IdRole) then
+      begin
+        edRole.Text := ExtractField(FlistRoles[idx], '"name":"');
+        break
+      end;
+    end;
+
+    for idx := 0 to FlistLocations.Count - 1 do
+    begin
+      if AnsiContainsStr(FlistLocations[idx], IdLocation) then
+      begin
+        edWhere.Text := ExtractField(FlistLocations[idx], '"street":"') + ' ' +
+                      ExtractField(FlistLocations[idx], '"postalCode":"') + ' ' +
+                      ExtractField(FlistLocations[idx], '"locality":"') + ' ' +
+                      ExtractField(FlistLocations[idx], '"region":"');
+        break;
+      end;
+    end;
+
+    sDateTime := Copy(startTime, 1, 10);
+    nMonth := StrToInt(Copy(sDateTime, 6, 2));
+    edWhen.Text :=  Copy(sDateTime, 1, 4) + ' ' + FaMonth[nMonth - 1] + ' ' +
+                    Copy(sDateTime, 9, 2);
+
+    edWhat.Text := description;
+
+    if (name = 'preserved') or (name='transferred') then
+    begin
+      for idx := 0 to FlistWarrants.Count - 1 do
+      begin
+        if AnsiContainsStr(FlistWarrants[idx], IdInstrument) then
+        begin
+          edInstrument.Text := ExtractField(FlistWarrants[idx], '"authorizationIdentifier":"');
+          break;
+        end;
+      end;
+    end
+    else
+    begin
+      for idx := 0 to FlistTools.Count - 1 do
+      begin
+        if AnsiContainsStr(FlistTools[idx], IdInstrument) then
+        begin
+          edInstrument.Text := ExtractField(FlistTools[idx], '"name":"');
+          break;
+        end;
+      end;
+    end;
+
+    for idx := 0 to FlistProvenanceRecords.Count - 1 do
+    begin
+      if AnsiContainsStr(FlistProvenanceRecords[idx], IdObject[0]) then
+      begin
+        edObject.Text := ExtractField(FlistProvenanceRecords[idx], '"description":"');
+        break;
+      end;
+    end;
   end;
 
 end;

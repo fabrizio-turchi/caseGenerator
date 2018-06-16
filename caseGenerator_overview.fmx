@@ -48,9 +48,9 @@ object formOverview: TformOverview
     Text = 'When'
     TabOrder = 5
   end
-  object Label5: TLabel
+  object lblResult: TLabel
     Position.X = 390.000000000000000000
-    Position.Y = 404.000000000000000000
+    Position.Y = 379.000000000000000000
     Size.Width = 91.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -60,7 +60,7 @@ object formOverview: TformOverview
   object edWho: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 15
-    Text = 'Marta Pentagora'
+    Text = 'who'
     Position.X = 88.000000000000000000
     Position.Y = 266.000000000000000000
     Size.Width = 289.000000000000000000
@@ -76,7 +76,7 @@ object formOverview: TformOverview
   object edRole: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 14
-    Text = 'Forensic Expert'
+    Text = 'role'
     Position.X = 91.000000000000000000
     Position.Y = 295.000000000000000000
     Size.Width = 286.000000000000000000
@@ -86,7 +86,7 @@ object formOverview: TformOverview
   object edWhere: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 13
-    Text = 'Roma, piazza Navona 12'
+    Text = 'where'
     Position.X = 88.000000000000000000
     Position.Y = 330.000000000000000000
     Size.Width = 289.000000000000000000
@@ -96,7 +96,7 @@ object formOverview: TformOverview
   object edWhen: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 12
-    Text = '2018-04-16 14:35:14'
+    Text = 'when'
     Position.X = 88.000000000000000000
     Position.Y = 370.000000000000000000
     Size.Width = 289.000000000000000000
@@ -118,10 +118,10 @@ object formOverview: TformOverview
     Text = 'What'
     TabOrder = 4
   end
-  object Edit1: TEdit
+  object edWhat: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 10
-    Text = 'Physical Acquisition'
+    Text = 'what'
     Position.X = 88.000000000000000000
     Position.Y = 421.000000000000000000
     Size.Width = 289.000000000000000000
@@ -134,17 +134,17 @@ object formOverview: TformOverview
     Text = 'Instrument'
     TabOrder = 3
   end
-  object Edit2: TEdit
+  object edInstrument: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 8
-    Text = 'UFED 4PC (Physical A.)'
+    Text = 'instrument'
     Position.X = 88.000000000000000000
     Position.Y = 455.000000000000000000
     Size.Width = 289.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
-  object TreeView1: TTreeView
+  object tvTraces: TTreeView
     Position.X = 472.000000000000000000
     Position.Y = 304.000000000000000000
     Size.Width = 382.000000000000000000
@@ -154,76 +154,6 @@ object formOverview: TformOverview
     ShowSizeGrip = True
     Viewport.Width = 378.000000000000000000
     Viewport.Height = 165.000000000000000000
-    object tvMobile: TTreeViewItem
-      IsChecked = False
-      IsExpanded = False
-      IsSelected = False
-      TabOrder = 0
-      Text = 'Mobile devices (1)'
-      object TreeViewItem1: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 0
-        Text = 'Samsung SM-G900F'
-      end
-    end
-    object tvSIM: TTreeViewItem
-      IsChecked = False
-      IsExpanded = False
-      IsSelected = False
-      TabOrder = 1
-      Text = 'SIM (1)'
-      object TreeViewItem2: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 0
-        Text = 'Micro SIM (Telecom Italia)'
-      end
-    end
-    object tvFiles: TTreeViewItem
-      IsChecked = False
-      IsExpanded = False
-      IsSelected = False
-      TabOrder = 2
-      Text = 'Files (5)'
-      object TreeViewItem4: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 0
-        Text = 'Physical Acquisition (dump blk0.bin)'
-      end
-      object TreeViewItem5: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 1
-        Text = 'Physical Acquisition (dumprpmb.bin)'
-      end
-      object TreeViewItem3: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 2
-        Text = 'Physical Acquisition (procdata.zip)'
-      end
-      object TreeViewItem6: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 3
-        Text = 'Physical Acquisition (log.txt)'
-      end
-      object TreeViewItem7: TTreeViewItem
-        IsChecked = False
-        IsExpanded = False
-        IsSelected = False
-        TabOrder = 4
-        Text = 'Physical Acquisition (log UFD)'
-      end
-    end
   end
   object Label9: TLabel
     Position.X = 390.000000000000000000
@@ -237,7 +167,7 @@ object formOverview: TformOverview
   object edObject: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 7
-    Text = 'Samsung SM-G900F of Lamberto Laudisi transferred to FEG'
+    Text = 'object/input'
     Position.X = 472.000000000000000000
     Position.Y = 266.000000000000000000
     Size.Width = 377.000000000000000000
