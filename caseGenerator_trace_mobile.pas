@@ -250,7 +250,7 @@ begin
 
     if Trim(edAccountMSISDN.Text) <> '' then
     begin
-      line := line + #9 + ', ' + recSep + '{"@type":"MobileAccount", "MSISDN": "';
+      line := line + #9 + ', ' + recSep + '{"@type":"MobileAccount", "MSISDN":"';
       line := line  + edAccountMSISDN.Text + '"}' + recSep;
     end;
 

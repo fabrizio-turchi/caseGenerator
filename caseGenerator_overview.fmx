@@ -3,7 +3,7 @@ object formOverview: TformOverview
   Top = 0
   Caption = 'Digital Evidence Timeline - Overview'
   ClientHeight = 531
-  ClientWidth = 868
+  ClientWidth = 910
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -13,21 +13,21 @@ object formOverview: TformOverview
     ClipParent = True
     Position.X = 8.000000000000000000
     Position.Y = 22.000000000000000000
-    Size.Width = 841.000000000000000000
+    Size.Width = 897.000000000000000000
     Size.Height = 235.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'treeviewstyle'
     TabOrder = 0
     ShowSizeGrip = True
     OnChange = tvActionsChange
-    Viewport.Width = 837.000000000000000000
+    Viewport.Width = 893.000000000000000000
     Viewport.Height = 231.000000000000000000
     object DigitalEvidence: TTreeViewItem
       IsChecked = False
       IsExpanded = False
       IsSelected = False
       TabOrder = 0
-      Text = 'Digital Evidence timeline'
+      Text = 'Digital Evidence Timeline'
     end
   end
   object Label1: TLabel
@@ -147,12 +147,12 @@ object formOverview: TformOverview
   object tvTraces: TTreeView
     Position.X = 472.000000000000000000
     Position.Y = 304.000000000000000000
-    Size.Width = 382.000000000000000000
+    Size.Width = 433.000000000000000000
     Size.Height = 169.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 18
     ShowSizeGrip = True
-    Viewport.Width = 378.000000000000000000
+    Viewport.Width = 429.000000000000000000
     Viewport.Height = 165.000000000000000000
   end
   object Label9: TLabel
@@ -170,7 +170,7 @@ object formOverview: TformOverview
     Text = 'object/input'
     Position.X = 472.000000000000000000
     Position.Y = 266.000000000000000000
-    Size.Width = 377.000000000000000000
+    Size.Width = 433.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
