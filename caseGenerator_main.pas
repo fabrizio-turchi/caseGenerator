@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
   FMX.TreeView, System.JSON, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Edit,
-  FMX.ListBox, FMX.ScrollBox, FMX.Memo, StrUtils, IOUtils;
+  FMX.ListBox, FMX.ScrollBox, FMX.Memo, StrUtils, IOUtils, caseGenerator_GeneralData,
+  caseGenerator_util;
 
 type
   TformMain = class(TForm)
@@ -20,7 +21,7 @@ type
     OpenDialog1: TOpenDialog;
     btnGenerateJSON: TButton;
     memoJSON: TMemo;
-    Button5: TButton;
+    btnSaveToJSON: TButton;
     btnTrace: TButton;
     cbTrace: TComboBox;
     btnRelationship: TButton;
@@ -40,7 +41,9 @@ type
     memoShortDescription: TMemo;
     Label7: TLabel;
     memoDescription: TMemo;
-    Button1: TButton;
+    btnTimeline: TButton;
+    SaveDialog: TSaveDialog;
+    btnModify: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnNewCaseClick(Sender: TObject);
     procedure btnIdentityClick(Sender: TObject);
@@ -48,7 +51,7 @@ type
     procedure btnRoleClick(Sender: TObject);
     procedure btnToolClick(Sender: TObject);
     procedure btnGenerateJSONClick(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
+    procedure btnSaveToJSONClick(Sender: TObject);
     procedure btnTraceClick(Sender: TObject);
     procedure btnRelationshipClick(Sender: TObject);
     procedure btnInvestigativeActionClick(Sender: TObject);
@@ -60,7 +63,8 @@ type
     procedure btnGenerateCaseJsonClick(Sender: TObject);
     procedure btnExtendCaseClick(Sender: TObject);
     procedure cbCasesChange(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnTimelineClick(Sender: TObject);
+    procedure btnModifyClick(Sender: TObject);
   private
     FuuidCase: String;
     FPathCase: String;
@@ -188,6 +192,57 @@ begin
     formLocation.ShowWithParamater(FHomeCases + FPathCase, FuuidCase);
 end;
 
+procedure TformMain.btnModifyClick(Sender: TObject);
+var
+  operation, idx, nDescriptionMatches : Integer;
+  fieldValue: String;
+begin
+  if cbCases.ItemIndex > - 1 then
+  begin
+    formNewCase.edName.Text := edName.Text;
+    formNewCase.edFocus.Text := edFocus.Text;
+    formNewCase.memoShortDescription.Lines := memoShortDescription.Lines;
+    formNewCase.memoDescription.Lines := memoDescription.Lines;
+    operation := formNewCase.ShowWithParamater();
+    if operation > 0 then
+    begin
+      edName.Text := formNewCase.edName.Text;
+      edFocus.Text := formNewCase.edFocus.Text;
+      memoShortDescription.Lines := formNewCase.memoShortDescription.Lines;
+      memoDescription.Lines := formNewCase.memoDescription.Lines;
+      nDescriptionMatches := 0;
+  // insert of the main data onf the case
+      for idx:=0 to lbObjects.Items.Count - 1 do
+      begin
+        if AnsiContainsStr(lbObjects.Items[idx], '"description":"') then
+        begin
+          Inc(nDescriptionMatches);
+          fieldValue := ExtractField(lbObjects.Items[idx], '"description":"');
+          if nDescriptionMatches < 2 then
+            lbObjects.Items[idx] := stringreplace(lbObjects.Items[idx], fieldValue, memoDescription.Text,[rfReplaceAll])
+          else
+            lbObjects.Items[idx] := stringreplace(lbObjects.Items[idx], fieldValue, memoShortDescription.Text,[rfReplaceAll])
+        end;
+
+        if AnsiContainsStr(lbObjects.Items[idx], '"focus":"') then
+        begin
+          fieldValue := ExtractField(lbObjects.Items[idx], '"focus":"');
+          lbObjects.Items[idx] := stringreplace(lbObjects.Items[idx], fieldValue, edFocus.Text,[rfReplaceAll])
+        end;
+        if AnsiContainsStr(lbObjects.Items[idx], '"name":"') then
+        begin
+          fieldValue := ExtractField(lbObjects.Items[idx], '"name":"');
+          lbObjects.Items[idx] := stringreplace(lbObjects.Items[idx], fieldValue, edName.Text,[rfReplaceAll])
+        end;
+      end;
+      lbObjects.Items.SaveToFile(FHomeCases + FPathCase +  FuuidCase + '-CASE.json');
+    end;
+  end
+  else
+    ShowMessage('No case is selected');
+
+end;
+
 procedure TformMain.btnPRClick(Sender: TObject);
 begin
 // debub I put the fix value to 43E9FE90-F5DC-47C4-95F6-3C5BD6DFAA77
@@ -278,32 +333,46 @@ procedure TformMain.btnNewCaseClick(Sender: TObject);
 var
   Uid: TGuid;
   Result: HResult;
-  uuidGenerated, sCase, crlf, recSep: String;
+  uuidGenerated, sCase, crlf, recSep, caseName, caseID, caseFocus: String;
+  operation: Integer;
 begin
-  uuidGenerated := generateUUID(Sender);
-  uuidGenerated := copy(uuidGenerated, 2, length(uuidGenerated) - 2);
-  // get rid of of { begining and end of the uuid
-  SetuuidCase(uuidGenerated); // set the private field FuuidCase
-  SetPathCase(uuidGenerated); // set the property FCasePath, the path of the new Case
-  ForceDirectories(FHomeCases + FPathCase); // create the folder of the new Case
-  edName.Text := '';
-  edFocus.Text := '';
-  memoShortDescription.Lines.Clear;
-  memoDescription.Lines.Clear;
-  //formNewCase.ShowModal;
-  // insert of the main data onf the case
-  lbObjects.Items.Clear;
-  if (Trim(edName.Text) = '') or (memoShortDescription.Lines.Count = 0)  then
-  else
+
+  operation := formNewCase.ShowWithParamater();
+  if operation > 0 then
   begin
-    addRootCase(Sender);
-    addRootChildren(Sender);
+    edName.Text := '';
+    edFocus.Text := '';
+    memoShortDescription.Lines.Clear;
+    memoDescription.Lines.Clear;
+    uuidGenerated := generateUUID(Sender);
+    uuidGenerated := copy(uuidGenerated, 2, length(uuidGenerated) - 2);
+  // get rid of of { begining and end of the uuid
+    SetuuidCase(uuidGenerated); // set the private field FuuidCase
+    SetPathCase(uuidGenerated); // set the property FCasePath, the path of the new Case
+    ForceDirectories(FHomeCases + FPathCase); // create the folder of the new Case
+    edName.Text := formNewCase.edName.Text;
+    edFocus.Text := formNewCase.edFocus.Text;
+    memoShortDescription.Lines := formNewCase.memoShortDescription.Lines;
+    memoDescription.Lines := formNewCase.memoDescription.Lines;
+  // insert of the main data onf the case
+    lbObjects.Items.Clear;
+    if (Trim(edName.Text) = '') or (memoShortDescription.Lines.Count = 0)  then
+    else
+    begin
+      addRootCase(Sender);
+      addRootChildren(Sender);
     //sCase := lbObjects.Items.Text;
-    recSep := #30 + #30;
-    crlf := #13 + #10;
+      recSep := #30 + #30;
+      crlf := #13 + #10;
     //sCase := stringreplace(sCase, recSep, crlf,[rfReplaceAll]);
-    lbObjects.Items.SaveToFile(FHomeCases + FPathCase +  FuuidCase + '-CASE.json');
+      lbObjects.Items.SaveToFile(FHomeCases + FPathCase +  FuuidCase + '-CASE.json');
+      caseName := ExtractField(lbObjects.Items.Text, '"name":"');
+      caseID := ExtractField(lbObjects.Items.Text, '"investigation-');
+      caseFocus := ExtractField(lbObjects.Items.Text, '"focus":"');
+      cbCases.Items.Add(caseFocus + ' ' + caseName + '@' + caseID);
+    end;
   end;
+
 end;
 
 procedure TformMain.btnInvestigativeActionClick(Sender: TObject);
@@ -415,15 +484,22 @@ begin
 
 end;
 
-procedure TformMain.Button1Click(Sender: TObject);
+procedure TformMain.btnTimelineClick(Sender: TObject);
 begin
-  formOverview.ShowWithParamater(FHomeCases + FPathCase, FuuidCase);
+  if cbCases.ItemIndex > -1 then
+    formOverview.ShowWithParamater(FHomeCases + FPathCase, FuuidCase)
+  else
+    ShowMessage('No case is selected!');
 end;
 
-procedure TformMain.Button5Click(Sender: TObject);
+procedure TformMain.btnSaveToJSONClick(Sender: TObject);
 begin
-  memoJSON.Lines.SaveToFile(FHomeCases  + 'CaseTest.json');
-
+  saveDialog.Title := 'Save CASE/JSON in a JSON file';
+  saveDialog.InitialDir := FHomeCases;
+  saveDialog.DefaultExt := 'json';
+  saveDialog.FileName :=  'CaseTest.json';
+  if SaveDialog.Execute then
+    memoJSON.Lines.SaveToFile(saveDialog.FileName);
 end;
 
 
@@ -463,7 +539,7 @@ end;
 
 procedure TformMain.ExtractAllFiles(path: String);
 var
-  caseName, caseID: String;
+  caseName, caseID, caseFocus: String;
   idx, casePos: Integer;
   caseFile, caseFolders  : TStringList;
   searchResult: TSearchRec;
@@ -486,6 +562,7 @@ begin
       end;
     end;
 
+  caseFolders.Sort;
   for idx:=0 to caseFolders.Count -1 do
   begin
     path :=  FHomeCases + caseFolders[idx] + PathDelim ;
@@ -495,15 +572,10 @@ begin
         if (searchResult.Attr and faDirectory) = 0 then
         begin
           caseFile.LoadFromFile(path + searchResult.Name);
-          casePos := Pos('"*CASE*":', caseFile.Text);
-          caseName := Copy(caseFile.Text, casePos + 10, Length(caseFile.Text));
-          casePos := Pos('",', caseName);
-          caseName := Copy(caseName, 1, casePos - 1);
-          casePos := Pos('"investigation-', caseFile.Text);
-          caseID := Copy(caseFile.Text, casePos + 15, Length(caseFile.Text));
-          casePos := Pos('",', caseID);
-          caseID := Copy(caseID, 1, casePos - 1);
-          cbCases.Items.Add(caseName + '@' + caseID);
+          caseName := ExtractField(caseFile.Text, '"name":"');
+          caseID := ExtractField(caseFile.Text, '"investigation-');
+          caseFocus := ExtractField(caseFile.Text, '"focus":"');
+          cbCases.Items.Add(caseFocus + ' ' + caseName + '@' + caseID);
         end
         else
           if (searchResult.Name <> '.') and (searchResult.Name <> '..') then
@@ -563,6 +635,7 @@ begin
 
   ExtractAllFiles(FHomeCases);
   lbObjects.Visible := False;
+  btnGenerateJSON.Visible := False;
   btnGenerateJson.Visible := False;
 
 

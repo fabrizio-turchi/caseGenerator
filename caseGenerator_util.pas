@@ -27,6 +27,7 @@ begin
 
 end;
 
+
 function ExtractArray(line, subLine: String): TStringList;
 var
   fieldValue, recSep: String;

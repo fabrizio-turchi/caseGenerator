@@ -34,8 +34,6 @@ type
     tvTraces: TTreeView;
     Label9: TLabel;
     edObject: TEdit;
-    btnAddChild: TButton;
-    edItemName: TEdit;
     procedure btnAddChildClick(Sender: TObject);
     procedure tvActionsChange(Sender: TObject);
   private
@@ -84,6 +82,7 @@ type
     function addTreeViewItemToRoot(childText: String; tvComponent: TTreeView; rootText: String; itemParent:TTreeViewItem) : TTreeViewItem;
     procedure addTreeViewRoot(rootText: String; tvComponent: TTreeView);
     property aMonth : TStringList read FaMonth write SetaMonth;
+    procedure SetTraces();
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase:String; uuidCase: String);
@@ -123,15 +122,15 @@ begin
 end;
 
 procedure TformOverview.btnAddChildClick(Sender: TObject);
-var
-  itemRoot: TTreeViewItem;
-  itemContext, itemGeneric: TTreeViewItem;
+//var
+//  itemRoot: TTreeViewItem;
+//  itemContext, itemGeneric: TTreeViewItem;
 begin
-  itemContext := tvActions.Selected;
-  itemGeneric := TTreeViewItem.Create(Self);
-  itemGeneric.Text := edItemName.Text;
-  itemGeneric.Parent := itemContext;
-  //itemRoot := tvObjects.ItemByIndex(0);
+//  itemContext := tvActions.Selected;
+//  itemGeneric := TTreeViewItem.Create(Self);
+//  itemGeneric.Text := edItemName.Text;
+//  itemGeneric.Parent := itemContext;
+//itemRoot := tvObjects.ItemByIndex(0);
 
 end;
 
@@ -235,6 +234,65 @@ begin
   FPathCase := Value;
 end;
 
+procedure TformOverview.SetTraces;
+var
+  itemText, model, manufacturer, msisdn: String;
+  simForm, carrier: String;
+  fileName, size: String;
+  itemNode: TTreeViewItem;
+  idx, idy : Integer;
+begin
+  lblResult.Text := 'Traces';
+  tvTraces.Clear;
+  edWho.Text := '';
+  edRole.Text := '';
+  edWhere.Text := '';
+  edWhen.Text := '';
+  edWhat.Text := '';
+  edInstrument.Text := '';
+  edObject.Text := '';
+  addTreeViewRoot('Traces', tvTraces);
+
+  if FlistMobiles.Count > 0 then
+  begin
+    itemText := 'Mobile devices (' + IntToStr(FlistMobiles.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistMobiles.Count - 1 do
+    begin
+      model := ExtractField(FlistMobiles[idx], '"model":"');
+      manufacturer := ExtractField(FlistMobiles[idx], '"manufacturer":"');
+      msisdn := ExtractField(FlistMobiles[idx], '"MSISDN":"');
+      addTreeViewItemtoRoot(model+ ' ' + manufacturer + ' (' + msisdn + ')', tvTraces, itemText, itemNode);
+    end;
+  end;
+
+  if FlistSIMs.Count > 0 then
+  begin
+    itemText := 'SIMs (' + IntToStr(FlistSIMs.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistSIMs.Count - 1 do
+    begin
+      simForm := ExtractField(FlistSIMs[idx], '"SIMForm":"');
+      carrier := ExtractField(FlistSIMs[idx], '"Carrier":"');
+      addTreeViewItemtoRoot(simForm + ' ' + carrier, tvTraces, itemText, itemNode);
+    end;
+  end;
+
+  if FlistFiles.Count > 0 then
+  begin
+    itemText := 'FILEs (' + IntToStr(FlistFiles.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistFiles.Count - 1 do
+    begin
+      fileName := ExtractField(FlistFiles[idx], '"fileName":"');
+      size := ExtractField(FlistFiles[idx], '"sizeInBytes":"');
+      addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
+    end;
+  end;
+
+  tvTraces.ExpandAll;
+end;
+
 procedure TformOverview.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
@@ -259,12 +317,8 @@ procedure TformOverview.ShowWithParamater(pathCase, uuidCase: String);
       for extracting uuid values and use them for reading descriptive info from trace_XXX.JSON
 }
 var
-  sDescription, sDate, sTime, itemText:string;
-  model, manufacturer, msisdn: String;
-  simForm, carrier: String;
-  fileName, size: String;
-  itemNode: TTreeViewItem;
-  idx, idy : Integer;
+  sDescription, sDate, sTime :string;
+  idx : Integer;
   aMonths: TStringList;
 begin
   SetUuidCase(uuidCase);
@@ -286,6 +340,9 @@ begin
 
   //FaMonth := TStringList.Create;
   SetaMonth(aMonths);
+
+  tvActions.Clear;
+  addTreeViewRoot('Digital Evidence Timeline', tvActions);
 
   FListActions := TStringList.Create;  // create of the property containing the investigative actions
 
@@ -316,48 +373,8 @@ begin
   //  specific Investigative_Action is selectes it only contains the Result/Output of the
   //  related Provenance_Record generated from that Investigative Action (Search and seizure,
   //  forensics acquistion, forensic extraction, etc.
-    lblResult.Text := 'Traces';
 
-    addTreeViewRoot('Traces', tvTraces);
-
-    if FlistMobiles.Count > 0 then
-    begin
-      itemText := 'Mobile devices (' + IntToStr(FlistMobiles.Count) + ')';
-      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
-      for idx := 0 to FlistMobiles.Count - 1 do
-      begin
-        model := ExtractField(FlistMobiles[idx], '"model":"');
-        manufacturer := ExtractField(FlistMobiles[idx], '"manufacturer":"');
-        msisdn := ExtractField(FlistMobiles[idx], '"MSISDN":"');
-        addTreeViewItemtoRoot(model+ ' ' + manufacturer + ' (' + msisdn + ')', tvTraces, itemText, itemNode);
-      end;
-    end;
-
-    if FlistSIMs.Count > 0 then
-    begin
-      itemText := 'SIMs (' + IntToStr(FlistSIMs.Count) + ')';
-      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
-      for idx := 0 to FlistSIMs.Count - 1 do
-      begin
-        simForm := ExtractField(FlistSIMs[idx], '"SIMForm":"');
-        carrier := ExtractField(FlistSIMs[idx], '"Carrier":"');
-        addTreeViewItemtoRoot(simForm + ' ' + carrier, tvTraces, itemText, itemNode);
-      end;
-    end;
-
-    if FlistFiles.Count > 0 then
-    begin
-      itemText := 'FILEs (' + IntToStr(FlistFiles.Count) + ')';
-      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
-      for idx := 0 to FlistFiles.Count - 1 do
-      begin
-        fileName := ExtractField(FlistFiles[idx], '"fileName":"');
-        size := ExtractField(FlistFiles[idx], '"sizeInBytes":"');
-        addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
-      end;
-    end;
-
-
+  setTraces();
   formOverview.ShowModal;
 end;
 
@@ -376,8 +393,9 @@ begin
   //itemGeneric := TTreeViewItem.Create(Self);
   //itemGeneric := tvActions.Selected;
   idx := tvActions.Selected.GlobalIndex;
+  //showmessage('global index=' + IntToStr(idx));
   if idx = 0 then  // root - Digital Evidence Timeline,
-    ShowMessage('text: ' + tvActions.Selected.Text + 'index: ' + IntToStr(idx))
+    SetTraces()
   else
   begin
     edWho.Text := '';
@@ -490,12 +508,13 @@ begin
     itemsMobile := TStringList.Create;
     itemsSIM := TStringList.Create;
     itemsFile := TStringList.Create;
-    lMobile := False;
-    lSIM := False;
-    lFile := False;
+
 
     for idx:= 0 to IdResults.Count - 1 do
     begin
+      lMobile := False;
+      lSIM := False;
+      lFile := False;
       for idy:=0 to FlistProvenanceRecords.Count - 1 do
       begin
         if AnsiContainsStr(FlistProvenanceRecords[idy], IdResults[idx]) then
@@ -520,8 +539,8 @@ begin
             begin
               if AnsiContainsStr(FlistSIMs[idk], sObject) then
               begin
-                itemsSIM.Add(ExtractField(FlistMobiles[idk], '"SIMForm":"') +
-                  ' ' +  ExtractField(FlistMobiles[idk], '"Carrier":"'));
+                itemsSIM.Add(ExtractField(FlistSIMs[idk], '"SIMForm":"') +
+                  ' ' +  ExtractField(FlistSIMs[idk], '"Carrier":"'));
                   lSIM := True;
                   break;
               end;
@@ -534,53 +553,45 @@ begin
             begin
               if AnsiContainsStr(FlistFiles[idk], sObject) then
               begin
-                itemsSIM.Add(ExtractField(FlistMobiles[idk], '"fileName":"') +
-                  ' (' +  ExtractField(FlistMobiles[idk], '"sizeInBytes":"') + ')');
+                itemsFile.Add(ExtractField(FlistFiles[idk], '"fileName":"') +
+                  ' (' +  ExtractField(FlistFiles[idk], '"sizeInBytes":"') + ')');
+                  lFile := True;
                   break;
               end;
             end;
 
+            if lFile then
+              break;
+
         end;
       end;
-
-      if itemsMobile.Count > 0 then
-      begin
-        itemText := 'Mobile devices (' + IntToStr(itemsMobile.Count) + ')';
-        itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
-        for idw := 0 to FlistMobiles.Count - 1 do
-        begin
-          model := ExtractField(FlistMobiles[idw], '"model":"');
-          manufacturer := ExtractField(FlistMobiles[idw], '"manufacturer":"');
-          msisdn := ExtractField(FlistMobiles[idw], '"MSISDN":"');
-          addTreeViewItemtoRoot(model+ ' ' + manufacturer + ' (' + msisdn + ')', tvTraces, itemText, itemNode);
-        end;
-      end;
-
-      if itemsSIM.Count > 0 then
-      begin
-        itemText := 'SIMs (' + IntToStr(itemsSIM.Count) + ')';
-        itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
-        for idw := 0 to FlistSIMs.Count - 1 do
-        begin
-          simForm := ExtractField(FlistSIMs[idw], '"SIMForm":"');
-          carrier := ExtractField(FlistSIMs[idw], '"Carrier":"');
-          addTreeViewItemtoRoot(simForm + ' ' + carrier, tvTraces, itemText, itemNode);
-        end;
-      end;
-
-      if itemsFile.Count > 0 then
-      begin
-        itemText := 'FILEs (' + IntToStr(itemsFile.Count) + ')';
-        itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
-        for idw := 0 to FlistFiles.Count - 1 do
-        begin
-          fileName := ExtractField(FlistFiles[idw], '"fileName":"');
-          size := ExtractField(FlistFiles[idw], '"sizeInBytes":"');
-          addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
-        end;
-      end;
-
     end;
+
+    if itemsMobile.Count > 0 then
+    begin
+      itemText := 'Mobile devices (' + IntToStr(itemsMobile.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsMobile.Count - 1 do
+        addTreeViewItemtoRoot(itemsMobile[idw], tvTraces, itemText, itemNode);
+    end;
+
+    if itemsSIM.Count > 0 then
+    begin
+      itemText := 'SIMs (' + IntToStr(itemsSIM.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsSIM.Count - 1 do
+        addTreeViewItemtoRoot(itemsSIM[idw], tvTraces, itemText, itemNode);
+    end;
+
+    if itemsFile.Count > 0 then
+    begin
+      itemText := 'FILEs (' + IntToStr(itemsFile.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsFile.Count - 1 do
+        addTreeViewItemtoRoot(itemsFile[idw], tvTraces, itemText, itemNode);
+    end;
+
+    tvTraces.ExpandAll;
   end;
 
 

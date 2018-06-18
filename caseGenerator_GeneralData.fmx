@@ -12,14 +12,14 @@ object formNewCase: TformNewCase
   object Label1: TLabel
     Position.X = 16.000000000000000000
     Position.Y = 16.000000000000000000
-    Size.Width = 81.000000000000000000
+    Size.Width = 161.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Name'
+    Text = 'National Procedure Number'
     TabOrder = 0
   end
-  object editName: TEdit
+  object edName: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 1
     TextSettings.Font.Size = 16.000000000000000000
@@ -36,7 +36,7 @@ object formNewCase: TformNewCase
     Text = 'Focus'
     TabOrder = 2
   end
-  object editFocus: TEdit
+  object edFocus: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 3
     TextSettings.Font.Size = 16.000000000000000000
@@ -70,10 +70,13 @@ object formNewCase: TformNewCase
     Viewport.Height = 49.000000000000000000
   end
   object btnConfirm: TButton
-    Position.X = 216.000000000000000000
+    Position.X = 144.000000000000000000
     Position.Y = 344.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 8
-    Text = '&Confirm'
+    Text = 'Save and close'
     OnClick = btnConfirmClick
   end
   object Label5: TLabel
@@ -98,5 +101,12 @@ object formNewCase: TformNewCase
     TabOrder = 6
     Viewport.Width = 513.000000000000000000
     Viewport.Height = 97.000000000000000000
+  end
+  object btnCancel: TButton
+    Position.X = 264.000000000000000000
+    Position.Y = 344.000000000000000000
+    TabOrder = 9
+    Text = 'Cancel'
+    OnClick = btnCancelClick
   end
 end

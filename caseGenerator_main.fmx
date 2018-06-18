@@ -72,37 +72,27 @@ object formMain: TformMain
     Text = 'Tool'
     OnClick = btnToolClick
   end
-  object btnGenerateJSON: TButton
-    Position.X = 296.000000000000000000
-    Position.Y = 328.000000000000000000
-    Size.Width = 65.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 18
-    Text = 'Open JSON'
-    OnClick = btnGenerateJSONClick
-  end
   object memoJSON: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     DataDetectorTypes = []
-    Position.X = 368.000000000000000000
+    Position.X = 288.000000000000000000
     Position.Y = 320.000000000000000000
-    Size.Width = 305.000000000000000000
-    Size.Height = 105.000000000000000000
+    Size.Width = 385.000000000000000000
+    Size.Height = 137.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 18
+    Viewport.Width = 385.000000000000000000
+    Viewport.Height = 137.000000000000000000
+  end
+  object btnSaveToJSON: TButton
+    Position.X = 495.000000000000000000
+    Position.Y = 474.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 19
-    Viewport.Width = 305.000000000000000000
-    Viewport.Height = 105.000000000000000000
-  end
-  object Button5: TButton
-    Position.X = 520.000000000000000000
-    Position.Y = 432.000000000000000000
-    Size.Width = 129.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 20
-    Text = 'Save to CaseTest.JSON'
-    OnClick = Button5Click
+    Text = 'Save CASE/JSON'
+    OnClick = btnSaveToJSONClick
   end
   object OpenDialog1: TOpenDialog
     Left = 464
@@ -132,7 +122,7 @@ object formMain: TformMain
     Size.Width = 166.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 22
+    TabOrder = 21
   end
   object btnRelationship: TButton
     Position.X = 187.000000000000000000
@@ -150,27 +140,27 @@ object formMain: TformMain
     Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 24
+    TabOrder = 23
     Text = 'Provenance Record'
     OnClick = btnPRClick
   end
   object lbObjects: TListBox
     Enabled = False
-    Position.X = 24.000000000000000000
-    Position.Y = 462.000000000000000000
-    Size.Width = 313.000000000000000000
+    Position.X = 21.000000000000000000
+    Position.Y = 139.000000000000000000
+    Size.Width = 119.000000000000000000
     Size.Height = 30.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 26
+    TabOrder = 25
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 313.000000000000000000
+    Viewport.Width = 119.000000000000000000
     Viewport.Height = 30.000000000000000000
     object Label2: TLabel
-      Position.X = 275.000000000000000000
-      Position.Y = 171.000000000000000000
+      Position.X = 3.000000000000000000
+      Position.Y = 75.000000000000000000
       Size.Width = 102.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
@@ -189,12 +179,12 @@ object formMain: TformMain
     OnClick = btnWarrantClick
   end
   object btnGenerateCaseJson: TButton
-    Position.X = 376.000000000000000000
-    Position.Y = 431.000000000000000000
-    Size.Width = 137.000000000000000000
+    Position.X = 359.000000000000000000
+    Position.Y = 474.000000000000000000
+    Size.Width = 129.000000000000000000
     Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 28
+    TabOrder = 27
     Text = 'Generate CASE/JSON'
     OnClick = btnGenerateCaseJsonClick
   end
@@ -205,9 +195,9 @@ object formMain: TformMain
     Size.Height = 81.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 30
+    TabOrder = 29
     object btnNewCase: TButton
-      Position.X = 272.000000000000000000
+      Position.X = 216.000000000000000000
       Position.Y = 51.000000000000000000
       Size.Width = 73.000000000000000000
       Size.Height = 22.000000000000000000
@@ -217,9 +207,9 @@ object formMain: TformMain
       OnClick = btnNewCaseClick
     end
     object cbCases: TComboBox
-      Position.X = 56.000000000000000000
+      Position.X = 80.000000000000000000
       Position.Y = 19.000000000000000000
-      Size.Width = 585.000000000000000000
+      Size.Width = 561.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
@@ -228,11 +218,31 @@ object formMain: TformMain
     object Label3: TLabel
       Position.X = 8.000000000000000000
       Position.Y = 22.000000000000000000
-      Size.Width = 57.000000000000000000
+      Size.Width = 73.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
-      Text = 'Cases'
+      Text = 'Select Case'
       TabOrder = 2
+    end
+    object btnModify: TButton
+      Position.X = 304.000000000000000000
+      Position.Y = 51.000000000000000000
+      Size.Width = 153.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = 'Modify general data'
+      OnClick = btnModifyClick
+    end
+    object btnGenerateJSON: TButton
+      Position.X = 580.000000000000000000
+      Position.Y = 51.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Open JSON'
+      OnClick = btnGenerateJSONClick
     end
   end
   object Label4: TLabel
@@ -242,7 +252,7 @@ object formMain: TformMain
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'National Procedure Number'
+    Text = 'National Procedure N.'
     TabOrder = 0
   end
   object edName: TEdit
@@ -318,14 +328,18 @@ object formMain: TformMain
     Viewport.Width = 497.000000000000000000
     Viewport.Height = 73.000000000000000000
   end
-  object Button1: TButton
-    Position.X = 376.000000000000000000
-    Position.Y = 480.000000000000000000
-    Size.Width = 209.000000000000000000
+  object btnTimeline: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 464.000000000000000000
+    Size.Width = 249.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 32
+    TabOrder = 31
     Text = 'Timeline Overview'
-    OnClick = Button1Click
+    OnClick = btnTimelineClick
+  end
+  object SaveDialog: TSaveDialog
+    Left = 528
+    Top = 328
   end
 end
