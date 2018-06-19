@@ -255,6 +255,7 @@ begin
     end;
 
     line := line + recSep + #9 + ']' + recSep + '}';
+    Result := line;
 end;
 
 procedure TformTraceMobile.btnCancelClick(Sender: TObject);
@@ -290,7 +291,9 @@ begin
     WriteLn(fileJSON, #9#9 + ']');  // it's important write in separate lines
     WriteLn(fileJSON, #9#9 + '}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-traceMOBILE.json');
 
   formTraceMobile.Close;
 end;

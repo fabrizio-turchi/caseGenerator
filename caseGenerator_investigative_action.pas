@@ -72,6 +72,7 @@ type
     cbActionsName: TComboBox;
     Label16: TLabel;
     edDescription: TEdit;
+    Label17: TLabel;
     procedure btnAddActionClick(Sender: TObject);
     procedure btnDeleteActionClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -1253,7 +1254,9 @@ begin
     Write(fileJSON,'}');
     btnAddAction.Enabled := True;
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-investigative_action.json');
 
   formInvestigativeAction.Close;
 end;

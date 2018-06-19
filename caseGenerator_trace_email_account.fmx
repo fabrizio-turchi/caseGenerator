@@ -1,9 +1,9 @@
-object formTracePhoneAccount: TformTracePhoneAccount
+object formTraceEmailAccount: TformTraceEmailAccount
   Left = 0
   Top = 0
   Caption = 'Trace Phone Account'
-  ClientHeight = 352
-  ClientWidth = 599
+  ClientHeight = 307
+  ClientWidth = 583
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,17 +11,17 @@ object formTracePhoneAccount: TformTracePhoneAccount
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 24.000000000000000000
-    Position.Y = 106.000000000000000000
-    Size.Width = 169.000000000000000000
+    Position.Y = 68.000000000000000000
+    Size.Width = 129.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Phone account'
+    Text = 'Trace'
     TabOrder = 0
   end
   object lbPhoneAccount: TListBox
     Position.X = 24.000000000000000000
-    Position.Y = 138.000000000000000000
+    Position.Y = 100.000000000000000000
     Size.Width = 553.000000000000000000
     Size.Height = 157.000000000000000000
     Size.PlatformDefault = False
@@ -33,9 +33,9 @@ object formTracePhoneAccount: TformTracePhoneAccount
     Viewport.Width = 553.000000000000000000
     Viewport.Height = 157.000000000000000000
   end
-  object edPhoneNumber: TEdit
+  object edEmail: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 3
+    TabOrder = 2
     FilterChar = '+0123456789'
     Position.X = 120.000000000000000000
     Position.Y = 32.000000000000000000
@@ -46,70 +46,54 @@ object formTracePhoneAccount: TformTracePhoneAccount
   object Label3: TLabel
     Position.X = 24.000000000000000000
     Position.Y = 40.000000000000000000
-    Text = 'Phone number'
-    TabOrder = 5
+    Text = 'Email address'
+    TabOrder = 3
   end
   object btnClose: TButton
     Position.X = 184.000000000000000000
-    Position.Y = 310.000000000000000000
+    Position.Y = 272.000000000000000000
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 7
+    TabOrder = 5
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddPhoneAccount: TButton
-    Position.X = 216.000000000000000000
-    Position.Y = 106.000000000000000000
+    Position.X = 160.000000000000000000
+    Position.Y = 68.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
+    TabOrder = 6
     Text = 'Add trace'
     OnClick = btnAddPhoneAccountClick
   end
   object btnDeletePhoneAccount: TButton
-    Position.X = 448.000000000000000000
-    Position.Y = 106.000000000000000000
+    Position.X = 392.000000000000000000
+    Position.Y = 68.000000000000000000
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 9
+    TabOrder = 7
     Text = 'Delete trace'
     OnClick = btnDeletePhoneAccountClick
   end
   object btnCancel: TButton
     Position.X = 296.000000000000000000
-    Position.Y = 310.000000000000000000
-    TabOrder = 11
+    Position.Y = 272.000000000000000000
+    TabOrder = 9
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
   object btnModifyTrace: TButton
-    Position.X = 333.000000000000000000
-    Position.Y = 106.000000000000000000
+    Position.X = 277.000000000000000000
+    Position.Y = 68.000000000000000000
     Size.Width = 106.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 12
+    TabOrder = 10
     Text = 'Modify trace'
     OnClick = btnModifyTraceClick
-  end
-  object Label2: TLabel
-    Position.X = 24.000000000000000000
-    Position.Y = 72.000000000000000000
-    Text = 'Issuer'
-    TabOrder = 4
-  end
-  object edIssuer: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 2
-    FilterChar = '+0123456789'
-    Position.X = 119.000000000000000000
-    Position.Y = 69.000000000000000000
-    Size.Width = 457.000000000000000000
-    Size.Height = 25.000000000000000000
-    Size.PlatformDefault = False
   end
 end

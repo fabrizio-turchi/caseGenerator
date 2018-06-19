@@ -125,8 +125,8 @@ object formTraceMobile: TformTraceMobile
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 765.000000000000000000
-    Viewport.Height = 156.000000000000000000
+    Viewport.Width = 769.000000000000000000
+    Viewport.Height = 160.000000000000000000
   end
   object edDeviceModel: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -198,7 +198,7 @@ object formTraceMobile: TformTraceMobile
         '31')
       Position.X = 110.000000000000000000
       Position.Y = 86.000000000000000000
-      Size.Width = 41.000000000000000000
+      Size.Width = 47.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 12
@@ -212,7 +212,7 @@ object formTraceMobile: TformTraceMobile
         '1954'
         '1955'
         '1956')
-      Position.X = 221.000000000000000000
+      Position.X = 226.000000000000000000
       Position.Y = 86.000000000000000000
       Size.Width = 100.000000000000000000
       Size.Height = 22.000000000000000000
@@ -233,7 +233,7 @@ object formTraceMobile: TformTraceMobile
         '10'
         '11'
         '12')
-      Position.X = 154.000000000000000000
+      Position.X = 159.000000000000000000
       Position.Y = 86.000000000000000000
       Size.Width = 61.000000000000000000
       Size.Height = 22.000000000000000000
@@ -342,20 +342,22 @@ object formTraceMobile: TformTraceMobile
     Size.PlatformDefault = False
   end
   object Label13: TLabel
-    Position.X = 147.000000000000000000
+    Position.X = 128.000000000000000000
     Position.Y = 161.000000000000000000
-    Size.Width = 82.000000000000000000
+    Size.Width = 118.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
     Text = 'iPhone Device'
     TabOrder = 35
   end
   object Label12: TLabel
-    Position.X = 523.000000000000000000
+    Position.X = 501.000000000000000000
     Position.Y = 160.000000000000000000
-    Size.Width = 102.000000000000000000
+    Size.Width = 177.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
     Text = 'Operating System'
     TabOrder = 33
   end

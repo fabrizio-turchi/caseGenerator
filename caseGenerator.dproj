@@ -9,6 +9,7 @@
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1119</TargetedPlatforms>
         <AppType>Application</AppType>
+        <Profile Condition="'$(Platform)'=='OSX32'">cnMacUfficio</Profile>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>
@@ -386,8 +387,8 @@
             <Form>formTraceDiskPartition</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="caseGenerator_trace_phone_account.pas">
-            <Form>formTracePhoneAccount</Form>
+        <DCCReference Include="caseGenerator_trace_mobile_account.pas">
+            <Form>formTraceMobileAccount</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="caseGenerator_trace_message.pas">
@@ -401,6 +402,10 @@
         <DCCReference Include="caseGenerator_util.pas"/>
         <DCCReference Include="caseGenerator_overview.pas">
             <Form>formOverview</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="caseGenerator_trace_email_account.pas">
+            <Form>formTraceEmailAccount</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
@@ -448,13 +453,6 @@
                 <DeployFile LocalName="Win64\Debug\caseGenerator.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
                         <RemoteName>caseGenerator.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="OSX32\Debug\caseGenerator.rsm" Configuration="Debug" Class="DebugSymbols">
-                    <Platform Name="OSX32">
-                        <RemoteDir>Contents\MacOS\</RemoteDir>
-                        <RemoteName>caseGenerator.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -912,7 +910,7 @@
                 <Platform value="iOSDevice32">True</Platform>
                 <Platform value="iOSDevice64">True</Platform>
                 <Platform value="iOSSimulator">True</Platform>
-                <Platform value="OSX32">True</Platform>
+                <Platform value="OSX32" Profile="cnMacUfficio">True</Platform>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">True</Platform>
             </Platforms>

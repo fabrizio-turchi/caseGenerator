@@ -132,7 +132,9 @@ begin
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-identity.json');
 
   formIdentity.Close;
 end;
@@ -149,6 +151,7 @@ begin
     cbDay.ItemIndex:= -1;
     cbMonth.ItemIndex := -1;
     cbYear.ItemIndex := -1;
+    timeBirthTime.Text := '';
   end;
 end;
 

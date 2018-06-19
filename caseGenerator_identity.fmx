@@ -159,7 +159,7 @@ object formIdentity: TformIdentity
       '31')
     Position.X = 224.000000000000000000
     Position.Y = 112.000000000000000000
-    Size.Width = 41.000000000000000000
+    Size.Width = 51.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 15
@@ -178,7 +178,7 @@ object formIdentity: TformIdentity
       '10'
       '11'
       '12')
-    Position.X = 272.000000000000000000
+    Position.X = 280.000000000000000000
     Position.Y = 112.000000000000000000
     TabOrder = 13
   end
@@ -191,7 +191,7 @@ object formIdentity: TformIdentity
       '1954'
       '1955'
       '1956')
-    Position.X = 376.000000000000000000
+    Position.X = 384.000000000000000000
     Position.Y = 112.000000000000000000
     TabOrder = 11
   end

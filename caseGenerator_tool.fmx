@@ -194,11 +194,12 @@ object formTool: TformTool
     Viewport.Height = 77.000000000000000000
   end
   object Label9: TLabel
-    Position.X = 443.000000000000000000
-    Position.Y = 25.000000000000000000
-    Size.Width = 153.000000000000000000
+    Position.X = 392.000000000000000000
+    Position.Y = 24.000000000000000000
+    Size.Width = 257.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
     Text = 'Configuration setting item'
     TabOrder = 14
   end

@@ -217,7 +217,9 @@ begin
     WriteLn(fileJSON, #9#9 + ']');  // it's important write in separate lines
     WriteLn(fileJSON, #9#9 + '}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-traceSIM.json');
 
   formTraceSIM.Close;
 end;

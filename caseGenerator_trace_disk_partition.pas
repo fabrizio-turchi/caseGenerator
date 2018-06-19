@@ -38,6 +38,7 @@ type
     btnAddPartition: TButton;
     btnRemovePartition: TButton;
     btnCancel: TButton;
+    btnModifyTrace: TButton;
     procedure btnAddTraceClick(Sender: TObject);
     procedure btnDeleteTraceClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -45,6 +46,7 @@ type
     procedure btnRemovePartitionClick(Sender: TObject);
     procedure lbTraceChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure btnModifyTraceClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -53,6 +55,7 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
+    function prepareTrace: String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -72,6 +75,12 @@ uses StrUtils;
 procedure TformTraceDiskPartition.btnDeleteTraceClick(Sender: TObject);
 begin
   lbTrace.Items.Delete(lbTrace.ItemIndex);
+end;
+
+procedure TformTraceDiskPartition.btnModifyTraceClick(Sender: TObject);
+begin
+  if lbTrace.ItemIndex > - 1 then
+    lbTrace.Items[lbTrace.ItemIndex] := prepareTrace();
 end;
 
 procedure TformTraceDiskPartition.btnRemovePartitionClick(Sender: TObject);
@@ -118,6 +127,31 @@ begin
 
 end;
 
+function TformTraceDiskPartition.prepareTrace: String;
+var
+  line, recSep: string;
+  Uid: TGUID;
+  idx: integer;
+begin
+   //cr := #13  +#10;
+    recSep := #30 + #30;
+    idx := 0;
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    line := line +  recSep + '"propertyBundle":[' + recSep;
+    for idx:=0  to lbPartition.Items.Count - 1 do
+      line := line + lbPartition.Items[idx];
+    line := line + #9 + '{"type":"ContentData",' + recSep;
+    line := line + '"hash":[' + recSep;
+    line := line + '{"@type":"Hash",' + recSep;
+    line := line + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
+    line := line + '"hashValue":"' + edHashValue.Text + '"}' + recSep;
+    line := line + '], ' + recSep;
+    line := line + '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
+    line := line + '}]}';
+    Result := line;
+end;
+
 procedure TformTraceDiskPartition.btnCancelClick(Sender: TObject);
 begin
   formTraceDiskPartition.Close;
@@ -147,7 +181,9 @@ begin
     WriteLn(fileJSON, lbTrace.Items[idx]);
     WriteLn(fileJSON, #9#9 + ']}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-traceDISK_PARTITION.json');
 
   formTraceDiskPartition.Close;
 end;
@@ -171,33 +207,12 @@ begin
 end;
 
 procedure TformTraceDiskPartition.btnAddTraceClick(Sender: TObject);
-var
-  line, recSep: string;
-  Uid: TGUID;
-  idx: integer;
 begin
   if (lbPartition.Items.Count = 0) or (Trim(edHashValue.Text) = '')  then
     ShowMessage('Partition data and/or Hash value are missing!')
   else
   begin
-    //cr := #13  +#10;
-    recSep := #30 + #30;
-    idx := 0;
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
-    line := line +  recSep + '"propertyBundle":[' + recSep;
-    for idx:=0  to lbPartition.Items.Count - 1 do
-      line := line + lbPartition.Items[idx];
-    line := line + #9 + '{"type":"ContentData",' + recSep;
-    line := line + '"hash":[' + recSep;
-    line := line + '{"@type":"Hash",' + recSep;
-    line := line + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
-    line := line + '"hashValue":"' + edHashValue.Text + '"}' + recSep;
-    line := line + '], ' + recSep;
-    line := line + '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
-    line := line + '}]}';
-
-    lbTrace.Items.Add(line);
+    lbTrace.Items.Add(prepareTrace());
     edID.Text := '';
     edOffset.Text := '';
     edLength.Text := '';
@@ -229,7 +244,7 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-identity.json
-  if FileExists(FpathCase + FuuidCase + '-traceFILE.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceDISK_PARTITION.json') then
   begin
     AssignFile(fileJSON, FpathCase + FuuidCase + '-traceDISK_PARTITION.json');
     Reset(fileJSON);

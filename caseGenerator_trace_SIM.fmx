@@ -30,7 +30,7 @@ object formTraceSIM: TformTraceSIM
     Size.PlatformDefault = False
   end
   object Label2: TLabel
-    Position.X = 32.000000000000000000
+    Position.X = 26.000000000000000000
     Position.Y = 32.000000000000000000
     Size.Width = 49.000000000000000000
     Size.Height = 17.000000000000000000
@@ -96,7 +96,7 @@ object formTraceSIM: TformTraceSIM
     Size.PlatformDefault = False
   end
   object Label5: TLabel
-    Position.X = 32.000000000000000000
+    Position.X = 26.000000000000000000
     Position.Y = 64.000000000000000000
     Size.Width = 57.000000000000000000
     Size.Height = 17.000000000000000000
@@ -114,11 +114,12 @@ object formTraceSIM: TformTraceSIM
     Size.PlatformDefault = False
   end
   object Label8: TLabel
-    Position.X = 32.000000000000000000
-    Position.Y = 104.000000000000000000
-    Size.Width = 97.000000000000000000
+    Position.X = 1.000000000000000000
+    Position.Y = 100.000000000000000000
+    Size.Width = 129.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
     Text = 'Capacity (bytes)'
     TabOrder = 5
   end
@@ -178,7 +179,7 @@ object formTraceSIM: TformTraceSIM
     TabOrder = 16
   end
   object Label6: TLabel
-    Position.X = 32.000000000000000000
+    Position.X = 27.000000000000000000
     Position.Y = 144.000000000000000000
     Size.Width = 97.000000000000000000
     Size.Height = 17.000000000000000000

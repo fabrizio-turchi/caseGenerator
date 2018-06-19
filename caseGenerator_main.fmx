@@ -12,7 +12,7 @@ object formMain: TformMain
   DesignerMasterStyle = 0
   object Label1: TLabel
     StyledSettings = [Family]
-    Position.X = 232.000000000000000000
+    Position.X = 264.000000000000000000
     Position.Y = 5.000000000000000000
     Size.Width = 281.000000000000000000
     Size.Height = 18.000000000000000000
@@ -109,6 +109,7 @@ object formMain: TformMain
     OnClick = btnTraceClick
   end
   object cbTrace: TComboBox
+    DropDownCount = 10
     Items.Strings = (
       'Mobile Device'
       'SIM'
@@ -116,6 +117,8 @@ object formMain: TformMain
       'File'
       'Disk Partition'
       'Phone account'
+      'Mobile account'
+      'Email account'
       'Message')
     Position.X = 107.000000000000000000
     Position.Y = 395.000000000000000000
@@ -179,13 +182,14 @@ object formMain: TformMain
     OnClick = btnWarrantClick
   end
   object btnGenerateCaseJson: TButton
-    Position.X = 359.000000000000000000
+    Position.X = 344.000000000000000000
     Position.Y = 474.000000000000000000
-    Size.Width = 129.000000000000000000
+    Size.Width = 144.000000000000000000
     Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 27
     Text = 'Generate CASE/JSON'
+    TextSettings.WordWrap = True
     OnClick = btnGenerateCaseJsonClick
   end
   object panelCase: TPanel
@@ -232,6 +236,7 @@ object formMain: TformMain
       Size.PlatformDefault = False
       TabOrder = 3
       Text = 'Modify general data'
+      TextSettings.WordWrap = True
       OnClick = btnModifyClick
     end
     object btnGenerateJSON: TButton

@@ -2,8 +2,8 @@ object formInvestigativeAction: TformInvestigativeAction
   Left = 0
   Top = 0
   Caption = 'Investigative Action'
-  ClientHeight = 683
-  ClientWidth = 746
+  ClientHeight = 682
+  ClientWidth = 734
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -18,13 +18,13 @@ object formInvestigativeAction: TformInvestigativeAction
     StyleLookup = 'panelstyle'
     TabOrder = 20
     object Label14: TLabel
-      Position.X = 6.000000000000000000
+      Position.X = 11.000000000000000000
       Position.Y = 20.000000000000000000
       Size.Width = 122.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Provenance Record'
-      TabOrder = 2
+      TabOrder = 3
     end
     object Label11: TLabel
       Position.X = 324.000000000000000000
@@ -32,7 +32,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Result'
-      TabOrder = 3
+      TabOrder = 4
     end
     object cbProvenanceRecord: TComboBox
       Position.X = 136.000000000000000000
@@ -40,7 +40,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 553.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 14
+      TabOrder = 15
     end
     object lbProvenanceRecords: TListBox
       Position.X = 136.000000000000000000
@@ -48,23 +48,24 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 553.000000000000000000
       Size.Height = 73.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 5
       DisableFocusEffect = True
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbProvenanceRecordsChange
-      Viewport.Width = 549.000000000000000000
-      Viewport.Height = 69.000000000000000000
+      Viewport.Width = 553.000000000000000000
+      Viewport.Height = 73.000000000000000000
     end
     object Label3: TLabel
-      Position.X = 5.000000000000000000
-      Position.Y = 76.000000000000000000
-      Size.Width = 130.000000000000000000
+      Position.X = 2.000000000000000000
+      Position.Y = 84.000000000000000000
+      Size.Width = 132.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
-      Text = 'List Provenance Records'
-      TabOrder = 1
+      TextSettings.HorzAlign = Center
+      Text = 'List'
+      TabOrder = 2
     end
     object btnAddPR: TButton
       Position.X = 168.000000000000000000
@@ -72,7 +73,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 145.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 6
       Text = 'Add provenance record'
       OnClick = btnAddPRClick
     end
@@ -82,7 +83,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 169.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 6
+      TabOrder = 7
       Text = 'Remove provenance record'
       OnClick = Button1Click
     end
@@ -92,9 +93,19 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 177.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 15
+      TabOrder = 16
       Text = 'Modify provenance record'
       OnClick = btnModifyProvenanceRecordClick
+    end
+    object Label17: TLabel
+      Position.X = -5.000000000000000000
+      Position.Y = 95.000000000000000000
+      Size.Width = 145.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      Text = 'Provenance Records'
+      TabOrder = 1
     end
   end
   object panelSource: TPanel
@@ -106,11 +117,12 @@ object formInvestigativeAction: TformInvestigativeAction
     StyleLookup = 'panelstyle'
     TabOrder = 21
     object Label5: TLabel
-      Position.X = 235.000000000000000000
-      Position.Y = 1.000000000000000000
-      Size.Width = 230.000000000000000000
+      Position.X = 200.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 281.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
       Text = 'Select source (Trace or Provenance Record)'
       TabOrder = 0
     end
@@ -155,8 +167,8 @@ object formInvestigativeAction: TformInvestigativeAction
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbInvestigativeActionChange
-    Viewport.Width = 693.000000000000000000
-    Viewport.Height = 62.000000000000000000
+    Viewport.Width = 697.000000000000000000
+    Viewport.Height = 66.000000000000000000
   end
   object Label2: TLabel
     Position.X = 320.000000000000000000
@@ -496,8 +508,8 @@ object formInvestigativeAction: TformInvestigativeAction
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbArgumentsChange
-      Viewport.Width = 373.000000000000000000
-      Viewport.Height = 85.000000000000000000
+      Viewport.Width = 377.000000000000000000
+      Viewport.Height = 89.000000000000000000
     end
     object btnArgumentAdd: TButton
       Position.X = 62.000000000000000000

@@ -182,7 +182,9 @@ begin
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-location.json');
 
   formLocation.Close;
 end;

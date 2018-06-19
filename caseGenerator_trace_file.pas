@@ -12,7 +12,6 @@ uses
 type
   TformTraceFile = class(TForm)
     Label1: TLabel;
-    edName: TEdit;
     Label2: TLabel;
     btnClose: TButton;
     btnAddTool: TButton;
@@ -46,6 +45,7 @@ type
     Label5: TLabel;
     btnModifyTrace: TButton;
     btnCancel: TButton;
+    memoName: TMemo;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -100,7 +100,7 @@ begin
   for idx:=2000 to 2020 do
     cbCreationYear.Items.Add(IntToStr(idx));
 
-  edName.Text := '';
+  memoName.Lines.Clear;
   edPath.Text := '';
   edExtension.Text := '';
   edSystemType.Text := '';
@@ -148,7 +148,7 @@ var
 begin
   line := lbTrace.Items[lbTrace.ItemIndex];
 
-  edName.Text := ExtractField(line, '"fileName":"');
+  memoName.Lines.Text := ExtractField(line, '"fileName":"');
   edPath.Text := ExtractField(line, '"filePath":"');
   edExtension.Text := ExtractField(line, '"extension":"');
   edSystemType.Text := ExtractField(line, '"fileSystemType":"');
@@ -175,7 +175,7 @@ var
   Uid: TGUID;
   idx: integer;
 begin
-  if (Trim(edName.Text) = '') or (Trim(edPath.Text) = '')  then
+  if (Trim(memoName.Text) = '') or (Trim(edPath.Text) = '')  then
     ShowMessage('Name and/or Path are missing!')
   else
   begin
@@ -185,7 +185,7 @@ begin
     line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
     line := line +  recSep + '"propertyBundle":[' + recSep + '{' + recSep;
     line := line + #9 + '"@type":"File",' + recSep;
-    line := line + #9 + '"fileName":"' + edName.Text + '",' + recSep;
+    line := line + #9 + '"fileName":"' + memoName.Text + '",' + recSep;
     line := line + #9 + '"filePath":"' + edPath.Text + '",' + recSep;
     line := line + #9 + '"extension":"' + edExtension.Text + '",' + recSep;
     line := line + #9 + '"fileSystemType":"' + edSystemType.Text + '",' + recSep;
@@ -251,12 +251,12 @@ end;
 
 procedure TformTraceFile.btnAddToolClick(Sender: TObject);
 begin
-  if (Trim(edName.Text) = '') or (Trim(edPath.Text) = '')  then
+  if (Trim(memoName.Text) = '') or (Trim(edPath.Text) = '')  then
     ShowMessage('Name and/or Path are missing!')
   else
   begin
     lbTrace.Items.Add(prepareItemTrace());
-    edName.Text := '';
+    memoName.Text := '';
     edSystemType.Text := '';
     edExtension.Text := '';
     edSize.Text := '';

@@ -201,7 +201,9 @@ begin
     WriteLn(fileJSON, lbTrace.Items[idx]);
     WriteLn(fileJSON, #9#9 + ']}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-traceCOMPUTER.json');
 
   formTraceComputer.Close;
 end;

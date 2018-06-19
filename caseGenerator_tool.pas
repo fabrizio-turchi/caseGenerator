@@ -92,7 +92,7 @@ end;
 procedure TformTool.btnModifyItemClick(Sender: TObject);
 begin
   if lbConfigurationSettingTool.ItemIndex > - 1 then
-    lbConfigurationSettingTool.Items.Add(prepareItemSettingTool());
+    lbConfigurationSettingTool.Items[lbConfigurationSettingTool.ItemIndex] := prepareItemSettingTool();
 end;
 
 procedure TformTool.btnModifyToolClick(Sender: TObject);
@@ -156,6 +156,8 @@ begin
 
   if lbTool.ItemIndex > -1 then
   begin
+    editemName.Text := '';
+    editemValue.Text := '';
     line := lbTool.Items[lbTool.ItemIndex];
     edName.Text := ExtractField(line, '"name":"');
     cbValue  := ExtractField(line, '"toolType":"');
@@ -314,6 +316,9 @@ begin
   cbToolType.ItemIndex := -1;
   edCreator.Text := '';
   edVersion.Text := '';
+  edItemName.Text := '';
+  edItemValue.Text := '';
+  lbConfigurationSettingTool.Items.Clear;
   // read file JSON uuidCase-identity.json
   if FileExists(FpathCase + FuuidCase + '-tool.json') then
   begin

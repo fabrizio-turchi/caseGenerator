@@ -79,11 +79,12 @@ object formProvenanceRecord: TformProvenanceRecord
       Size.PlatformDefault = False
     end
     object Label2: TLabel
-      Position.X = 8.000000000000000000
+      Position.X = -6.000000000000000000
       Position.Y = 94.000000000000000000
-      Size.Width = 73.000000000000000000
+      Size.Width = 97.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
       Text = 'Creation time'
       TabOrder = 3
     end
@@ -122,7 +123,7 @@ object formProvenanceRecord: TformProvenanceRecord
         '31')
       Position.X = 88.000000000000000000
       Position.Y = 92.000000000000000000
-      Size.Width = 41.000000000000000000
+      Size.Width = 58.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 15
@@ -141,7 +142,7 @@ object formProvenanceRecord: TformProvenanceRecord
         '10'
         '11'
         '12')
-      Position.X = 132.000000000000000000
+      Position.X = 150.000000000000000000
       Position.Y = 92.000000000000000000
       TabOrder = 13
     end
@@ -154,14 +155,14 @@ object formProvenanceRecord: TformProvenanceRecord
         '1954'
         '1955'
         '1956')
-      Position.X = 234.000000000000000000
+      Position.X = 252.000000000000000000
       Position.Y = 92.000000000000000000
       TabOrder = 12
     end
     object timePR: TTimeEdit
       Time = 0.675166099537036900
       TimeFormatKind = Long
-      Position.X = 337.000000000000000000
+      Position.X = 355.000000000000000000
       Position.Y = 92.000000000000000000
       TabOrder = 9
     end
@@ -189,8 +190,8 @@ object formProvenanceRecord: TformProvenanceRecord
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbProvenanceRecordChange
-    Viewport.Width = 693.000000000000000000
-    Viewport.Height = 205.000000000000000000
+    Viewport.Width = 697.000000000000000000
+    Viewport.Height = 209.000000000000000000
   end
   object btnClose: TButton
     Position.X = 235.000000000000000000
@@ -203,7 +204,7 @@ object formProvenanceRecord: TformProvenanceRecord
     OnClick = btnCloseClick
   end
   object btnAddPR: TButton
-    Position.X = 208.000000000000000000
+    Position.X = 184.000000000000000000
     Position.Y = 225.000000000000000000
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
@@ -213,9 +214,9 @@ object formProvenanceRecord: TformProvenanceRecord
     OnClick = btnAddPRClick
   end
   object btnDeletePR: TButton
-    Position.X = 376.000000000000000000
+    Position.X = 536.000000000000000000
     Position.Y = 225.000000000000000000
-    Size.Width = 153.000000000000000000
+    Size.Width = 177.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
@@ -228,5 +229,15 @@ object formProvenanceRecord: TformProvenanceRecord
     TabOrder = 8
     Text = 'Cancel'
     OnClick = btnCancelClick
+  end
+  object btnModifyPR: TButton
+    Position.X = 352.000000000000000000
+    Position.Y = 224.000000000000000000
+    Size.Width = 177.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+    Text = 'Modify provenance record'
+    OnClick = btnModifyPRClick
   end
 end

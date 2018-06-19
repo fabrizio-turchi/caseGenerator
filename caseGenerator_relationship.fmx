@@ -213,8 +213,8 @@ object formRelationship: TformRelationship
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbRelationshipChange
-    Viewport.Width = 693.000000000000000000
-    Viewport.Height = 170.000000000000000000
+    Viewport.Width = 697.000000000000000000
+    Viewport.Height = 174.000000000000000000
   end
   object edNameRelationship: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -270,7 +270,8 @@ object formRelationship: TformRelationship
       'has_role'
       'has_device'
       'located_at'
-      'contained_within')
+      'contained_within'
+      'has_account')
     Position.X = 120.000000000000000000
     Position.Y = 24.000000000000000000
     Size.Width = 233.000000000000000000

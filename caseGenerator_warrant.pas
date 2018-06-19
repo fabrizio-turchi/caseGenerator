@@ -430,7 +430,9 @@ begin
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-warrant.json');
 
   formWarrant.Close;
 end;

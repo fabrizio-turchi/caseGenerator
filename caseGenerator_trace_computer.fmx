@@ -138,11 +138,12 @@ object formTraceComputer: TformTraceComputer
     TabOrder = 35
   end
   object Label4: TLabel
-    Position.X = 538.000000000000000000
+    Position.X = 514.000000000000000000
     Position.Y = 16.000000000000000000
-    Size.Width = 84.000000000000000000
+    Size.Width = 135.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
     Text = 'MAC addresss'
     TabOrder = 32
   end
@@ -219,20 +220,22 @@ object formTraceComputer: TformTraceComputer
     Size.PlatformDefault = False
   end
   object Label13: TLabel
-    Position.X = 147.000000000000000000
+    Position.X = 123.000000000000000000
     Position.Y = 161.000000000000000000
     Size.Width = 134.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
     Text = 'BIOS specification'
     TabOrder = 29
   end
   object Label12: TLabel
-    Position.X = 523.000000000000000000
+    Position.X = 512.000000000000000000
     Position.Y = 160.000000000000000000
-    Size.Width = 102.000000000000000000
+    Size.Width = 150.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
     Text = 'Operating System'
     TabOrder = 28
   end

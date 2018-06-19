@@ -1,4 +1,4 @@
-unit caseGenerator_trace_phone_account;
+unit caseGenerator_trace_mobile_account;
 
 interface
 
@@ -6,26 +6,25 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
-  FMX.ListBox, FMX.Controls.Presentation;
+  FMX.ListBox, FMX.Controls.Presentation, caseGenerator_util;
 
 type
-  TformTracePhoneAccount = class(TForm)
+  TformTraceMobileAccount = class(TForm)
     Label1: TLabel;
     lbPhoneAccount: TListBox;
-    edPhoneNumber: TEdit;
+    edMSISDN: TEdit;
     Label3: TLabel;
     btnClose: TButton;
     btnAddPhoneAccount: TButton;
     btnDeletePhoneAccount: TButton;
     btnCancel: TButton;
     btnModifyTrace: TButton;
-    Label2: TLabel;
-    edIssuer: TEdit;
     procedure btnAddPhoneAccountClick(Sender: TObject);
     procedure btnDeletePhoneAccountClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnModifyTraceClick(Sender: TObject);
+    procedure lbPhoneAccountClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -41,7 +40,7 @@ type
   end;
 
 var
-  formTracePhoneAccount: TformTracePhoneAccount;
+  formTraceMobileAccount: TformTraceMobileAccount;
 
 implementation
 
@@ -50,26 +49,32 @@ uses StrUtils;
 
 { TForm1 }
 
-procedure TformTracePhoneAccount.btnDeletePhoneAccountClick(Sender: TObject);
+procedure TformTraceMobileAccount.btnDeletePhoneAccountClick(Sender: TObject);
 begin
   lbPhoneAccount.Items.Delete(lbPhoneAccount.ItemIndex);
 end;
 
 
-procedure TformTracePhoneAccount.btnModifyTraceClick(Sender: TObject);
+procedure TformTraceMobileAccount.btnModifyTraceClick(Sender: TObject);
 begin
   if lbPhoneAccount.ItemIndex > - 1 then
     lbPhoneAccount.Items[lbPhoneAccount.ItemIndex] := prepareTrace();
 end;
 
-function TformTracePhoneAccount.prepareTrace: String;
+procedure TformTraceMobileAccount.lbPhoneAccountClick(Sender: TObject);
+begin
+  if lbPhoneAccount.ItemIndex > - 1 then
+    edMSISDN.Text := ExtractField(lbPhoneAccount.Items[lbPhoneAccount.ItemIndex], '"MSISDN":"');
+end;
+
+function TformTraceMobileAccount.prepareTrace: String;
 var
   line, recSep: string;
   Uid: TGUID;
 begin
   recSep := #30 + #30; // record separator, not printable
-  if (Trim(edPhoneNumber.Text) = '')  then
-    ShowMessage('Phone number is missing!')
+  if (Trim(edMSISDN.Text) = '')  then
+    ShowMessage('MSISDN number is missing!')
   else
   begin
     CreateGUID(Uid);
@@ -77,22 +82,22 @@ begin
     line := line + '"@type":"Trace", ' + recSep;
     line := line + '"propertyBundle":[{' + recSep;
     line := line + '"@type":"Account", ' + recSep;
-    line := line + '"accountIssuer":"' + edIssuer.Text + '", ' + recSep;
+    line := line + '"accountType":"PhoneAccount", ' + recSep;
     line := line + '"isActive":"true"' + recSep + '},' + recSep;
-    line := line + '{"@type":"PhoneAccount", ' + recSep;
-    line := line + '"phoneNumber":"' + edPhoneNumber.Text + '"' + recSep;
+    line := line + '{"@type":"MobileAccount", ' + recSep;
+    line := line + '"MSISDN":"' + edMSISDN.Text + '"' + recSep;
     line := line + '}]}';
   end;
   Result := line;
 
 end;
 
-procedure TformTracePhoneAccount.btnCancelClick(Sender: TObject);
+procedure TformTraceMobileAccount.btnCancelClick(Sender: TObject);
 begin
-  formTracePhoneAccount.Close;
+  formTraceMobileAccount.Close;
 end;
 
-procedure TformTracePhoneAccount.btnCloseClick(Sender: TObject);
+procedure TformTraceMobileAccount.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
   line:string;
@@ -100,13 +105,13 @@ var
 begin
   //dir := GetCurrentDir;
   // create file JSON uuidCase-phone_account.json
-  AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMOBILE_ACCOUNT.json');
   if lbPhoneAccount.Items.Count > 0 then
   begin
     idx := 0;
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_PHONE_ACCOUNT":[';
+    line := #9 + '"OBJECTS_MOBILE_ACCOUNT":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbPhoneAccount.Items.Count - 2 do
@@ -119,28 +124,28 @@ begin
     CloseFile(fileJSON);
   end
   else
-    deleteFile(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    deleteFile(FpathCase + FuuidCase + '-traceMOBILE_ACCOUNT.json');
 
-  formTracePhoneAccount.Close;
+  formTraceMobileAccount.Close;
 end;
 
-procedure TformTracePhoneAccount.btnAddPhoneAccountClick(Sender: TObject);
+procedure TformTraceMobileAccount.btnAddPhoneAccountClick(Sender: TObject);
 begin
     lbPhoneAccount.Items.Add(prepareTrace());
-    edPhoneNumber.Text := '';
+    edMSISDN.Text := '';
 end;
 
-procedure TformTracePhoneAccount.SetpathCase(const Value: String);
+procedure TformTraceMobileAccount.SetpathCase(const Value: String);
 begin
   FpathCase := Value;
 end;
 
-procedure TformTracePhoneAccount.SetuuidCase(const Value: string);
+procedure TformTraceMobileAccount.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
 end;
 
-procedure TformTracePhoneAccount.ShowWithParamater(pathCase: String; uuidCase: String);
+procedure TformTraceMobileAccount.ShowWithParamater(pathCase: String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine:string;
@@ -149,9 +154,9 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-tracePHONE_ACCOUNT.json
-  if FileExists(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceMOBILE_ACCOUNT.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMOBILE_ACCOUNT.json');
     Reset(fileJSON);
     lbPhoneAccount.Items.Clear;
     while not Eof(fileJSON) do
@@ -174,7 +179,7 @@ begin
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
 
-  formTracePhoneAccount.ShowModal;
+  formTraceMobileAccount.ShowModal;
 end;
 
 end.

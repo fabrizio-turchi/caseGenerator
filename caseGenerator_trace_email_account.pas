@@ -1,4 +1,4 @@
-unit caseGenerator_trace_phone_account;
+unit caseGenerator_trace_email_account;
 
 interface
 
@@ -9,18 +9,16 @@ uses
   FMX.ListBox, FMX.Controls.Presentation;
 
 type
-  TformTracePhoneAccount = class(TForm)
+  TformTraceEmailAccount = class(TForm)
     Label1: TLabel;
     lbPhoneAccount: TListBox;
-    edPhoneNumber: TEdit;
+    edEmail: TEdit;
     Label3: TLabel;
     btnClose: TButton;
     btnAddPhoneAccount: TButton;
     btnDeletePhoneAccount: TButton;
     btnCancel: TButton;
     btnModifyTrace: TButton;
-    Label2: TLabel;
-    edIssuer: TEdit;
     procedure btnAddPhoneAccountClick(Sender: TObject);
     procedure btnDeletePhoneAccountClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -41,7 +39,7 @@ type
   end;
 
 var
-  formTracePhoneAccount: TformTracePhoneAccount;
+  formTraceEmailAccount: TformTraceEmailAccount;
 
 implementation
 
@@ -50,49 +48,46 @@ uses StrUtils;
 
 { TForm1 }
 
-procedure TformTracePhoneAccount.btnDeletePhoneAccountClick(Sender: TObject);
+procedure TformTraceEmailAccount.btnDeletePhoneAccountClick(Sender: TObject);
 begin
   lbPhoneAccount.Items.Delete(lbPhoneAccount.ItemIndex);
 end;
 
 
-procedure TformTracePhoneAccount.btnModifyTraceClick(Sender: TObject);
+procedure TformTraceEmailAccount.btnModifyTraceClick(Sender: TObject);
 begin
   if lbPhoneAccount.ItemIndex > - 1 then
     lbPhoneAccount.Items[lbPhoneAccount.ItemIndex] := prepareTrace();
 end;
 
-function TformTracePhoneAccount.prepareTrace: String;
+function TformTraceEmailAccount.prepareTrace: String;
 var
   line, recSep: string;
   Uid: TGUID;
 begin
   recSep := #30 + #30; // record separator, not printable
-  if (Trim(edPhoneNumber.Text) = '')  then
-    ShowMessage('Phone number is missing!')
+  if (Trim(edEmail.Text) = '')  then
+    ShowMessage('Email is missing!')
   else
   begin
     CreateGUID(Uid);
     line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
     line := line + '"@type":"Trace", ' + recSep;
     line := line + '"propertyBundle":[{' + recSep;
-    line := line + '"@type":"Account", ' + recSep;
-    line := line + '"accountIssuer":"' + edIssuer.Text + '", ' + recSep;
-    line := line + '"isActive":"true"' + recSep + '},' + recSep;
-    line := line + '{"@type":"PhoneAccount", ' + recSep;
-    line := line + '"phoneNumber":"' + edPhoneNumber.Text + '"' + recSep;
+    line := line + '"@type":"EmailAccount", ' + recSep;
+    line := line + '"emailAddress":"' + edEmail.Text + '"' + recSep;
     line := line + '}]}';
   end;
   Result := line;
 
 end;
 
-procedure TformTracePhoneAccount.btnCancelClick(Sender: TObject);
+procedure TformTraceEmailAccount.btnCancelClick(Sender: TObject);
 begin
-  formTracePhoneAccount.Close;
+  formTraceEmailAccount.Close;
 end;
 
-procedure TformTracePhoneAccount.btnCloseClick(Sender: TObject);
+procedure TformTraceEmailAccount.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
   line:string;
@@ -100,13 +95,13 @@ var
 begin
   //dir := GetCurrentDir;
   // create file JSON uuidCase-phone_account.json
-  AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
   if lbPhoneAccount.Items.Count > 0 then
   begin
     idx := 0;
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_PHONE_ACCOUNT":[';
+    line := #9 + '"OBJECTS_EMAIL_ACCOUNT":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbPhoneAccount.Items.Count - 2 do
@@ -119,28 +114,28 @@ begin
     CloseFile(fileJSON);
   end
   else
-    deleteFile(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    deleteFile(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
 
-  formTracePhoneAccount.Close;
+  formTraceEmailAccount.Close;
 end;
 
-procedure TformTracePhoneAccount.btnAddPhoneAccountClick(Sender: TObject);
+procedure TformTraceEmailAccount.btnAddPhoneAccountClick(Sender: TObject);
 begin
-    lbPhoneAccount.Items.Add(prepareTrace());
-    edPhoneNumber.Text := '';
+  lbPhoneAccount.Items.Add(prepareTrace());
+  edEmail.Text := '';
 end;
 
-procedure TformTracePhoneAccount.SetpathCase(const Value: String);
+procedure TformTraceEmailAccount.SetpathCase(const Value: String);
 begin
   FpathCase := Value;
 end;
 
-procedure TformTracePhoneAccount.SetuuidCase(const Value: string);
+procedure TformTraceEmailAccount.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
 end;
 
-procedure TformTracePhoneAccount.ShowWithParamater(pathCase: String; uuidCase: String);
+procedure TformTraceEmailAccount.ShowWithParamater(pathCase: String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine:string;
@@ -149,9 +144,9 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-tracePHONE_ACCOUNT.json
-  if FileExists(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
     Reset(fileJSON);
     lbPhoneAccount.Items.Clear;
     while not Eof(fileJSON) do
@@ -174,7 +169,7 @@ begin
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
 
-  formTracePhoneAccount.ShowModal;
+  formTraceEmailAccount.ShowModal;
 end;
 
 end.

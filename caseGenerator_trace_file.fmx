@@ -127,7 +127,7 @@ object formTraceFile: TformTraceFile
         '31')
       Position.X = 88.000000000000000000
       Position.Y = 82.000000000000000000
-      Size.Width = 41.000000000000000000
+      Size.Width = 54.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 15
@@ -146,7 +146,7 @@ object formTraceFile: TformTraceFile
         '10'
         '11'
         '12')
-      Position.X = 132.000000000000000000
+      Position.X = 145.000000000000000000
       Position.Y = 82.000000000000000000
       TabOrder = 13
     end
@@ -159,14 +159,14 @@ object formTraceFile: TformTraceFile
         '1954'
         '1955'
         '1956')
-      Position.X = 234.000000000000000000
+      Position.X = 247.000000000000000000
       Position.Y = 82.000000000000000000
       TabOrder = 12
     end
     object timeCreation: TTimeEdit
       Time = 0.675166099537036900
       TimeFormatKind = Long
-      Position.X = 337.000000000000000000
+      Position.X = 350.000000000000000000
       Position.Y = 82.000000000000000000
       TabOrder = 9
     end
@@ -179,18 +179,9 @@ object formTraceFile: TformTraceFile
       Text = 'Creation time'
       TabOrder = 2
     end
-    object edName: TEdit
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 17
-      Position.X = 85.000000000000000000
-      Position.Y = 20.000000000000000000
-      Size.Width = 273.000000000000000000
-      Size.Height = 25.000000000000000000
-      Size.PlatformDefault = False
-    end
     object edSize: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 18
+      TabOrder = 17
       Position.X = 480.000000000000000000
       Position.Y = 48.000000000000000000
       Size.Width = 249.000000000000000000
@@ -199,7 +190,7 @@ object formTraceFile: TformTraceFile
     end
     object edPath: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 19
+      TabOrder = 18
       Position.X = 89.000000000000000000
       Position.Y = 118.000000000000000000
       Size.Width = 644.000000000000000000
@@ -380,5 +371,17 @@ object formTraceFile: TformTraceFile
     TabOrder = 15
     Text = 'Cancel'
     OnClick = btnCancelClick
+  end
+  object memoName: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 110.000000000000000000
+    Position.Y = 51.000000000000000000
+    Size.Width = 299.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 16
+    Viewport.Width = 299.000000000000000000
+    Viewport.Height = 25.000000000000000000
   end
 end

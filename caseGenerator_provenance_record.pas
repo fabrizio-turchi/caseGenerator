@@ -30,12 +30,14 @@ type
     cbPRYear: TComboBox;
     timePR: TTimeEdit;
     btnCancel: TButton;
+    btnModifyPR: TButton;
     procedure btnAddPRClick(Sender: TObject);
     procedure btnDeletePRClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbProvenanceRecordChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure btnModifyPRClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -48,6 +50,7 @@ type
     procedure readTraceMobileFromFile;
     procedure readTraceSIMFromFile;
     procedure readTraceFileFromFile;
+    function prepareProvenanceRecord: String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -69,6 +72,12 @@ begin
   lbProvenanceRecord.Items.Delete(lbProvenanceRecord.ItemIndex);
 end;
 
+
+procedure TformProvenanceRecord.btnModifyPRClick(Sender: TObject);
+begin
+  if lbProvenanceRecord.ItemIndex > - 1 then
+    lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex] := prepareProvenanceRecord();
+end;
 
 procedure TformProvenanceRecord.FormShow(Sender: TObject);
 var
@@ -168,6 +177,27 @@ begin
       end;
     end;
 
+end;
+
+function TformProvenanceRecord.prepareProvenanceRecord: String;
+var
+  line, recSep, sObject: string;
+  Uid: TGUID;
+begin
+  CreateGUID(Uid);
+  recSep := #30 + #30;
+  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  line := line + '"@type":"ProvenanceRecord",' + recSep;
+  line := line + '"createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
+  line := line +  cbPRMonth.Items[cbPRMonth.ItemIndex] + '-';
+  line := line +  cbPRDay.Items[cbPRDay.ItemIndex] + 'T';
+  line := line +  TimeToStr(timePR.Time) + 'Z", ' + recSep;
+  line := line +  '"description":"' + edDescription.Text + '", ' + recSep;
+  line := line +  '"exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
+  line := line +  '"object":"';
+  sObject := cbObject.Items[cbObject.ItemIndex];
+  line := line + Copy(sObject, Pos('@', sObject) +1, Length(sObject)) + '"}';
+  Result := line;
 end;
 
 procedure TformProvenanceRecord.readTraceFileFromFile;
@@ -416,35 +446,20 @@ begin
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-provenance_record.json');
 
   formProvenanceRecord.Close;
 end;
 
 procedure TformProvenanceRecord.btnAddPRClick(Sender: TObject);
-var
-  line, recSep, sObject: string;
-  Uid: TGUID;
 begin
   if (edDescription.Text = '') or (cbObject.ItemIndex = -1)  then
     ShowMessage('Description and/or Object are missing!')
   else
   begin
-    CreateGUID(Uid);
-    recSep := #30 + #30;
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
-    line := line + '"@type":"ProvenanceRecord",' + recSep;
-    line := line + '"createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
-    line := line +  cbPRMonth.Items[cbPRMonth.ItemIndex] + '-';
-    line := line +  cbPRDay.Items[cbPRDay.ItemIndex] + 'T';
-    line := line +  TimeToStr(timePR.Time) + 'Z", ' + recSep;
-    line := line +  '"description":"' + edDescription.Text + '", ' + recSep;
-    line := line +  '"exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
-    line := line +  '"object":"';
-    sObject := cbObject.Items[cbObject.ItemIndex];
-    line := line + Copy(sObject, Pos('@', sObject) +1, Length(sObject)) + '"}';
-
-    lbProvenanceRecord.Items.Add(line);
+    lbProvenanceRecord.Items.Add(prepareProvenanceRecord());
 
     edDescription.Text := '';
     edExhibitNumber.Text := '';

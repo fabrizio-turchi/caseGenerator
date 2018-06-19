@@ -37,6 +37,7 @@ type
     cbSentYear: TComboBox;
     Label3: TLabel;
     btnCancel: TButton;
+    btnModifyMessage: TButton;
     procedure btnAddMessageClick(Sender: TObject);
     procedure btnRemoveMessageClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -45,6 +46,7 @@ type
     procedure btnRemoveMobileClick(Sender: TObject);
     procedure lbMessageChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure btnModifyMessageClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -295,7 +297,7 @@ begin
     AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json');
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_TRACE":[';
+    line := #9 + '"OBJECTS_MESSAGE":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbMessage.Items.Count - 2 do
@@ -305,9 +307,17 @@ begin
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-traceMESSAGE.json');
 
   formTraceMessage.Close;
+end;
+
+procedure TformTraceMessage.btnModifyMessageClick(Sender: TObject);
+begin
+  if lbMessage.ItemIndex > - 1 then
+    lbMessage.Items[lbMessage.ItemIndex] := prepareItemMessage();
 end;
 
 procedure TformTraceMessage.btnAddMessageClick(Sender: TObject);

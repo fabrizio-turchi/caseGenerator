@@ -114,8 +114,8 @@ begin
 
   if cbDefaultKinds.ItemIndex = 1   then // has_device
   begin
-    cbSourceIdentity.Enabled := False;
-    cbSourceRole.Enabled := True;
+    cbSourceIdentity.Enabled := True;
+    cbSourceRole.Enabled := False;
     cbSourceTrace.Enabled := False;
     cbTargetRole.Enabled  := False;
     cbTargetTrace.Enabled  := True;
@@ -139,6 +139,16 @@ begin
     cbSourceTrace.Enabled := True;
     cbTargetRole.Enabled  := False;
     cbTargetTrace.Enabled  := True;
+    cbTargetLocation.Enabled  := False;
+  end;
+
+  if cbDefaultKinds.ItemIndex = 4   then // has_account
+  begin
+    cbSourceIdentity.Enabled := True;
+    cbSourceRole.Enabled := False;
+    cbSourceTrace.Enabled := False;
+    cbTargetRole.Enabled  := True;
+    cbTargetTrace.Enabled  := False;
     cbTargetLocation.Enabled  := False;
   end;
 
@@ -781,14 +791,14 @@ end;
 procedure TformRelationship.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
-  line, dir:string;
+  line:string;
   idx: integer;
 begin
   if lbRelationship.Items.Count > 0 then
   begin
-    dir := GetCurrentDir;
+    //dir := GetCurrentDir;
     idx := 0;
-    AssignFile(fileJSON, dir + '\' + FuuidCase + '-relationship.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-relationship.json');
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
     line := #9 + '"OBJECTS_RELATIONSHIP":[';
@@ -801,7 +811,9 @@ begin
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
-  end;
+  end
+  else
+    deleteFile(FpathCase + FuuidCase + '-relationship.json');
 
   formRelationship.Close;
 end;

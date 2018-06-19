@@ -6,8 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
   FMX.TreeView, System.JSON, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Edit,
-  FMX.ListBox, FMX.ScrollBox, FMX.Memo, StrUtils, IOUtils, caseGenerator_GeneralData,
-  caseGenerator_util;
+  FMX.ListBox, FMX.ScrollBox, FMX.Memo, StrUtils, IOUtils, caseGenerator_util;
 
 type
   TformMain = class(TForm)
@@ -98,7 +97,8 @@ uses
   caseGenerator_role, caseGenerator_tool, caseGenerator_trace_mobile,
   caseGenerator_trace_SIM, caseGenerator_trace_computer, caseGenerator_relationship,
   caseGenerator_investigative_action, caseGenerator_trace_file, caseGenerator_provenance_record,
-  caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_warrant, caseGenerator_overview;
+  caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_warrant, caseGenerator_overview,
+  caseGenerator_trace_email_account, caseGenerator_GeneralData, caseGenerator_trace_mobile_account;
 {$R *.fmx}
 
 procedure TformMain.addRootChildren(Sender: TObject);
@@ -303,7 +303,9 @@ begin
       2: formTraceComputer.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       3: formTraceFile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       5: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      6: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      6: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      7: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      8: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       else
         ShowMessage('Form has not implemented yet');
     end
