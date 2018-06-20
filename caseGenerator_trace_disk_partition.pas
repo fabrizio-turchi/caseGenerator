@@ -55,7 +55,7 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    function prepareTrace: String;
+    function prepareTrace(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -80,7 +80,7 @@ end;
 procedure TformTraceDiskPartition.btnModifyTraceClick(Sender: TObject);
 begin
   if lbTrace.ItemIndex > - 1 then
-    lbTrace.Items[lbTrace.ItemIndex] := prepareTrace();
+    lbTrace.Items[lbTrace.ItemIndex] := prepareTrace('modify');
 end;
 
 procedure TformTraceDiskPartition.btnRemovePartitionClick(Sender: TObject);
@@ -122,12 +122,15 @@ procedure TformTraceDiskPartition.lbTraceChange(Sender: TObject);
 var
 line: String;
 begin
-  line := lbTrace.Items[lbTrace.ItemIndex];
-  edID.Text := ExtractField(line, '"id":"');
+  if lbTrace.ItemIndex > - 1 then
+  begin
+    line := lbTrace.Items[lbTrace.ItemIndex];
+    edID.Text := ExtractField(line, '"id":"');
+  end;
 
 end;
 
-function TformTraceDiskPartition.prepareTrace: String;
+function TformTraceDiskPartition.prepareTrace(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
@@ -136,8 +139,17 @@ begin
    //cr := #13  +#10;
     recSep := #30 + #30;
     idx := 0;
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    if operation = 'add' then
+    begin
+      CreateGUID(Uid);
+      line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    end
+    else
+    begin
+      idx := lbTrace.ItemIndex;
+      line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",';
+    end;
+
     line := line +  recSep + '"propertyBundle":[' + recSep;
     for idx:=0  to lbPartition.Items.Count - 1 do
       line := line + lbPartition.Items[idx];
@@ -212,7 +224,7 @@ begin
     ShowMessage('Partition data and/or Hash value are missing!')
   else
   begin
-    lbTrace.Items.Add(prepareTrace());
+    lbTrace.Items.Add(prepareTrace('add'));
     edID.Text := '';
     edOffset.Text := '';
     edLength.Text := '';

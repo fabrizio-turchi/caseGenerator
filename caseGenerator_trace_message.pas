@@ -58,7 +58,7 @@ type
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
     function  extractID(line: String): String;
-    function prepareItemMessage: String;
+    function prepareItemMessage(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -141,35 +141,48 @@ var
   idx: Integer;
   mobileTo: TStringList;
 begin
-  line := lbMessage.Items[lbMessage.ItemIndex];
-  edApplication.Text := ExtractField(line, '"application":"');
-  memoMessageText.Lines.Text := ExtractField(line, '"messageText":"');
-  line := ExtractField(line, '"from":"');
-  for idx:=0 to cbMobileFrom.Items.Count - 1 do
-  begin  
-    if AnsiContainsStr(cbMobileFrom.Items[idx], line) then
+  if lbMessage.ItemIndex > - 1 then
+  begin
+    line := lbMessage.Items[lbMessage.ItemIndex];
+    edApplication.Text := ExtractField(line, '"application":"');
+    memoMessageText.Lines.Text := ExtractField(line, '"messageText":"');
+    line := ExtractField(line, '"from":"');
+    for idx:=0 to cbMobileFrom.Items.Count - 1 do
     begin
-      cbMobileFrom.ItemIndex := idx;
-      Break;
+      if AnsiContainsStr(cbMobileFrom.Items[idx], line) then
+      begin
+        cbMobileFrom.ItemIndex := idx;
+        Break;
+      end;
     end;
+      mobileTo := ExtractArray(line, '"to":[');
   end;
-    mobileTo := ExtractArray(line, '"to":[');
 
     // read trace-MOBILE fro extracting all ID with model and MSISDN
 
 
 end;
 
-function TformTraceMessage.prepareItemMessage: String;
+function TformTraceMessage.prepareItemMessage(operation: String): String;
 var
   line, recSep, idLine: string;
   Uid: TGUID;
   idx: Integer;
 begin
   idx:= 0;
-  CreateGUID(Uid);
   recSep := #30 + #30;
-  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  end
+  else
+  begin
+    idx := lbMessage.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbMessage.Items[idx], '"@id":"') + '",' + recSep;
+  end;
+
   line := line + '"@type":"Trace",' + recSep;
   line := line + '"propertyBundle":["' + recSep;
   line := line + '{"@type":"Message",' + recSep;
@@ -317,7 +330,7 @@ end;
 procedure TformTraceMessage.btnModifyMessageClick(Sender: TObject);
 begin
   if lbMessage.ItemIndex > - 1 then
-    lbMessage.Items[lbMessage.ItemIndex] := prepareItemMessage();
+    lbMessage.Items[lbMessage.ItemIndex] := prepareItemMessage('modify');
 end;
 
 procedure TformTraceMessage.btnAddMessageClick(Sender: TObject);
@@ -330,7 +343,7 @@ begin
     ShowMessage('Mobile FROM or/and Mobile Source empty!')
   else
   begin
-    lbMessage.Items.Add(prepareItemMessage());
+    lbMessage.Items.Add(prepareItemMessage('add'));
     edApplication.Text := '';
     memoMessageText.Lines.Clear;
     cbMobileFrom.ItemIndex := -1;

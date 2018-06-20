@@ -88,11 +88,16 @@ type
     procedure btnModifyClick(Sender: TObject);
     procedure lbArgumentsChange(Sender: TObject);
     procedure lbProvenanceRecordsChange(Sender: TObject);
+    procedure cbActionsChange(Sender: TObject);
   private
     FuuidCase: string;
     FPathCase: String;
+    FlistWarrants: TStringList;
+    FlistTools: TStringList;
     procedure SetuuidCase(const Value: string);
     procedure SetpathCase(const Value: String);
+    procedure SetlistTools(const Value: TStringList);
+    procedure SetlistWarrants(const Value: TStringList);
     property UuidCase: string read FuuidCase write SetuuidCase;
     property PathCase: String read FPathCase write SetPathCase;
     function JsonTokenToString(const t: TJsonToken): string;
@@ -106,7 +111,10 @@ type
     procedure readProvenanceRecordFromFile;
     procedure extractProvenanceRecordDescription(ListIdProvenance: TStringList);
     procedure readWarrantFromFile;
-    function prepareItemInvestigativeAction: String;
+    function prepareItemInvestigativeAction(operation: String): String;
+    property listWarrants: TStringList read FlistWarrants write SetlistWarrants;
+    property listTools: TStringList read FlistTools write SetlistTools;
+    procedure cbActionsFill(action: String);
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase:String; uuidCase: String);
@@ -153,6 +161,8 @@ end;
 
 procedure TformInvestigativeAction.btnModifyInvestigativeActionClick(
   Sender: TObject);
+var
+  idx: Integer;
 begin
 
   if (cbInstrument.ItemIndex = -1) then
@@ -187,7 +197,8 @@ begin
 
   if lbInvestigativeAction.ItemIndex > -1 then
   begin
-    lbInvestigativeAction.Items[lbInvestigativeAction.ItemIndex] := prepareItemInvestigativeAction();
+    idx := lbInvestigativeAction.ItemIndex;
+    lbInvestigativeAction.Items[idx] := prepareItemInvestigativeAction('modify');
     btnAddAction.Enabled := False;  // only one single InbestigativeAction can be added to the list
   end;
 
@@ -204,6 +215,22 @@ end;
 procedure TformInvestigativeAction.Button1Click(Sender: TObject);
 begin
   lbProvenanceRecords.Items.Delete(lbProvenanceRecords.ItemIndex);
+end;
+
+procedure TformInvestigativeAction.cbActionsChange(Sender: TObject);
+begin
+  cbActionsFill(cbActionsName.Items[cbActions.ItemIndex]);
+end;
+
+
+procedure TformInvestigativeAction.cbActionsFill(action: String);
+begin
+  cbInstrument.Items.Clear;
+  if (action = 'preserved') or (action = 'transferred') then
+    cbInstrument.Items := FlistWarrants
+  else
+    cbInstrument.Items := FlistTools;
+
 end;
 
 procedure TformInvestigativeAction.extractProvenanceRecordDescription(ListIdProvenance: TStringList);
@@ -365,6 +392,8 @@ begin
   begin
     line := lbInvestigativeAction.Items[lbInvestigativeAction.ItemIndex];
     sField := ExtractField(line, '"name":"');
+    cbActionsFill(sField);
+
     for idx:= 0 to cbActions.Items.Count - 1 do
     begin
       if AnsiContainsStr(cbActionsName.Items[idx], sField) then
@@ -540,7 +569,7 @@ begin
   end;
 end;
 
-function TformInvestigativeAction.prepareItemInvestigativeAction: String;
+function TformInvestigativeAction.prepareItemInvestigativeAction(operation: String): String;
 var
   line, recSep, nameTool, idValue: string;
   Uid: TGUID;
@@ -548,9 +577,18 @@ var
 begin
 
     idx := 0;
-    CreateGUID(Uid);
     recSep := #30 + #30;
-    line := '{"@id":"' + GuidToString(Uid) + '",';
+    if operation = 'add' then
+    begin
+      CreateGUID(Uid);
+      line := '{"@id":"' + GuidToString(Uid) + '",';
+    end
+    else
+    begin
+      idx := lbInvestigativeAction.ItemIndex;
+      line := '{"@id":"' + ExtractField(lbInvestigativeAction.Items[idx], '"@id":"') + '",';
+    end;
+
     line := line + '"@type":"InvestigativeAction",';
     line := line + '"name":"' + cbActionsName.Items[cbActions.ItemIndex] + '",';
     line := line + '"description":"' + edDescription.Text + '",';
@@ -844,6 +882,7 @@ begin
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
   if FileExists(FpathCase + FuuidCase + '-tool.json') then
   begin
+    FlistTools := TStringList.Create;
     listTrace := TStringList.Create;
     listTrace.LoadFromFile(FpathCase + FuuidCase + '-tool.json');
     //JSON string here
@@ -892,7 +931,7 @@ begin
             version := jreader.Value.AsString;
             //  the character # is to extract the name of the tool for setting the property "@type:name:ToolArguments" of
             //  the InvestigativeAction Object in CASE
-            cbInstrument.Items.Add(name + '#' + toolType + ' ' + version + '@' + id);
+            FListTools.Add(name + '#' + toolType + ' ' + version + '@' + id);
           end;
 
         end;
@@ -1149,6 +1188,7 @@ begin
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
   if FileExists(FpathCase + FuuidCase + '-warrant.json') then
   begin
+    FlistWarrants := TStringList.Create;
     listTrace := TStringList.Create;
     listTrace.LoadFromFile(FpathCase + FuuidCase + '-warrant.json');
     //JSON string here
@@ -1171,7 +1211,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'IssuedDate' then
+          if jreader.Value.AsString = 'authorizationIssuedDate' then
             inIssuedDate := True
           else
             inIssuedDate := False;
@@ -1188,7 +1228,7 @@ begin
           if inIssuedDate then
           begin
             issuedDate := jreader.Value.AsString;
-            cbInstrument.Items.Add(typeWarrant + ' ' + issuedDate + '@' + id);
+            FlistWarrants.Add(typeWarrant + ' ' + issuedDate + '@' + id);
           end;
 
         end;
@@ -1301,8 +1341,18 @@ begin
       Exit;
     end;
 
-    lbInvestigativeAction.Items.Add(prepareItemInvestigativeAction());
+    lbInvestigativeAction.Items.Add(prepareItemInvestigativeAction('add'));
     btnAddAction.Enabled := False;  // only one single InbestigativeAction can be added to the list
+end;
+
+procedure TformInvestigativeAction.SetlistTools(const Value: TStringList);
+begin
+  FlistTools := Value;
+end;
+
+procedure TformInvestigativeAction.SetlistWarrants(const Value: TStringList);
+begin
+  FlistWarrants := Value;
 end;
 
 procedure TformInvestigativeAction.SetPathCase(const Value: String);

@@ -148,11 +148,11 @@ object formInvestigativeAction: TformInvestigativeAction
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
     Position.Y = 550.000000000000000000
-    Size.Width = 169.000000000000000000
+    Size.Width = 193.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Investigative Action'
+    Text = 'Investigative Actions'
     TabOrder = 0
   end
   object lbInvestigativeAction: TListBox
@@ -190,7 +190,7 @@ object formInvestigativeAction: TformInvestigativeAction
     OnClick = btnCloseClick
   end
   object btnAddAction: TButton
-    Position.X = 184.000000000000000000
+    Position.X = 204.000000000000000000
     Position.Y = 551.000000000000000000
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
@@ -200,7 +200,7 @@ object formInvestigativeAction: TformInvestigativeAction
     OnClick = btnAddActionClick
   end
   object btnDeleteAction: TButton
-    Position.X = 528.000000000000000000
+    Position.X = 548.000000000000000000
     Position.Y = 551.000000000000000000
     Size.Width = 161.000000000000000000
     Size.Height = 22.000000000000000000
@@ -550,7 +550,7 @@ object formInvestigativeAction: TformInvestigativeAction
     OnClick = btnCancelClick
   end
   object btnModifyInvestigativeAction: TButton
-    Position.X = 352.000000000000000000
+    Position.X = 372.000000000000000000
     Position.Y = 551.000000000000000000
     Size.Width = 161.000000000000000000
     Size.Height = 22.000000000000000000
@@ -575,6 +575,7 @@ object formInvestigativeAction: TformInvestigativeAction
     TabOrder = 9
     ParentShowHint = False
     ShowHint = True
+    OnChange = cbActionsChange
   end
   object cbActionsName: TComboBox
     Items.Strings = (
@@ -583,8 +584,8 @@ object formInvestigativeAction: TformInvestigativeAction
       'extracted'
       'extracted'
       'parsed')
-    Position.X = 585.000000000000000000
-    Position.Y = 92.000000000000000000
+    Position.X = 579.000000000000000000
+    Position.Y = 78.000000000000000000
     Size.Width = 136.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False

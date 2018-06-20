@@ -17,7 +17,7 @@ object formTraceSIM: TformTraceSIM
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Trace SIM'
+    Text = 'SIMs'
     TabOrder = 0
   end
   object edType: TEdit
@@ -135,8 +135,8 @@ object formTraceSIM: TformTraceSIM
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 557.000000000000000000
-    Viewport.Height = 181.000000000000000000
+    Viewport.Width = 561.000000000000000000
+    Viewport.Height = 185.000000000000000000
   end
   object cbForm: TComboBox
     Items.Strings = (

@@ -62,7 +62,7 @@ type
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
     //function ExtractField(line, subLine: String): String;
-    function PrepareItemTrace: String;
+    function PrepareItemTrace(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -88,7 +88,7 @@ end;
 procedure TformTraceFile.btnModifyTraceClick(Sender: TObject);
 begin
   if lbTrace.ItemIndex > - 1 then
-    lbTrace.Items[lbTrace.ItemIndex] := prepareItemTrace();
+    lbTrace.Items[lbTrace.ItemIndex] := prepareItemTrace('modify');
 end;
 
 procedure TformTraceFile.FormShow(Sender: TObject);
@@ -146,22 +146,24 @@ var
   line, cbValue: String;
   idx: Integer;
 begin
-  line := lbTrace.Items[lbTrace.ItemIndex];
-
-  memoName.Lines.Text := ExtractField(line, '"fileName":"');
-  edPath.Text := ExtractField(line, '"filePath":"');
-  edExtension.Text := ExtractField(line, '"extension":"');
-  edSystemType.Text := ExtractField(line, '"fileSystemType":"');
-  cbDirectory.Items.Text :=  ExtractField(line, '"isDirectory":"');
-  edSize.Text :=   ExtractField(line, '"sizeInBytes":"');
-  edHashValue.Text :=  ExtractField(line, '"hashValue":"');
-  cbValue := ExtractField(line, '"hashMethod":"');
-  for idx:=0 to cbHashMethod.Count - 1 do
+  if lbTrace.ItemIndex > - 1 then
   begin
-    if AnsiContainsStr(cbHashMethod.Items[idx], cbValue) then
+    line := lbTrace.Items[lbTrace.ItemIndex];
+    memoName.Lines.Text := ExtractField(line, '"fileName":"');
+    edPath.Text := ExtractField(line, '"filePath":"');
+    edExtension.Text := ExtractField(line, '"extension":"');
+    edSystemType.Text := ExtractField(line, '"fileSystemType":"');
+    cbDirectory.Items.Text :=  ExtractField(line, '"isDirectory":"');
+    edSize.Text :=   ExtractField(line, '"sizeInBytes":"');
+    edHashValue.Text :=  ExtractField(line, '"hashValue":"');
+    cbValue := ExtractField(line, '"hashMethod":"');
+    for idx:=0 to cbHashMethod.Count - 1 do
     begin
-      cbHashMethod.ItemIndex := idx;
-      break;
+      if AnsiContainsStr(cbHashMethod.Items[idx], cbValue) then
+      begin
+        cbHashMethod.ItemIndex := idx;
+        break;
+      end;
     end;
   end;
 
@@ -169,7 +171,7 @@ begin
   edHashSize.Text :=   ExtractField(line, '"SizeInBytes":"');
 end;
 
-function TformTraceFile.PrepareItemTrace: String;
+function TformTraceFile.PrepareItemTrace(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
@@ -181,8 +183,17 @@ begin
   begin
     //cr := #13  +#10;
     recSep := #30 + #30;
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    if operation = 'add' then
+    begin
+      CreateGUID(Uid);
+      line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    end
+    else
+    begin
+      idx := lbTrace.ItemIndex;
+      line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",';
+    end;
+
     line := line +  recSep + '"propertyBundle":[' + recSep + '{' + recSep;
     line := line + #9 + '"@type":"File",' + recSep;
     line := line + #9 + '"fileName":"' + memoName.Text + '",' + recSep;
@@ -255,7 +266,7 @@ begin
     ShowMessage('Name and/or Path are missing!')
   else
   begin
-    lbTrace.Items.Add(prepareItemTrace());
+    lbTrace.Items.Add(prepareItemTrace('add'));
     memoName.Text := '';
     edSystemType.Text := '';
     edExtension.Text := '';

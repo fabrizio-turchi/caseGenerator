@@ -50,7 +50,7 @@ type
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
     function ExtractField(line, subLine: String): String;
-    function PrepareItemTrace: String;
+    function PrepareItemTrace(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -75,7 +75,7 @@ end;
 procedure TformTraceSIM.btnModifyTraceClick(Sender: TObject);
 begin
   if lbTrace.ItemIndex > -1 then
-    lbTrace.Items[lbTrace.ItemIndex] := PrepareItemTrace();
+    lbTrace.Items[lbTrace.ItemIndex] := PrepareItemTrace('modify');
 
 end;
 
@@ -138,35 +138,47 @@ var
   line, cbValue: String;
   idx: Integer;
 begin
-  line := lbTrace.Items[lbTrace.ItemIndex];
-
-  edType.Text := ExtractField(line, '"SIMType":"');
-  cbValue := ExtractField(line, '"SIMForm":"');
-  for idx:=0 to cbForm.Count - 1 do
+  if lbTrace.ItemIndex > - 1 then
   begin
-    if AnsiContainsStr(cbForm.Items[idx], cbValue) then
+    line := lbTrace.Items[lbTrace.ItemIndex];
+
+    edType.Text := ExtractField(line, '"SIMType":"');
+    cbValue := ExtractField(line, '"SIMForm":"');
+    for idx:=0 to cbForm.Count - 1 do
     begin
-      cbForm.ItemIndex := idx;
-      break;
+      if AnsiContainsStr(cbForm.Items[idx], cbValue) then
+      begin
+        cbForm.ItemIndex := idx;
+        break;
+      end;
     end;
+    edCapacity.Text := ExtractField(line, '"StorageCapacity":"');
+    edCarrier.Text := ExtractField(line, '"Carrier":"');
+    edICCID.Text :=  ExtractField(line, '"ICCID":"');
+    edPhoneNumber.Text :=   ExtractField(line, '"PhoneNumber":"');
+    edPIN.Text :=  ExtractField(line, '"PIN":"');
+    edPUK.Text :=  ExtractField(line, '"PUK":"');
   end;
-  edCapacity.Text := ExtractField(line, '"StorageCapacity":"');
-  edCarrier.Text := ExtractField(line, '"Carrier":"');
-  edICCID.Text :=  ExtractField(line, '"ICCID":"');
-  edPhoneNumber.Text :=   ExtractField(line, '"PhoneNumber":"');
-  edPIN.Text :=  ExtractField(line, '"PIN":"');
-  edPUK.Text :=  ExtractField(line, '"PUK":"');
 end;
 
-function TformTraceSIM.PrepareItemTrace: String;
+function TformTraceSIM.PrepareItemTrace(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
   idx: integer;
 begin
   recSep := #30 + #30;
-  CreateGUID(Uid);
-  line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",' + recSep;
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",' + recSep;
+  end
+  else
+  begin
+    idx := lbTrace.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",' + recSep;
+  end;
+
   line := line + #9 + '"propertyBundle":[' + recSep + '{' + recSep;
   line := line + #9 + '"SIMType":"' + edType.Text + '", ' + recSep;
   line := line + #9 + '"SIMForm":"' + cbForm.Items[cbForm.ItemIndex] + '", ' + recSep;
@@ -230,7 +242,7 @@ begin
     ShowMessage('Type and/or Form SIM are missing!')
   else
   begin
-    lbTrace.Items.Add(PrepareItemTrace());
+    lbTrace.Items.Add(PrepareItemTrace('add'));
     edType.Text := '';
     cbForm.ItemIndex := -1;
     edCapacity.Text := '';

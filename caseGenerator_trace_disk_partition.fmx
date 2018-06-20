@@ -96,11 +96,11 @@ object formTraceDiskPartition: TformTraceDiskPartition
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
     Position.Y = 358.000000000000000000
-    Size.Width = 105.000000000000000000
+    Size.Width = 153.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Trace'
+    Text = 'Disk partitions'
     TabOrder = 2
   end
   object btnClose: TButton

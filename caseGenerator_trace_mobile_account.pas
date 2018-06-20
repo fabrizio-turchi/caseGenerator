@@ -24,7 +24,7 @@ type
     procedure btnCloseClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnModifyTraceClick(Sender: TObject);
-    procedure lbPhoneAccountClick(Sender: TObject);
+    procedure lbPhoneAccountChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -32,7 +32,7 @@ type
     procedure SetpathCase(const Value: String);
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
-    function prepareTrace: String;
+    function prepareTrace(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -58,27 +58,37 @@ end;
 procedure TformTraceMobileAccount.btnModifyTraceClick(Sender: TObject);
 begin
   if lbPhoneAccount.ItemIndex > - 1 then
-    lbPhoneAccount.Items[lbPhoneAccount.ItemIndex] := prepareTrace();
+    lbPhoneAccount.Items[lbPhoneAccount.ItemIndex] := prepareTrace('modify');
 end;
 
-procedure TformTraceMobileAccount.lbPhoneAccountClick(Sender: TObject);
+procedure TformTraceMobileAccount.lbPhoneAccountChange(Sender: TObject);
 begin
   if lbPhoneAccount.ItemIndex > - 1 then
     edMSISDN.Text := ExtractField(lbPhoneAccount.Items[lbPhoneAccount.ItemIndex], '"MSISDN":"');
 end;
 
-function TformTraceMobileAccount.prepareTrace: String;
+function TformTraceMobileAccount.prepareTrace(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
+  idx: Integer;
 begin
   recSep := #30 + #30; // record separator, not printable
   if (Trim(edMSISDN.Text) = '')  then
     ShowMessage('MSISDN number is missing!')
   else
   begin
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    if operation = 'add' then
+    begin
+      CreateGUID(Uid);
+      line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    end
+    else
+    begin
+      idx := lbPhoneAccount.ItemIndex;
+      line := '{"@id":"' + ExtractField(lbPhoneAccount.Items[idx], '"@id":"') + '", ' + recSep;
+    end;
+
     line := line + '"@type":"Trace", ' + recSep;
     line := line + '"propertyBundle":[{' + recSep;
     line := line + '"@type":"Account", ' + recSep;
@@ -131,7 +141,7 @@ end;
 
 procedure TformTraceMobileAccount.btnAddPhoneAccountClick(Sender: TObject);
 begin
-    lbPhoneAccount.Items.Add(prepareTrace());
+    lbPhoneAccount.Items.Add(prepareTrace('add'));
     edMSISDN.Text := '';
 end;
 

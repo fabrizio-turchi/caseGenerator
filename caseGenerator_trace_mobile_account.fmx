@@ -16,7 +16,7 @@ object formTraceMobileAccount: TformTraceMobileAccount
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Mobile account'
+    Text = 'Mobile accounts'
     TabOrder = 0
   end
   object lbPhoneAccount: TListBox
@@ -26,11 +26,11 @@ object formTraceMobileAccount: TformTraceMobileAccount
     Size.Height = 157.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    OnClick = lbPhoneAccountClick
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbPhoneAccountChange
     Viewport.Width = 549.000000000000000000
     Viewport.Height = 153.000000000000000000
   end

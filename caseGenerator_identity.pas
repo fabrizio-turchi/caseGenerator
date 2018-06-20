@@ -43,7 +43,7 @@ type
     FpathCase: String;
     procedure SetuuidCase(const Value: string);
     procedure SetpathCase(const Value: String);
-    function prepareObjectCaseLine(): String;
+    function prepareObjectCaseLine(operation: String): String;
     //function ExtractField(line, subLine: String): String;
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
@@ -101,7 +101,8 @@ end;
 
 procedure TformIdentity.btnModifyIdentityClick(Sender: TObject);
 begin
-  lbIdentity.Items[lbIdentity.ItemIndex] := prepareObjectCaseLine();
+  if lbIdentity.ItemIndex > - 1 then
+    lbIdentity.Items[lbIdentity.ItemIndex] := prepareObjectCaseLine('modify');
 end;
 
 procedure TformIdentity.btnCancelClick(Sender: TObject);
@@ -145,7 +146,7 @@ begin
     ShowMessage('Name or Family name are missing!')
   else
   begin
-    lbIdentity.Items.Add(prepareObjectCaseLine()); // prepareObjectCaseLine returns the Object CASE
+    lbIdentity.Items.Add(prepareObjectCaseLine('add')); // prepareObjectCaseLine returns the Object CASE
     edName.Text := '';
     edFamilyName.Text := '';
     cbDay.ItemIndex:= -1;
@@ -215,14 +216,21 @@ begin
   end;
 end;
 
-function TformIdentity.prepareObjectCaseLine: String;
+function TformIdentity.prepareObjectCaseLine(operation: String): String;
 var
  line, recSep: string;
   Uid: TGUID;
 begin
-  CreateGUID(Uid);
   recSep := #30 + #30;
-  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  end
+  else
+    line := '{"@id":"' + ExtractField(lbIdentity.Items[lbIdentity.ItemIndex], '"@id":"') + '",' + recSep;
+
+
   line := line + '"@type":"Identity",' + recSep;
   line := line + '"propertyBundle":[' + recSep;
   line := line + '{"@type":"SimpleName",' + recSep;

@@ -63,7 +63,7 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    function prepareItemTrace: String;
+    function prepareItemTrace(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -88,7 +88,7 @@ end;
 procedure TformTraceComputer.btnModifyTraceClick(Sender: TObject);
 begin
   if lbTrace.ItemIndex > -1 then
-    lbTrace.Items[lbTrace.ItemIndex] := prepareItemTrace();
+    lbTrace.Items[lbTrace.ItemIndex] := prepareItemTrace('modify');
 end;
 
 procedure TformTraceComputer.FormShow(Sender: TObject);
@@ -130,11 +130,14 @@ procedure TformTraceComputer.lbTraceChange(Sender: TObject);
 var
 line: String;
 begin
-  line := lbTrace.Items[lbTrace.ItemIndex];
-  edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
+  if lbTrace.ItemIndex > - 1 then
+  begin
+    line := lbTrace.Items[lbTrace.ItemIndex];
+    edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
+  end;
 end;
 
-function TformTraceComputer.prepareItemTrace: String;
+function TformTraceComputer.prepareItemTrace(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
@@ -146,8 +149,17 @@ begin
   begin
     //cr := #13  +#10;
     recSep := #30 + #30;
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    if operation = 'add' then
+    begin
+      CreateGUID(Uid);
+      line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    end
+    else
+    begin
+      idx := lbTrace.ItemIndex;
+      line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",';
+    end;
+
     line := line +  recSep + '"propertyBundle":[' + recSep + '{' + recSep;
     line := line + #9 + '"@type":"Device",' + recSep;
     line := line + #9 + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
@@ -210,7 +222,7 @@ end;
 
 procedure TformTraceComputer.btnAddToolClick(Sender: TObject);
 begin
-    lbTrace.Items.Add(prepareItemTrace());
+    lbTrace.Items.Add(prepareItemTrace('add'));
     edDeviceManufacturer.Text := '';
     edDeviceModel.Text := '';
     edDeviceSerial.Text := '';

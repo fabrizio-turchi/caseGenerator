@@ -50,7 +50,7 @@ type
     procedure readTraceMobileFromFile;
     procedure readTraceSIMFromFile;
     procedure readTraceFileFromFile;
-    function prepareProvenanceRecord: String;
+    function prepareProvenanceRecord(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -76,7 +76,7 @@ end;
 procedure TformProvenanceRecord.btnModifyPRClick(Sender: TObject);
 begin
   if lbProvenanceRecord.ItemIndex > - 1 then
-    lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex] := prepareProvenanceRecord();
+    lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex] := prepareProvenanceRecord('modify');
 end;
 
 procedure TformProvenanceRecord.FormShow(Sender: TObject);
@@ -87,6 +87,8 @@ begin
   The Provenance Record object take the object property values from all Trace Objects
 }
   cbObject.Items.Clear;
+  edDescription.Text := '';
+  edExhibitNumber.Text := '';
   for idx:=2000 to  2020 do
     cbPRYear.Items.Add(IntToStr(idx));
   // Fill in the combo box cbObject with Trace Object read from files (MOBILE, SIM, FILE)
@@ -179,14 +181,25 @@ begin
 
 end;
 
-function TformProvenanceRecord.prepareProvenanceRecord: String;
+function TformProvenanceRecord.prepareProvenanceRecord(operation: String): String;
 var
   line, recSep, sObject: string;
   Uid: TGUID;
+  idx: Integer;
 begin
-  CreateGUID(Uid);
   recSep := #30 + #30;
-  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  end
+  else
+  begin
+    idx := lbProvenanceRecord.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbProvenanceRecord.Items[idx], '"@id":"') + '",' + recSep;
+  end;
+
+
   line := line + '"@type":"ProvenanceRecord",' + recSep;
   line := line + '"createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
   line := line +  cbPRMonth.Items[cbPRMonth.ItemIndex] + '-';
@@ -459,7 +472,7 @@ begin
     ShowMessage('Description and/or Object are missing!')
   else
   begin
-    lbProvenanceRecord.Items.Add(prepareProvenanceRecord());
+    lbProvenanceRecord.Items.Add(prepareProvenanceRecord('add'));
 
     edDescription.Text := '';
     edExhibitNumber.Text := '';

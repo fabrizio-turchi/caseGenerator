@@ -27,7 +27,7 @@ object formRelationship: TformRelationship
       TabOrder = 0
     end
     object cbTargetLocation: TComboBox
-      Position.X = 81.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 92.000000000000000000
       Size.Width = 600.000000000000000000
       Size.Height = 22.000000000000000000
@@ -36,7 +36,7 @@ object formRelationship: TformRelationship
       OnChange = cbTargetLocationChange
     end
     object cbtargetRole: TComboBox
-      Position.X = 80.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 60.000000000000000000
       Size.Width = 601.000000000000000000
       Size.Height = 22.000000000000000000
@@ -45,7 +45,7 @@ object formRelationship: TformRelationship
       OnChange = cbtargetRoleChange
     end
     object cbTargetTrace: TComboBox
-      Position.X = 80.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 125.000000000000000000
       Size.Width = 601.000000000000000000
       Size.Height = 22.000000000000000000
@@ -65,10 +65,10 @@ object formRelationship: TformRelationship
     object Label12: TLabel
       Position.X = 8.000000000000000000
       Position.Y = 62.000000000000000000
-      Size.Width = 73.000000000000000000
+      Size.Width = 105.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
-      Text = 'Role'
+      Text = 'Role/Account'
       TabOrder = 6
     end
     object Label13: TLabel
@@ -83,7 +83,7 @@ object formRelationship: TformRelationship
     object edTargetID: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 8
-      Position.X = 80.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 24.000000000000000000
       Enabled = False
       Size.Width = 601.000000000000000000
@@ -117,16 +117,16 @@ object formRelationship: TformRelationship
       TabOrder = 1
     end
     object cbSourceIdentity: TComboBox
-      Position.X = 88.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 60.000000000000000000
-      Size.Width = 601.000000000000000000
+      Size.Width = 585.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
       OnChange = cbSourceIdentityChange
     end
     object cbSourceRole: TComboBox
-      Position.X = 88.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 95.000000000000000000
       Size.Width = 601.000000000000000000
       Size.Height = 22.000000000000000000
@@ -135,7 +135,7 @@ object formRelationship: TformRelationship
       OnChange = cbSourceRoleChange
     end
     object cbSourceTrace: TComboBox
-      Position.X = 88.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 127.000000000000000000
       Size.Width = 601.000000000000000000
       Size.Height = 22.000000000000000000
@@ -173,10 +173,10 @@ object formRelationship: TformRelationship
     object edSourceID: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 7
-      Position.X = 88.000000000000000000
+      Position.X = 104.000000000000000000
       Position.Y = 24.000000000000000000
       Enabled = False
-      Size.Width = 601.000000000000000000
+      Size.Width = 585.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
     end
@@ -194,11 +194,11 @@ object formRelationship: TformRelationship
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
     Position.Y = 424.000000000000000000
-    Size.Width = 105.000000000000000000
+    Size.Width = 169.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Relationship'
+    Text = 'Relationships'
     TabOrder = 0
   end
   object lbRelationship: TListBox

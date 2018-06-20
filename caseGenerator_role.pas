@@ -38,7 +38,7 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    function prepareObjectCaseLine: String;
+    function prepareObjectCaseLine(operation: String): String;
     //function ExtractField(line: String; subLine: String): String;
     { Private declarations }
   public
@@ -64,7 +64,7 @@ end;
 procedure TformRole.btnModifyRoleClick(Sender: TObject);
 begin
   if lbRole.ItemIndex > -1 then
-    lbRole.Items[lbRole.ItemIndex] := prepareObjectCaseLine()
+    lbRole.Items[lbRole.ItemIndex] := prepareObjectCaseLine('modify')
   else
     ShowMessage('No item selected in the Role list!');
 end;
@@ -117,7 +117,7 @@ begin
     ShowMessage('Role name is missing!')
   else
   begin
-    lbRole.Items.Add(prepareObjectCaseLine());
+    lbRole.Items.Add(prepareObjectCaseLine('add'));
     edName.Text := '';
     cbDefaultNames.ItemIndex := -1;
   end;
@@ -240,14 +240,25 @@ begin
 
 end;
 
-function TformRole.prepareObjectCaseLine: String;
+function TformRole.prepareObjectCaseLine(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
+  idx: Integer;
 begin
-  CreateGUID(Uid);
   recSep := #30 + #30;
-  line := '{"@id":"' +  GuidToString(Uid) + '", ' + recSep;
+
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' +  GuidToString(Uid) + '", ' + recSep;
+  end
+  else
+  begin
+    idx := lbRole.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbRole.Items[idx], '"@id":"') + '",'+ recSep;
+  end;
+
   line := line + #9 + '"@type":"Role",' + recSep;
   line := line + #9 + '"name":"' + edName.Text + '"' + recSep;
   line := line + '}';

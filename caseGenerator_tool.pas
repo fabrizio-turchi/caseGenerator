@@ -57,7 +57,7 @@ type
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
     function prepareItemSettingTool: String;
-    function prepareItemTool: String;
+    function prepareItemTool(operation: String): String;
     //function ExtractField(line, subLine: String): String;
     { Private declarations }
   public
@@ -98,7 +98,7 @@ end;
 procedure TformTool.btnModifyToolClick(Sender: TObject);
 begin
   if lbTool.ItemIndex > -1 then
-    lbTool.Items[lbTool.ItemIndex] := prepareItemTool();
+    lbTool.Items[lbTool.ItemIndex] := prepareItemTool('modify');
 end;
 
 procedure TformTool.FormShow(Sender: TObject);
@@ -202,7 +202,7 @@ begin
   Result := itemTool;
 end;
 
-function TformTool.prepareItemTool: String;
+function TformTool.prepareItemTool(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
@@ -210,9 +210,19 @@ var
 begin
     //cr := #13  +#10;
   recSep := #30 + #30;
-  CreateGUID(Uid);
-  line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Tool", "name":"' + edName.Text;
-  line := line +  '", "toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ';
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+  end
+  else
+  begin
+    idx := lbTool.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbTool.Items[idx], '"@id":"') + '", '+ recSep;
+  end;
+
+  line := line + '"@type":"Tool", "name":"' + edName.Text;
+  line:= line +  '", "toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ' + recSep;
   line := line + '"creator":"' + edCreator.Text + '", "version":"' + edVersion.Text + '"';
   if lbConfigurationSettingTool.Items.Count > 0 then
   begin
@@ -285,7 +295,7 @@ begin
   if (Trim(edName.Text) = '') or (cbToolType.ItemIndex = -1)  then
     ShowMessage('Name and/or type tool is missing!')
   else
-    lbTool.Items.Add(prepareItemTool());
+    lbTool.Items.Add(prepareItemTool('add'));
 
   edName.Text := '';
   edCreator.Text := '';

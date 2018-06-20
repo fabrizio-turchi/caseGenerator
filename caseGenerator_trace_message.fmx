@@ -207,7 +207,7 @@ object formTraceMessage: TformTraceMessage
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Message'
+    Text = 'Messages'
     TabOrder = 0
   end
   object lbMessage: TListBox

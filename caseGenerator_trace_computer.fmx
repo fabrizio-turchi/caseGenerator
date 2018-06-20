@@ -22,11 +22,11 @@ object formTraceComputer: TformTraceComputer
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
     Position.Y = 358.000000000000000000
-    Size.Width = 105.000000000000000000
+    Size.Width = 137.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Trace'
+    Text = 'Computers'
     TabOrder = 0
   end
   object edDeviceManufacturer: TEdit

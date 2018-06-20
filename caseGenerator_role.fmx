@@ -17,7 +17,7 @@ object formRole: TformRole
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Role'
+    Text = 'Roles'
     TabOrder = 0
   end
   object lbRole: TListBox

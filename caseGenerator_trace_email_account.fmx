@@ -12,14 +12,14 @@ object formTraceEmailAccount: TformTraceEmailAccount
     StyledSettings = [Family, Style, FontColor]
     Position.X = 24.000000000000000000
     Position.Y = 68.000000000000000000
-    Size.Width = 129.000000000000000000
+    Size.Width = 145.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Trace'
+    Text = 'Email accounts'
     TabOrder = 0
   end
-  object lbPhoneAccount: TListBox
+  object lbEmailAccount: TListBox
     Position.X = 24.000000000000000000
     Position.Y = 100.000000000000000000
     Size.Width = 553.000000000000000000
@@ -30,24 +30,15 @@ object formTraceEmailAccount: TformTraceEmailAccount
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbEmailAccountChange
     Viewport.Width = 553.000000000000000000
     Viewport.Height = 157.000000000000000000
   end
-  object edEmail: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 2
-    FilterChar = '+0123456789'
-    Position.X = 120.000000000000000000
-    Position.Y = 32.000000000000000000
-    Size.Width = 457.000000000000000000
-    Size.Height = 25.000000000000000000
-    Size.PlatformDefault = False
-  end
   object Label3: TLabel
     Position.X = 24.000000000000000000
-    Position.Y = 40.000000000000000000
+    Position.Y = 35.000000000000000000
     Text = 'Email address'
-    TabOrder = 3
+    TabOrder = 2
   end
   object btnClose: TButton
     Position.X = 184.000000000000000000
@@ -55,45 +46,54 @@ object formTraceEmailAccount: TformTraceEmailAccount
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 4
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddPhoneAccount: TButton
-    Position.X = 160.000000000000000000
+    Position.X = 176.000000000000000000
     Position.Y = 68.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
+    TabOrder = 5
     Text = 'Add trace'
     OnClick = btnAddPhoneAccountClick
   end
   object btnDeletePhoneAccount: TButton
-    Position.X = 392.000000000000000000
+    Position.X = 408.000000000000000000
     Position.Y = 68.000000000000000000
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 7
+    TabOrder = 6
     Text = 'Delete trace'
     OnClick = btnDeletePhoneAccountClick
   end
   object btnCancel: TButton
     Position.X = 296.000000000000000000
     Position.Y = 272.000000000000000000
-    TabOrder = 9
+    TabOrder = 8
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
   object btnModifyTrace: TButton
-    Position.X = 277.000000000000000000
+    Position.X = 293.000000000000000000
     Position.Y = 68.000000000000000000
     Size.Width = 106.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 10
+    TabOrder = 9
     Text = 'Modify trace'
     OnClick = btnModifyTraceClick
+  end
+  object edEmail: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 10
+    Position.X = 120.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
   end
 end

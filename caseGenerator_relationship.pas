@@ -68,11 +68,12 @@ type
     function JsonTokenToString(const t: TJsonToken): string;
     procedure readIdentityFromFile;
     procedure readRoleFromFile;
+    procedure readEmailAccountFromFile;
     procedure readLocationFromFile;
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
     procedure readTraceSIMFromFile;
-    function prepareObjectCaseLine(): String;
+    function prepareObjectCaseLine(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -97,7 +98,7 @@ end;
 procedure TformRelationship.btnModifyRelationshipClick(Sender: TObject);
 begin
   if lbRelationship.ItemIndex > -1 then
-    lbRelationship.Items[lbRelationship.ItemIndex] := prepareObjectCaseLine();
+    lbRelationship.Items[lbRelationship.ItemIndex] := prepareObjectCaseLine('modify');
 end;
 
 procedure TformRelationship.cbDefaultKindsChange(Sender: TObject);
@@ -212,7 +213,7 @@ begin
   if cbTargetRole.ItemIndex > -1 then
   begin
     line := cbTargetRole.Items[cbTargetRole.ItemIndex];
-    line := Copy(line, Pos('@', line) +1, Length(line));
+    line := Copy(line, Pos('@{', line) +1, Length(line));
     edTargetID.Text :=  line;
   end;
 end;
@@ -239,6 +240,7 @@ begin
   cbTargetTrace.Items.Clear;
   readIdentityFromFile;
   readRoleFromFile;
+  readEmailAccountFromFile;
   readLocationFromFile;
   readTraceFromFile;
   cbSourceIdentity.Enabled := False;
@@ -390,14 +392,23 @@ begin
 
 end;
 
-function TformRelationship.prepareObjectCaseLine: String;
+function TformRelationship.prepareObjectCaseLine(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
+  idx: Integer;
 begin
-  CreateGUID(Uid);
   recSep := #30 + #30;
-  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  end
+  else
+  begin
+    idx := lbRelationship.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbRelationship.Items[idx], '"@id":"') + '",'+ recSep;
+  end;
   line := line + '"@type":"Relationship",' + recSep;
   line := line + '"source":"' + edSourceID.Text + '",' + recSep;
   line := line + '"target":"' + edTargetID.Text + '",' + recSep;
@@ -405,6 +416,66 @@ begin
   line := line + '"isDirectional":"' + cbDirectional.Items[cbDirectional.ItemIndex]+ '"';
   line := line + recSep + '}';
   Result := line;
+end;
+
+procedure TformRelationship.readEmailAccountFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inEmail, inID: Boolean;
+  id, email: string;
+  listEmail: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json') then
+  begin
+    listEmail := TStringList.Create;
+    listEmail.LoadFromFile(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
+    //JSON string here
+    json := stringreplace(listEmail.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+      inID := False;
+      inEmail := False;
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'emailAddress' then
+            inEmail := True
+          else
+            inEmail := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inEmail then begin
+            eMail := jreader.Value.AsString;
+            cbTargetRole.Items.Add(eMail + ' ' + '@' + id);
+            eMail := '';
+            id := '';
+          end;
+
+          if inID then
+            id := jreader.Value.AsString;;
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
 end;
 
 procedure TformRelationship.readIdentityFromFile;
@@ -824,7 +895,7 @@ begin
     ShowMessage('ID Source and/or Target are missing!')
   else
   begin
-    lbRelationship.Items.Add(prepareObjectCaseLine());
+    lbRelationship.Items.Add(prepareObjectCaseLine('add'));
     edNameRelationship.Text := '';
     edSourceID.Text := '';
     edTargetID.Text := '';

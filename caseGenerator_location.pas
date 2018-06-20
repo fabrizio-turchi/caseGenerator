@@ -44,7 +44,7 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     //function ExtractField(line, subLine: String): String;
-    function prepareObjectCaseLine(): String;
+    function prepareObjectCaseLine(operation: String): String;
     procedure clearFormFields();
     { Private declarations }
   public
@@ -70,8 +70,11 @@ end;
 
 procedure TformLocation.btnModifyLocationClick(Sender: TObject);
 begin
-  lbLocation.Items[lbLocation.ItemIndex] := prepareObjectCaseLine();
-  clearFormFields();
+  if lbLocation.ItemIndex > - 1 then
+  begin
+    lbLocation.Items[lbLocation.ItemIndex] := prepareObjectCaseLine('modify');
+    clearFormFields();
+  end;
 end;
 
 procedure TformLocation.btnPiuClick(Sender: TObject);
@@ -103,23 +106,38 @@ procedure TformLocation.lbLocationChange(Sender: TObject);
 var
   line: String;
 begin
-  line := lbLocation.Items[lbLocation.ItemIndex];
-  edRegion.Text := ExtractField(line, '"region":"');
-  edLocality.Text := ExtractField(line, '"locality":"');
-  edPostalCode.Text := ExtractField(line, '"postalCode":"');
-  edStreet.Text := ExtractField(line, '"street":"');
-  edLatitude.Text := ExtractField(line, '"latitude":"');
-  edLongitude.Text := ExtractField(line,'"longitude":"');
+  if  lbLocation.ItemIndex > - 1 then
+  begin
+    line := lbLocation.Items[lbLocation.ItemIndex];
+    edRegion.Text := ExtractField(line, '"region":"');
+    edLocality.Text := ExtractField(line, '"locality":"');
+    edPostalCode.Text := ExtractField(line, '"postalCode":"');
+    edStreet.Text := ExtractField(line, '"street":"');
+    edLatitude.Text := ExtractField(line, '"latitude":"');
+    edLongitude.Text := ExtractField(line,'"longitude":"');
+  end;
 end;
 
-function TformLocation.prepareObjectCaseLine: String;
+function TformLocation.prepareObjectCaseLine(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
+  idx: Integer;
 begin
   recSep := #30 + #30; // record separator, not printable
-  CreateGUID(Uid);
-  line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+  end
+  else
+  begin
+    idx := lbLocation.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbLocation.Items[idx], '"@id":"') + '",';
+  end;
+
+
   line := line + '"@type":"Location", ' + recSep;
   line := line + '"propertyBundle":[{' + recSep;
   line := line + '"@type":"SimpleAddress", ' + recSep;
@@ -195,7 +213,7 @@ begin
     ShowMessage('Locality or Region name are missing!')
   else
   begin
-    lbLocation.Items.Add(prepareObjectCaseLine());
+    lbLocation.Items.Add(prepareObjectCaseLine('add'));
     clearFormFields();
   end;
 end;

@@ -48,7 +48,7 @@ type
     function readIdRoleFromFile: TStringList;
     function readIdentityFromRelationshipFile(idRoles: TStringList): TStringList;
     function extractID(line: String): String;
-    function prepareItemWarrant: String;
+    function prepareItemWarrant(operation: String): String;
     procedure readIdentityFromFile(idValues: TStringList);
     { Private declarations }
   public
@@ -189,14 +189,25 @@ begin
   end;
 end;
 
-function TformWarrant.prepareItemWarrant: String;
+function TformWarrant.prepareItemWarrant(operation: String): String;
 var
   line, recSep, lineID: string;
   Uid: TGUID;
+  idx: Integer;
 begin
-  CreateGUID(Uid);
   recSep := #30 + #30;
-  line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  if operation = 'add' then
+  begin
+    CreateGUID(Uid);
+    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+  end
+  else
+  begin
+    idx := lbWarrant.ItemIndex;
+    line := '{"@id":"' + ExtractField(lbWarrant.Items[idx], '"@id":"') + '",' + recSep;
+  end;
+
+
   line := line + '"@type":"Authorization",' + recSep;
   line := line + '"propertyBundle":[' + recSep;
   line := line + '{"@authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
@@ -440,7 +451,7 @@ end;
 procedure TformWarrant.btnModifyClick(Sender: TObject);
 begin
   if lbWarrant.ItemIndex > - 1 then
-    lbWarrant.Items[lbWarrant.ItemIndex] := prepareItemWarrant();
+    lbWarrant.Items[lbWarrant.ItemIndex] := prepareItemWarrant('modify');
 end;
 
 procedure TformWarrant.btnAddWarrantClick(Sender: TObject);
@@ -452,7 +463,7 @@ begin
     ShowMessage('Authority and/or AuthorizationType are empty')
   else
   begin
-    lbWarrant.Items.Add(prepareItemWarrant());
+    lbWarrant.Items.Add(prepareItemWarrant('add'));
     cbAuthority.ItemIndex := -1;
     cbDay.ItemIndex := -1;
     cbMonth.ItemIndex := -1;
