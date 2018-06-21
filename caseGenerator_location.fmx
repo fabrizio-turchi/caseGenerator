@@ -25,14 +25,14 @@ object formLocation: TformLocation
     Size.Width = 689.000000000000000000
     Size.Height = 193.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
+    TabOrder = 10
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbLocationChange
-    Viewport.Width = 689.000000000000000000
-    Viewport.Height = 193.000000000000000000
+    Viewport.Width = 685.000000000000000000
+    Viewport.Height = 189.000000000000000000
   end
   object edLocality: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -45,7 +45,7 @@ object formLocation: TformLocation
   end
   object edRegion: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 7
+    TabOrder = 1
     Position.X = 120.000000000000000000
     Position.Y = 32.000000000000000000
     Size.Width = 457.000000000000000000
@@ -56,25 +56,25 @@ object formLocation: TformLocation
     Position.X = 40.000000000000000000
     Position.Y = 80.000000000000000000
     Text = 'Locality'
-    TabOrder = 13
+    TabOrder = 18
   end
   object Label3: TLabel
     Position.X = 40.000000000000000000
     Position.Y = 40.000000000000000000
     Text = 'Region'
-    TabOrder = 12
+    TabOrder = 17
   end
   object Label4: TLabel
     Position.X = 40.000000000000000000
     Position.Y = 117.000000000000000000
     Text = 'Postal code'
-    TabOrder = 11
+    TabOrder = 16
   end
   object Label5: TLabel
     Position.X = 40.000000000000000000
     Position.Y = 152.000000000000000000
     Text = 'Street'
-    TabOrder = 10
+    TabOrder = 15
   end
   object btnClose: TButton
     Position.X = 288.000000000000000000
@@ -82,7 +82,7 @@ object formLocation: TformLocation
     Size.Width = 104.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 15
+    TabOrder = 11
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
@@ -92,7 +92,7 @@ object formLocation: TformLocation
     Size.Width = 81.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 16
+    TabOrder = 7
     Text = 'Add location'
     OnClick = btnAddLocationClick
   end
@@ -102,13 +102,13 @@ object formLocation: TformLocation
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 17
+    TabOrder = 9
     Text = 'Delete location'
     OnClick = btnDeleteLocationClick
   end
   object edPostalCode: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 6
+    TabOrder = 3
     FilterChar = '0123456789'
     Position.X = 120.000000000000000000
     Position.Y = 109.000000000000000000
@@ -118,7 +118,7 @@ object formLocation: TformLocation
   end
   object edStreet: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 5
+    TabOrder = 4
     Position.X = 120.000000000000000000
     Position.Y = 144.000000000000000000
     Size.Width = 457.000000000000000000
@@ -132,11 +132,11 @@ object formLocation: TformLocation
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Latitude'
-    TabOrder = 9
+    TabOrder = 14
   end
   object edLatitude: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 4
+    TabOrder = 5
     FilterChar = '0123456789.0123456789'
     Position.X = 120.000000000000000000
     Position.Y = 176.000000000000000000
@@ -151,11 +151,11 @@ object formLocation: TformLocation
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Longitude'
-    TabOrder = 8
+    TabOrder = 13
   end
   object edLongitude: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 3
+    TabOrder = 6
     FilterChar = '0123456789.0123456789'
     Position.X = 120.000000000000000000
     Position.Y = 208.000000000000000000
@@ -169,14 +169,14 @@ object formLocation: TformLocation
     Size.Width = 100.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 18
+    TabOrder = 8
     Text = 'Modify Location'
     OnClick = btnModifyLocationClick
   end
   object btnCancel: TButton
     Position.X = 400.000000000000000000
     Position.Y = 488.000000000000000000
-    TabOrder = 19
+    TabOrder = 12
     Text = 'Cancel'
     OnClick = btnCancelClick
   end

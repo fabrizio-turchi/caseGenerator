@@ -68,11 +68,15 @@ type
     function JsonTokenToString(const t: TJsonToken): string;
     procedure readIdentityFromFile;
     procedure readRoleFromFile;
-    procedure readEmailAccountFromFile;
     procedure readLocationFromFile;
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
     procedure readTraceSIMFromFile;
+    procedure readTraceComputerFromFile;
+    procedure readTraceDiskPartitionFromFile;
+    procedure readTraceEmailAccountFromFile;
+    procedure readTraceFileFromFile;
+    procedure readTraceMessageFromFile;
     function prepareObjectCaseLine(operation: String): String;
     { Private declarations }
   public
@@ -148,8 +152,8 @@ begin
     cbSourceIdentity.Enabled := True;
     cbSourceRole.Enabled := False;
     cbSourceTrace.Enabled := False;
-    cbTargetRole.Enabled  := True;
-    cbTargetTrace.Enabled  := False;
+    cbTargetRole.Enabled  := False;
+    cbTargetTrace.Enabled  := True;
     cbTargetLocation.Enabled  := False;
   end;
 
@@ -240,7 +244,6 @@ begin
   cbTargetTrace.Items.Clear;
   readIdentityFromFile;
   readRoleFromFile;
-  readEmailAccountFromFile;
   readLocationFromFile;
   readTraceFromFile;
   cbSourceIdentity.Enabled := False;
@@ -418,65 +421,7 @@ begin
   Result := line;
 end;
 
-procedure TformRelationship.readEmailAccountFromFile;
-var
-  json, recSep, crlf: string;
-  sreader: TStringReader;
-  jreader: TJsonTextReader;
-  inEmail, inID: Boolean;
-  id, email: string;
-  listEmail: TStringList;
-  idx:integer;
-begin
-  //dir := GetCurrentDir;
-  recSep := #30 + #30;
-  crlf := #13 + #10;
-  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json') then
-  begin
-    listEmail := TStringList.Create;
-    listEmail.LoadFromFile(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
-    //JSON string here
-    json := stringreplace(listEmail.Text, recSep, crlf,[rfReplaceAll]);
-    try
-      sreader := TStringReader.Create(json);
-      jreader := TJsonTextReader.Create(sreader);
-      inID := False;
-      inEmail := False;
-      while jreader.Read do
-      begin
-        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
-        begin
-          if jreader.Value.AsString = 'emailAddress' then
-            inEmail := True
-          else
-            inEmail := False;
 
-          if jreader.Value.AsString = '@id' then
-            inID := True
-          else
-            inID := False;
-        end;
-        if JsonTokenToString(jreader.TokenType) = 'String' then
-        begin
-          if inEmail then begin
-            eMail := jreader.Value.AsString;
-            cbTargetRole.Items.Add(eMail + ' ' + '@' + id);
-            eMail := '';
-            id := '';
-          end;
-
-          if inID then
-            id := jreader.Value.AsString;;
-        end;
-      end;
-    finally
-      jreader.Free;
-      sreader.Free;
-    end;
-  end;
-
-end;
 
 procedure TformRelationship.readIdentityFromFile;
 var
@@ -703,12 +648,286 @@ begin
 
 end;
 
+procedure TformRelationship.readTraceComputerFromFile;
+begin
+
+end;
+
+procedure TformRelationship.readTraceDiskPartitionFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inPartitionType, inPartitionID, inPartitionSize: Boolean;
+  id, pType, pID, pSize: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceDISK_PARTITION.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceDISK_PARTITION.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'diskPartitionType' then
+            inPartitionType := True
+          else
+            inPartitionType := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'partitionID' then
+            inPartitionID := True
+          else
+            inPartitionID := False;
+
+          if jreader.Value.AsString = 'partitionLength' then
+            inPartitionSize := True
+          else
+            inPartitionSize := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inPartitionType then
+            pType := jreader.Value.AsString;
+
+          if inPartitionID then
+            pID := jreader.Value.AsString;
+
+          if inPartitionSize then
+          begin
+            pSize := jreader.Value.AsString;
+            cbSourceTrace.Items.Add('Disk Partition ' + pType + ' ' + pID + ' ' + pSize + '@' + id);
+            cbTargetTrace.Items.Add('Disk Partition ' + pType + ' ' + pID + ' ' + pSize + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
+procedure TformRelationship.readTraceEmailAccountFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inEmailAddress, inID: Boolean;
+  id, emailAddress: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'emailAddress' then
+            inEmailAddress := True
+          else
+            inEmailAddress := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inEmailAddress then
+          begin
+            emailAddress := stringreplace(jreader.Value.AsString, '@', 'AT', [rfReplaceAll]);
+            cbTargetTrace.Items.Add(emailAddress + ' '  + '@' + id);
+            cbSourceTrace.Items.Add(emailAddress + ' '  + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
+procedure TformRelationship.readTraceFileFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inFileName, inID: Boolean;
+  id, fileName: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceFILE.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceFILE.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'fileName' then
+            inFileName := True
+          else
+            inFileName := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inFileName then
+          begin
+            fileName := jreader.Value.AsString;
+            cbSourceTrace.Items.Add(fileName + ' '  + '@' + id);
+            cbTargetTrace.Items.Add(fileName + ' '  + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
 procedure TformRelationship.readTraceFromFile;
 
 begin
   readTraceMobileFromFile;
+  readTraceComputerFromFile;
+  readTraceDiskPartitionFromFile;
+  readTraceEmailAccountFromFile;
+  readTraceFileFromFile;
+  readTraceMessageFromFile;
   readTraceSIMFromFile;
-  //readTraceFromComputer;
+end;
+
+procedure TformRelationship.readTraceMessageFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inApplication, inMessageText: Boolean;
+  id, application, messageText: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceMESSAGE.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMESSAGE.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'application' then
+            inApplication := True
+          else
+            inApplication := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'messageText' then
+            inMessageText := True
+          else
+            inMessageText := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inApplication then
+            application := jreader.Value.AsString;
+
+          if inMessageText then
+          begin
+            messageText := jreader.Value.AsString;
+            cbTargetTrace.Items.Add(application + ' ' + messageText + ' ' + '@' + id);
+            cbSourceTrace.Items.Add(application + ' ' + messageText + ' ' + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
 end;
 
 procedure TformRelationship.readTraceMobileFromFile;

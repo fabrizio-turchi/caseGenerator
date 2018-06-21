@@ -153,7 +153,6 @@ var
   idx: Integer;
   itemFound: Boolean;
 begin
-
   if lbTool.ItemIndex > -1 then
   begin
     editemName.Text := '';

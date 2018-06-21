@@ -57,6 +57,7 @@ type
     function JsonTokenToString(const t: TJsonToken): string;
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
+    procedure readTracePhoneAccountFromFile;
     function  extractID(line: String): String;
     function prepareItemMessage(operation: String): String;
     { Private declarations }
@@ -184,12 +185,12 @@ begin
   end;
 
   line := line + '"@type":"Trace",' + recSep;
-  line := line + '"propertyBundle":["' + recSep;
+  line := line + '"propertyBundle":[' + recSep;
   line := line + '{"@type":"Message",' + recSep;
   line := line + '"application":"' + edApplication.Text + '",' + recSep;
-  line := line + '"messageText":"' + memoMessageText.Text + '"' + recSep;
+  line := line + '"messageText":"' + memoMessageText.Text + '", ' + recSep;
   idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
-  line := line + '"from":"' + extractID(idLine) + '"' + recSep;
+  line := line + '"from":"' + extractID(idLine) + '", ' + recSep;
   line := line + '"to":[' + recSep;
   for idx:=0 to lbMobile.Items.Count - 2 do
     line := line  + lbMobile.Items[idx] + ',';
@@ -197,7 +198,7 @@ begin
   line := line  + lbMobile.Items[idx] + '],' + recSep;
   line := line + '"sentTime":"' + cbSentYear.Items[cbSentYear.ItemIndex];
   line := line + cbSentMonth.Items[cbSentMonth.ItemIndex];
-  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T';
+  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T' + timeSent.Text + 'Z"';
   line := line + '}]}' + recSep;
   Result := line;
 end;
@@ -206,6 +207,7 @@ procedure TformTraceMessage.readTraceFromFile;
 
 begin
   readTraceMobileFromFile;
+  readTracePhoneAccountFromFile;
 end;
 
 procedure TformTraceMessage.readTraceMobileFromFile;
@@ -275,6 +277,67 @@ begin
   end;
 end;
 
+
+procedure TformTraceMessage.readTracePhoneAccountFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inPhoneNumber: Boolean;
+  id, phoneNumber: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'phoneNumber' then
+            inPhoneNumber := True
+          else
+            inPhoneNumber := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inPhoneNumber then
+          begin
+            phoneNumber := jreader.Value.AsString;
+            cbMobileFrom.Items.Add('Phone account ' + phoneNumber + '@' + id);
+            cbMobileTo.Items.Add('Phone account ' + phoneNumber + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
 
 procedure TformTraceMessage.btnAddMobileClick(Sender: TObject);
 var

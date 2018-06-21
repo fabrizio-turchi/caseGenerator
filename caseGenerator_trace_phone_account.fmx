@@ -25,17 +25,18 @@ object formTracePhoneAccount: TformTracePhoneAccount
     Size.Width = 553.000000000000000000
     Size.Height = 157.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
+    TabOrder = 6
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbPhoneAccountChange
     Viewport.Width = 553.000000000000000000
     Viewport.Height = 157.000000000000000000
   end
   object edPhoneNumber: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 3
+    TabOrder = 1
     FilterChar = '+0123456789'
     Position.X = 120.000000000000000000
     Position.Y = 32.000000000000000000
@@ -47,7 +48,7 @@ object formTracePhoneAccount: TformTracePhoneAccount
     Position.X = 24.000000000000000000
     Position.Y = 40.000000000000000000
     Text = 'Phone number'
-    TabOrder = 5
+    TabOrder = 10
   end
   object btnClose: TButton
     Position.X = 184.000000000000000000
@@ -65,7 +66,7 @@ object formTracePhoneAccount: TformTracePhoneAccount
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
+    TabOrder = 3
     Text = 'Add trace'
     OnClick = btnAddPhoneAccountClick
   end
@@ -75,14 +76,14 @@ object formTracePhoneAccount: TformTracePhoneAccount
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 9
+    TabOrder = 5
     Text = 'Delete trace'
     OnClick = btnDeletePhoneAccountClick
   end
   object btnCancel: TButton
     Position.X = 296.000000000000000000
     Position.Y = 310.000000000000000000
-    TabOrder = 11
+    TabOrder = 8
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
@@ -92,7 +93,7 @@ object formTracePhoneAccount: TformTracePhoneAccount
     Size.Width = 106.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 12
+    TabOrder = 4
     Text = 'Modify trace'
     OnClick = btnModifyTraceClick
   end
@@ -100,12 +101,11 @@ object formTracePhoneAccount: TformTracePhoneAccount
     Position.X = 24.000000000000000000
     Position.Y = 72.000000000000000000
     Text = 'Issuer'
-    TabOrder = 4
+    TabOrder = 9
   end
   object edIssuer: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 2
-    FilterChar = '+0123456789'
     Position.X = 119.000000000000000000
     Position.Y = 69.000000000000000000
     Size.Width = 457.000000000000000000

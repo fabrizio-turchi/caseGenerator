@@ -97,8 +97,9 @@ uses
   caseGenerator_role, caseGenerator_tool, caseGenerator_trace_mobile,
   caseGenerator_trace_SIM, caseGenerator_trace_computer, caseGenerator_relationship,
   caseGenerator_investigative_action, caseGenerator_trace_file, caseGenerator_provenance_record,
-  caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_warrant, caseGenerator_overview,
-  caseGenerator_trace_email_account, caseGenerator_GeneralData, caseGenerator_trace_mobile_account;
+  caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_trace_disk_partition,
+  caseGenerator_warrant, caseGenerator_overview, caseGenerator_trace_email_account,
+  caseGenerator_GeneralData, caseGenerator_trace_mobile_account;
 {$R *.fmx}
 
 procedure TformMain.addRootChildren(Sender: TObject);
@@ -302,6 +303,7 @@ begin
       1: formTraceSIM.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       2: formTraceComputer.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       3: formTraceFile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      4: formTraceDiskPartition.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       5: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       6: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       7: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
@@ -637,8 +639,7 @@ begin
 
   ExtractAllFiles(FHomeCases);
   lbObjects.Visible := False;
-  btnGenerateJSON.Visible := False;
-  btnGenerateJson.Visible := False;
+  //btnGenerateJSON.Visible := False;
 
 
   {

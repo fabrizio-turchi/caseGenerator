@@ -16,7 +16,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Height = 151.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 20
+    TabOrder = 17
     object Label14: TLabel
       Position.X = 11.000000000000000000
       Position.Y = 20.000000000000000000
@@ -40,7 +40,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 553.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 15
+      TabOrder = 13
     end
     object lbProvenanceRecords: TListBox
       Position.X = 136.000000000000000000
@@ -48,14 +48,14 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 553.000000000000000000
       Size.Height = 73.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 21
       DisableFocusEffect = True
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbProvenanceRecordsChange
-      Viewport.Width = 553.000000000000000000
-      Viewport.Height = 73.000000000000000000
+      Viewport.Width = 549.000000000000000000
+      Viewport.Height = 69.000000000000000000
     end
     object Label3: TLabel
       Position.X = 2.000000000000000000
@@ -73,7 +73,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 145.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 6
+      TabOrder = 15
       Text = 'Add provenance record'
       OnClick = btnAddPRClick
     end
@@ -83,7 +83,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 169.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 7
+      TabOrder = 19
       Text = 'Remove provenance record'
       OnClick = Button1Click
     end
@@ -93,7 +93,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 177.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 16
+      TabOrder = 17
       Text = 'Modify provenance record'
       OnClick = btnModifyProvenanceRecordClick
     end
@@ -115,7 +115,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Height = 71.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 21
+    TabOrder = 18
     object Label5: TLabel
       Position.X = 200.000000000000000000
       Position.Y = 4.000000000000000000
@@ -141,7 +141,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 601.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 13
+      TabOrder = 16
     end
   end
   object Label1: TLabel
@@ -161,14 +161,14 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 697.000000000000000000
     Size.Height = 66.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 11
+    TabOrder = 25
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbInvestigativeActionChange
-    Viewport.Width = 697.000000000000000000
-    Viewport.Height = 66.000000000000000000
+    Viewport.Width = 693.000000000000000000
+    Viewport.Height = 62.000000000000000000
   end
   object Label2: TLabel
     Position.X = 320.000000000000000000
@@ -177,7 +177,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Start time'
-    TabOrder = 15
+    TabOrder = 13
   end
   object btnClose: TButton
     Position.X = 251.000000000000000000
@@ -185,7 +185,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 110.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 16
+    TabOrder = 27
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
@@ -195,7 +195,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 17
+    TabOrder = 20
     Text = 'Add investigative action'
     OnClick = btnAddActionClick
   end
@@ -205,7 +205,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 161.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 18
+    TabOrder = 23
     Text = 'Remove investigative action'
     OnClick = btnDeleteActionClick
   end
@@ -216,7 +216,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Name'
-    TabOrder = 19
+    TabOrder = 16
   end
   object Label7: TLabel
     Position.X = 16.000000000000000000
@@ -225,7 +225,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Performer'
-    TabOrder = 22
+    TabOrder = 19
   end
   object cbPerformer: TComboBox
     Position.X = 92.000000000000000000
@@ -233,7 +233,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 621.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 13
+    TabOrder = 14
   end
   object Label9: TLabel
     Position.X = 12.000000000000000000
@@ -259,7 +259,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Location'
-    TabOrder = 25
+    TabOrder = 26
   end
   object cbLocation: TComboBox
     Position.X = 93.000000000000000000
@@ -267,7 +267,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 620.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 14
+    TabOrder = 15
   end
   object cbStartDay: TComboBox
     Items.Strings = (
@@ -308,7 +308,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 41.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
+    TabOrder = 2
   end
   object cbStartMonth: TComboBox
     Items.Strings = (
@@ -327,7 +327,7 @@ object formInvestigativeAction: TformInvestigativeAction
     ItemIndex = 0
     Position.X = 426.000000000000000000
     Position.Y = 13.000000000000000000
-    TabOrder = 2
+    TabOrder = 3
   end
   object cbStartYear: TComboBox
     Items.Strings = (
@@ -340,7 +340,7 @@ object formInvestigativeAction: TformInvestigativeAction
       '1956')
     Position.X = 530.000000000000000000
     Position.Y = 13.000000000000000000
-    TabOrder = 3
+    TabOrder = 4
   end
   object timeStart: TTimeEdit
     Time = 0.675166099537036900
@@ -350,7 +350,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 81.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 4
+    TabOrder = 5
   end
   object Label4: TLabel
     Position.X = 320.000000000000000000
@@ -400,7 +400,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 41.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 6
   end
   object cbEndMonth: TComboBox
     Items.Strings = (
@@ -419,7 +419,7 @@ object formInvestigativeAction: TformInvestigativeAction
     ItemIndex = 0
     Position.X = 426.000000000000000000
     Position.Y = 37.000000000000000000
-    TabOrder = 6
+    TabOrder = 7
   end
   object cbEndYear: TComboBox
     Items.Strings = (
@@ -432,7 +432,7 @@ object formInvestigativeAction: TformInvestigativeAction
       '1956')
     Position.X = 530.000000000000000000
     Position.Y = 37.000000000000000000
-    TabOrder = 7
+    TabOrder = 8
   end
   object timeEnd: TTimeEdit
     Time = 0.675166099537036900
@@ -442,7 +442,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 81.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
+    TabOrder = 9
   end
   object panelArguments: TPanel
     Position.X = 16.000000000000000000
@@ -450,10 +450,10 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 697.000000000000000000
     Size.Height = 113.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 27
+    TabOrder = 30
     object edArgumentName: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 8
+      TabOrder = 6
       Position.X = 52.000000000000000000
       Position.Y = 17.000000000000000000
       Size.Width = 245.000000000000000000
@@ -462,7 +462,7 @@ object formInvestigativeAction: TformInvestigativeAction
     end
     object edArgumentValue: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 10
+      TabOrder = 7
       Position.X = 52.000000000000000000
       Position.Y = 48.000000000000000000
       Size.Width = 245.000000000000000000
@@ -502,14 +502,14 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 377.000000000000000000
       Size.Height = 89.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 3
+      TabOrder = 10
       DisableFocusEffect = True
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbArgumentsChange
-      Viewport.Width = 377.000000000000000000
-      Viewport.Height = 89.000000000000000000
+      Viewport.Width = 373.000000000000000000
+      Viewport.Height = 85.000000000000000000
     end
     object btnArgumentAdd: TButton
       Position.X = 62.000000000000000000
@@ -517,7 +517,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 51.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 9
       Text = 'Add'
       OnClick = btnArgumentAddClick
     end
@@ -527,7 +527,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Size.Width = 62.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 13
       Text = 'Remove'
       OnClick = btnArgumentRemoveClick
     end
@@ -555,7 +555,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 161.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 29
+    TabOrder = 21
     Text = 'Modify investigative action'
     OnClick = btnModifyInvestigativeActionClick
   end
@@ -572,7 +572,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 214.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 9
+    TabOrder = 1
     ParentShowHint = False
     ShowHint = True
     OnChange = cbActionsChange
@@ -589,7 +589,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 136.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 26
+    TabOrder = 29
   end
   object Label16: TLabel
     Position.X = 12.000000000000000000
@@ -598,11 +598,11 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Description'
-    TabOrder = 23
+    TabOrder = 22
   end
   object edDescription: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 30
+    TabOrder = 11
     Position.X = 86.000000000000000000
     Position.Y = 80.000000000000000000
     Size.Width = 475.000000000000000000

@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
-  FMX.ListBox, FMX.Controls.Presentation;
+  FMX.ListBox, FMX.Controls.Presentation, caseGenerator_util;
 
 type
   TformTracePhoneAccount = class(TForm)
@@ -26,6 +26,7 @@ type
     procedure btnCloseClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnModifyTraceClick(Sender: TObject);
+    procedure lbPhoneAccountChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -33,7 +34,7 @@ type
     procedure SetpathCase(const Value: String);
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
-    function prepareTrace: String;
+    function prepareTrace(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -59,21 +60,43 @@ end;
 procedure TformTracePhoneAccount.btnModifyTraceClick(Sender: TObject);
 begin
   if lbPhoneAccount.ItemIndex > - 1 then
-    lbPhoneAccount.Items[lbPhoneAccount.ItemIndex] := prepareTrace();
+    lbPhoneAccount.Items[lbPhoneAccount.ItemIndex] := prepareTrace('modify');
 end;
 
-function TformTracePhoneAccount.prepareTrace: String;
+procedure TformTracePhoneAccount.lbPhoneAccountChange(Sender: TObject);
+var
+  line: String;
+begin
+  if lbPhoneAccount.ItemIndex > - 1 then
+  begin
+    line := lbPhoneAccount.Items[lbPhoneAccount.ItemIndex];
+    edPhoneNumber.Text := ExtractField(line, '"phoneNumber":"');
+    edIssuer.Text := ExtractField(line, '"accountIssuer":"');
+  end;
+end;
+
+function TformTracePhoneAccount.prepareTrace(operation: String): String;
 var
   line, recSep: string;
   Uid: TGUID;
+  idx: Integer;
 begin
   recSep := #30 + #30; // record separator, not printable
   if (Trim(edPhoneNumber.Text) = '')  then
     ShowMessage('Phone number is missing!')
   else
   begin
-    CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    if operation = 'add' then
+    begin
+      CreateGUID(Uid);
+      line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    end
+    else
+    begin
+      idx := lbPhoneAccount.ItemIndex;
+      line := '{"@id":"' + ExtractField(lbPhoneAccount.Items[idx], '"@id":"') + '", ' + recSep;
+    end;
+
     line := line + '"@type":"Trace", ' + recSep;
     line := line + '"propertyBundle":[{' + recSep;
     line := line + '"@type":"Account", ' + recSep;
@@ -126,7 +149,7 @@ end;
 
 procedure TformTracePhoneAccount.btnAddPhoneAccountClick(Sender: TObject);
 begin
-    lbPhoneAccount.Items.Add(prepareTrace());
+    lbPhoneAccount.Items.Add(prepareTrace('add'));
     edPhoneNumber.Text := '';
 end;
 

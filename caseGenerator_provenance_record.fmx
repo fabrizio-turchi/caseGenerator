@@ -2,8 +2,8 @@ object formProvenanceRecord: TformProvenanceRecord
   Left = 0
   Top = 0
   Caption = 'Provenance Record'
-  ClientHeight = 497
-  ClientWidth = 759
+  ClientHeight = 575
+  ClientWidth = 761
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,19 +11,19 @@ object formProvenanceRecord: TformProvenanceRecord
   DesignerMasterStyle = 0
   object panelPR: TPanel
     Position.X = 16.000000000000000000
-    Position.Y = 41.000000000000000000
+    Position.Y = 8.000000000000000000
     Size.Width = 737.000000000000000000
-    Size.Height = 176.000000000000000000
+    Size.Height = 313.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 6
+    TabOrder = 3
     object cbObject: TComboBox
       Position.X = 88.000000000000000000
       Position.Y = 133.000000000000000000
       Size.Width = 641.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 1
+      TabOrder = 8
     end
     object Label14: TLabel
       Position.X = 9.000000000000000000
@@ -32,7 +32,7 @@ object formProvenanceRecord: TformProvenanceRecord
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Description'
-      TabOrder = 2
+      TabOrder = 11
     end
     object Label12: TLabel
       Position.X = 8.000000000000000000
@@ -41,7 +41,7 @@ object formProvenanceRecord: TformProvenanceRecord
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Exhibit No.'
-      TabOrder = 4
+      TabOrder = 13
     end
     object Label13: TLabel
       Position.X = 8.000000000000000000
@@ -50,11 +50,11 @@ object formProvenanceRecord: TformProvenanceRecord
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Object'
-      TabOrder = 5
+      TabOrder = 15
     end
     object edDescription: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 7
+      TabOrder = 1
       Position.X = 88.000000000000000000
       Position.Y = 24.000000000000000000
       Size.Width = 641.000000000000000000
@@ -67,11 +67,11 @@ object formProvenanceRecord: TformProvenanceRecord
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Provenance record'
-      TabOrder = 8
+      TabOrder = 16
     end
     object edExhibitNumber: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 6
+      TabOrder = 2
       Position.X = 88.000000000000000000
       Position.Y = 56.000000000000000000
       Size.Width = 641.000000000000000000
@@ -86,7 +86,7 @@ object formProvenanceRecord: TformProvenanceRecord
       Size.PlatformDefault = False
       TextSettings.HorzAlign = Center
       Text = 'Creation time'
-      TabOrder = 3
+      TabOrder = 12
     end
     object cbPRDay: TComboBox
       Items.Strings = (
@@ -126,7 +126,7 @@ object formProvenanceRecord: TformProvenanceRecord
       Size.Width = 58.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 15
+      TabOrder = 3
     end
     object cbPRMonth: TComboBox
       Items.Strings = (
@@ -144,7 +144,7 @@ object formProvenanceRecord: TformProvenanceRecord
         '12')
       Position.X = 150.000000000000000000
       Position.Y = 92.000000000000000000
-      TabOrder = 13
+      TabOrder = 4
     end
     object cbPRYear: TComboBox
       Items.Strings = (
@@ -157,20 +157,74 @@ object formProvenanceRecord: TformProvenanceRecord
         '1956')
       Position.X = 252.000000000000000000
       Position.Y = 92.000000000000000000
-      TabOrder = 12
+      TabOrder = 5
     end
     object timePR: TTimeEdit
       Time = 0.675166099537036900
       TimeFormatKind = Long
       Position.X = 355.000000000000000000
       Position.Y = 92.000000000000000000
+      TabOrder = 6
+    end
+    object lbObjects: TListBox
+      Position.X = 88.000000000000000000
+      Position.Y = 198.000000000000000000
+      Size.Width = 641.000000000000000000
+      Size.Height = 105.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 10
+      DisableFocusEffect = True
+      DefaultItemStyles.ItemStyle = ''
+      DefaultItemStyles.GroupHeaderStyle = ''
+      DefaultItemStyles.GroupFooterStyle = ''
+      OnChange = lbObjectsChange
+      Viewport.Width = 637.000000000000000000
+      Viewport.Height = 101.000000000000000000
+    end
+    object Label3: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 238.000000000000000000
+      Size.Width = 73.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Objects list'
+      TabOrder = 14
+    end
+    object btnAddObject: TButton
+      Position.X = 208.000000000000000000
+      Position.Y = 171.000000000000000000
+      Size.Width = 97.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 7
+      Text = 'Add object'
+      OnClick = btnAddObjectClick
+    end
+    object btnModifyObject: TButton
+      Position.X = 320.000000000000000000
+      Position.Y = 171.000000000000000000
+      Size.Width = 113.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 9
+      Text = 'Modify object'
+      OnClick = btnModifyObjectClick
+    end
+    object btnRemoveObkect: TButton
+      Position.X = 448.000000000000000000
+      Position.Y = 171.000000000000000000
+      Size.Width = 113.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 20
+      Text = 'Remove object'
+      OnClick = btnRemoveObkectClick
     end
   end
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 24.000000000000000000
-    Position.Y = 224.000000000000000000
+    Position.Y = 328.000000000000000000
     Size.Width = 185.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
@@ -180,9 +234,9 @@ object formProvenanceRecord: TformProvenanceRecord
   end
   object lbProvenanceRecord: TListBox
     Position.X = 24.000000000000000000
-    Position.Y = 251.000000000000000000
+    Position.Y = 360.000000000000000000
     Size.Width = 729.000000000000000000
-    Size.Height = 209.000000000000000000
+    Size.Height = 168.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     DisableFocusEffect = True
@@ -190,53 +244,53 @@ object formProvenanceRecord: TformProvenanceRecord
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbProvenanceRecordChange
-    Viewport.Width = 729.000000000000000000
-    Viewport.Height = 209.000000000000000000
+    Viewport.Width = 725.000000000000000000
+    Viewport.Height = 164.000000000000000000
   end
   object btnClose: TButton
-    Position.X = 235.000000000000000000
-    Position.Y = 465.000000000000000000
+    Position.X = 243.000000000000000000
+    Position.Y = 541.000000000000000000
     Size.Width = 110.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 3
+    TabOrder = 16
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddPR: TButton
     Position.X = 214.000000000000000000
-    Position.Y = 225.000000000000000000
+    Position.Y = 329.000000000000000000
     Size.Width = 162.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 4
+    TabOrder = 8
     Text = 'Add provenance record'
     OnClick = btnAddPRClick
   end
   object btnDeletePR: TButton
     Position.X = 562.000000000000000000
-    Position.Y = 225.000000000000000000
+    Position.Y = 329.000000000000000000
     Size.Width = 177.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 13
     Text = 'Delete provenance record'
     OnClick = btnDeletePRClick
   end
   object btnCancel: TButton
-    Position.X = 357.000000000000000000
-    Position.Y = 466.000000000000000000
-    TabOrder = 8
+    Position.X = 365.000000000000000000
+    Position.Y = 542.000000000000000000
+    TabOrder = 5
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
   object btnModifyPR: TButton
     Position.X = 378.000000000000000000
-    Position.Y = 224.000000000000000000
+    Position.Y = 328.000000000000000000
     Size.Width = 180.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 9
+    TabOrder = 10
     Text = 'Modify provenance record'
     OnClick = btnModifyPRClick
   end

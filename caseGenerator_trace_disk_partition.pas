@@ -17,7 +17,6 @@ type
     btnAddTrace: TButton;
     btnDeleteTrace: TButton;
     lbTrace: TListBox;
-    edID: TEdit;
     panelFile: TPanel;
     Label6: TLabel;
     Label3: TLabel;
@@ -39,6 +38,7 @@ type
     btnRemovePartition: TButton;
     btnCancel: TButton;
     btnModifyTrace: TButton;
+    edID: TEdit;
     procedure btnAddTraceClick(Sender: TObject);
     procedure btnDeleteTraceClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -85,7 +85,8 @@ end;
 
 procedure TformTraceDiskPartition.btnRemovePartitionClick(Sender: TObject);
 begin
-  lbPartition.Items.Delete(lbPartition.ItemIndex);
+  if lbPartition.ItemIndex > - 1 then
+    lbPartition.Items.Delete(lbPartition.ItemIndex);
 end;
 
 function TformTraceDiskPartition.JsonTokenToString(const t: TJsonToken): string;
@@ -120,12 +121,35 @@ end;
 
 procedure TformTraceDiskPartition.lbTraceChange(Sender: TObject);
 var
-line: String;
+  line, recSep, linePartition: String;
+  nPosLength: Integer;
+
 begin
   if lbTrace.ItemIndex > - 1 then
   begin
+    recSep := #30 + #30;
     line := lbTrace.Items[lbTrace.ItemIndex];
-    edID.Text := ExtractField(line, '"id":"');
+    edHashValue.Text := ExtractField(line, '"hashValue":"');
+    edHashSize.Text := ExtractField(line, '"sizeInBytes":"');
+    nPosLength := Pos('partitionLength',line);
+    while  nPosLength > 0 do
+    begin
+      linePartition := '{"@type":"DiskPartition", ' + recSep;
+      linePartition := linePartition + '"diskPartitionType":"' + ExtractField(line, '"diskPartitionType":"') + '", ' + recSep;
+      linePartition := linePartition +  '"partitionID":"' + ExtractField(line, '"partitionID":"') + '",' + recSep;
+      linePartition := linePartition +  '"partitionOffset":"' + ExtractField(line, '"partitionOffset":"') + '",' + recSep;
+      linePartition := linePartition +  '"partitionLength":"' + ExtractField(line, '"partitionLength":"') + '"}' + recSep;
+      lbPartition.Items.Add(linePartition);
+      line := Copy(line, nPosLength  + 14, Length(line));
+      nPosLength := Pos('partitionLength',line);
+    end;
+  end;
+
+  if lbPartition.Items.Count > 0 then
+  begin
+    edID.Text := ExtractField(lbPartition.Items[0], '"partitionID":"');
+    edOffset.Text := ExtractField(lbPartition.Items[0], '"partitionOffset":"');
+    edLength.Text := ExtractField(lbPartition.Items[0], '"partitionLength":"');
   end;
 
 end;
@@ -152,7 +176,8 @@ begin
 
     line := line +  recSep + '"propertyBundle":[' + recSep;
     for idx:=0  to lbPartition.Items.Count - 1 do
-      line := line + lbPartition.Items[idx];
+      line := line + lbPartition.Items[idx] + ',';
+
     line := line + #9 + '{"type":"ContentData",' + recSep;
     line := line + '"hash":[' + recSep;
     line := line + '{"@type":"Hash",' + recSep;
@@ -214,6 +239,7 @@ begin
     line := line +  '"partitionID":"' + edID.Text + '",' + recSep;
     line := line +  '"partitionOffset":"' + edOffset.Text + '",' + recSep;
     line := line +  '"partitionLength":"' + edLength.Text + '"}' + recSep;
+    lbPartition.Items.Add(line);
   end;
 
 end;

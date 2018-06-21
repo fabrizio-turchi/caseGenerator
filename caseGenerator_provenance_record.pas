@@ -31,6 +31,11 @@ type
     timePR: TTimeEdit;
     btnCancel: TButton;
     btnModifyPR: TButton;
+    lbObjects: TListBox;
+    Label3: TLabel;
+    btnAddObject: TButton;
+    btnModifyObject: TButton;
+    btnRemoveObkect: TButton;
     procedure btnAddPRClick(Sender: TObject);
     procedure btnDeletePRClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -38,6 +43,10 @@ type
     procedure lbProvenanceRecordChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnModifyPRClick(Sender: TObject);
+    procedure btnAddObjectClick(Sender: TObject);
+    procedure btnModifyObjectClick(Sender: TObject);
+    procedure btnRemoveObkectClick(Sender: TObject);
+    procedure lbObjectsChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -50,6 +59,9 @@ type
     procedure readTraceMobileFromFile;
     procedure readTraceSIMFromFile;
     procedure readTraceFileFromFile;
+    procedure readTraceMessageFromFile;
+    procedure readTraceEmailAccountFromFile;
+    procedure readTracePhoneAccountFromFile;
     function prepareProvenanceRecord(operation: String): String;
     { Private declarations }
   public
@@ -73,10 +85,27 @@ begin
 end;
 
 
+procedure TformProvenanceRecord.btnModifyObjectClick(Sender: TObject);
+var
+  line: String;
+begin
+  if (lbObjects.ItemIndex > - 1) and (cbObject.ItemIndex > - 1) then
+  begin
+    line := cbObject.Items[cbObject.ItemIndex];
+    lbObjects.Items[lbObjects.ItemIndex] := '"' + Copy(line, Pos('@', line) + 1, Length(line)) + '"';
+  end;
+end;
+
 procedure TformProvenanceRecord.btnModifyPRClick(Sender: TObject);
 begin
   if lbProvenanceRecord.ItemIndex > - 1 then
     lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex] := prepareProvenanceRecord('modify');
+end;
+
+procedure TformProvenanceRecord.btnRemoveObkectClick(Sender: TObject);
+begin
+  if lbObjects.ItemIndex > - 1 then
+    lbObjects.Items.Delete(lbObjects.ItemIndex);
 end;
 
 procedure TformProvenanceRecord.FormShow(Sender: TObject);
@@ -87,6 +116,7 @@ begin
   The Provenance Record object take the object property values from all Trace Objects
 }
   cbObject.Items.Clear;
+  lbObjects.Items.Clear;
   edDescription.Text := '';
   edExhibitNumber.Text := '';
   for idx:=2000 to  2020 do
@@ -125,13 +155,37 @@ begin
   end;
 
 end;
+procedure TformProvenanceRecord.lbObjectsChange(Sender: TObject);
+var
+  line: String;
+  idx: Integer;
+begin
+  if lbObjects.ItemIndex > - 1 then
+  begin
+    idx := 0;
+    line := lbObjects.Items[lbObjects.ItemIndex];
+    line := stringreplace(line, '"', '',[rfReplaceAll]);
+    for idx := 0 to cbObject.Count - 1 do
+    begin
+      if AnsiContainsStr(cbObject.Items[idx], line) then
+      begin
+        cbObject.ItemIndex := idx;
+        break;
+      end;
+    end;
+  end;
+end;
+
 procedure TformProvenanceRecord.lbProvenanceRecordChange(Sender: TObject);
 var
   line, creationDate, sDate, sDay, sMonth, sYear, idObject: string;
   idx: Integer;
+  objectList: TStringList;
+  exitLoop: Boolean;
 begin
   if lbProvenanceRecord.ItemIndex > - 1 then
   begin
+    lbObjects.Items.Clear;
     line := lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex];
     edDescription.Text := ExtractField(line, '"description":"');
     edExhibitNumber.Text := ExtractField(line, '"exhibitNumber":"');
@@ -168,17 +222,15 @@ begin
     end;
 
     timePR.Text := Copy(creationDate, 12, 8);
-  end;
-  idObject := ExtractField(line, '"object":"');
-  for idx:=0 to cbObject.Items.Count - 1 do
-    begin
-      if AnsiContainsStr(cbObject.Items[idx], idObject) then
-      begin
-        cbObject.ItemIndex := idx;
-        break;
-      end;
-    end;
+    objectList := ExtractArray(line, '"object":[');
+    exitLoop := false;
 
+    for idx := 0 to objectList.Count -1 do
+      lbObjects.Items.Add('"' + objectList[idx] + '"');
+
+    lbObjects.ItemIndex := 0; //slect the first object of the list that activates the OnChange event on lbObjects
+
+  end;
 end;
 
 function TformProvenanceRecord.prepareProvenanceRecord(operation: String): String;
@@ -207,10 +259,72 @@ begin
   line := line +  TimeToStr(timePR.Time) + 'Z", ' + recSep;
   line := line +  '"description":"' + edDescription.Text + '", ' + recSep;
   line := line +  '"exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
-  line := line +  '"object":"';
-  sObject := cbObject.Items[cbObject.ItemIndex];
-  line := line + Copy(sObject, Pos('@', sObject) +1, Length(sObject)) + '"}';
+  line := line +  '"object":[';
+  idx := 0;
+  for idx:=0 to lbObjects.Count - 2 do
+    line := line + lbObjects.Items[idx] + ',';
+
+  line := line + lbObjects.Items[idx] + ']}';
   Result := line;
+end;
+
+procedure TformProvenanceRecord.readTraceEmailAccountFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inEmailAddress, inID: Boolean;
+  id, emailAddress: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'emailAddress' then
+            inEmailAddress := True
+          else
+            inEmailAddress := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inEmailAddress then
+          begin
+            emailAddress := stringreplace(jreader.Value.AsString, '@', 'AT', [rfReplaceAll]);
+            cbObject.Items.Add(emailAddress + ' '  + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
 end;
 
 procedure TformProvenanceRecord.readTraceFileFromFile;
@@ -287,7 +401,78 @@ begin
   readTraceMobileFromFile;
   readTraceSIMFromFile;
   readTraceFileFromFile;
+  readTraceMessageFromFile;
+  readTraceEmailAccountFromFile;
+  readTracePhoneAccountFromFile;
   //readTraceFromComputer;
+end;
+
+procedure TformProvenanceRecord.readTraceMessageFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inApplication, inMessageText: Boolean;
+  id, application, messageText: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceMESSAGE.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMESSAGE.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'application' then
+            inApplication := True
+          else
+            inApplication := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'messageText' then
+            inMessageText := True
+          else
+            inMessageText := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inApplication then
+            application := jreader.Value.AsString;
+
+          if inMessageText then
+          begin
+            messageText := jreader.Value.AsString;
+            cbObject.Items.Add(application + ' ' + messageText + ' ' + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
 end;
 
 procedure TformProvenanceRecord.readTraceMobileFromFile;
@@ -362,6 +547,66 @@ begin
       sreader.Free;
     end;
   end;
+end;
+
+procedure TformProvenanceRecord.readTracePhoneAccountFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inPhoneNumber: Boolean;
+  id, phoneNumber: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'phoneNumber' then
+            inPhoneNumber := True
+          else
+            inPhoneNumber := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inPhoneNumber then
+          begin
+            phoneNumber := jreader.Value.AsString;
+            cbObject.Items.Add('Phone account ' + phoneNumber + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
 end;
 
 procedure TformProvenanceRecord.readTraceSIMFromFile;
@@ -466,10 +711,21 @@ begin
   formProvenanceRecord.Close;
 end;
 
+procedure TformProvenanceRecord.btnAddObjectClick(Sender: TObject);
+var
+  line : String;
+begin
+  if cbObject.ItemIndex > - 1 then
+  begin
+    line := cbObject.Items[cbObject.ItemIndex];
+    lbObjects.Items.Add('"' + Copy(line, Pos('@', line) + 1, Length(line)) + '"');
+  end;
+end;
+
 procedure TformProvenanceRecord.btnAddPRClick(Sender: TObject);
 begin
-  if (edDescription.Text = '') or (cbObject.ItemIndex = -1)  then
-    ShowMessage('Description and/or Object are missing!')
+  if (edDescription.Text = '') or (lbObjects.Items.Count = 0)  then
+    ShowMessage('Description and/or list Objects are missing!')
   else
   begin
     lbProvenanceRecord.Items.Add(prepareProvenanceRecord('add'));
@@ -480,7 +736,7 @@ begin
     cbPRMonth.ItemIndex := 0;
     cbPRYear.ItemIndex := 0;
     cbObject.ItemIndex := -1;
-
+    lbObjects.Items.Clear;
   end;
 end;
 

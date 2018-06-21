@@ -169,7 +169,6 @@ begin
   if lbTrace.ItemIndex > -1 then
   begin
     line := lbTrace.Items[lbTrace.ItemIndex];
-
     eddeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
     edDeviceModel.Text :=  ExtractField(line, '"model":"');
     edDeviceSerial.Text :=  ExtractField(line, '"serialNumber":"');
@@ -209,7 +208,16 @@ begin
     end;
 
     timeMobile.Text := Copy(mobileDateTime, 12, 8);
+
+    edIphoneID.Text := '';
+    edIphoneOwner.Text := '';
+    if (Pos('iPhoneDevice', line) > 0) then
+    begin
+      edIphoneID.Text :=  ExtractField(line, '"uniquueID":"');
+      edIphoneOwner.Text := ExtractField(line, '"ownerName":"');
+    end;
   end;
+
 end;
 
 function TformTraceMobile.prepareItemTrace(operation: String): String;
@@ -253,7 +261,7 @@ begin
     if Trim(edOsName.Text) <> '' then
     begin
       line := line + #9 + ', ' + recSep + '{"@type":"OperatingSystem", "name": "' + edOsName.Text + '",' + recSep;
-      line := line + #9 + '"manufacturer":"' + edOsManufacturer.Text + '"}' + recSep;
+      line := line + #9 + '"manufacturer":"' + edOsManufacturer.Text + '", ' + recSep;
       line := line + #9 + '"version":"' + edOsVersion.Text + '"}' + recSep;
     end;
 
