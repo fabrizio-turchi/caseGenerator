@@ -694,7 +694,7 @@ begin
     AssignFile(fileJSON, FpathCase + FuuidCase + '-provenance_record.json');
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_PROVENANCERECORD":[';
+    line := #9 + '"OBJECTS_PROVENANCE_RECORD":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbProvenanceRecord.Items.Count - 2 do

@@ -26,14 +26,13 @@ type
     edRole: TEdit;
     edWhere: TEdit;
     edWhen: TEdit;
-    Button1: TButton;
     Label7: TLabel;
-    edWhat: TEdit;
     Label8: TLabel;
     edInstrument: TEdit;
     tvTraces: TTreeView;
     Label9: TLabel;
     edObject: TEdit;
+    memoWhat: TMemo;
     procedure btnAddChildClick(Sender: TObject);
     procedure tvActionsChange(Sender: TObject);
   private
@@ -51,6 +50,10 @@ type
     FlistMobiles: TStringList;
     FlistTools: TStringList;
     FaMonth: TStringList;
+    FlistEmailAccounts: TStringList;
+    FlistDiskPartitions: TStringList;
+    FlistMessages: TStringList;
+    FlistPhoneAccounts: TStringList;
     procedure SetPathCase(const Value: String);
     procedure SetuuidCase(const Value: string);
     procedure SetlistActions(const Value: TStringList);
@@ -65,6 +68,10 @@ type
     procedure SetlistTools(const Value: TStringList);
     procedure SetlistWarrants(const Value: TSTringList);
     procedure SetaMonth(const Value: TStringList);
+    procedure SetlistDiskPartitions(const Value: TStringList);
+    procedure SetlistEmailAccounts(const Value: TStringList);
+    procedure SetlistMessages(const Value: TStringList);
+    procedure SetlistPhoneAccounts(const Value: TStringList);
     property UuidCase: string read FuuidCase write SetuuidCase;
     property PathCase: String read FPathCase write SetPathCase;
     property listActions: TStringList read FlistActions write SetlistActions;
@@ -77,6 +84,10 @@ type
     property listFiles: TStringList read FlistFiles write SetlistFiles;
     property listProvenanceRecords: TStringList read FlistProvenanceRecords write SetlistProvenanceRecords;
     property listTools: TStringList read FlistTools write SetlistTools;
+    property listDiskPartitions: TStringList read FlistDiskPartitions write SetlistDiskPartitions;
+    property listEmailAccounts: TStringList read FlistEmailAccounts write SetlistEmailAccounts;
+    property listPhoneAccounts: TStringList read FlistPhoneAccounts write SetlistPhoneAccounts;
+    property listMessages: TStringList read FlistMessages write SetlistMessages;
     property listRelationships: TSTringList read FlistRelationships write SetlistRelationships;
     function readObjectsFromFile(fileObject: String): TStringList;
     function addTreeViewItemToRoot(childText: String; tvComponent: TTreeView; rootText: String; itemParent:TTreeViewItem) : TTreeViewItem;
@@ -179,6 +190,16 @@ begin
   FlistActions := Value;
 end;
 
+procedure TformOverview.SetlistDiskPartitions(const Value: TStringList);
+begin
+  FlistDiskPartitions := Value;
+end;
+
+procedure TformOverview.SetlistEmailAccounts(const Value: TStringList);
+begin
+  FlistEmailAccounts := Value;
+end;
+
 procedure TformOverview.SetlistFiles(const Value: TStringList);
 begin
   FlistFiles := Value;
@@ -194,9 +215,19 @@ begin
   FlistLocations := Value;
 end;
 
+procedure TformOverview.SetlistMessages(const Value: TStringList);
+begin
+  FlistMessages := Value;
+end;
+
 procedure TformOverview.SetlistMobiles(const Value: TStringList);
 begin
   FlistMobiles := Value;
+end;
+
+procedure TformOverview.SetlistPhoneAccounts(const Value: TStringList);
+begin
+  FlistPhoneAccounts := Value;
 end;
 
 procedure TformOverview.SetlistProvenanceRecords(const Value: TStringList);
@@ -248,7 +279,7 @@ begin
   edRole.Text := '';
   edWhere.Text := '';
   edWhen.Text := '';
-  edWhat.Text := '';
+  memoWhat.Lines.Clear;
   edInstrument.Text := '';
   edObject.Text := '';
   addTreeViewRoot('Traces', tvTraces);
@@ -290,6 +321,53 @@ begin
     end;
   end;
 
+  if FlistDiskPartitions.Count > 0 then
+  begin
+    itemText := 'DISK PARTITIONs (' + IntToStr(FlistDiskPartitions.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistDiskPartitions.Count - 1 do
+    begin
+      fileName := ExtractField(FlistDiskPartitions[idx], '"diskPartitionType":"');
+      size := ExtractField(FlistDiskPartitions[idx], '"partitionLength":"');
+      addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
+    end;
+  end;
+
+  if FlistEmailAccounts.Count > 0 then
+  begin
+    itemText := 'EMAIL ACCOUNTs (' + IntToStr(FlistEmailAccounts.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistEmailAccounts.Count - 1 do
+    begin
+      fileName := ExtractField(FlistEmailAccounts[idx], '"emailAddress":"');
+      addTreeViewItemtoRoot(fileName, tvTraces, itemText, itemNode);
+    end;
+  end;
+
+  if FlistMessages.Count > 0 then
+  begin
+    itemText := 'SMSs (' + IntToStr(FlistMessages.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistMessages.Count - 1 do
+    begin
+      fileName := ExtractField(FlistMessages[idx], '"application":"');
+      size := ExtractField(FlistMessages[idx], '"messageText":"');
+      addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
+    end;
+  end;
+
+  if FlistPhoneAccounts.Count > 0 then
+  begin
+    itemText := 'PHONE ACCOUNTs (' + IntToStr(FlistPhoneAccounts.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistPhoneAccounts.Count - 1 do
+    begin
+      fileName := ExtractField(FlistPhoneAccounts[idx], '"phoneNumber":"');
+      size := ExtractField(FlistPhoneAccounts[idx], '"accountIssuer":"');
+      addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
+    end;
+  end;
+
   tvTraces.ExpandAll;
 end;
 
@@ -313,7 +391,7 @@ procedure TformOverview.ShowWithParamater(pathCase, uuidCase: String);
   4.  using 1.d read warrant.JSON, if 1.a=preserved or transferred otherwise read tool.JSON
       for setting up the field [Instrument]
   5.  use 1.e for setting up the field [What]
-  6.  using 1.f read trace_XXX.JSON if 1.a=preservec otherwise read provenance_record.JSON
+  6.  using 1.f read trace_XXX.JSON if 1.a=preserved otherwise read provenance_record.JSON
       for extracting uuid values and use them for reading descriptive info from trace_XXX.JSON
 }
 var
@@ -368,6 +446,10 @@ begin
   SetListMobiles(readObjectsFromFile('-traceMOBILE.json'));
   SetListSIMs(readObjectsFromFile('-traceSIM.json'));
   SetListFiles(readObjectsFromFile('-traceFILE.json'));
+  SetListDiskPartitions(readObjectsFromFile('-traceDISK_PARTITION.json'));
+  SetListEmailAccounts(readObjectsFromFile('-traceEMAIL_ACCOUNT.json'));
+  SetListMessages(readObjectsFromFile('-traceMESSAGE.json'));
+  SetListPhoneAccounts(readObjectsFromFile('-tracePHONE_ACCOUNT.json'));
 
   //  The Result/Object TreeView component contains all thr Traces of the Case, when a
   //  specific Investigative_Action is selectes it only contains the Result/Output of the
@@ -381,13 +463,15 @@ end;
 procedure TformOverview.tvActionsChange(Sender: TObject);
 var
   //itemGeneric: TTreeViewItem;
-  idx, idy, idk, idw, nMonth: Integer;
+  idx, idy, idk, idw, idn, nMonth: Integer;
   line, IdPerformer, IdLocation, IdInstrument, description, itemText: String;
   name, IdRole, IdIdentity, sDateTime, startTime, endTime: String;
-  sObject, model, manufacturer, msisdn: String;
+  model, manufacturer, msisdn: String;
   simForm, carrier, fileName, size: String;
-  IdResults, IdObject, itemsMobile, itemsSIM, itemsFile: TStringList;
-  lMobile, lSIM, lFile: Boolean;
+  IdResults, itemsObjectPR, IdObject: TStringList;
+  itemsMobile, itemsSIM, itemsFile, itemsDiskPartition: TStringList;
+  itemsMessage, itemsEmailAccount, itemsPhoneAccount: TStringList;
+  lObjectFound: Boolean;
   itemNode: TTreeViewItem;
 begin
   //itemGeneric := TTreeViewItem.Create(Self);
@@ -402,7 +486,7 @@ begin
     edRole.Text := '';
     edWhere.Text := '';
     edWhen.Text := '';
-    edWhat.Text := '';
+    memoWhat.Lines.Clear;
     edInstrument.Text := '';
     edObject.Text := '';
     tvTraces.Clear;
@@ -464,7 +548,7 @@ begin
     edWhen.Text :=  Copy(sDateTime, 1, 4) + ' ' + FaMonth[nMonth - 1] + ' ' +
                     Copy(sDateTime, 9, 2);
 
-    edWhat.Text := description;
+    memoWhat.Text:=  description;
 
     if (name = 'preserved') or (name='transferred') then
     begin
@@ -508,61 +592,121 @@ begin
     itemsMobile := TStringList.Create;
     itemsSIM := TStringList.Create;
     itemsFile := TStringList.Create;
+    itemsEmailAccount := TStringList.Create;
+    itemsMessage := TStringList.Create;
+    itemsDiskPartition := TStringList.Create;
+    itemsPhoneAccount := TStringList.Create;
+
+    itemsObjectPR := TStringList.Create;   // objects included in the Provenance_Record
+
 
 
     for idx:= 0 to IdResults.Count - 1 do
     begin
-      lMobile := False;
-      lSIM := False;
-      lFile := False;
+
       for idy:=0 to FlistProvenanceRecords.Count - 1 do
       begin
         if AnsiContainsStr(FlistProvenanceRecords[idy], IdResults[idx]) then
         begin
-            sObject := ExtractField(FlistProvenanceRecords[idy], '"object":"');
-            for idk := 0 to FlistMobiles.Count - 1 do
+            itemsObjectPR := ExtractArray(FlistProvenanceRecords[idy], '"object":[');
+            if itemsObjectPR.Count = 0 then
             begin
-              if AnsiContainsStr(FlistMobiles[idk], sObject) then
-              begin
-                itemsMobile.Add(ExtractField(FlistMobiles[idk], '"model":"') +
-                  ' ' +  ExtractField(FlistMobiles[idk], '"manufacturer":"') +
-                  ' (' + ExtractField(FlistMobiles[idk], '"MSISDN":"') + ')');
-                  lMobile := True;
-                  break;
-              end;
+              ShowMessage('Error: Provenance Record without Objects!');
+              Exit;
             end;
 
-            if lMobile then
-              break;
-
-            for idk := 0 to FlistSIMs.Count - 1 do
+            for idn:=0 to  itemsObjectPR.Count - 1 do
             begin
-              if AnsiContainsStr(FlistSIMs[idk], sObject) then
+              lObjectFound := False;
+              for idk := 0 to FlistMobiles.Count - 1 do
               begin
-                itemsSIM.Add(ExtractField(FlistSIMs[idk], '"SIMForm":"') +
-                  ' ' +  ExtractField(FlistSIMs[idk], '"Carrier":"'));
-                  lSIM := True;
-                  break;
+                if AnsiContainsStr(FlistMobiles[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsMobile.Add(ExtractField(FlistMobiles[idk], '"model":"') +
+                    ' ' +  ExtractField(FlistMobiles[idk], '"manufacturer":"') +
+                    ' (' + ExtractField(FlistMobiles[idk], '"MSISDN":"') + ')');
+                    lObjectFound := True;
+                    break;
+                end;
               end;
-            end;
 
-            if lSIM then
-              break;
-
-            for idk := 0 to FlistFiles.Count - 1 do
-            begin
-              if AnsiContainsStr(FlistFiles[idk], sObject) then
+              for idk := 0 to FlistSIMs.Count - 1 do
               begin
-                itemsFile.Add(ExtractField(FlistFiles[idk], '"fileName":"') +
-                  ' (' +  ExtractField(FlistFiles[idk], '"sizeInBytes":"') + ')');
-                  lFile := True;
+                if lObjectFound then
                   break;
+                if AnsiContainsStr(FlistSIMs[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsSIM.Add(ExtractField(FlistSIMs[idk], '"SIMForm":"') +
+                    ' ' +  ExtractField(FlistSIMs[idk], '"Carrier":"'));
+                    lObjectFound := True;
+                    break;
+                end;
               end;
-            end;
 
-            if lFile then
-              break;
+              for idk := 0 to FlistFiles.Count - 1 do
+              begin
+                if lObjectFound then
+                  break;
+                if AnsiContainsStr(FlistFiles[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsFile.Add(ExtractField(FlistFiles[idk], '"fileName":"') +
+                    ' (' +  ExtractField(FlistFiles[idk], '"sizeInBytes":"') + ')');
+                    lObjectFound := True;
+                    break;
+                end;
+              end;
 
+              for idk := 0 to FlistEmailAccounts.Count - 1 do
+              begin
+                if lObjectFound then
+                  break;
+                if AnsiContainsStr(FlistEmailAccounts[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsEmailAccount.Add(ExtractField(FlistEmailAccounts[idk], '"emailAddress":"'));
+                  lObjectFound := True;
+                  break;
+                end;
+              end;
+
+              for idk := 0 to FlistMessages.Count - 1 do
+              begin
+                if lObjectFound then
+                  break;
+                if AnsiContainsStr(FlistMessages[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsMessage.Add(ExtractField(FlistMessages[idk], '"application":"') +
+                  ' (' + ExtractField(FlistMessages[idx], '"messageText":"') + ')');
+                  lObjectFound := True;
+                  break;
+                end;
+              end;
+
+              for idk := 0 to FlistPhoneAccounts.Count - 1 do
+              begin
+                if lObjectFound then
+                  break;
+                if AnsiContainsStr(FlistPhoneAccounts[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsMessage.Add(ExtractField(FlistPhoneAccounts[idk], '"phoneNumber":"') +
+                  ' (' + ExtractField(FlistPhoneAccounts[idx], '"accountIssuer":"') + ')');
+                  lObjectFound := True;
+                  break;
+                end;
+              end;
+
+              for idk := 0 to FlistDiskPartitions.Count - 1 do
+              begin
+                if lObjectFound then
+                  break;
+                if AnsiContainsStr(FlistPhoneAccounts[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsMessage.Add(ExtractField(FlistDiskPartitions[idk], '"diskPartitionType":"') +
+                  ' (' + ExtractField(FlistDiskPartitions[idx], '"partitionLength":"') + ')');
+                  lObjectFound := True;
+                  break;
+                end;
+              end;
+          end;
         end;
       end;
     end;
@@ -589,6 +733,38 @@ begin
       itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
       for idw := 0 to itemsFile.Count - 1 do
         addTreeViewItemtoRoot(itemsFile[idw], tvTraces, itemText, itemNode);
+    end;
+
+    if itemsEmailAccount.Count > 0 then
+    begin
+      itemText := 'EMAIL ACCOUNTs (' + IntToStr(itemsEmailAccount.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsEmailAccount.Count - 1 do
+        addTreeViewItemtoRoot(itemsEmailAccount[idw], tvTraces, itemText, itemNode);
+    end;
+
+    if itemsMessage.Count > 0 then
+    begin
+      itemText := 'SMSs (' + IntToStr(itemsMessage.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsMessage.Count - 1 do
+        addTreeViewItemtoRoot(itemsMessage[idw], tvTraces, itemText, itemNode);
+    end;
+
+    if itemsDiskPartition.Count > 0 then
+    begin
+      itemText := 'DISK PARTITIONs (' + IntToStr(itemsDiskPartition.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsDiskPartition.Count - 1 do
+        addTreeViewItemtoRoot(itemsDiskPartition[idw], tvTraces, itemText, itemNode);
+    end;
+
+    if itemsPhoneAccount.Count > 0 then
+    begin
+      itemText := 'PHONE ACCOUNTs (' + IntToStr(itemsPhoneAccount.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsPhoneAccount.Count - 1 do
+        addTreeViewItemtoRoot(itemsPhoneAccount[idw], tvTraces, itemText, itemNode);
     end;
 
     tvTraces.ExpandAll;

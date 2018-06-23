@@ -135,8 +135,8 @@ object formTraceSIM: TformTraceSIM
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 561.000000000000000000
-    Viewport.Height = 185.000000000000000000
+    Viewport.Width = 557.000000000000000000
+    Viewport.Height = 181.000000000000000000
   end
   object cbForm: TComboBox
     Items.Strings = (

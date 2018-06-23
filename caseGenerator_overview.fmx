@@ -34,7 +34,7 @@ object formOverview: TformOverview
     Position.X = 8.000000000000000000
     Position.Y = 266.000000000000000000
     Text = 'Who'
-    TabOrder = 11
+    TabOrder = 10
   end
   object Label2: TLabel
     Position.X = 8.000000000000000000
@@ -59,7 +59,7 @@ object formOverview: TformOverview
   end
   object edWho: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 15
+    TabOrder = 14
     Text = 'who'
     Position.X = 88.000000000000000000
     Position.Y = 266.000000000000000000
@@ -75,7 +75,7 @@ object formOverview: TformOverview
   end
   object edRole: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 14
+    TabOrder = 13
     Text = 'role'
     Position.X = 91.000000000000000000
     Position.Y = 295.000000000000000000
@@ -85,7 +85,7 @@ object formOverview: TformOverview
   end
   object edWhere: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 13
+    TabOrder = 12
     Text = 'where'
     Position.X = 88.000000000000000000
     Position.Y = 330.000000000000000000
@@ -95,7 +95,7 @@ object formOverview: TformOverview
   end
   object edWhen: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 12
+    TabOrder = 11
     Text = 'when'
     Position.X = 88.000000000000000000
     Position.Y = 370.000000000000000000
@@ -103,34 +103,15 @@ object formOverview: TformOverview
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
   end
-  object Button1: TButton
-    Position.X = 648.000000000000000000
-    Position.Y = 488.000000000000000000
-    Size.Width = 105.000000000000000000
-    Size.Height = 33.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 16
-    Text = 'Generate Report'
-  end
   object Label7: TLabel
     Position.X = 8.000000000000000000
-    Position.Y = 424.000000000000000000
+    Position.Y = 432.000000000000000000
     Text = 'What'
     TabOrder = 4
   end
-  object edWhat: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 10
-    Text = 'what'
-    Position.X = 88.000000000000000000
-    Position.Y = 421.000000000000000000
-    Size.Width = 289.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-  end
   object Label8: TLabel
     Position.X = 8.000000000000000000
-    Position.Y = 460.000000000000000000
+    Position.Y = 479.000000000000000000
     Text = 'Instrument'
     TabOrder = 3
   end
@@ -139,7 +120,7 @@ object formOverview: TformOverview
     TabOrder = 8
     Text = 'instrument'
     Position.X = 88.000000000000000000
-    Position.Y = 455.000000000000000000
+    Position.Y = 474.000000000000000000
     Size.Width = 289.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -148,12 +129,12 @@ object formOverview: TformOverview
     Position.X = 472.000000000000000000
     Position.Y = 312.000000000000000000
     Size.Width = 401.000000000000000000
-    Size.Height = 161.000000000000000000
+    Size.Height = 185.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 18
+    TabOrder = 16
     ShowSizeGrip = True
     Viewport.Width = 397.000000000000000000
-    Viewport.Height = 157.000000000000000000
+    Viewport.Height = 181.000000000000000000
   end
   object Label9: TLabel
     Position.X = 390.000000000000000000
@@ -173,5 +154,17 @@ object formOverview: TformOverview
     Size.Width = 401.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
+  end
+  object memoWhat: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Position.X = 88.000000000000000000
+    Position.Y = 416.000000000000000000
+    Size.Width = 289.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 17
+    Viewport.Width = 285.000000000000000000
+    Viewport.Height = 46.000000000000000000
   end
 end

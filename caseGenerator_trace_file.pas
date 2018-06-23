@@ -241,7 +241,7 @@ begin
     idx:= 0;
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_TRACE":[';
+    line := #9 + '"OBJECTS_FILE":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbTrace.Items.Count - 2 do

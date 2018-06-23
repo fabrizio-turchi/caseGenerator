@@ -219,7 +219,8 @@ end;
 
 procedure TformInvestigativeAction.cbActionsChange(Sender: TObject);
 begin
-  cbActionsFill(cbActionsName.Items[cbActions.ItemIndex]);
+  if cbActions.ItemIndex > -1 then
+    cbActionsFill(cbActionsName.Items[cbActions.ItemIndex]);
 end;
 
 
@@ -315,6 +316,7 @@ begin
   cbEndYear.ItemIndex := 0;
 
   cbActionsName.Visible := False;
+  cbActions.ItemIndex := -1;
   cbInstrument.Items.Clear;
   lbArguments.Items.Clear;
   edArgumentName.Text := '';

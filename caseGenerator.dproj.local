@@ -49,7 +49,7 @@
     <Transaction>2018/06/19 12:32:11.000.118,=Z:\CASE\generator\caseGenerator_trace_email_account.pas</Transaction>
     <Transaction>2018/06/19 16:07:04.000.012,Z:\CASE\generator\caseGenerator_trace_mobile_account.fmx=Z:\CASE\generator\caseGenerator_trace_phone_account.fmx</Transaction>
     <Transaction>2018/06/19 16:07:04.000.012,Z:\CASE\generator\caseGenerator_trace_mobile_account.pas=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
-    <Transaction>2018/06/21 13:57:39.652,=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
+    <Transaction>2018/06/21 13:57:39.000.652,=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<PcnMacOSX iOSSimulator="iPhone5"/>

@@ -296,7 +296,7 @@ begin
     AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMOBILE.json');
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_TRACE":[';
+    line := #9 + '"OBJECTS_MOBILE":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbTrace.Items.Count - 2 do

@@ -216,7 +216,10 @@ begin
       WriteLn(fileJSON, lbTrace.Items[idx] + ',');
 
     WriteLn(fileJSON, lbTrace.Items[idx]);
-    WriteLn(fileJSON, #9#9 + ']}');
+    WriteLn(fileJSON, #9#9 + ']');  // it's important write in separate lines
+    WriteLn(fileJSON, #9#9 + '}');
+    // the last ] and } must be written on two separate lines !!!
+    //WriteLn(fileJSON, #9#9 + ']}');
     CloseFile(fileJSON);
   end
   else
