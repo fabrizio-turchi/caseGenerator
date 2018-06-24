@@ -467,7 +467,7 @@ var
   idx, idy, idk, idw, idn, nMonth: Integer;
   line, IdPerformer, IdLocation, IdInstrument, description, itemText: String;
   name, IdRole, IdIdentity, sDateTime, startTime, endTime: String;
-  model, manufacturer, msisdn: String;
+  model, manufacturer, msisdn, sID: String;
   simForm, carrier, fileName, size: String;
   IdResults, itemsObjectPR, IdObject: TStringList;
   itemsMobile, itemsSIM, itemsFile, itemsDiskPartition: TStringList;
@@ -673,10 +673,11 @@ begin
               begin
                 if lObjectFound then
                   break;
-                if AnsiContainsStr(FlistMessages[idk], itemsObjectPR[idn]) then
+                sId := ExtractField(FlistMessages[idk], '"@id":"');
+                if sId = itemsObjectPR[idn] then
                 begin
                   itemsMessage.Add(ExtractField(FlistMessages[idk], '"application":"') +
-                  ' (' + ExtractField(FlistMessages[idx], '"messageText":"') + ')');
+                  ' (' + ExtractField(FlistMessages[idk], '"messageText":"') + ')');
                   lObjectFound := True;
                   break;
                 end;
@@ -688,8 +689,8 @@ begin
                   break;
                 if AnsiContainsStr(FlistPhoneAccounts[idk], itemsObjectPR[idn]) then
                 begin
-                  itemsMessage.Add(ExtractField(FlistPhoneAccounts[idk], '"phoneNumber":"') +
-                  ' (' + ExtractField(FlistPhoneAccounts[idx], '"accountIssuer":"') + ')');
+                  itemsPhoneAccount.Add(ExtractField(FlistPhoneAccounts[idk], '"phoneNumber":"') +
+                  ' (' + ExtractField(FlistPhoneAccounts[idk], '"accountIssuer":"') + ')');
                   lObjectFound := True;
                   break;
                 end;
@@ -701,7 +702,7 @@ begin
                   break;
                 if AnsiContainsStr(FlistPhoneAccounts[idk], itemsObjectPR[idn]) then
                 begin
-                  itemsMessage.Add(ExtractField(FlistDiskPartitions[idk], '"diskPartitionType":"') +
+                  itemsDiskPartition.Add(ExtractField(FlistDiskPartitions[idk], '"diskPartitionType":"') +
                   ' (' + ExtractField(FlistDiskPartitions[idx], '"partitionLength":"') + ')');
                   lObjectFound := True;
                   break;

@@ -251,8 +251,8 @@ object formTraceFile: TformTraceFile
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 765.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    Viewport.Width = 769.000000000000000000
+    Viewport.Height = 177.000000000000000000
   end
   object Label6: TLabel
     Position.X = 314.000000000000000000
@@ -273,8 +273,8 @@ object formTraceFile: TformTraceFile
     TabOrder = 2
   end
   object Label8: TLabel
-    Position.X = 430.000000000000000000
-    Position.Y = 82.000000000000000000
+    Position.X = 432.000000000000000000
+    Position.Y = 58.000000000000000000
     Size.Width = 81.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -381,7 +381,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 44.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 16
-    Viewport.Width = 295.000000000000000000
-    Viewport.Height = 40.000000000000000000
+    Viewport.Width = 299.000000000000000000
+    Viewport.Height = 44.000000000000000000
   end
 end

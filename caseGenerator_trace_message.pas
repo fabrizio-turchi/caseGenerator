@@ -168,7 +168,7 @@ begin
 
     sentDate := ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"sentTime":"');
     sDate := Copy(sentDate, 1, 10);
-    sDay := Copy(sDate, 9, 2);
+    sDay := Copy(sDate, 7, 2);
     for idx:=0 to cbSentDay.Items.Count - 1 do
     begin
       if cbSentDay.Items[idx] = sDay then
@@ -178,7 +178,7 @@ begin
       end;
     end;
 
-    sMonth := Copy(sDate, 6, 2);
+    sMonth := Copy(sDate, 5, 2);
     for idx:=0 to cbSentMonth.Items.Count - 1 do
     begin
       if cbSentMonth.Items[idx] = sMonth then
@@ -198,7 +198,7 @@ begin
       end;
     end;
 
-    timeSent.Text := Copy(sentDate, 12, 8);
+    timeSent.Text := Copy(sentDate, 10, 8);
 
   end;
 

@@ -105,6 +105,9 @@ begin
   edExtension.Text := '';
   edSystemType.Text := '';
   cbDirectory.ItemIndex := 0;
+  cbCreationDay.ItemIndex := -1;
+  cbCreationMonth.ItemIndex := -1;
+  cbCreationYear.ItemIndex := -1;
   edSize.Text :=   '';
   edHashValue.Text :=  '';
   cbHashMethod.ItemIndex := -1;
@@ -143,7 +146,8 @@ end;
 
 procedure TformTraceFile.lbTraceChange(Sender: TObject);
 var
-  line, cbValue: String;
+  line, cbValue, creationDate: String;
+  sDate, sDay, sMonth, sYear: String;
   idx: Integer;
 begin
   if lbTrace.ItemIndex > - 1 then
@@ -154,9 +158,45 @@ begin
     edExtension.Text := ExtractField(line, '"extension":"');
     edSystemType.Text := ExtractField(line, '"fileSystemType":"');
     cbDirectory.Items.Text :=  ExtractField(line, '"isDirectory":"');
+    cbDirectory.ItemIndex := 0;
     edSize.Text :=   ExtractField(line, '"sizeInBytes":"');
     edHashValue.Text :=  ExtractField(line, '"hashValue":"');
     cbValue := ExtractField(line, '"hashMethod":"');
+
+    creationDate := ExtractField(line, '"createdTime":"');
+    sDate := Copy(creationDate, 1, 10);
+    sDay := Copy(sDate, 9, 2);
+    for idx:=0 to cbCreationDay.Items.Count - 1 do
+    begin
+      if cbCreationDay.Items[idx] = sDay then
+      begin
+        cbCreationDay.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sMonth := Copy(sDate, 6, 2);
+    for idx:=0 to cbCreationMonth.Items.Count - 1 do
+    begin
+      if cbCreationMonth.Items[idx] = sMonth then
+      begin
+        cbCreationMonth.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sYear := Copy(sDate, 1, 4);
+    for idx:=0 to cbCreationYear.Items.Count - 1 do
+    begin
+      if cbCreationYear.Items[idx] = sYear then
+      begin
+        cbCreationYear.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    timeCreation.Text := Copy(creationDate, 12, 8);
+
     for idx:=0 to cbHashMethod.Count - 1 do
     begin
       if AnsiContainsStr(cbHashMethod.Items[idx], cbValue) then
