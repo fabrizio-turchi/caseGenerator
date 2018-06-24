@@ -419,6 +419,7 @@ begin
   //FaMonth := TStringList.Create;
   SetaMonth(aMonths);
 
+  memoWhat.WordWrap := true;
   tvActions.Clear;
   addTreeViewRoot('Digital Evidence Timeline', tvActions);
 

@@ -47,6 +47,7 @@ type
     procedure lbMessageChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnModifyMessageClick(Sender: TObject);
+    procedure lbMobileChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -138,12 +139,13 @@ end;
 
 procedure TformTraceMessage.lbMessageChange(Sender: TObject);
 var
-  line: String;
+  line, sentDate, sDay, sMonth, sYear, sDate: String;
   idx: Integer;
   mobileTo: TStringList;
 begin
   if lbMessage.ItemIndex > - 1 then
   begin
+    lbMobile.Items.Clear;
     line := lbMessage.Items[lbMessage.ItemIndex];
     edApplication.Text := ExtractField(line, '"application":"');
     memoMessageText.Lines.Text := ExtractField(line, '"messageText":"');
@@ -156,11 +158,74 @@ begin
         Break;
       end;
     end;
-      mobileTo := ExtractArray(line, '"to":[');
+    mobileTo := ExtractArray(lbMessage.Items[lbMessage.ItemIndex], '"to":[');
+    if mobileTo.Count > 0 then
+    begin
+      for idx:=0 to mobileTo.Count - 1 do
+        lbMobile.Items.Add('"' + mobileTo[idx] + '"');
+      lbMobile.ItemIndex := 0;
+    end;
+
+    sentDate := ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"sentTime":"');
+    sDate := Copy(sentDate, 1, 10);
+    sDay := Copy(sDate, 9, 2);
+    for idx:=0 to cbSentDay.Items.Count - 1 do
+    begin
+      if cbSentDay.Items[idx] = sDay then
+      begin
+        cbSentDay.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sMonth := Copy(sDate, 6, 2);
+    for idx:=0 to cbSentMonth.Items.Count - 1 do
+    begin
+      if cbSentMonth.Items[idx] = sMonth then
+      begin
+        cbSentMonth.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    sYear := Copy(sDate, 1, 4);
+    for idx:=0 to cbSentYear.Items.Count - 1 do
+    begin
+      if cbSentYear.Items[idx] = sYear then
+      begin
+        cbSentYear.ItemIndex := idx;
+        break;
+      end;
+    end;
+
+    timeSent.Text := Copy(sentDate, 12, 8);
+
   end;
 
     // read trace-MOBILE fro extracting all ID with model and MSISDN
 
+
+end;
+
+procedure TformTraceMessage.lbMobileChange(Sender: TObject);
+var
+  line: String;
+  idx: Integer;
+begin
+  if lbMobile.ItemIndex > - 1 then
+  begin
+    line := lbMobile.Items[lbMobile.ItemIndex];
+    line := stringreplace(line, '"', '',[rfReplaceAll]);
+    for idx:=0 to cbMobileTo.Count - 1 do
+    begin
+      if AnsiContainsStr(cbMobileTo.Items[idx], line) then
+      begin
+        cbMobileTo.ItemIndex := idx;
+        break
+      end;
+    end;
+
+  end;
 
 end;
 

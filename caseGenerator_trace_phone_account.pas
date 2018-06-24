@@ -151,6 +151,7 @@ procedure TformTracePhoneAccount.btnAddPhoneAccountClick(Sender: TObject);
 begin
     lbPhoneAccount.Items.Add(prepareTrace('add'));
     edPhoneNumber.Text := '';
+    edIssuer.Text := '';
 end;
 
 procedure TformTracePhoneAccount.SetpathCase(const Value: String);

@@ -73,6 +73,7 @@ object formTraceMessage: TformTraceMessage
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
+      OnChange = lbMobileChange
       Viewport.Width = 669.000000000000000000
       Viewport.Height = 84.000000000000000000
     end
