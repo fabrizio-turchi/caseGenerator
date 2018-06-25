@@ -392,6 +392,7 @@ var
 begin
   if lbInvestigativeAction.ItemIndex > -1  then
   begin
+    lbProvenanceRecords.Items.Clear;
     line := lbInvestigativeAction.Items[lbInvestigativeAction.ItemIndex];
     sField := ExtractField(line, '"name":"');
     cbActionsFill(sField);
@@ -546,6 +547,8 @@ begin
     provenanceStringList := TStringList.Create;
     provenanceStringList := ExtractArrayID(line, '"result":[');
     extractProvenanceRecordDescription(provenanceStringList);
+    if lbProvenanceRecords.Items.Count > 0 then
+      lbProvenanceRecords.ItemIndex := 0;
 
   end;
 end;
@@ -618,6 +621,7 @@ begin
     line := line + '"object":[' + recSep + '"' + idValue + '"],';
     line := line + '"result":[';
 
+    idx := 0;
 
     for idx:= 0 to lbProvenanceRecords.Items.Count - 2 do
     begin
@@ -626,12 +630,9 @@ begin
       line := line + '"' + idValue + '",';
     end;
 
-    if lbProvenanceRecords.Items.Count > 0 then
-    begin
-      idValue := lbProvenanceRecords.Items[idx];
-      idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-      line := line + '"' + idValue + '"]}';
-    end;
+    idValue := lbProvenanceRecords.Items[idx];
+    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+    line := line + '"' + idValue + '"]}';
 
     if lbArguments.Items.Count > 0 then
     begin

@@ -159,8 +159,8 @@ object formMain: TformMain
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 115.000000000000000000
-    Viewport.Height = 26.000000000000000000
+    Viewport.Width = 119.000000000000000000
+    Viewport.Height = 30.000000000000000000
     object Label2: TLabel
       Position.X = 3.000000000000000000
       Position.Y = 75.000000000000000000

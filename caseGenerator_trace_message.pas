@@ -31,13 +31,13 @@ type
     btnAddMobile: TButton;
     btnRemoveMobile: TButton;
     lbMobile: TListBox;
-    cbSentDay: TComboBox;
     cbSentMonth: TComboBox;
     timeSent: TTimeEdit;
     cbSentYear: TComboBox;
     Label3: TLabel;
     btnCancel: TButton;
     btnModifyMessage: TButton;
+    cbSentDay: TComboBox;
     procedure btnAddMessageClick(Sender: TObject);
     procedure btnRemoveMessageClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -102,7 +102,16 @@ begin
   for idx:=2000 to 2020 do
     cbSentYear.Items.Add(IntToStr(idx));
 
+  edApplication.Text := '';
+  memoMessageText.Text := '';
+  cbSentDay.ItemIndex := -1;
+  cbSentMonth.ItemIndex := -1;
+  cbSentYear.ItemIndex := -1;
   readTraceFromFile;
+  cbMobileFrom.ItemIndex := -1;
+  cbMobileTo.ItemIndex := -1;
+  lbMobile.Items.Clear;
+
 end;
 
 function TformTraceMessage.JsonTokenToString(const t: TJsonToken): string;
@@ -257,6 +266,7 @@ begin
   idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
   line := line + '"from":"' + extractID(idLine) + '", ' + recSep;
   line := line + '"to":[' + recSep;
+  idx := 0;
   for idx:=0 to lbMobile.Items.Count - 2 do
     line := line  + lbMobile.Items[idx] + ',';
 

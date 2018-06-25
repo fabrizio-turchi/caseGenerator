@@ -54,8 +54,8 @@ object formInvestigativeAction: TformInvestigativeAction
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbProvenanceRecordsChange
-      Viewport.Width = 553.000000000000000000
-      Viewport.Height = 73.000000000000000000
+      Viewport.Width = 549.000000000000000000
+      Viewport.Height = 69.000000000000000000
     end
     object Label3: TLabel
       Position.X = 2.000000000000000000
@@ -167,8 +167,8 @@ object formInvestigativeAction: TformInvestigativeAction
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbInvestigativeActionChange
-    Viewport.Width = 697.000000000000000000
-    Viewport.Height = 66.000000000000000000
+    Viewport.Width = 693.000000000000000000
+    Viewport.Height = 62.000000000000000000
   end
   object Label2: TLabel
     Position.X = 320.000000000000000000
@@ -508,8 +508,8 @@ object formInvestigativeAction: TformInvestigativeAction
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbArgumentsChange
-      Viewport.Width = 377.000000000000000000
-      Viewport.Height = 89.000000000000000000
+      Viewport.Width = 373.000000000000000000
+      Viewport.Height = 85.000000000000000000
     end
     object btnArgumentAdd: TButton
       Position.X = 62.000000000000000000

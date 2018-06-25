@@ -294,7 +294,13 @@ end;
 
 procedure TformMain.btnTraceClick(Sender: TObject);
 begin
-  if lbObjects.Items.Count = 0 then
+  if cbTrace.ItemIndex = - 1 then
+  begin
+    ShowMessage('Select a kind of trace');
+    Exit;
+  end;
+
+  if cbCases.ItemIndex = - 1 then
     ShowMessage('Select a case or create a new case')
   else
   begin
@@ -639,7 +645,7 @@ begin
 
   ExtractAllFiles(FHomeCases);
   lbObjects.Visible := False;
-  //btnGenerateJSON.Visible := False;
+  btnGenerateJSON.Visible := False;
 
 
   {
