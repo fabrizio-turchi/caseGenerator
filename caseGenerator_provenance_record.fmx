@@ -178,8 +178,8 @@ object formProvenanceRecord: TformProvenanceRecord
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbObjectsChange
-      Viewport.Width = 641.000000000000000000
-      Viewport.Height = 105.000000000000000000
+      Viewport.Width = 637.000000000000000000
+      Viewport.Height = 101.000000000000000000
     end
     object Label3: TLabel
       Position.X = 8.000000000000000000
@@ -244,8 +244,8 @@ object formProvenanceRecord: TformProvenanceRecord
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbProvenanceRecordChange
-    Viewport.Width = 729.000000000000000000
-    Viewport.Height = 168.000000000000000000
+    Viewport.Width = 725.000000000000000000
+    Viewport.Height = 164.000000000000000000
   end
   object btnClose: TButton
     Position.X = 243.000000000000000000

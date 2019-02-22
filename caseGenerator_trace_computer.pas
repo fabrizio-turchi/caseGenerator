@@ -29,7 +29,7 @@ type
     Label9: TLabel;
     edMacAddress: TEdit;
     Panel3: TPanel;
-    edBIOSmanufacturer: TEdit;
+    edCpuFamily: TEdit;
     Label10: TLabel;
     Label11: TLabel;
     edBIOSversion: TEdit;
@@ -48,6 +48,8 @@ type
     edOsVersion: TEdit;
     btnModifyTrace: TButton;
     btnCancel: TButton;
+    Label7: TLabel;
+    edRam: TEdit;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -134,51 +136,73 @@ begin
   begin
     line := lbTrace.Items[lbTrace.ItemIndex];
     edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
+    edDeviceModel.Text := ExtractField(line, '"model":"');
+    edDeviceSerial.Text := ExtractField(line, '"serialNumber":"');
+    edMacAddress.Text := ExtractField(line, '"address":"');
+    edBIOSVersion.Text := ExtractField(line, '"biosVersion":"');
+    edCPUfamily.Text := ExtractField(line, '"cpuFamily":"');
+    edRam.Text := ExtractField(line, '"totalRam":"');
+    edOsName.Text := ExtractField(line, '"name":"');
+    edOsManufacturer.Text := ExtractField(line, '"manufacturer":"');
+    edOsVersion.Text := ExtractField(line, '"version":"');
   end;
 end;
 
 function TformTraceComputer.prepareItemTrace(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: integer;
 begin
   if (Trim(edDeviceManufacturer.Text) = '') or (Trim(edMacAddress.Text) = '')  then
-    ShowMessage('Manufacturer and/or MAC Address are missing!')
+  begin
+    ShowMessage('Manufacturer and/or MAC Address are missing!');
+    result := '';
+  end
   else
   begin
     //cr := #13  +#10;
     recSep := #30 + #30;
+    indent := '   ';
+
+    line := '{' + recSep;
+
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
     end
     else
     begin
       idx := lbTrace.ItemIndex;
-      line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",';
+      line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + recSep;
     end;
 
-    line := line +  recSep + '"propertyBundle":[' + recSep + '{' + recSep;
-    line := line + #9 + '"@type":"Device",' + recSep;
-    line := line + #9 + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
-    line := line + #9 + '"model":"' + edDeviceModel.Text + '",' + recSep;
-    line := line + #9 + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
-    line := line + #9 + '},';
-    line := line + #9 + '{"@type":"OperatingSystem",' + recSep;
-    line := line + #9 + '"name":"' + edOsName.Text + '",' + recSep;
-    line := line + #9 + '"version":"' + edOsVersion.Text + '",' + recSep;
-    line := line + #9 + '"manufacturer":"' + edOsManufacturer.Text + '"' + recSep;
-    line := line + #9 + '},' + recSep;
-    line := line + #9 + '{"@type":"MACAddress",' + recSep;
-    line := line + #9 + '"address":"' + edMacAddress.Text + '"' + recSep;
-    line := line + #9 + '},' + recSep;
-    line := line + #9 + '{"@type":"ComputerSpecification",' + recSep;
-    line := line + #9 + '"biosManufacturer":"' + edBiosManufacturer.Text + '", ' + recSep;
-    line := line + #9 + '"biosVersion":"' + edBiosVersion.Text + '" ' + recSep;
-    line := line + #9 + '}' + recSep;
-    line := line + #9 + ']}' + recSep;
+    line := line + indent + '"@type":"Trace",' + recSep;
+    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line +  RepeatString(indent, 2) + '{' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"Device",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"model":"' + edDeviceModel.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
+    line := line +  RepeatString(indent, 2)  + '},' + recSep;
+    line := line +  RepeatString(indent, 2)  + '{' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"OperatingSystem",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"name":"' + edOsName.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"version":"' + edOsVersion.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edOsManufacturer.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
+    line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@type":"MACAddress",' + recSep;
+    line := line + RepeatString(indent, 3)  + '"address":"' + edMacAddress.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
+    line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line +  RepeatString(indent, 3) + '"@type":"ComputerSpecification",' + recSep;
+    line := line +  RepeatString(indent, 3) + '"biosVersion":"' + edBiosVersion.Text + '", ' + recSep;
+    line := line +  RepeatString(indent, 3) + '"cpuFamily":"' + edCpuFamily.Text + '", ' + recSep;
+    line := line +  RepeatString(indent, 3) + '"totalRam":"' + edRam.Text + '" ' + recSep;
+    line := line + RepeatString(indent, 2) + '}' + recSep;
+    line := line + indent + ']' + indent + recSep + '}' + recSep;
     Result := line;
   end;
 
@@ -192,26 +216,26 @@ end;
 procedure TformTraceComputer.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
-  line, recSep, crlf:string;
+  line :string;
   idx: integer;
 begin
+
+  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceCOMPUTER.json');
   if lbTrace.Items.Count > 0 then
   begin
-    crlf := #13 + #10;
-    recSep := #30 + #30;
     idx:= 0;
     //dir := GetCurrentDir;
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceCOMPUTER.json');
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_TRACE":[';
+    line := #9 + '"OBJECTS_COMPUTER":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbTrace.Items.Count - 2 do
-      WriteLn(fileJSON, lbTrace.Items[idx] + ',');
+      WriteLn(fileJSON,  #9#9 + lbTrace.Items[idx] + ',');
 
-    WriteLn(fileJSON, lbTrace.Items[idx]);
-    WriteLn(fileJSON, #9#9 + ']}');
+    WriteLn(fileJSON,  #9#9 + lbTrace.Items[idx]);
+    WriteLn(fileJSON, #9#9 + ']');
+    Write(fileJSON,'}');
     CloseFile(fileJSON);
   end
   else
@@ -222,16 +246,21 @@ end;
 
 procedure TformTraceComputer.btnAddToolClick(Sender: TObject);
 begin
-    lbTrace.Items.Add(prepareItemTrace('add'));
-    edDeviceManufacturer.Text := '';
-    edDeviceModel.Text := '';
-    edDeviceSerial.Text := '';
-    edMACAddress.Text := '';
-    edBIOSmanufacturer.Text := '';
-    edBiosVersion.Text := '';
-    edOsName.Text := '';
-    edOsVersion.Text := '';
-    edOsManufacturer.Text := '';
+    if prepareItemTrace('add') = '' then
+    else
+    begin
+      lbTrace.Items.Add(prepareItemTrace('add'));
+      edDeviceManufacturer.Text := '';
+      edDeviceModel.Text := '';
+      edDeviceSerial.Text := '';
+      edMACAddress.Text := '';
+      edCpuFamily.Text := '';
+      edRam.Text := '';
+      edBiosVersion.Text := '';
+      edOsName.Text := '';
+      edOsVersion.Text := '';
+      edOsManufacturer.Text := '';
+    end;
 end;
 
 procedure TformTraceComputer.SetpathCase(const Value: String);

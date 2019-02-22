@@ -88,10 +88,12 @@ object formRole: TformRole
   end
   object cbDefaultNames: TComboBox
     Items.Strings = (
+      'Forensic Expert'
       'Investigator'
+      'Judge'
       'Offender'
-      'Victim'
-      'Judge')
+      'Police Officer'
+      'Victim')
     Position.X = 136.000000000000000000
     Position.Y = 48.000000000000000000
     Size.Width = 353.000000000000000000

@@ -57,6 +57,8 @@ type
     function JsonTokenToString(const t: TJsonToken): string;
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
+    procedure readTraceFromComputer;
+    procedure readTraceFromDiskPartition;
     procedure readTraceSIMFromFile;
     procedure readTraceFileFromFile;
     procedure readTraceMessageFromFile;
@@ -235,36 +237,38 @@ end;
 
 function TformProvenanceRecord.prepareProvenanceRecord(operation: String): String;
 var
-  line, recSep, sObject: string;
+  line, recSep, indent, sObject: string;
   Uid: TGUID;
   idx: Integer;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+    line := '{' + recSep + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
   end
   else
   begin
     idx := lbProvenanceRecord.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbProvenanceRecord.Items[idx], '"@id":"') + '",' + recSep;
+    line := '{' + recSep + indent + '"@id":"' + ExtractField(lbProvenanceRecord.Items[idx], '"@id":"') + '",' + recSep;
   end;
 
 
-  line := line + '"@type":"ProvenanceRecord",' + recSep;
-  line := line + '"createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
+  line := line + indent + '"@type":"ProvenanceRecord",' + recSep;
+  line := line + indent + '"createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
   line := line +  cbPRMonth.Items[cbPRMonth.ItemIndex] + '-';
   line := line +  cbPRDay.Items[cbPRDay.ItemIndex] + 'T';
   line := line +  TimeToStr(timePR.Time) + 'Z", ' + recSep;
-  line := line +  '"description":"' + edDescription.Text + '", ' + recSep;
-  line := line +  '"exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
-  line := line +  '"object":[';
+  line := line +  indent + '"description":"' + edDescription.Text + '", ' + recSep;
+  line := line +  indent + '"exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
+  line := line +  indent + '"object":[';
   idx := 0;
   for idx:=0 to lbObjects.Count - 2 do
-    line := line + lbObjects.Items[idx] + ',';
+    line := line +  RepeatString(indent, 2)  + lbObjects.Items[idx] + ',';
 
-  line := line + lbObjects.Items[idx] + ']}';
+  line := line +  RepeatString(indent, 2)  + lbObjects.Items[idx] + recSep + indent + ']' + recSep + '}';
   Result := line;
 end;
 
@@ -395,6 +399,142 @@ begin
 
 end;
 
+procedure TformProvenanceRecord.readTraceFromComputer;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inManufacturer, inModel: Boolean;
+  id, manufacturer, model: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceCOMPUTER.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceCOMPUTER.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'manufacturer' then
+            inManufacturer := True
+          else
+            inManufacturer := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'model' then
+            inModel := True
+          else
+            inModel := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inManufacturer then
+            manufacturer := jreader.Value.AsString;
+
+          if inModel then
+          begin
+            model := jreader.Value.AsString;
+            cbObject.Items.Add('computer ' + manufacturer + '/' + model + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
+procedure TformProvenanceRecord.readTraceFromDiskPartition;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inDiskPartitionType, inPartitionLength: Boolean;
+  id, diskPartitionType, partitionLength: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceDISK_PARTITION.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceDISK_PARTITION.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'diskPartitionType' then
+            inDiskPartitionType := True
+          else
+            inDiskPartitionType := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'partitionLength' then
+            inPartitionLength := True
+          else
+            inPartitionLength := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inDiskPartitionType then
+            diskPartitionType := jreader.Value.AsString;
+
+          if inPartitionLength then
+          begin
+            partitionLength := jreader.Value.AsString;
+            cbObject.Items.Add('DISK ' + diskPartitionType + '/' + partitionLength + ' ' + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
 procedure TformProvenanceRecord.readTraceFromFile;
 
 begin
@@ -404,7 +544,8 @@ begin
   readTraceMessageFromFile;
   readTraceEmailAccountFromFile;
   readTracePhoneAccountFromFile;
-  //readTraceFromComputer;
+  readTraceFromComputer;
+  readTraceFromDiskPartition;
 end;
 
 procedure TformProvenanceRecord.readTraceMessageFromFile;

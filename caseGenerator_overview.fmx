@@ -11,24 +11,17 @@ object formOverview: TformOverview
   object tvActions: TTreeView
     ClipChildren = True
     ClipParent = True
-    Position.X = 8.000000000000000000
-    Position.Y = 8.000000000000000000
+    Position.X = 13.000000000000000000
+    Position.Y = 2.000000000000000000
     Size.Width = 865.000000000000000000
-    Size.Height = 233.000000000000000000
+    Size.Height = 241.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'treeviewstyle'
     TabOrder = 0
     ShowSizeGrip = True
     OnChange = tvActionsChange
     Viewport.Width = 861.000000000000000000
-    Viewport.Height = 229.000000000000000000
-    object DigitalEvidence: TTreeViewItem
-      IsChecked = False
-      IsExpanded = False
-      IsSelected = False
-      TabOrder = 0
-      Text = 'Digital Evidence Timeline'
-    end
+    Viewport.Height = 237.000000000000000000
   end
   object Label1: TLabel
     Position.X = 8.000000000000000000
@@ -50,7 +43,7 @@ object formOverview: TformOverview
   end
   object lblResult: TLabel
     Position.X = 383.000000000000000000
-    Position.Y = 403.000000000000000000
+    Position.Y = 382.000000000000000000
     Size.Width = 91.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -129,12 +122,13 @@ object formOverview: TformOverview
     Position.X = 472.000000000000000000
     Position.Y = 312.000000000000000000
     Size.Width = 401.000000000000000000
-    Size.Height = 193.000000000000000000
+    Size.Height = 161.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 16
     ShowSizeGrip = True
+    OnChange = tvTracesChange
     Viewport.Width = 397.000000000000000000
-    Viewport.Height = 189.000000000000000000
+    Viewport.Height = 157.000000000000000000
   end
   object Label9: TLabel
     Position.X = 390.000000000000000000
@@ -166,5 +160,23 @@ object formOverview: TformOverview
     TabOrder = 17
     Viewport.Width = 285.000000000000000000
     Viewport.Height = 46.000000000000000000
+  end
+  object cbPreview: TCheckBox
+    Position.X = 472.000000000000000000
+    Position.Y = 480.000000000000000000
+    TabOrder = 18
+    Text = 'Preview'
+    OnChange = cbPreviewChange
+  end
+  object imgPreview: TImage
+    MultiResBitmap.LoadSize = 2
+    MultiResBitmap = <
+      item
+      end>
+    Position.X = 547.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 324.000000000000000000
+    Size.Height = 236.000000000000000000
+    Size.PlatformDefault = False
   end
 end

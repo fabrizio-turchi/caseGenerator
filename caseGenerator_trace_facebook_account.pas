@@ -1,4 +1,4 @@
-unit caseGenerator_trace_phone_account;
+unit caseGenerator_trace_facebook_account;
 
 interface
 
@@ -9,11 +9,9 @@ uses
   FMX.ListBox, FMX.Controls.Presentation, caseGenerator_util;
 
 type
-  TformTracePhoneAccount = class(TForm)
+  TformTraceFacebookAccount = class(TForm)
     Label1: TLabel;
-    lbPhoneAccount: TListBox;
-    edPhoneNumber: TEdit;
-    Label3: TLabel;
+    lbFacebookAccount: TListBox;
     btnClose: TButton;
     btnAddPhoneAccount: TButton;
     btnDeletePhoneAccount: TButton;
@@ -21,12 +19,15 @@ type
     btnModifyTrace: TButton;
     Label2: TLabel;
     edIssuer: TEdit;
+    Label3: TLabel;
+    edID: TEdit;
+    Label4: TLabel;
     procedure btnAddPhoneAccountClick(Sender: TObject);
     procedure btnDeletePhoneAccountClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnModifyTraceClick(Sender: TObject);
-    procedure lbPhoneAccountChange(Sender: TObject);
+    procedure lbFacebookAccountChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -42,7 +43,7 @@ type
   end;
 
 var
-  formTracePhoneAccount: TformTracePhoneAccount;
+  formTraceFacebookAccount: TformTraceFacebookAccount;
 
 implementation
 
@@ -51,31 +52,31 @@ uses StrUtils;
 
 { TForm1 }
 
-procedure TformTracePhoneAccount.btnDeletePhoneAccountClick(Sender: TObject);
+procedure TformTraceFacebookAccount.btnDeletePhoneAccountClick(Sender: TObject);
 begin
-  lbPhoneAccount.Items.Delete(lbPhoneAccount.ItemIndex);
+  lbFacebookAccount.Items.Delete(lbFacebookAccount.ItemIndex);
 end;
 
 
-procedure TformTracePhoneAccount.btnModifyTraceClick(Sender: TObject);
+procedure TformTraceFacebookAccount.btnModifyTraceClick(Sender: TObject);
 begin
-  if lbPhoneAccount.ItemIndex > - 1 then
-    lbPhoneAccount.Items[lbPhoneAccount.ItemIndex] := prepareTrace('modify');
+  if lbFacebookAccount.ItemIndex > - 1 then
+    lbFacebookAccount.Items[lbFacebookAccount.ItemIndex] := prepareTrace('modify');
 end;
 
-procedure TformTracePhoneAccount.lbPhoneAccountChange(Sender: TObject);
+procedure TformTraceFacebookAccount.lbFacebookAccountChange(Sender: TObject);
 var
   line: String;
 begin
-  if lbPhoneAccount.ItemIndex > - 1 then
+  if lbFacebookAccount.ItemIndex > - 1 then
   begin
-    line := lbPhoneAccount.Items[lbPhoneAccount.ItemIndex];
-    edPhoneNumber.Text := ExtractField(line, '"phoneNumber":"');
+    line := lbFacebookAccount.Items[lbFacebookAccount.ItemIndex];
+    edID.Text := ExtractField(line, '"accountID":"');
     edIssuer.Text := ExtractField(line, '"accountIssuer":"');
   end;
 end;
 
-function TformTracePhoneAccount.prepareTrace(operation: String): String;
+function TformTraceFacebookAccount.prepareTrace(operation: String): String;
 var
   line, recSep, indent: string;
   Uid: TGUID;
@@ -84,8 +85,8 @@ begin
   recSep := #30 + #30; // record separator, not printable
   indent := '   ';
 
-  if (Trim(edPhoneNumber.Text) = '')  then
-    ShowMessage('Phone number is missing!')
+  if (Trim(edID.Text) = '')  then
+    ShowMessage('Account ID is missing!')
   else
   begin
     line := '{' + recSep;
@@ -96,31 +97,33 @@ begin
     end
     else
     begin
-      idx := lbPhoneAccount.ItemIndex;
-      line := line + indent + '"@id":"' + ExtractField(lbPhoneAccount.Items[idx], '"@id":"') + '", ' + recSep;
+      idx := lbFacebookAccount.ItemIndex;
+      line := line + indent + '"@id":"' + ExtractField(lbFacebookAccount.Items[idx], '"@id":"') + '", ' + recSep;
     end;
 
     line := line + indent + '"@type":"Trace", ' + recSep;
-    line := line + indent + '"propertyBundle":[{' + recSep;
-    line := line + indent + '"@type":"Account", ' + recSep;
-    line := line + indent + '"accountIssuer":"' + edIssuer.Text + '", ' + recSep;
-    line := line + indent + '"isActive":"true"' + recSep + '},' + recSep;
+    line := line + indent + '"propertyBundle":[' + recSep;
     line := line + indent + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":"PhoneAccount", ' + recSep;
-    line := line + RepeatString(indent, 2) + '"phoneNumber":"' + edPhoneNumber.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"Account", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"accountIssuer":"' + edIssuer.Text + '", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"isActive":"true"' + recSep ;
+    line := line + indent + '},' + recSep;
+    line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"FacebookAccount", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"accountID":"' + edID.Text + '"' + recSep;
     line := line + indent + '}' + recSep;
-    line := line + ']}';
+    line := line + indent + ']' + recSep + '}';
   end;
   Result := line;
 
 end;
 
-procedure TformTracePhoneAccount.btnCancelClick(Sender: TObject);
+procedure TformTraceFacebookAccount.btnCancelClick(Sender: TObject);
 begin
-  formTracePhoneAccount.Close;
+  formTraceFacebookAccount.Close;
 end;
 
-procedure TformTracePhoneAccount.btnCloseClick(Sender: TObject);
+procedure TformTraceFacebookAccount.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
   line:string;
@@ -128,20 +131,19 @@ var
 begin
   //dir := GetCurrentDir;
   // create file JSON uuidCase-phone_account.json
-  AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
-  if lbPhoneAccount.Items.Count > 0 then
+  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
+  if lbFacebookAccount.Items.Count > 0 then
   begin
     idx := 0;
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_PHONE_ACCOUNT":[';
+    line := #9 + '"OBJECTS_FACEBOOK_ACCOUNT":[';
     WriteLn(fileJSON, line);
 
-    for idx:= 0 to lbPhoneAccount.Items.Count - 2 do
-      WriteLn(fileJSON, #9#9 + lbPhoneAccount.Items[idx] + ',');
+    for idx:= 0 to lbFacebookAccount.Items.Count - 2 do
+      WriteLn(fileJSON, #9#9 + lbFacebookAccount.Items[idx] + ',');
 
-    WriteLn(fileJSON, #9#9 + lbPhoneAccount.Items[idx]);
-    line := '        ]\}';
+    WriteLn(fileJSON, #9#9 + lbFacebookAccount.Items[idx]);
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
@@ -149,27 +151,27 @@ begin
   else
     deleteFile(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
 
-  formTracePhoneAccount.Close;
+  formTraceFacebookAccount.Close;
 end;
 
-procedure TformTracePhoneAccount.btnAddPhoneAccountClick(Sender: TObject);
+procedure TformTraceFacebookAccount.btnAddPhoneAccountClick(Sender: TObject);
 begin
-    lbPhoneAccount.Items.Add(prepareTrace('add'));
-    edPhoneNumber.Text := '';
+    lbFacebookAccount.Items.Add(prepareTrace('add'));
+    edID.Text := '';
     edIssuer.Text := '';
 end;
 
-procedure TformTracePhoneAccount.SetpathCase(const Value: String);
+procedure TformTraceFacebookAccount.SetpathCase(const Value: String);
 begin
   FpathCase := Value;
 end;
 
-procedure TformTracePhoneAccount.SetuuidCase(const Value: string);
+procedure TformTraceFacebookAccount.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
 end;
 
-procedure TformTracePhoneAccount.ShowWithParamater(pathCase: String; uuidCase: String);
+procedure TformTraceFacebookAccount.ShowWithParamater(pathCase: String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine:string;
@@ -178,11 +180,11 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-tracePHONE_ACCOUNT.json
-  if FileExists(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
     Reset(fileJSON);
-    lbPhoneAccount.Items.Clear;
+    lbFacebookAccount.Items.Clear;
     while not Eof(fileJSON) do
     begin
       ReadLn(fileJSON, line);
@@ -195,7 +197,7 @@ begin
         if subLine = ',' then
           line := Copy(line, 1, Length(line) - 1);
 
-        lbPhoneAccount.Items.Add(line);
+        lbFacebookAccount.Items.Add(line);
       end;
     end;
     CloseFile(fileJSON);
@@ -203,7 +205,7 @@ begin
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
 
-  formTracePhoneAccount.ShowModal;
+  formTraceFacebookAccount.ShowModal;
 end;
 
 end.

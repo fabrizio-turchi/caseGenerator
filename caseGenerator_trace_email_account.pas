@@ -74,31 +74,34 @@ end;
 
 function TformTraceEmailAccount.prepareTrace(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: Integer;
 begin
   recSep := #30 + #30; // record separator, not printable
+  indent := '   ';
+
   if (Trim(edEmail.Text) = '')  then
     ShowMessage('Email is missing!')
   else
   begin
+    line := '{';
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
     end
     else
     begin
       idx := lbEmailAccount.ItemIndex;
-      line := '{"@id":"' + ExtractField(lbEmailAccount.Items[idx], '"@id":"') + '", ' + recSep;
+      line := line + indent + '"@id":"' + ExtractField(lbEmailAccount.Items[idx], '"@id":"') + '", ' + recSep;
     end;
 
-    line := line + '"@type":"Trace", ' + recSep;
-    line := line + '"propertyBundle":[{' + recSep;
-    line := line + '"@type":"EmailAccount", ' + recSep;
-    line := line + '"emailAddress":"' + edEmail.Text + '"' + recSep;
-    line := line + '}]}';
+    line := line + indent + '"@type":"Trace", ' + recSep;
+    line := line + indent + '"propertyBundle":[{' + recSep;
+    line := line + indent + '"@type":"EmailAccount", ' + recSep;
+    line := line + indent + '"emailAddress":"' + edEmail.Text + '"' + recSep;
+    line := line + '}' + recSep + ']}';
   end;
   Result := line;
 

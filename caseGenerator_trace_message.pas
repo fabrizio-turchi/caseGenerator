@@ -58,8 +58,10 @@ type
     function JsonTokenToString(const t: TJsonToken): string;
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
+    procedure readTraceFacebookAccountFromFile;
     procedure readTracePhoneAccountFromFile;
     function  extractID(line: String): String;
+    function extractLastID(line: String): String;
     function prepareItemMessage(operation: String): String;
     { Private declarations }
   public
@@ -79,7 +81,8 @@ uses StrUtils;
 
 procedure TformTraceMessage.btnRemoveMessageClick(Sender: TObject);
 begin
-  lbMessage.Items.Delete(lbMessage.ItemIndex);
+  if lbMessage.ItemIndex > -1 then
+    lbMessage.Items.Delete(lbMessage.ItemIndex);
 end;
 
 procedure TformTraceMessage.btnRemoveMobileClick(Sender: TObject);
@@ -94,6 +97,11 @@ begin
 end;
 
 
+
+function TformTraceMessage.extractLastID(line: String): String;
+begin
+   Result := Copy(line, LastDelimiter('@', line) + 1, Length(line));
+end;
 
 procedure TformTraceMessage.FormShow(Sender: TObject);
 var
@@ -240,41 +248,45 @@ end;
 
 function TformTraceMessage.prepareItemMessage(operation: String): String;
 var
-  line, recSep, idLine: string;
+  line, recSep, idLine, indent: string;
   Uid: TGUID;
   idx: Integer;
 begin
   idx:= 0;
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
 
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
   end
   else
   begin
     idx := lbMessage.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbMessage.Items[idx], '"@id":"') + '",' + recSep;
+    line := line + indent + '"@id":"' + ExtractField(lbMessage.Items[idx], '"@id":"') + '",' + recSep;
   end;
 
-  line := line + '"@type":"Trace",' + recSep;
-  line := line + '"propertyBundle":[' + recSep;
-  line := line + '{"@type":"Message",' + recSep;
-  line := line + '"application":"' + edApplication.Text + '",' + recSep;
-  line := line + '"messageText":"' + memoMessageText.Text + '", ' + recSep;
+  line := line + indent + '"@type":"Trace",' + recSep;
+  line := line + indent + '"propertyBundle":[' + recSep;
+  line := line + indent + '{' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"Message",' + recSep;
+  line := line + RepeatString(indent, 2) + '"application":"' + edApplication.Text + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"messageText":"' + memoMessageText.Text + '", ' + recSep;
   idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
-  line := line + '"from":"' + extractID(idLine) + '", ' + recSep;
-  line := line + '"to":[' + recSep;
+  line := line + RepeatString(indent, 2) + '"from":"' + extractID(idLine) + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"to":[' + recSep;
   idx := 0;
   for idx:=0 to lbMobile.Items.Count - 2 do
-    line := line  + lbMobile.Items[idx] + ',';
+    line := line  + RepeatString(indent, 2) + lbMobile.Items[idx] + ',';
 
-  line := line  + lbMobile.Items[idx] + '],' + recSep;
-  line := line + '"sentTime":"' + cbSentYear.Items[cbSentYear.ItemIndex];
+  line := line  + RepeatString(indent, 2) + lbMobile.Items[idx] + '],' + recSep;
+  line := line + RepeatString(indent, 2) + '"sentTime":"' + cbSentYear.Items[cbSentYear.ItemIndex];
   line := line + cbSentMonth.Items[cbSentMonth.ItemIndex];
-  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T' + timeSent.Text + 'Z"';
-  line := line + '}]}' + recSep;
+  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T' + timeSent.Text + 'Z"' + recSep;
+  line := line  + indent + '}]' + recSep + '}' + recSep;
   Result := line;
 end;
 
@@ -283,6 +295,7 @@ procedure TformTraceMessage.readTraceFromFile;
 begin
   readTraceMobileFromFile;
   readTracePhoneAccountFromFile;
+  readTraceFacebookAccountFromFile;
 end;
 
 procedure TformTraceMessage.readTraceMobileFromFile;
@@ -414,6 +427,66 @@ begin
 
 end;
 
+procedure TformTraceMessage.readTraceFacebookAccountFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inAccountID, inID: Boolean;
+  accountID, id: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'accountID' then
+            inAccountID := True
+          else
+            inAccountID := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+        end;
+
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inAccountID then
+          begin
+            accountID := jreader.Value.AsString;
+            cbMobileFrom.Items.Add('Facebook account ' + accountID + '@' + id);
+            cbMobileTo.Items.Add('Facebook account ' + accountID + '@' + id);
+          end;
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
 procedure TformTraceMessage.btnAddMobileClick(Sender: TObject);
 var
   line: String;
@@ -423,7 +496,7 @@ begin
   else
   begin
     line := cbMobileTo.Items[cbMobileTo.ItemIndex];
-    line := '"' + extractID(line) + '"';
+    line := '"' + extractLastID(line) + '"';
     lbMobile.Items.Add(line);
   end;
 
@@ -445,17 +518,18 @@ begin
     //dir := GetCurrentDir;
     idx := 0;
   // create file JSON uuidCase-traceMESSAGE.json
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json', CP_UTF8);
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
     line := #9 + '"OBJECTS_MESSAGE":[';
-    WriteLn(fileJSON, line);
+    WriteLn(fileJSON, UTF8Encode(line));
+
 
     for idx:= 0 to lbMessage.Items.Count - 2 do
-      WriteLn(fileJSON, #9#9 + lbMessage.Items[idx] + ',');
+      WriteLn(fileJSON, UTF8Encode(#9#9 + lbMessage.Items[idx] + ','));
 
-    WriteLn(fileJSON, #9#9 + lbMessage.Items[idx]);
-    WriteLn(fileJSON, #9#9 + ']');
+    WriteLn(fileJSON, UTF8Encode(#9#9 + lbMessage.Items[idx]));
+    WriteLn(fileJSON, UTF8Encode(#9#9 + ']'));
     Write(fileJSON,'}');
     CloseFile(fileJSON);
   end
@@ -514,7 +588,7 @@ begin
   // read file JSON uuidCase-identity.json
   if FileExists(FpathCase + FuuidCase + '-traceMESSAGE.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json', CP_UTF8);
     Reset(fileJSON);
     lbMessage.Items.Clear;
     while not Eof(fileJSON) do

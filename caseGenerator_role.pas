@@ -89,6 +89,7 @@ begin
   if lbRole.Items.Count > 0 then
   begin
     //dir := GetCurrentDir;
+    idx := 0;
     AssignFile(fileJSON, FpathCase + FuuidCase + '-role.json');
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
@@ -242,26 +243,30 @@ end;
 
 function TformRole.prepareObjectCaseLine(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: Integer;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
 
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' +  GuidToString(Uid) + '", ' + recSep;
+    line := line + indent + '"@id":"' +  GuidToString(Uid) + '", ' + recSep;
   end
   else
   begin
     idx := lbRole.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbRole.Items[idx], '"@id":"') + '",'+ recSep;
+    line := line + '"@id":"' + ExtractField(lbRole.Items[idx], '"@id":"') + '",'+ recSep;
   end;
 
-  line := line + #9 + '"@type":"Role",' + recSep;
-  line := line + #9 + '"name":"' + edName.Text + '"' + recSep;
+  line := line + indent + '"@type":"Role",' + recSep;
+  line := line + indent + '"name":"' + edName.Text + '"' + recSep;
   line := line + '}';
+  Result := line;
 end;
 
 procedure TformRole.SetpathCase(const Value: String);

@@ -17,7 +17,7 @@ object formTraceMobileAccount: TformTraceMobileAccount
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
     Text = 'Mobile accounts'
-    TabOrder = 0
+    TabOrder = 1
   end
   object lbPhoneAccount: TListBox
     Position.X = 24.000000000000000000
@@ -25,7 +25,7 @@ object formTraceMobileAccount: TformTraceMobileAccount
     Size.Width = 553.000000000000000000
     Size.Height = 157.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
+    TabOrder = 2
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
@@ -36,19 +36,13 @@ object formTraceMobileAccount: TformTraceMobileAccount
   end
   object edMSISDN: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 2
+    TabOrder = 3
     FilterChar = '+0123456789'
     Position.X = 120.000000000000000000
     Position.Y = 32.000000000000000000
     Size.Width = 457.000000000000000000
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
-  end
-  object Label3: TLabel
-    Position.X = 24.000000000000000000
-    Position.Y = 40.000000000000000000
-    Text = 'MSISDN'
-    TabOrder = 3
   end
   object btnClose: TButton
     Position.X = 184.000000000000000000
@@ -96,5 +90,16 @@ object formTraceMobileAccount: TformTraceMobileAccount
     TabOrder = 10
     Text = 'Modify trace'
     OnClick = btnModifyTraceClick
+  end
+  object Label2: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 25.000000000000000000
+    Position.Y = 30.000000000000000000
+    Size.Width = 89.000000000000000000
+    Size.Height = 34.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'MSISDN'
+    TabOrder = 0
   end
 end

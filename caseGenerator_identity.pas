@@ -123,14 +123,14 @@ begin
     AssignFile(fileJSON, FPathCase + FuuidCase + '-identity.json');
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_IDENTITY":[';
+    line := '"OBJECTS_IDENTITY":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbIdentity.Items.Count - 2 do
-      WriteLn(fileJSON, #9#9 + lbIdentity.Items[idx] + ',');
+      WriteLn(fileJSON, lbIdentity.Items[idx] + ',');
 
-    WriteLn(fileJSON, #9#9 + lbIdentity.Items[idx]);
-    WriteLn(fileJSON, #9#9 + ']');
+    WriteLn(fileJSON, lbIdentity.Items[idx]);
+    WriteLn(fileJSON, ']');
     Write(fileJSON,'}');
     CloseFile(fileJSON);
   end
@@ -160,8 +160,8 @@ procedure TformIdentity.FormShow(Sender: TObject);
 var
   idxStart, idxEnd, idx: integer;
 begin
-  idxStart := 1950;
-  idxEnd := 2000;
+  idxStart := 1930;
+  idxEnd := 2030;
   cbYear.Items.Clear;
   for idx:= idxStart to idxEnd do
     cbYear.Items.Add(IntToStr(idx));
@@ -218,28 +218,35 @@ end;
 
 function TformIdentity.prepareObjectCaseLine(operation: String): String;
 var
- line, recSep: string;
+ line, recSep, indent: string;
   Uid: TGUID;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
   end
   else
-    line := '{"@id":"' + ExtractField(lbIdentity.Items[lbIdentity.ItemIndex], '"@id":"') + '",' + recSep;
+    line := line + indent + '"@id":"' + ExtractField(lbIdentity.Items[lbIdentity.ItemIndex], '"@id":"') + '",' + recSep;
 
 
-  line := line + '"@type":"Identity",' + recSep;
-  line := line + '"propertyBundle":[' + recSep;
-  line := line + '{"@type":"SimpleName",' + recSep;
-  line := line + '"givenName":"' + edName.Text + '",' + recSep;
-  line := line + '"familyName":"' + edFamilyName.Text + '"},' + recSep;
-  line := line + '{"@type":"BirthInformation",' + recSep;
-  line := line + '"birthDate":"';
+  line := line + indent + '"@type":"Identity",' + recSep;
+  line := line + indent + '"propertyBundle":[' + recSep;
+  line := line + indent + '{' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"SimpleName",' + recSep;
+  line := line + RepeatString(indent, 2) + '"givenName":"' + edName.Text + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"familyName":"' + edFamilyName.Text + '"' + recSep;
+  line := line + indent + '},' + recSep;
+  line := line + indent + '{' + recSep;
+  line := line +  RepeatString(indent, 2) + '"@type":"BirthInformation",' + recSep;
+  line := line +  RepeatString(indent, 2) + '"birthDate":"';
   line := line +  cbYear.Items[cbYear.ItemIndex] + '-' + cbMonth.Items[cbMonth.ItemIndex] + '-' + cbDay.Items[cbDay.ItemIndex];
-  line := line + 'T' + TimeToStr(timeBirthTime.Time) + 'Z"}' + recSep + ']}';
+  line := line + 'T' + TimeToStr(timeBirthTime.Time) + 'Z"' + recSep;
+  line := line +  indent + '}' + recSep + indent + ']' + recSep + '}';
   Result := line;
 end;
 

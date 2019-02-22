@@ -7,6 +7,7 @@ uses
 function ExtractField(line, subLine: String): String;
 function ExtractArray(line, subline: String): TStringList;
 function ExtractArrayID(line, subline: String): TStringList;
+function RepeatString(const s: String; count: cardinal): String;
 
 implementation
 
@@ -30,17 +31,19 @@ end;
 
 function ExtractArray(line, subLine: String): TStringList;
 var
-  fieldValue, recSep: String;
+  fieldValue, recSep, indent: String;
   fieldStart, fieldEnd: Integer;
   itemsArray: String;
   commaPos: Integer;
   itemsList: TStringList;
 begin
   recSep := #30 + #30;
+  indent := '   ';
   fieldStart := Pos(subLine, line); // search pos of subLine inside line
   fieldValue := Copy(line, fieldStart + Length(subLine), Length(line));
   fieldValue := stringreplace(fieldValue, recSep, '',[rfReplaceAll]);
   fieldValue := stringreplace(fieldValue, '"', '',[rfReplaceAll]);
+  fieldValue := stringreplace(fieldValue, indent, '',[rfReplaceAll]);
   fieldEnd   := Pos(']', fieldValue);
   itemsArray := Copy(fieldValue, 1, fieldEnd - 1);
   itemsList := TStringList.Create;
@@ -82,8 +85,15 @@ begin
   end;
   itemsList.Add(itemsArray);
   Result := itemsList;
+end;
 
-
+function RepeatString(const s: String; count: cardinal): String;
+var
+  i: Integer;
+begin
+  Result := '';
+  for i := 1 to count do
+    Result := Result + s;
 end;
 
 end.

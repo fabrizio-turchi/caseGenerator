@@ -59,8 +59,8 @@ object formTraceDiskPartition: TformTraceDiskPartition
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
-      Viewport.Width = 524.000000000000000000
-      Viewport.Height = 93.000000000000000000
+      Viewport.Width = 528.000000000000000000
+      Viewport.Height = 97.000000000000000000
     end
     object btnAddPartition: TButton
       Position.X = 48.000000000000000000
@@ -142,8 +142,8 @@ object formTraceDiskPartition: TformTraceDiskPartition
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 765.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    Viewport.Width = 769.000000000000000000
+    Viewport.Height = 177.000000000000000000
   end
   object Label6: TLabel
     Position.X = 315.000000000000000000

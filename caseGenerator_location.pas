@@ -120,41 +120,46 @@ end;
 
 function TformLocation.prepareObjectCaseLine(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: Integer;
 begin
   recSep := #30 + #30; // record separator, not printable
+  indent := '   ';
+
+  line := '{' + recSep;
 
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
   end
   else
   begin
     idx := lbLocation.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbLocation.Items[idx], '"@id":"') + '",';
+    line := line + indent + '"@id":"' + ExtractField(lbLocation.Items[idx], '"@id":"') + '",' + recSep;
   end;
 
 
-  line := line + '"@type":"Location", ' + recSep;
-  line := line + '"propertyBundle":[{' + recSep;
-  line := line + '"@type":"SimpleAddress", ' + recSep;
-  line := line + '"locality":"' + edLocality.Text + '", ' + recSep;
-  line := line + '"region":"' + edRegion.Text + '", ' + recSep;
-  line := line + '"postalCode":"' + edPostalCode.Text + '", ' + recSep;
-  line := line + '"street":"' + edStreet.Text + '"' + recSep;
-  line := line + '}';
+  line := line + indent + '"@type":"Location", ' + recSep;
+  line := line + indent +  '"propertyBundle":[' + recSep;
+  line := line + indent + '{' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"SimpleAddress", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"locality":"' + edLocality.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"region":"' + edRegion.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"postalCode":"' + edPostalCode.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"street":"' + edStreet.Text + '"' + recSep;
+  line := line + indent + '}';
   if (Trim(edLatitude.Text) ='') or (Trim(edLongitude.Text) = '') then
+    line := line + recSep
   else
   begin
     line := line + ', ' + recSep;
-    line := line + '{"@type":"LatLongCoordinates", ' + recSep;
-    line := line + '"latitude":"' + edLatitude.Text + '", ' + recSep;
-    line := line + '"longitude":"' + edLongitude.Text + '" ' + recSep;
-    line := line + '}' + recSep;
-    line := line + ']}';
+    line := line + indent + '{' + recSep + RepeatString(indent, 2) + '"@type":"LatLongCoordinates", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"latitude":"' + edLatitude.Text + '", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"longitude":"' + edLongitude.Text + '" ' + recSep;
+    line := line + indent + '}' + recSep;
+    line := line + indent  + ']' + recSep + '}';
   end;
   Result := line;
 end;
@@ -186,16 +191,17 @@ begin
   begin
     //dir := GetCurrentDir;
     idx := 0;
-    AssignFile(fileJSON, FpathCase + FuuidCase  + '-location.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase  + '-location.json', CP_UTF8);
+
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
     line := #9 + '"OBJECTS_LOCATION":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbLocation.Items.Count - 2 do
-      WriteLn(fileJSON, #9#9 + lbLocation.Items[idx] + ',');
+      WriteLn(fileJSON, UTF8Encode(#9#9 + lbLocation.Items[idx] + ','));
 
-    WriteLn(fileJSON, #9#9 + lbLocation.Items[idx]);
+    WriteLn(fileJSON, UTF8Encode(#9#9 + lbLocation.Items[idx]));
     line := '        ]\}';
     WriteLn(fileJSON, #9#9 + ']');
     Write(fileJSON,'}');

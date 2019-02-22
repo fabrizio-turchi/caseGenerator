@@ -79,13 +79,14 @@ uses StrUtils;
 procedure TformTool.btnDeleteItemClick(Sender: TObject);
 begin
   if lbConfigurationSettingTool.ItemIndex > -1 then
-    lbConfigurationSettingTool.Items.Delete(lbConfigurationSettingTool.ItemIndex);
-
+    //lbConfigurationSettingTool.Items.Delete(lbConfigurationSettingTool.ItemIndex);
+    lbConfigurationSettingTool.Items.Delete(0);
 end;
 
 procedure TformTool.btnDeleteToolClick(Sender: TObject);
 begin
-  lbTool.Items.Delete(lbTool.ItemIndex);
+  if  lbTool.ItemIndex > - 1 then
+    lbTool.Items.Delete(lbTool.ItemIndex);
 end;
 
 
@@ -140,16 +141,17 @@ procedure TformTool.lbConfigurationSettingToolChange(Sender: TObject);
 var
 line: String;
 begin
-  line := lbConfigurationSettingTool.Items[lbConfigurationSettingTool.ItemIndex];
-
-  edItemName.Text := ExtractField(line, '"itemName":"');
-  edItemValue.Text := ExtractField(line, '"itemValue":"');
-
+  if lbConfigurationSettingTool.ItemIndex > -1 then
+  begin
+    line := lbConfigurationSettingTool.Items[lbConfigurationSettingTool.ItemIndex];
+    edItemName.Text := ExtractField(line, '"itemName":"');
+    edItemValue.Text := ExtractField(line, '"itemValue":"');
+  end;
 end;
 
 procedure TformTool.lbToolChange(Sender: TObject);
 var
-  line, cbValue, itemName, itemValue, itemTool, recSep: String;
+  line, cbValue, itemName, itemValue, itemTool, recSep, indent: String;
   idx: Integer;
   itemFound: Boolean;
 begin
@@ -174,13 +176,15 @@ begin
     lbConfigurationSettingTool.Items.Clear;
     itemFound :=  AnsiContainsStr(line, '"itemName":"');
     recSep := #30 + #30;
+    indent := '   ';
     while itemFound do
     begin
       itemName := ExtractField(line, '"itemName":"');
       itemValue := ExtractField(line, '"itemValue":"');
-      itemTool := '{' + recSep + #9 + '"@type":"ConfigurationSetting", ' + #9;
-      itemTool := itemTool + '"itemName":"' + itemName + '",' + recSep;
-      itemTool := itemTool + '"itemValue":"' + itemValue + '"' + #9 + '}';
+      itemTool := '{' + recSep +  RepeatString(indent, 3) + '"@type":"ConfigurationSetting", ' + recSep;
+      itemTool := itemTool +  RepeatString(indent, 3) + '"itemName":"' + itemName + '",' + recSep;
+      itemTool := itemTool +  RepeatString(indent, 3) + '"itemValue":"' + itemValue + '"' + recSep;
+      itemTool := itemTool +  RepeatString(indent, 2) + '}';
       lbConfigurationSettingTool.Items.Add(itemTool);
       line := Copy(line, Pos('"itemValue":"', line) + 12, Length(line));
       itemFound :=  AnsiContainsStr(line, '"itemName":"');
@@ -192,49 +196,67 @@ end;
 
 function TformTool.prepareItemSettingTool: String;
 var
-  recSep, itemTool: string;
+  recSep, indent, itemTool: string;
 begin
   recSep := #30 + #30;
-  itemTool := '{' + recSep + #9 + '"@type":"ConfigurationSetting", ' + #9;
-  itemTool := itemTool + '"itemName":"' + edItemName.Text + '",' + recSep;
-  itemTool := itemTool + '"itemValue":"' + edItemValue.Text + '"' + #9 + '}';
+  indent := '   ';
+
+  itemTool :=  RepeatString(indent, 2) + '{' + recSep;
+  itemTool := itemTool +  RepeatString(indent, 3) + '"@type":"ConfigurationSetting", ' + recSep;
+  itemTool := itemTool +  RepeatString(indent, 3) + '"itemName":"' + edItemName.Text + '",' + recSep;
+  itemTool := itemTool +  RepeatString(indent, 3) + '"itemValue":"' + edItemValue.Text + '"' + recSep;
+  itemTool := itemTool +  RepeatString(indent, 2) + '}';
   Result := itemTool;
 end;
 
 function TformTool.prepareItemTool(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: integer;
 begin
     //cr := #13  +#10;
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
+
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
   end
   else
   begin
     idx := lbTool.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbTool.Items[idx], '"@id":"') + '", '+ recSep;
+    line := line + indent + '"@id":"' + ExtractField(lbTool.Items[idx], '"@id":"') + '", '+ recSep;
   end;
 
-  line := line + '"@type":"Tool", "name":"' + edName.Text;
-  line:= line +  '", "toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ' + recSep;
-  line := line + '"creator":"' + edCreator.Text + '", "version":"' + edVersion.Text + '"';
+  line := line + indent + '"@type":"Tool", ' + recSep;
+  line := line + indent + '"name":"' + edName.Text + '",' + recSep;
+  line:= line +  indent + '"toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ' + recSep;
+  line := line + indent + '"creator":"' + edCreator.Text + '", ' + recSep;
+  line := line + indent + '"version":"' + edVersion.Text + '"';
+
   if lbConfigurationSettingTool.Items.Count > 0 then
   begin
-    line := line + ',' + recSep + '"propertyBundle":[' + recSep + '{' + recSep;
-    line := line + #9 + '"@type":"ToolConfiguration",' + recSep + #9 + '"configurationSetting":[' + recSep;
+    line := line + ',' + recSep;
+    line := line  + indent + '"propertyBundle":[' + recSep;
+    line := line  + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"ToolConfiguration",' + recSep;
+    line := line + RepeatString(indent, 2) + '"configurationSetting":[' + recSep;
+    //line := line + RepeatString(indent, 2) + '{' + recSep;
     for idx:=0 to  lbConfigurationSettingTool.Items.Count - 2 do
-      line := line + #9 + lbConfigurationSettingTool.Items[idx] + ',' + recSep;
+      line := line + lbConfigurationSettingTool.Items[idx] + ',' + recSep;
 
-    line := line + #9 + lbConfigurationSettingTool.Items[idx] + recSep;
-    line := line + recSep + #9 + ']' + recSep + '}' + recSep + ']' + recSep + '}';
+    line := line + lbConfigurationSettingTool.Items[idx] + recSep;
+    line := line  + RepeatString(indent, 2) + ']' + recSep;
+    line := line +  indent + '}' + recSep;
+    line := line +  indent + ']' + recSep;
+    line := line + '}';
   end
   else
-    line := line + '}';
+    line := line + recSep + '}';
 
   Result := line;
 end;
@@ -285,6 +307,10 @@ begin
   //cr := #13 + #10;
   itemTool := prepareItemSettingTool();
   lbConfigurationSettingTool.Items.Add(itemTool);
+  edItemName.Text := '';
+  cbToolType.ItemIndex := -1;
+  edCreator.Text := '';
+  edVersion.Text := '';
   edItemName.Text := '';
   edItemValue.Text := '';
 end;

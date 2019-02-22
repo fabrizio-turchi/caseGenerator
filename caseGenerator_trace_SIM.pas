@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  System.JSON.Readers, System.JSON.Types, System.JSON;
+  System.JSON.Readers, System.JSON.Types, System.JSON, caseGenerator_util;
 
 type
   TformTraceSIM = class(TForm)
@@ -163,36 +163,43 @@ end;
 
 function TformTraceSIM.PrepareItemTrace(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: integer;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
+
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",' + recSep;
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    line := line + indent + '"@type":"Trace",' + recSep;
   end
   else
   begin
     idx := lbTrace.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",' + recSep;
+    line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
+    line := line + indent + '"@type":"Trace",' + recSep;
   end;
 
-  line := line + #9 + '"propertyBundle":[' + recSep + '{' + recSep;
-  line := line + #9 + '"SIMType":"' + edType.Text + '", ' + recSep;
-  line := line + #9 + '"SIMForm":"' + cbForm.Items[cbForm.ItemIndex] + '", ' + recSep;
-  line := line + #9 + '"StorageCapacity":"' + edCapacity.Text + '", ' + recSep;
-  line := line + #9 + '"Carrier":"' + edCarrier.Text + '", ';
-  line := line + #9 + '"ICCID":"' + edICCID.Text + '", ';
-  line := line + #9 + '"PhoneNumber":"' + edPhoneNumber.Text + '" ';
+  line := line + indent + '"propertyBundle":[' + recSep;
+  line := line + indent + '{' + recSep;
+  line := line + RepeatString(indent, 2) + '"SIMType":"' + edType.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"SIMForm":"' + cbForm.Items[cbForm.ItemIndex] + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"StorageCapacity":"' + edCapacity.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"Carrier":"' + edCarrier.Text + '", ';
+  line := line + RepeatString(indent, 2) + '"ICCID":"' + edICCID.Text + '", ';
+  line := line + RepeatString(indent, 2) + '"PhoneNumber":"' + edPhoneNumber.Text + '" ';
   if Trim(edPIN.Text) <> '' then
-     line := line + ', ' + recSep + #9 + '"PIN":"' + edPIN.Text + '" ' ;
+     line := line + ', ' + recSep + RepeatString(indent, 2) + '"PIN":"' + edPIN.Text + '" ' ;
 
   if Trim(edPUK.Text) <> '' then
-     line := line + ', ' + recSep + #9 + '"PUK":"' + edPUK.Text + '" ' ;
+     line := line + ', ' + recSep + RepeatString(indent, 2) + '"PUK":"' + edPUK.Text + '" ' ;
 
-  line := line + '}' + recSep + #9 + ']' + recSep + '}';
+  line := line + recSep + indent + '}]' + recSep  + '}';
   Result := line;
 
 end;

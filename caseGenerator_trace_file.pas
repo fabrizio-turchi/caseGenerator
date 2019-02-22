@@ -213,7 +213,7 @@ end;
 
 function TformTraceFile.PrepareItemTrace(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -221,40 +221,49 @@ begin
     ShowMessage('Name and/or Path are missing!')
   else
   begin
-    //cr := #13  +#10;
     recSep := #30 + #30;
+    indent := '   ';
+
+    line := '{' + recSep;
+
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
     end
     else
     begin
       idx := lbTrace.ItemIndex;
-      line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",';
+      line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
     end;
 
-    line := line +  recSep + '"propertyBundle":[' + recSep + '{' + recSep;
-    line := line + #9 + '"@type":"File",' + recSep;
-    line := line + #9 + '"fileName":"' + memoName.Text + '",' + recSep;
-    line := line + #9 + '"filePath":"' + edPath.Text + '",' + recSep;
-    line := line + #9 + '"extension":"' + edExtension.Text + '",' + recSep;
-    line := line + #9 + '"fileSystemType":"' + edSystemType.Text + '",' + recSep;
-    line := line + #9 + '"isDirectory":"' + cbDirectory.Items[cbDirectory.ItemIndex] + '",' + recSep;
-    line := line + #9 + '"sizeInBytes":"' + edSize.Text + '",' + recSep;
-    line := line + #9 + '"createdTime":"';
+    line := line + indent + '"@type":"Trace",' + recSep;
+    line := line +  indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"File",' + recSep;
+    line := line + RepeatString(indent, 2) + '"fileName":"' + memoName.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"filePath":"' + edPath.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"extension":"' + edExtension.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"fileSystemType":"' + edSystemType.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"isDirectory":"' + cbDirectory.Items[cbDirectory.ItemIndex] + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"sizeInBytes":"' + edSize.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"createdTime":"';
     line := line + cbCreationYear.Items[cbCreationYear.ItemIndex] + '-';
     line := line + cbCreationMonth.Items[cbCreationMonth.ItemIndex] + '-';
     line := line + cbCreationDay.Items[cbCreationDay.ItemIndex];
     line := line + 'T' + TimeToStr(timeCreation.Time) + 'Z"},' + recSep;
-    line := line + #9 + '{"type":"ContentData",' + recSep;
-    line := line + '"hash":[' + recSep;
-    line := line + '{"@type":"Hash",' + recSep;
-    line := line + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
-    line := line + '"hashValue":"' + edHashValue.Text + '"}' + recSep;
-    line := line + '], ' + recSep;
-    line := line + '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
-    line := line + '}]}';
+    line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 3) + '"type":"ContentData",' + recSep;
+    line := line + RepeatString(indent, 3) + '"hash":[' + recSep;
+    line := line + RepeatString(indent, 3) + '{' + recSep;
+    line := line + RepeatString(indent, 4) + '"@type":"Hash",' + recSep;
+    line := line + RepeatString(indent, 4) + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
+    line := line + RepeatString(indent, 4) + '"hashValue":"' + edHashValue.Text  + '"' + recSep;
+    line := line + RepeatString(indent, 3) + '}' + recSep;
+    line := line + RepeatString(indent, 3) + '], ' + recSep;
+    line := line + RepeatString(indent, 3) +  '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '}' + recSep;
+    line := line + indent + ']}';
 
     Result := line;
   end;

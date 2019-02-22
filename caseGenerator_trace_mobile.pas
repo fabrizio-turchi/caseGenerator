@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  System.JSON.Readers, System.JSON.Types, System.JSON;
+  System.JSON.Readers, System.JSON.Types, System.JSON, caseGenerator_util;
 
 type
   TformTraceMobile = class(TForm)
@@ -222,56 +222,73 @@ end;
 
 function TformTraceMobile.prepareItemTrace(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: integer;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
+
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    line := line + indent + '"@type":"Trace",' + recSep;
   end
   else
   begin
     idx := lbTrace.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",';
+    line := line + indent + '"@id":"' +  ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
+    line := line + indent + '"@type":"Trace",' + recSep;
   end;
 
-    line := line +  recSep + '"propertyBundle":[' + recSep + '{' + recSep;
-    line := line + #9 + '"@type":"Device",' + recSep;
-    line := line + #9 + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
-    line := line + #9 + '"model":"' + edDeviceModel.Text + '",' + recSep;
-    line := line + #9 + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
-    line := line + #9 + '},';
-    line := line + #9 + '{"@type":"MobileDevice",' + recSep;
-    line := line + #9 + '"IMEI":"' + edMobileIMEI.Text + '",' + recSep;
-    line := line + #9 + '"storageCapacity":"' + edMobileStorage.Text + '",' + recSep;
-    line := line + #9 + '"clockSetting":"' + cbMobileYear.Items[cbMobileYear.ItemIndex] + '-';
+    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@type":"Device",' + recSep;
+    line := line + RepeatString(indent, 3) + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"model":"' + edDeviceModel.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
+    line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@type":"MobileDevice",' + recSep;
+    line := line + RepeatString(indent, 3) + '"IMEI":"' + edMobileIMEI.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"storageCapacity":"' + edMobileStorage.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"clockSetting":"' + cbMobileYear.Items[cbMobileYear.ItemIndex] + '-';
     line := line + cbMobileMonth.Items[cbMobileMonth.ItemIndex] + '-';
     line := line + cbMobileDay.Items[cbMobileDay.ItemIndex];
     line := line + 'T' + TimeToStr(timeMobile.Time) + 'Z"}';
 
     if Trim(edIphoneID.Text) <> '' then
     begin
-      line := line + #9 + ', ' + recSep + '{"@type":"iPhoneDevice", "uniqueID":"' + edIphoneID.Text + '",' + recSep;
-      line := line + #9 + '"ownerName":"' + edIphoneOwner.Text + '"}' + recSep;
+      line := line + ', ' + recSep;
+      line := line + RepeatString(indent, 2) + '{' + recSep;
+      line := line + RepeatString(indent, 3) + '"@type":"iPhoneDevice",' + recSep;
+      line := line + RepeatString(indent, 3) + '"uniqueID":"' + edIphoneID.Text + '",' + recSep;
+      line := line + RepeatString(indent, 3) + '"ownerName":"' + edIphoneOwner.Text + '"}' + recSep;
     end;
 
     if Trim(edOsName.Text) <> '' then
     begin
-      line := line + #9 + ', ' + recSep + '{"@type":"OperatingSystem", "name": "' + edOsName.Text + '",' + recSep;
-      line := line + #9 + '"manufacturer":"' + edOsManufacturer.Text + '", ' + recSep;
-      line := line + #9 + '"version":"' + edOsVersion.Text + '"}' + recSep;
+      line := line + ', ' + recSep;
+      line := line + RepeatString(indent, 2) + '{' + recSep;
+      line := line + RepeatString(indent, 3) + '"@type":"OperatingSystem",' + recSep;
+      line := line + RepeatString(indent, 3) + '"name": "' + edOsName.Text + '",' + recSep;
+      line := line + RepeatString(indent, 4) + '"manufacturer":"' + edOsManufacturer.Text + '", ' + recSep;
+      line := line + RepeatString(indent, 5) + '"version":"' + edOsVersion.Text + '"}' + recSep;
     end;
 
     if Trim(edAccountMSISDN.Text) <> '' then
     begin
-      line := line + #9 + ', ' + recSep + '{"@type":"MobileAccount", "MSISDN":"';
-      line := line  + edAccountMSISDN.Text + '"}' + recSep;
+      line := line + ', ' + recSep;
+      line := line + RepeatString(indent, 2) + '{' + recSep;
+      line := line + RepeatString(indent, 3) + '"@type":"MobileAccount", ' + recSep;
+      line := line + RepeatString(indent, 3) + '"MSISDN":"' + edAccountMSISDN.Text + '"' + recSep;
+      line := line + RepeatString(indent, 2) + '}' + recSep;
     end;
 
-    line := line + recSep + #9 + ']' + recSep + '}';
+    line := line + indent + ']' + recSep + '}';
     Result := line;
 end;
 

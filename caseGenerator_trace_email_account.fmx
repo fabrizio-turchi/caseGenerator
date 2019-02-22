@@ -31,8 +31,8 @@ object formTraceEmailAccount: TformTraceEmailAccount
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbEmailAccountChange
-    Viewport.Width = 553.000000000000000000
-    Viewport.Height = 157.000000000000000000
+    Viewport.Width = 549.000000000000000000
+    Viewport.Height = 153.000000000000000000
   end
   object Label3: TLabel
     Position.X = 24.000000000000000000

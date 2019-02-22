@@ -408,6 +408,10 @@
             <Form>formTraceEmailAccount</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="caseGenerator_trace_facebook_account.pas">
+            <Form>formTraceFacebookAccount</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <DCCReference Include="caseGenerator_trace_phone_account.pas">
             <Form>formTracePhoneAccount</Form>
             <FormType>fmx</FormType>

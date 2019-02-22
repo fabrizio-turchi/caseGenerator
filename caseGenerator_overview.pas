@@ -12,7 +12,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.TreeView,
   FMX.Layouts, FMX.ScrollBox, FMX.Memo, FMX.Edit, FMX.Controls.Presentation,
-  FMX.StdCtrls, System.StrUtils, caseGenerator_util;
+  FMX.StdCtrls, System.StrUtils, caseGenerator_util, FMX.Objects;
 
 type
   TformOverview = class(TForm)
@@ -33,8 +33,12 @@ type
     Label9: TLabel;
     edObject: TEdit;
     memoWhat: TMemo;
+    cbPreview: TCheckBox;
+    imgPreview: TImage;
     procedure btnAddChildClick(Sender: TObject);
     procedure tvActionsChange(Sender: TObject);
+    procedure tvTracesChange(Sender: TObject);
+    procedure cbPreviewChange(Sender: TObject);
   private
     FuuidCase: string;
     FPathCase: String;
@@ -54,6 +58,7 @@ type
     FlistDiskPartitions: TStringList;
     FlistMessages: TStringList;
     FlistPhoneAccounts: TStringList;
+    FlistComputers: TStringList;
     procedure SetPathCase(const Value: String);
     procedure SetuuidCase(const Value: string);
     procedure SetlistActions(const Value: TStringList);
@@ -72,6 +77,7 @@ type
     procedure SetlistEmailAccounts(const Value: TStringList);
     procedure SetlistMessages(const Value: TStringList);
     procedure SetlistPhoneAccounts(const Value: TStringList);
+    procedure SetlistComputers(const Value: TStringList);
     property UuidCase: string read FuuidCase write SetuuidCase;
     property PathCase: String read FPathCase write SetPathCase;
     property listActions: TStringList read FlistActions write SetlistActions;
@@ -85,6 +91,7 @@ type
     property listProvenanceRecords: TStringList read FlistProvenanceRecords write SetlistProvenanceRecords;
     property listTools: TStringList read FlistTools write SetlistTools;
     property listDiskPartitions: TStringList read FlistDiskPartitions write SetlistDiskPartitions;
+    property listComputers: TStringList read FlistComputers write SetlistComputers;
     property listEmailAccounts: TStringList read FlistEmailAccounts write SetlistEmailAccounts;
     property listPhoneAccounts: TStringList read FlistPhoneAccounts write SetlistPhoneAccounts;
     property listMessages: TStringList read FlistMessages write SetlistMessages;
@@ -96,7 +103,7 @@ type
     procedure SetTraces();
     { Private declarations }
   public
-    procedure ShowWithParamater(pathCase:String; uuidCase: String);
+    procedure ShowWithParamater(pathCase:String; uuidCase: String; caseFocus: String);
     { Public declarations }
   end;
 
@@ -145,6 +152,16 @@ begin
 
 end;
 
+procedure TformOverview.cbPreviewChange(Sender: TObject);
+begin
+  if cbPreview.IsChecked then
+  else
+  begin
+    //imgPreview.Visible := False;
+    imgPreview.Bitmap.Assign(Nil);
+  end;
+end;
+
 function TformOverview.readObjectsFromFile(fileObject: String): TStringList;
 var
   fileJSON: TextFile;
@@ -156,7 +173,7 @@ begin
   // read file JSON uuidCase-investigative_action.json
   if FileExists(FPathCase + FUuidCase + fileObject) then
   begin
-    AssignFile(fileJSON,  FPathCase + FUuidCase + fileObject);
+    AssignFile(fileJSON,  FPathCase + FUuidCase + fileObject, CP_UTF8);
     Reset(fileJSON);
 
     while not Eof(fileJSON) do
@@ -188,6 +205,11 @@ end;
 procedure TformOverview.SetlistActions(const Value: TStringList);
 begin
   FlistActions := Value;
+end;
+
+procedure TformOverview.SetlistComputers(const Value: TStringList);
+begin
+  FlistComputers := Value;
 end;
 
 procedure TformOverview.SetlistDiskPartitions(const Value: TStringList);
@@ -333,6 +355,18 @@ begin
     end;
   end;
 
+  if FlistComputers.Count > 0 then
+  begin
+    itemText := 'COMPUTERs (' + IntToStr(FlistComputers.Count) + ')';
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    for idx := 0 to FlistComputers.Count - 1 do
+    begin
+      manufacturer := ExtractField(FlistComputers[idx], '"manufacturer":"');
+      model := ExtractField(FlistComputers[idx], '"model":"');
+      addTreeViewItemtoRoot(manufacturer + ' (' + model + ')', tvTraces, itemText, itemNode);
+    end;
+  end;
+
   if FlistEmailAccounts.Count > 0 then
   begin
     itemText := 'EMAIL ACCOUNTs (' + IntToStr(FlistEmailAccounts.Count) + ')';
@@ -376,7 +410,7 @@ begin
   FuuidCase := Value;
 end;
 
-procedure TformOverview.ShowWithParamater(pathCase, uuidCase: String);
+procedure TformOverview.ShowWithParamater(pathCase, uuidCase, caseFocus: String);
 {
   1. read investigative_action.JSON for extracting the follwoing data
     a.  name
@@ -402,6 +436,8 @@ begin
   SetUuidCase(uuidCase);
   SetPathCase(pathCase);
 
+  imgPreview.Visible := False;
+
   aMonths := TStringList.Create;
   aMonths.Add('Jan');
   aMonths.Add('Feb');
@@ -422,6 +458,7 @@ begin
   memoWhat.WordWrap := true;
   tvActions.Clear;
   addTreeViewRoot('Digital Evidence Timeline', tvActions);
+  formOverview.Caption := 'Overview of the case: ' + caseFocus;
 
   FListActions := TStringList.Create;  // create of the property containing the investigative actions
 
@@ -448,6 +485,7 @@ begin
   SetListSIMs(readObjectsFromFile('-traceSIM.json'));
   SetListFiles(readObjectsFromFile('-traceFILE.json'));
   SetListDiskPartitions(readObjectsFromFile('-traceDISK_PARTITION.json'));
+  SetListComputers(readObjectsFromFile('-traceCOMPUTER.json'));
   SetListEmailAccounts(readObjectsFromFile('-traceEMAIL_ACCOUNT.json'));
   SetListMessages(readObjectsFromFile('-traceMESSAGE.json'));
   SetListPhoneAccounts(readObjectsFromFile('-tracePHONE_ACCOUNT.json'));
@@ -470,7 +508,7 @@ var
   model, manufacturer, msisdn, sID: String;
   simForm, carrier, fileName, size: String;
   IdResults, itemsObjectPR, IdObject: TStringList;
-  itemsMobile, itemsSIM, itemsFile, itemsDiskPartition: TStringList;
+  itemsMobile, itemsSIM, itemsFile, itemsDiskPartition, itemsComputers: TStringList;
   itemsMessage, itemsEmailAccount, itemsPhoneAccount: TStringList;
   lObjectFound: Boolean;
   itemNode: TTreeViewItem;
@@ -596,6 +634,7 @@ begin
     itemsEmailAccount := TStringList.Create;
     itemsMessage := TStringList.Create;
     itemsDiskPartition := TStringList.Create;
+    itemsComputers := TStringList.Create;
     itemsPhoneAccount := TStringList.Create;
 
     itemsObjectPR := TStringList.Create;   // objects included in the Provenance_Record
@@ -700,10 +739,23 @@ begin
               begin
                 if lObjectFound then
                   break;
-                if AnsiContainsStr(FlistPhoneAccounts[idk], itemsObjectPR[idn]) then
+                if AnsiContainsStr(FlistDiskPartitions[idk], itemsObjectPR[idn]) then
                 begin
                   itemsDiskPartition.Add(ExtractField(FlistDiskPartitions[idk], '"diskPartitionType":"') +
-                  ' (' + ExtractField(FlistDiskPartitions[idx], '"partitionLength":"') + ')');
+                  ' (' + ExtractField(FlistDiskPartitions[idk], '"partitionLength":"') + ')');
+                  lObjectFound := True;
+                  break;
+                end;
+              end;
+
+              for idk := 0 to FlistComputers.Count - 1 do
+              begin
+                if lObjectFound then
+                  break;
+                if AnsiContainsStr(FlistComputers[idk], itemsObjectPR[idn]) then
+                begin
+                  itemsComputers.Add(ExtractField(FlistComputers[idk], '"manufacturer":"') +
+                  ' (' + ExtractField(FlistComputers[idx], '"model":"') + ')');
                   lObjectFound := True;
                   break;
                 end;
@@ -761,6 +813,14 @@ begin
         addTreeViewItemtoRoot(itemsDiskPartition[idw], tvTraces, itemText, itemNode);
     end;
 
+    if itemsComputers.Count > 0 then
+    begin
+      itemText := 'COMPUTERs (' + IntToStr(itemsComputers.Count) + ')';
+      itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Results', nil);
+      for idw := 0 to itemsComputers.Count - 1 do
+        addTreeViewItemtoRoot(itemsComputers[idw], tvTraces, itemText, itemNode);
+    end;
+
     if itemsPhoneAccount.Count > 0 then
     begin
       itemText := 'PHONE ACCOUNTs (' + IntToStr(itemsPhoneAccount.Count) + ')';
@@ -773,6 +833,42 @@ begin
   end;
 
 
+end;
+
+procedure TformOverview.tvTracesChange(Sender: TObject);
+var
+  idx: Integer;
+  itemNode: TTreeViewItem;
+  itemText, lineFile, filePath, fileExtension: String;
+begin
+  idx := tvTraces.Selected.GlobalIndex;
+  itemNode := tvTraces.ItemByGlobalIndex(idx);
+  itemText  := itemNode.Text;
+  itemText := Copy(itemText, 1, Pos(' ' , itemText) - 1);
+  lineFile := '';
+  for idx:= 0 to FListFiles.Count -1 do
+  begin
+    if AnsiContainsStr(FListFiles[idx], itemText) then
+    begin
+      lineFile := FListFiles[idx];
+      break;
+    end;
+  end;
+  if lineFile = '' then
+  else
+  begin
+    filePath := ExtractField(lineFile, '"filePath":"');
+    filePath := stringreplace(filePath, '/', PathDelim,[rfReplaceAll]);
+    filePath := stringreplace(filePath, '\', PathDelim,[rfReplaceAll]);
+    fileExtension := ExtractField(lineFile, '"extension":"');
+    if (AnsiLowerCase(fileExtension) = 'jpg')  and (cbPreview.IsChecked) then
+       if FileExists(FPathCase + filePath + itemText + '.' + fileExtension) then
+       begin
+        imgpreview.Visible := True;
+        imgPreview.Bitmap.LoadFromFile(FPathCase + filePath + itemText + '.' + fileExtension);
+       end;
+
+  end;
 end;
 
 end.

@@ -99,7 +99,8 @@ uses
   caseGenerator_investigative_action, caseGenerator_trace_file, caseGenerator_provenance_record,
   caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_trace_disk_partition,
   caseGenerator_warrant, caseGenerator_overview, caseGenerator_trace_email_account,
-  caseGenerator_GeneralData, caseGenerator_trace_mobile_account;
+  caseGenerator_GeneralData, caseGenerator_trace_mobile_account,
+  caseGenerator_trace_facebook_account;
 {$R *.fmx}
 
 procedure TformMain.addRootChildren(Sender: TObject);
@@ -168,7 +169,7 @@ begin
   {itemRoot := TTreeViewItem.Create(nil);
   itemRoot.Text := '[ CASE - ' + formNewCase.editName.Text + ' ]';
   tvObjects.InsertObject(0, itemRoot);}
-  lbObjects.Items.Add('{"*CASE*":"' + edName.Text + '", ' + #30 + #30);
+  lbObjects.Items.Add('{"__CASE__":"' + edName.Text + '", ' + #30 + #30);
 end;
 
 procedure TformMain.addChildren(itemParent: TTreeViewItem; itemText: String);
@@ -313,7 +314,8 @@ begin
       5: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       6: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       7: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      8: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      8: formTraceFacebookAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      9: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       else
         ShowMessage('Form has not implemented yet');
     end
@@ -364,7 +366,7 @@ begin
     edFocus.Text := formNewCase.edFocus.Text;
     memoShortDescription.Lines := formNewCase.memoShortDescription.Lines;
     memoDescription.Lines := formNewCase.memoDescription.Lines;
-  // insert of the main data onf the case
+  // insert of the main data on the case
     lbObjects.Items.Clear;
     if (Trim(edName.Text) = '') or (memoShortDescription.Lines.Count = 0)  then
     else
@@ -380,6 +382,8 @@ begin
       caseID := ExtractField(lbObjects.Items.Text, '"investigation-');
       caseFocus := ExtractField(lbObjects.Items.Text, '"focus":"');
       cbCases.Items.Add(caseFocus + ' ' + caseName + '@' + caseID);
+      // select the new case just added
+      cbCases.ItemIndex := cbCases.Items.IndexOf(caseFocus + ' ' + caseName + '@' + caseID)
     end;
   end;
 
@@ -470,8 +474,6 @@ var
 begin
   crlf := #13 + #10;
   recSep:= #30 + #30;
-  space4 := '    ';
-  space8 := space4 + space4;
   //OpenDialog1.InitialDir := 'C:\';
   OpenDialog1.Filter := 'JSON files (*.json)|*.json';
   if OpenDialog1.Execute then
@@ -485,11 +487,8 @@ begin
       ReadLn(fileJSON, line);
       line := Trim(line);
       line := stringreplace(line, recSep, crlf,[rfReplaceAll]);
-      line := stringreplace(line, space8, '',[rfReplaceAll]);
-      line := stringreplace(line, space4, '',[rfReplaceAll]);
       memoJSON.Lines.Add(line);
     end;
-    CloseFile(fileJSON);
   end;
 
 end;
@@ -497,7 +496,7 @@ end;
 procedure TformMain.btnTimelineClick(Sender: TObject);
 begin
   if cbCases.ItemIndex > -1 then
-    formOverview.ShowWithParamater(FHomeCases + FPathCase, FuuidCase)
+    formOverview.ShowWithParamater(FHomeCases + FPathCase, FuuidCase, edFocus.Text)
   else
     ShowMessage('No case is selected!');
 end;
@@ -645,7 +644,7 @@ begin
 
   ExtractAllFiles(FHomeCases);
   lbObjects.Visible := False;
-  btnGenerateJSON.Visible := False;
+  //btnGenerateJSON.Visible := False;
 
 
   {
@@ -759,8 +758,12 @@ begin
             objectsList.Add(line + ',');
             if (AnsiContainsStr(line, '"@id":"')) then
             begin
-              objectID := Copy(line, Pos('"@id"', line) + 7, 38);
-              IDList.Add('"' + objectID + '",');
+              //objectID := Copy(line, Pos('"@id"', line) + 7, 38);
+              objectID := Copy(line, Pos('"@id"', line) + 1 , 5) +
+                Copy(line, Pos('"@id"', line) + 6, 39);
+              objectID := stringreplace(objectID, '{', '', [rfReplaceAll]);
+              objectID := stringreplace(objectID, '}', '', [rfReplaceAll]);
+              IDList.Add('{"' + objectID + '"},');
             end;
           end;
         end;

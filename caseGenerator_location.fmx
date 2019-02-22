@@ -73,7 +73,7 @@ object formLocation: TformLocation
   object Label5: TLabel
     Position.X = 40.000000000000000000
     Position.Y = 152.000000000000000000
-    Text = 'Street'
+    Text = 'Address'
     TabOrder = 15
   end
   object btnClose: TButton

@@ -397,27 +397,31 @@ end;
 
 function TformRelationship.prepareObjectCaseLine(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: Integer;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
+
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
   end
   else
   begin
     idx := lbRelationship.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbRelationship.Items[idx], '"@id":"') + '",'+ recSep;
+    line := line + indent + '"@id":"' + ExtractField(lbRelationship.Items[idx], '"@id":"') + '",'+ recSep;
   end;
-  line := line + '"@type":"Relationship",' + recSep;
-  line := line + '"source":"' + edSourceID.Text + '",' + recSep;
-  line := line + '"target":"' + edTargetID.Text + '",' + recSep;
-  line := line + '"kindOfRelationship":"' + edNameRelationship.Text + '",' + recSep;
-  line := line + '"isDirectional":"' + cbDirectional.Items[cbDirectional.ItemIndex]+ '"';
-  line := line + recSep + '}';
+  line := line + indent + '"@type":"Relationship",' + recSep;
+  line := line + indent + '"source":"' + edSourceID.Text + '",' + recSep;
+  line := line + indent + '"target":"' + edTargetID.Text + '",' + recSep;
+  line := line + indent + '"kindOfRelationship":"' + edNameRelationship.Text + '",' + recSep;
+  line := line + indent + '"isDirectional":"' + cbDirectional.Items[cbDirectional.ItemIndex]+ '"' + recSep;
+  line := line + '}';
   Result := line;
 end;
 

@@ -191,33 +191,38 @@ end;
 
 function TformWarrant.prepareItemWarrant(operation: String): String;
 var
-  line, recSep, lineID: string;
+  line, recSep, lineID, indent: string;
   Uid: TGUID;
   idx: Integer;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
+  line := '{' + recSep;
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{"@id":"' + GuidToString(Uid) + '",' + recSep;
+    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
   end
   else
   begin
     idx := lbWarrant.ItemIndex;
-    line := '{"@id":"' + ExtractField(lbWarrant.Items[idx], '"@id":"') + '",' + recSep;
+    line := line + indent + '"@id":"' + ExtractField(lbWarrant.Items[idx], '"@id":"') + '",' + recSep;
   end;
 
 
-  line := line + '"@type":"Authorization",' + recSep;
-  line := line + '"propertyBundle":[' + recSep;
-  line := line + '{"@authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
-  line := line + '"authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
+  line := line + indent + '"@type":"Authorization",' + recSep;
+  line := line + indent + '"propertyBundle":[' + recSep;
+  line := line + indent + '{' + recSep;
+  line := line + RepeatString(indent, 2) + '"@authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
   lineID := extractID(cbAuthority.Items[cbAuthority.ItemIndex]);
-  line := line + '"authorizationAuthority":"' + lineID + '",' + recSep;
-  line := line + '"authorizationIssuedDate":"' + cbYear.Items[cbYear.ItemIndex];
+  line := line + RepeatString(indent, 2) + '"authorizationAuthority":"' + lineID + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"authorizationIssuedDate":"' + cbYear.Items[cbYear.ItemIndex];
   line := line + cbMonth.Items[cbMonth.ItemIndex];
-  line := line + cbDay.Items[cbDay.ItemIndex] + '"}' + recSep;
-  line := line + ']}' + recSep;
+  line := line + cbDay.Items[cbDay.ItemIndex] + '"' + recSep;
+  line := line +   indent + '}' + recSep;
+  line := line + indent + ']' + recSep + '}' + recSep;
   Result := line;
 end;
 
@@ -455,9 +460,6 @@ begin
 end;
 
 procedure TformWarrant.btnAddWarrantClick(Sender: TObject);
-var
-  line, recSep, lineID: string;
-  Uid: TGUID;
 begin
   if (cbAuthority.Items.Count = 0) or (edAuthorizationType.Text = '')  then
     ShowMessage('Authority and/or AuthorizationType are empty')

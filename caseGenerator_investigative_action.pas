@@ -89,6 +89,7 @@ type
     procedure lbArgumentsChange(Sender: TObject);
     procedure lbProvenanceRecordsChange(Sender: TObject);
     procedure cbActionsChange(Sender: TObject);
+    procedure FormReset(Sender: TObject);
   private
     FuuidCase: string;
     FPathCase: String;
@@ -101,7 +102,7 @@ type
     property UuidCase: string read FuuidCase write SetuuidCase;
     property PathCase: String read FPathCase write SetPathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    procedure readRoleFromFile;
+    procedure readIdentityFromFile;
     procedure readLocationFromFile;
     procedure readToolFromFile;
     procedure readTraceFromFile;
@@ -185,9 +186,13 @@ begin
 
   if (cbObject.ItemIndex = -1) then
   begin
-    ShowMessage('Object is missing');
-    Exit;
+      if cbActions.ItemIndex > 0 then         // only when the Action is Search and Seizure, the Object can and must be empty
+        begin
+          ShowMessage('Object is missing');
+          Exit;
+        end;
   end;
+
 
   if (lbProvenanceRecords.Items.Count = 0) then
   begin
@@ -199,7 +204,8 @@ begin
   begin
     idx := lbInvestigativeAction.ItemIndex;
     lbInvestigativeAction.Items[idx] := prepareItemInvestigativeAction('modify');
-    btnAddAction.Enabled := False;  // only one single InbestigativeAction can be added to the list
+    //btnAddAction.Enabled := False;  // only one single InvestigativeAction can be added to the list
+    FormReset(Sender);
   end;
 
 end;
@@ -251,7 +257,7 @@ begin
   if FileExists(FpathCase + FuuidCase + '-provenance_record.json') then
   begin
     listLocation := TStringList.Create;
-    listLocation.LoadFromFile(FpathCase + FuuidCase + '-provenance_record.json');
+    listLocation.LoadFromFile(FpathCase + FuuidCase + '-provenance_record.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listLocation.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -300,6 +306,23 @@ begin
 
 end;
 
+procedure TformInvestigativeAction.FormReset(Sender: TObject);
+begin
+  cbStartYear.ItemIndex := 0;
+  cbEndYear.ItemIndex := 0;
+  cbActions.ItemIndex := -1;
+  cbInstrument.ItemIndex := -1;
+  edDescription.Text := '';
+  lbArguments.Items.Clear;
+  edArgumentName.Text := '';
+  edArgumentValue.Text := '';
+  cbPerformer.ItemIndex := -1;
+  cbLocation.ItemIndex := -1;
+  cbObject.ItemIndex := -1;
+  cbProvenanceRecord.ItemIndex := -1;
+  lbProvenanceRecords.Items.Clear;
+end;
+
 procedure TformInvestigativeAction.FormShow(Sender: TObject);
 var
   idx: Integer;
@@ -321,6 +344,7 @@ begin
   lbArguments.Items.Clear;
   edArgumentName.Text := '';
   edArgumentValue.Text := '';
+  edDescription.Text := '';
   cbPerformer.Items.Clear;
   cbLocation.Items.Clear;
   cbObject.Items.Clear;
@@ -328,7 +352,7 @@ begin
   lbProvenanceRecords.Items.Clear;
   readToolFromFile;
   readWarrantFromFile;
-  readRoleFromFile;
+  readIdentityFromFile;
   readLocationFromFile;
   readTraceFromFile;
   readProvenanceRecordFromFile;
@@ -576,50 +600,70 @@ end;
 
 function TformInvestigativeAction.prepareItemInvestigativeAction(operation: String): String;
 var
-  line, recSep, nameTool, idValue: string;
+  line, recSep, indent, nameTool, idValue: string;
   Uid: TGUID;
   idx: Integer;
 begin
 
     idx := 0;
     recSep := #30 + #30;
+    indent := '   ';
+
+    line := '{' + recSep;
+
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := '{"@id":"' + GuidToString(Uid) + '",';
+      line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
     end
     else
     begin
       idx := lbInvestigativeAction.ItemIndex;
-      line := '{"@id":"' + ExtractField(lbInvestigativeAction.Items[idx], '"@id":"') + '",';
+      line := line + indent + '"@id":"' + ExtractField(lbInvestigativeAction.Items[idx], '"@id":"') + '",' + recSep;
     end;
 
-    line := line + '"@type":"InvestigativeAction",';
-    line := line + '"name":"' + cbActionsName.Items[cbActions.ItemIndex] + '",';
-    line := line + '"description":"' + edDescription.Text + '",';
-    line := line + '"startTime":"' + cbStartYear.Items[cbStartYear.ItemIndex] + '-';
+    line := line + indent +  '"@type":"InvestigativeAction",' + recSep;
+    line := line + indent +  '"name":"' + cbActionsName.Items[cbActions.ItemIndex] + '",' + recSep;
+    line := line + indent + '"description":"' + edDescription.Text + '",' + recSep;
+    line := line + indent + '"startTime":"' + cbStartYear.Items[cbStartYear.ItemIndex] + '-';
     line := line + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
     line := line + cbStartDay.Items[cbStartDay.ItemIndex] + 'T';
     line := line + TimeToStr(timeStart.Time) + 'Z", ' + recSep;
-    line := line + '"endTime":"' + cbEndYear.Items[cbEndYear.ItemIndex] + '-';
+    line := line + indent + '"endTime":"' + cbEndYear.Items[cbEndYear.ItemIndex] + '-';
     line := line + cbEndMonth.Items[cbEndMonth.ItemIndex] + '-';
     line := line + cbEndDay.Items[cbEndDay.ItemIndex] + 'T';
-    line := line + TimeToStr(timeEnd.Time) + 'Z", ';
-    line := line + '"propertyBundle":[';
-    line := line + '{"@type":"ActionReferences",';
+    line := line + TimeToStr(timeEnd.Time) + 'Z",' + recSep;
+    line := line + indent + '"propertyBundle":[';
+    line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"ActionReferences",' + recSep;
     idValue :=  cbInstrument.Items[cbInstrument.ItemIndex];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"instrument":"' + idValue + '",';
+    line := line + RepeatString(indent, 2) + '"instrument":"' + idValue + '",' + recSep;
     idValue := cbLocation.Items[cbLocation.ItemIndex];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"location":"' + idValue + '",';
+    line := line + RepeatString(indent, 2) + '"location":"' + idValue + '",' + recSep;
     idValue :=  cbPerformer.Items[cbPerformer.ItemIndex];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"performer":"' + idValue + '",';
-    idValue := cbObject.Items[cbObject.ItemIndex];
-    idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"object":[' + recSep + '"' + idValue + '"],';
-    line := line + '"result":[';
+    line := line + RepeatString(indent, 4) + '"performer":"' + idValue + '",' + recSep;
+
+    if cbObject.ItemIndex = -1 then
+      idValue := ''
+    else
+    begin
+      idValue := cbObject.Items[cbObject.ItemIndex];
+      idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
+    end;
+
+    line := line + RepeatString(indent, 2) + '"object":[' + recSep;
+    if idValue = '' then
+      line := line + RepeatString(indent, 2) + '],' + recSep
+    else
+    begin
+      line := line + RepeatString(indent, 3) + '"' + idValue + '"' + recSep;
+      line := line + RepeatString(indent, 2) + '],' + recSep;
+    end;
+
+    line := line + RepeatString(indent, 2) + '"result":[' + recSep;
 
     idx := 0;
 
@@ -627,23 +671,25 @@ begin
     begin
       idValue := lbProvenanceRecords.Items[idx];
       idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-      line := line + '"' + idValue + '",';
+      line := line + RepeatString(indent, 3) + '"' + idValue + '",';
     end;
 
     idValue := lbProvenanceRecords.Items[idx];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"' + idValue + '"]}';
+    line := line + '"' + idValue + '"' + recSep + RepeatString(indent, 2) + ']' + recSep + indent + '}';
 
     if lbArguments.Items.Count > 0 then
     begin
       idx := 0;
       nameTool := cbInstrument.Items[cbInstrument.ItemIndex];
       nameTool := Copy(nameTool, 1, Pos('#', nameTool) - 1);
-      line := line + ',{' + '"@type":"ConfigurationSetting",' + recSep;
+      line := line + indent + ',{' + recSep;
+      line := line + RepeatString(indent, 2) + '"@type":"ConfigurationSetting",' + recSep;
       for idx := 0 to lbArguments.Items.Count - 2 do
-        line := line + lbArguments.Items[idx] + ',' + recSep;
+        line := line + RepeatString(indent, 2) + lbArguments.Items[idx] + ',' + recSep;
 
-      line := line + lbArguments.Items[idx] + '}'
+      line := line + RepeatString(indent, 2) + lbArguments.Items[idx] + recSep;
+      line := line + indent + '}' + recSep;
     end;
     //else
       //line := line + '}' + recSep;
@@ -669,7 +715,7 @@ begin
   if FileExists(FpathCase + FuuidCase + '-location.json') then
   begin
     listLocation := TStringList.Create;
-    listLocation.LoadFromFile(FpathCase + FuuidCase + '-location.json');
+    listLocation.LoadFromFile(FpathCase + FuuidCase + '-location.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listLocation.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -758,7 +804,7 @@ begin
   if FileExists(FpathCase + FuuidCase + '-provenance_record.json') then
   begin
     listLocation := TStringList.Create;
-    listLocation.LoadFromFile(FpathCase + FuuidCase + '-provenance_record.json');
+    listLocation.LoadFromFile(FpathCase + FuuidCase + '-provenance_record.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listLocation.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -809,13 +855,13 @@ begin
 
 end;
 
-procedure TformInvestigativeAction.readRoleFromFile;
+procedure TformInvestigativeAction.readIdentityFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
-  inName, inFamilyName, inID: Boolean;
-  id, name: string;
+  inGivenName, inFamilyName, inID: Boolean;
+  id, givenName, familyName: string;
   listRole: TStringList;
   idx:integer;
 begin
@@ -823,25 +869,30 @@ begin
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-role.json') then
+  if FileExists(FpathCase + FuuidCase + '-identity.json') then
   begin
     listRole := TStringList.Create;
-    listRole.LoadFromFile(FpathCase + FuuidCase + '-role.json');
+    listRole.LoadFromFile(FpathCase + FuuidCase + '-identity.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listRole.Text, recSep, crlf,[rfReplaceAll]);
     try
       sreader := TStringReader.Create(json);
       jreader := TJsonTextReader.Create(sreader);
-      inName := False;
+      inGivenName := False;
       inFamilyName := False;
       while jreader.Read do
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'name' then
-            inName := True
+          if jreader.Value.AsString = 'givenName' then
+            inGivenName := True
           else
-            inName := False;
+            inGivenName := False;
+
+          if jreader.Value.AsString = 'familyName' then
+            inFamilyName := True
+          else
+            inFamilyName := False;
 
           if jreader.Value.AsString = '@id' then
             inID := True
@@ -850,15 +901,20 @@ begin
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
-          if inName then begin
-            name := jreader.Value.AsString;
-            cbPerformer.Items.Add(name + ' ' + '@' + id);
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inGivenName then
+            givenName := jreader.Value.AsString;
+
+          if inFamilyName then begin
+            familyName := jreader.Value.AsString;
+            cbPerformer.Items.Add(givenName + ' ' + familyName + '@' + id);
             name := '';
             id := '';
           end;
 
-          if inID then
-            id := jreader.Value.AsString;;
+
         end;
       end;
     finally
@@ -887,7 +943,7 @@ begin
   begin
     FlistTools := TStringList.Create;
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-tool.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-tool.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -964,7 +1020,7 @@ begin
   if FileExists(FpathCase + FuuidCase + '-traceFILE.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceFILE.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceFILE.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -1049,7 +1105,7 @@ begin
   if FileExists(FpathCase + FuuidCase + '-traceMOBILE.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMOBILE.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMOBILE.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -1123,8 +1179,7 @@ begin
   if FileExists(FpathCase + FuuidCase + '-traceSIM.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceSIM.json');
-    //JSON string here
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceSIM.json', TEncoding.UTF8);
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
       sreader := TStringReader.Create(json);
@@ -1193,7 +1248,7 @@ begin
   begin
     FlistWarrants := TStringList.Create;
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-warrant.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-warrant.json', TEncoding.UTF8);
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -1283,7 +1338,7 @@ begin
   begin
     //dir := GetCurrentDir;
     idx := 0;
-    AssignFile(fileJSON, FPathCase + FUuidCase + '-investigative_action.json');
+    AssignFile(fileJSON, FPathCase + FUuidCase + '-investigative_action.json', CP_UTF8);
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
     line := #9 + '"OBJECTS_INVESTIGATIVE_ACTION":[';
@@ -1335,8 +1390,11 @@ begin
     end;
     if (cbObject.ItemIndex = -1) then
     begin
-      ShowMessage('Object is missing');
-      Exit;
+      if cbActions.ItemIndex > 0 then         // only when the Action is Search and Seizure, the Object can and must be empty
+        begin
+          ShowMessage('Object is missing');
+          Exit;
+        end;
     end;
     if (lbProvenanceRecords.Items.Count = 0) then
     begin
@@ -1345,7 +1403,8 @@ begin
     end;
 
     lbInvestigativeAction.Items.Add(prepareItemInvestigativeAction('add'));
-    btnAddAction.Enabled := False;  // only one single InbestigativeAction can be added to the list
+    //btnAddAction.Enabled := False;  // only one single InbestigativeAction can be added to the list
+    FormReset(Sender);
 end;
 
 procedure TformInvestigativeAction.SetlistTools(const Value: TStringList);
@@ -1379,7 +1438,7 @@ begin
   // read file JSON uuidCase-investigative_action.json
   if FileExists(FPathCase + FUuidCase + '-investigative_action.json') then
   begin
-    AssignFile(fileJSON,  FPathCase + FUuidCase + '-investigative_action.json');
+    AssignFile(fileJSON,  FPathCase + FUuidCase + '-investigative_action.json', CP_UTF8);
     Reset(fileJSON);
     lbInvestigativeAction.Items.Clear;
     while not Eof(fileJSON) do

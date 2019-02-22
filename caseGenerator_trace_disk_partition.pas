@@ -121,8 +121,8 @@ end;
 
 procedure TformTraceDiskPartition.lbTraceChange(Sender: TObject);
 var
-  line, recSep, linePartition: String;
-  nPosLength: Integer;
+  line, recSep, linePartition, partitionType: String;
+  nPosLength, idx: Integer;
 
 begin
   if lbTrace.ItemIndex > - 1 then
@@ -131,6 +131,8 @@ begin
     line := lbTrace.Items[lbTrace.ItemIndex];
     edHashValue.Text := ExtractField(line, '"hashValue":"');
     edHashSize.Text := ExtractField(line, '"sizeInBytes":"');
+    partitionType := ExtractField(line, '"diskPartitionType":"');
+
     nPosLength := Pos('partitionLength',line);
     while  nPosLength > 0 do
     begin
@@ -152,40 +154,57 @@ begin
     edLength.Text := ExtractField(lbPartition.Items[0], '"partitionLength":"');
   end;
 
+  for idx:= 0 to cbType.Items.Count - 1 do
+  begin
+    if cbType.Items[idx]= partitionType then
+    begin
+      cbType.ItemIndex := idx;
+      break;
+    end;
+  end;
+
 end;
 
 function TformTraceDiskPartition.prepareTrace(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: integer;
 begin
    //cr := #13  +#10;
     recSep := #30 + #30;
+    indent := '   ';
+
+    line := '{' + recSep;
+
     idx := 0;
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := '{"@id":"' + GuidToString(Uid) + '", "@type":"Trace",';
+      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      line := line + indent + '"@type":"Trace",' + recSep;
     end
     else
     begin
       idx := lbTrace.ItemIndex;
-      line := '{"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", "@type":"Trace",';
+      line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
+      line := line + indent + '"@type":"Trace",' + recSep;
     end;
 
-    line := line +  recSep + '"propertyBundle":[' + recSep;
+    line := line +  indent + '"propertyBundle":[' + recSep;
     for idx:=0  to lbPartition.Items.Count - 1 do
-      line := line + lbPartition.Items[idx] + ',';
+      line := line + lbPartition.Items[idx] + ',' + recSep;
 
-    line := line + #9 + '{"type":"ContentData",' + recSep;
-    line := line + '"hash":[' + recSep;
-    line := line + '{"@type":"Hash",' + recSep;
-    line := line + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
-    line := line + '"hashValue":"' + edHashValue.Text + '"}' + recSep;
-    line := line + '], ' + recSep;
-    line := line + '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
-    line := line + '}]}';
+    line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"type":"ContentData",' + recSep;
+    line := line + RepeatString(indent, 2) + '"hash":[' + recSep;
+    line := line + RepeatString(indent, 2) + '{"@type":"Hash",' + recSep;
+    line := line + RepeatString(indent, 2) + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"hashValue":"' + edHashValue.Text + '"' + recSep;
+    line := line + indent + '}' + recSep;
+    line := line + indent + '], ' + recSep;
+    line := line + RepeatString(indent, 2) + '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
+    line := line + indent + '}' + recSep + indent + ']' + recSep + '}';
     Result := line;
 end;
 
@@ -230,18 +249,22 @@ end;
 
 procedure TformTraceDiskPartition.btnAddPartitionClick(Sender: TObject);
 var
-  recSep, line : String;
+  recSep, line, indent : String;
 begin
   recSep := #30 + #30;
+  indent := '   ';
+
   if (Trim(edID.Text) = '') or (Trim(edOffset.Text) = '') or (Trim(edLength.Text) = '') then
     ShowMessage('ID and/or Offset and/or Length are missing')
   else
   begin
-    line := '{"@type":"DiskPartition", ' + recSep;
-    line := line + '"diskPartitionType":"' + cbType.Items[cbType.ItemIndex] + '", ' + recSep;
-    line := line +  '"partitionID":"' + edID.Text + '",' + recSep;
-    line := line +  '"partitionOffset":"' + edOffset.Text + '",' + recSep;
-    line := line +  '"partitionLength":"' + edLength.Text + '"}' + recSep;
+    line := indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"DiskPartition", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"diskPartitionType":"' + cbType.Items[cbType.ItemIndex] + '", ' + recSep;
+    line := line +  RepeatString(indent, 2) + '"partitionID":"' + edID.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 2) + '"partitionOffset":"' + edOffset.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 2) + '"partitionLength":"' + edLength.Text + '"' + recSep;
+    line := line + indent + '}';
     lbPartition.Items.Add(line);
   end;
 

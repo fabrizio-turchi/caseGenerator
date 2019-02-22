@@ -1,9 +1,9 @@
-object formTracePhoneAccount: TformTracePhoneAccount
+object formTraceFacebookAccount: TformTraceFacebookAccount
   Left = 0
   Top = 0
   Caption = 'Trace Phone Account'
-  ClientHeight = 352
-  ClientWidth = 599
+  ClientHeight = 381
+  ClientWidth = 606
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,17 +11,17 @@ object formTracePhoneAccount: TformTracePhoneAccount
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 24.000000000000000000
-    Position.Y = 106.000000000000000000
+    Position.Y = 130.000000000000000000
     Size.Width = 169.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Phone account'
+    Text = 'Facebook account'
     TabOrder = 0
   end
-  object lbPhoneAccount: TListBox
+  object lbFacebookAccount: TListBox
     Position.X = 24.000000000000000000
-    Position.Y = 138.000000000000000000
+    Position.Y = 162.000000000000000000
     Size.Width = 553.000000000000000000
     Size.Height = 157.000000000000000000
     Size.PlatformDefault = False
@@ -30,34 +30,13 @@ object formTracePhoneAccount: TformTracePhoneAccount
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    OnChange = lbPhoneAccountChange
+    OnChange = lbFacebookAccountChange
     Viewport.Width = 549.000000000000000000
     Viewport.Height = 153.000000000000000000
   end
-  object edPhoneNumber: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 1
-    FilterChar = '+0123456789'
-    Position.X = 152.000000000000000000
-    Position.Y = 32.000000000000000000
-    Size.Width = 425.000000000000000000
-    Size.Height = 25.000000000000000000
-    Size.PlatformDefault = False
-  end
-  object Label3: TLabel
-    StyledSettings = [Family, Style, FontColor]
-    Position.X = 24.000000000000000000
-    Position.Y = 33.000000000000000000
-    Size.Width = 120.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Phone number'
-    TabOrder = 10
-  end
   object btnClose: TButton
     Position.X = 184.000000000000000000
-    Position.Y = 310.000000000000000000
+    Position.Y = 334.000000000000000000
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -67,7 +46,7 @@ object formTracePhoneAccount: TformTracePhoneAccount
   end
   object btnAddPhoneAccount: TButton
     Position.X = 216.000000000000000000
-    Position.Y = 106.000000000000000000
+    Position.Y = 130.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -77,7 +56,7 @@ object formTracePhoneAccount: TformTracePhoneAccount
   end
   object btnDeletePhoneAccount: TButton
     Position.X = 448.000000000000000000
-    Position.Y = 106.000000000000000000
+    Position.Y = 130.000000000000000000
     Size.Width = 97.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -87,14 +66,14 @@ object formTracePhoneAccount: TformTracePhoneAccount
   end
   object btnCancel: TButton
     Position.X = 296.000000000000000000
-    Position.Y = 310.000000000000000000
+    Position.Y = 334.000000000000000000
     TabOrder = 8
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
   object btnModifyTrace: TButton
     Position.X = 333.000000000000000000
-    Position.Y = 106.000000000000000000
+    Position.Y = 130.000000000000000000
     Size.Width = 106.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -104,19 +83,47 @@ object formTracePhoneAccount: TformTracePhoneAccount
   end
   object Label2: TLabel
     StyledSettings = [Family, Style, FontColor]
-    Position.X = 24.000000000000000000
-    Position.Y = 72.000000000000000000
+    Position.X = 240.000000000000000000
+    Position.Y = 16.000000000000000000
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Issuer'
-    TabOrder = 9
+    Text = 'Account'
+    TabOrder = 11
   end
   object edIssuer: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 2
-    Position.X = 152.000000000000000000
-    Position.Y = 69.000000000000000000
-    Size.Width = 424.000000000000000000
+    Position.X = 240.000000000000000000
+    Position.Y = 45.000000000000000000
+    Size.Width = 272.000000000000000000
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
+  end
+  object Label3: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 24.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 281.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Facebook ID'
+    TabOrder = 9
+  end
+  object edID: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    Position.X = 240.000000000000000000
+    Position.Y = 85.000000000000000000
+    Size.Width = 272.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label4: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 24.000000000000000000
+    Position.Y = 56.000000000000000000
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Issuer'
+    TabOrder = 10
   end
 end

@@ -13,12 +13,12 @@ type
     Label1: TLabel;
     lbPhoneAccount: TListBox;
     edMSISDN: TEdit;
-    Label3: TLabel;
     btnClose: TButton;
     btnAddPhoneAccount: TButton;
     btnDeletePhoneAccount: TButton;
     btnCancel: TButton;
     btnModifyTrace: TButton;
+    Label2: TLabel;
     procedure btnAddPhoneAccountClick(Sender: TObject);
     procedure btnDeletePhoneAccountClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -69,34 +69,41 @@ end;
 
 function TformTraceMobileAccount.prepareTrace(operation: String): String;
 var
-  line, recSep: string;
+  line, recSep, indent: string;
   Uid: TGUID;
   idx: Integer;
 begin
   recSep := #30 + #30; // record separator, not printable
+  indent := '   ';
+
   if (Trim(edMSISDN.Text) = '')  then
     ShowMessage('MSISDN number is missing!')
   else
   begin
+    line := '{';
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := '{"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
     end
     else
     begin
       idx := lbPhoneAccount.ItemIndex;
-      line := '{"@id":"' + ExtractField(lbPhoneAccount.Items[idx], '"@id":"') + '", ' + recSep;
+      line := line + indent + '"@id":"' + ExtractField(lbPhoneAccount.Items[idx], '"@id":"') + '", ' + recSep;
     end;
 
-    line := line + '"@type":"Trace", ' + recSep;
-    line := line + '"propertyBundle":[{' + recSep;
-    line := line + '"@type":"Account", ' + recSep;
-    line := line + '"accountType":"PhoneAccount", ' + recSep;
-    line := line + '"isActive":"true"' + recSep + '},' + recSep;
-    line := line + '{"@type":"MobileAccount", ' + recSep;
-    line := line + '"MSISDN":"' + edMSISDN.Text + '"' + recSep;
-    line := line + '}]}';
+    line := line + indent + '"@type":"Trace", ' + recSep;
+    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"Account", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"accountType":"PhoneAccount", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"isActive":"true"' + recSep;
+    line := line + indent + '},' + recSep;
+    line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"MobileAccount", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"MSISDN":"' + edMSISDN.Text + '"' + recSep;
+    line := line + indent + '}' + recSep;
+    line := line + ']}';
   end;
   Result := line;
 

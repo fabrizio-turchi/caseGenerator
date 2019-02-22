@@ -23,6 +23,7 @@ uses
   caseGenerator_util in 'caseGenerator_util.pas',
   caseGenerator_overview in 'caseGenerator_overview.pas' {formOverview},
   caseGenerator_trace_email_account in 'caseGenerator_trace_email_account.pas' {formTraceEmailAccount},
+  caseGenerator_trace_facebook_account in 'caseGenerator_trace_facebook_account.pas' {formTraceFacebookAccount},
   caseGenerator_trace_phone_account in 'caseGenerator_trace_phone_account.pas' {formTracePhoneAccount};
 
 {$R *.res}
@@ -48,6 +49,7 @@ begin
   Application.CreateForm(TformWarrant, formWarrant);
   Application.CreateForm(TformOverview, formOverview);
   Application.CreateForm(TformTraceEmailAccount, formTraceEmailAccount);
+  Application.CreateForm(TformTraceFacebookAccount, formTraceFacebookAccount);
   Application.CreateForm(TformTracePhoneAccount, formTracePhoneAccount);
   Application.Run;
 end.

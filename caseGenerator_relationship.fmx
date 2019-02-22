@@ -29,7 +29,7 @@ object formRelationship: TformRelationship
     object cbTargetLocation: TComboBox
       Position.X = 104.000000000000000000
       Position.Y = 92.000000000000000000
-      Size.Width = 600.000000000000000000
+      Size.Width = 577.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
@@ -38,7 +38,7 @@ object formRelationship: TformRelationship
     object cbtargetRole: TComboBox
       Position.X = 104.000000000000000000
       Position.Y = 60.000000000000000000
-      Size.Width = 601.000000000000000000
+      Size.Width = 577.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
@@ -47,7 +47,7 @@ object formRelationship: TformRelationship
     object cbTargetTrace: TComboBox
       Position.X = 104.000000000000000000
       Position.Y = 125.000000000000000000
-      Size.Width = 601.000000000000000000
+      Size.Width = 577.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
@@ -128,7 +128,7 @@ object formRelationship: TformRelationship
     object cbSourceRole: TComboBox
       Position.X = 104.000000000000000000
       Position.Y = 95.000000000000000000
-      Size.Width = 601.000000000000000000
+      Size.Width = 585.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
@@ -137,7 +137,7 @@ object formRelationship: TformRelationship
     object cbSourceTrace: TComboBox
       Position.X = 104.000000000000000000
       Position.Y = 127.000000000000000000
-      Size.Width = 601.000000000000000000
+      Size.Width = 585.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
@@ -213,8 +213,8 @@ object formRelationship: TformRelationship
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbRelationshipChange
-    Viewport.Width = 697.000000000000000000
-    Viewport.Height = 174.000000000000000000
+    Viewport.Width = 693.000000000000000000
+    Viewport.Height = 170.000000000000000000
   end
   object edNameRelationship: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]

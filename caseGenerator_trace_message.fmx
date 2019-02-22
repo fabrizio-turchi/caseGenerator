@@ -16,14 +16,14 @@ object formTraceMessage: TformTraceMessage
     Size.Height = 192.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 8
+    TabOrder = 9
     object cbMobileTo: TComboBox
       Position.X = 104.000000000000000000
       Position.Y = 23.000000000000000000
       Size.Width = 577.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 1
+      TabOrder = 8
     end
     object Label13: TLabel
       Position.X = 6.000000000000000000
@@ -31,8 +31,8 @@ object formTraceMessage: TformTraceMessage
       Size.Width = 97.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
-      Text = 'Mobile number'
-      TabOrder = 2
+      Text = 'Account ID'
+      TabOrder = 1
     end
     object Label11: TLabel
       Position.X = 324.000000000000000000
@@ -40,7 +40,7 @@ object formTraceMessage: TformTraceMessage
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'TO'
-      TabOrder = 3
+      TabOrder = 2
     end
     object btnAddMobile: TButton
       Position.X = 184.000000000000000000
@@ -48,7 +48,7 @@ object formTraceMessage: TformTraceMessage
       Size.Width = 96.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 4
       Text = 'Add mobile n.'
       OnClick = btnAddMobileClick
     end
@@ -58,7 +58,7 @@ object formTraceMessage: TformTraceMessage
       Size.Width = 113.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 3
       Text = 'Remove mobile n.'
       OnClick = btnRemoveMobileClick
     end
@@ -68,7 +68,7 @@ object formTraceMessage: TformTraceMessage
       Size.Width = 673.000000000000000000
       Size.Height = 88.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 6
+      TabOrder = 5
       DisableFocusEffect = True
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
@@ -85,14 +85,14 @@ object formTraceMessage: TformTraceMessage
     Size.Height = 96.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 9
+    TabOrder = 10
     object cbMobileFrom: TComboBox
       Position.X = 112.000000000000000000
       Position.Y = 27.000000000000000000
       Size.Width = 576.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 0
+      TabOrder = 3
     end
     object Label8: TLabel
       Position.X = 4.000000000000000000
@@ -100,8 +100,8 @@ object formTraceMessage: TformTraceMessage
       Size.Width = 93.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
-      Text = 'Mobile number'
-      TabOrder = 2
+      Text = 'Account ID'
+      TabOrder = 1
     end
     object Label5: TLabel
       Position.X = 320.000000000000000000
@@ -110,7 +110,7 @@ object formTraceMessage: TformTraceMessage
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'FROM'
-      TabOrder = 3
+      TabOrder = 2
     end
     object cbSentMonth: TComboBox
       Items.Strings = (
@@ -128,14 +128,14 @@ object formTraceMessage: TformTraceMessage
         '12')
       Position.X = 170.000000000000000000
       Position.Y = 66.000000000000000000
-      TabOrder = 13
+      TabOrder = 5
     end
     object timeSent: TTimeEdit
       Time = 0.675166099537036900
       TimeFormatKind = Long
       Position.X = 378.000000000000000000
       Position.Y = 66.000000000000000000
-      TabOrder = 8
+      TabOrder = 7
     end
     object cbSentYear: TComboBox
       Items.Strings = (
@@ -148,7 +148,7 @@ object formTraceMessage: TformTraceMessage
         '1956')
       Position.X = 274.000000000000000000
       Position.Y = 66.000000000000000000
-      TabOrder = 12
+      TabOrder = 6
     end
     object Label3: TLabel
       Position.X = 7.000000000000000000
@@ -157,7 +157,7 @@ object formTraceMessage: TformTraceMessage
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Sent time'
-      TabOrder = 1
+      TabOrder = 0
     end
     object cbSentDay: TComboBox
       Items.Strings = (
@@ -197,7 +197,7 @@ object formTraceMessage: TformTraceMessage
       Size.Width = 54.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 14
+      TabOrder = 4
     end
   end
   object Label1: TLabel
@@ -233,7 +233,7 @@ object formTraceMessage: TformTraceMessage
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Message text'
-    TabOrder = 2
+    TabOrder = 3
   end
   object btnClose: TButton
     Position.X = 227.000000000000000000
@@ -241,7 +241,7 @@ object formTraceMessage: TformTraceMessage
     Size.Width = 102.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 4
+    TabOrder = 5
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
@@ -251,7 +251,7 @@ object formTraceMessage: TformTraceMessage
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 6
     Text = 'Add message'
     OnClick = btnAddMessageClick
   end
@@ -261,7 +261,7 @@ object formTraceMessage: TformTraceMessage
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
+    TabOrder = 7
     Text = 'Remove message'
     OnClick = btnRemoveMessageClick
   end
@@ -272,11 +272,11 @@ object formTraceMessage: TformTraceMessage
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Application'
-    TabOrder = 7
+    TabOrder = 8
   end
   object edApplication: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 10
+    TabOrder = 2
     Position.X = 100.000000000000000000
     Position.Y = 20.000000000000000000
     Size.Width = 605.000000000000000000
