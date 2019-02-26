@@ -99,7 +99,7 @@ uses
   caseGenerator_investigative_action, caseGenerator_trace_file, caseGenerator_provenance_record,
   caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_trace_disk_partition,
   caseGenerator_warrant, caseGenerator_overview, caseGenerator_trace_email_account,
-  caseGenerator_GeneralData, caseGenerator_trace_mobile_account,
+  caseGenerator_GeneralData, caseGenerator_trace_mobile_account, caseGenerator_trace_disk,
   caseGenerator_trace_facebook_account;
 {$R *.fmx}
 
@@ -310,12 +310,13 @@ begin
       1: formTraceSIM.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       2: formTraceComputer.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       3: formTraceFile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      4: formTraceDiskPartition.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      5: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      6: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      7: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      8: formTraceFacebookAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      9: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      4: formTraceDisk.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      5: formTraceDiskPartition.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      6: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      7: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      8: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      9: formTraceFacebookAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      10: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       else
         ShowMessage('Form has not implemented yet');
     end

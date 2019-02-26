@@ -2,7 +2,7 @@ object formTraceComputer: TformTraceComputer
   Left = 0
   Top = 0
   Caption = 'Trace Computer'
-  ClientHeight = 615
+  ClientHeight = 557
   ClientWidth = 791
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -58,7 +58,7 @@ object formTraceComputer: TformTraceComputer
   end
   object btnClose: TButton
     Position.X = 272.000000000000000000
-    Position.Y = 574.000000000000000000
+    Position.Y = 526.000000000000000000
     Size.Width = 104.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -108,7 +108,7 @@ object formTraceComputer: TformTraceComputer
     Position.X = 16.000000000000000000
     Position.Y = 391.000000000000000000
     Size.Width = 769.000000000000000000
-    Size.Height = 177.000000000000000000
+    Size.Height = 122.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 29
     DisableFocusEffect = True
@@ -117,7 +117,7 @@ object formTraceComputer: TformTraceComputer
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
     Viewport.Width = 769.000000000000000000
-    Viewport.Height = 177.000000000000000000
+    Viewport.Height = 122.000000000000000000
   end
   object edDeviceModel: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -350,7 +350,7 @@ object formTraceComputer: TformTraceComputer
   end
   object btnCancel: TButton
     Position.X = 392.000000000000000000
-    Position.Y = 576.000000000000000000
+    Position.Y = 528.000000000000000000
     TabOrder = 39
     Text = 'Cancel'
     OnClick = btnCancelClick

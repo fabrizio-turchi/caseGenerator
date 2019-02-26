@@ -73,6 +73,7 @@ type
     procedure readTraceMobileFromFile;
     procedure readTraceSIMFromFile;
     procedure readTraceComputerFromFile;
+    procedure readTraceDiskFromFile;
     procedure readTraceDiskPartitionFromFile;
     procedure readTraceEmailAccountFromFile;
     procedure readTraceFileFromFile;
@@ -653,7 +654,153 @@ begin
 end;
 
 procedure TformRelationship.readTraceComputerFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inManufacturer, inModel: Boolean;
+  id, cManufacturer, cModel: string;
+  listTrace: TStringList;
+  idx:integer;
 begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceCOMPUTER.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceCOMPUTER.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'manufacturer' then
+            inManufacturer := True
+          else
+            inManufacturer := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'model' then
+            inModel := True
+          else
+            inModel := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inManufacturer then
+            cManufacturer := jreader.Value.AsString;
+
+          if inModel then
+          begin
+            cModel := jreader.Value.AsString;
+            cbSourceTrace.Items.Add('Computer ' + cManufacturer + ' ' + cModel + '@' + id);
+            cbTargetTrace.Items.Add('Computer ' + cManufacturer + ' ' + cModel + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
+procedure TformRelationship.readTraceDiskFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inID, inModel, inManufacturer, inSN, inCapacity: Boolean;
+  id, dManufacturer, dModel, dSN, dCapacity: string;
+  listTrace: TStringList;
+  idx:integer;
+begin
+  //dir := GetCurrentDir;
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
+  if FileExists(FpathCase + FuuidCase + '-traceDISK.json') then
+  begin
+    listTrace := TStringList.Create;
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceDISK.json');
+    //JSON string here
+    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'manufacturer' then
+            inManufacturer := True
+          else
+            inModel := False;
+
+          if jreader.Value.AsString = 'model' then
+            inModel := True
+          else
+            inModel := False;
+
+        if jreader.Value.AsString = 'capacity' then
+            inCapacity := True
+          else
+            inCapacity := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+          if jreader.Value.AsString = 'serialNumber' then
+            inSN := True
+          else
+            inSN := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inManufacturer then
+            dManufacturer := jreader.Value.AsString;
+
+          if inModel then
+            dModel := jreader.Value.AsString;
+
+          if inCapacity then
+          begin
+            dCapacity := jreader.Value.AsString;
+            cbSourceTrace.Items.Add('Hard Disk ' + dManufacturer + ' ' + dModel + ' ' + dSN + '@' + id);
+            cbTargetTrace.Items.Add('Hard Disk ' + dManufacturer + ' ' + dModel + ' ' + dSN + '@' + id);
+          end;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
 
 end;
 
@@ -858,6 +1005,7 @@ procedure TformRelationship.readTraceFromFile;
 begin
   readTraceMobileFromFile;
   readTraceComputerFromFile;
+  readTraceDiskFromFile;
   readTraceDiskPartitionFromFile;
   readTraceEmailAccountFromFile;
   readTraceFileFromFile;

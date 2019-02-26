@@ -1,0 +1,1552 @@
+{"__CASE__":"DE_2018_00162", 
+
+"@context":{
+
+"@vocab":"http://case.example.org/core#",
+
+"case":"http://case.example.org/core#",
+
+"rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+
+"rdfs":"http://www.w3.org/2000/01/rdf-schema#",
+
+"xsd":"http://www.w3.org/2001/XMLSchema#"},
+
+"@id":"bundle-{5715FCF3-6BC8-4996-8F7F-FDF289F31649}",
+
+"@type":"Bundle",
+
+"description":"A teenager girl has been allured by an adult who convinced her to send naked images through Facebook. The girl after the first delivery, the man theatened her to distribute the image if shw didn't send him other provokative images. The girl after the first disorientation, informed her parents who immadiately reported the offence to the police.",
+
+"content":[
+
+{"@id":"investigation-555E5FBB-BA09-449D-AF77-8A210D016FD7",
+
+"@type":"Investigation",
+
+"name":"DE_2018_00162",
+
+"focus":"Grooming of a teenager girl, through Facebook",
+
+"description":"A teenager girl has been allured by an adult who has convinced her to send  naked images",
+
+"object":[
+{"@id":"86F2E76A-434D-4D3F-9147-CD0CABCCA074"},
+{"@id":"E9AA4F26-D187-4F32-A602-86A6DF4B8528"},
+{"@id":"530646A9-4290-4C02-B0B3-FD2EC363834A"},
+{"@id":"B1C22D51-4A3F-4353-84FB-E210B5EFDA48"},
+{"@id":"367AB001-5CF4-48B5-BBD5-743ED57888E1"},
+{"@id":"B8CF8274-B8C1-41E8-9221-03624FB6CA0B"},
+{"@id":"D6EFD4D5-8BF0-4404-A812-33A71296CAAC"},
+{"@id":"9ACDE9B7-6985-4AD0-9C6A-D4A131F069CB"},
+{"@id":"99266518-8EC4-42FC-B937-DFDBA02F458B"},
+{"@id":"1C922B87-1CD2-492F-8B49-253762FEE934"},
+{"@id":"320331AF-825F-450C-ABBE-0BC62E5F8C7D"},
+{"@id":"219189B6-356C-4D53-A844-F0031E74F156"},
+{"@id":"D3BD81F0-4F2C-4B2F-BF9C-62EB0E74F449"},
+{"@id":"AA5C69BE-A8C9-4858-B5AF-9BC761D36013"},
+{"@id":"999A632C-C4F7-4EB1-B09B-87CAD53A3821"},
+{"@id":"CC2F460F-A020-4F33-9984-9691A306B297"},
+{"@id":"2C20D71D-276C-494E-85F6-4FC0C50325FF"},
+{"@id":"582CAF46-0F32-4A77-9A5F-3D576F994011"},
+{"@id":"309BC178-1836-47B7-AA15-94EA3A2C7401"},
+{"@id":"BA100CD9-A3D7-46C8-9537-053451DBD620"},
+{"@id":"CCD2D15D-19A1-4BE1-AEB9-3BFA2217B217"},
+{"@id":"A2C17345-C5B9-42AE-BA97-3C0CB0A57902"},
+{"@id":"96398C01-778B-4F81-9B93-F6A6445AB25E"},
+{"@id":"F0B0231B-385D-4581-B7F0-D84A1FD65C8D"},
+{"@id":"51793C56-55A7-4668-8504-632B67814329"},
+{"@id":"12C53D68-E9D0-4313-947E-31A669DA55E9"},
+{"@id":"90F73123-DB7E-41E5-B6CA-493B96E4B89F"},
+{"@id":"97C74753-FCEB-49C8-A611-7A70EF46AB5D"},
+{"@id":"EBAB06EE-7522-42D6-96EA-E3121D67E393"},
+{"@id":"48C0F0E8-9A63-45EE-99BF-23CC354C3252"},
+{"@id":"B2A7B20E-8307-40CF-ABAF-9733ABBF4335"},
+{"@id":"5298B593-E030-4043-9ED5-9C75A7D2FC27"},
+{"@id":"6C5D5143-55C1-4951-B0A1-FE78F7846739"},
+{"@id":"76596F86-C95B-4B52-8D44-ACE0E6A3F954"},
+{"@id":"21758431-B6BB-44A7-9DEB-33D27F9D9CBB"},
+{"@id":"FE44B228-C332-46C4-A9BD-3A3D5AABBC59"},
+{"@id":"F291F4D6-72F3-4A44-AE86-5ED52C7FD67A"},
+{"@id":"F07EF9C8-D6EC-4614-88DA-34D7D11582A2"},
+{"@id":"2534E104-B73A-4FD8-9FA3-52BA839F8E01"},
+{"@id":"1E953952-22E6-48BD-9A5F-AEEDF41BE58B"},
+{"@id":"1FDD45BD-76CE-4504-9278-C00715E94D8E"},
+{"@id":"249EE48F-7C04-49CA-A8F5-176F88D03F77"},
+{"@id":"FF7B492A-F309-4593-B105-0D0BCCEABA55"},
+{"@id":"F1085EB2-D597-403D-8E73-2FAAD3427BD8"},
+{"@id":"81B83026-C659-4D66-A42B-27A5B26F8A08"},
+{"@id":"D3CD91B0-0B45-4A90-868E-7B8346FEDC6F"},
+{"@id":"AE406771-A95F-4920-8602-695A3DCC553C"},
+{"@id":"67AD1ABC-7DF0-4B14-A376-AB43D0E6CB19"},
+{"@id":"CC5F1E8B-9B80-4D41-AE7A-9A5343368106"},
+{"@id":"FA6A02F7-6449-4553-A475-38473A273A75"},
+{"@id":"90AC5DEC-647E-489F-A3C0-EF8BF2437C8C"},
+{"@id":"0E13BE7F-2944-4B28-B629-655CF5AB866E"},
+{"@id":"4A00884D-82A2-421A-B326-B18834AD9438"},
+{"@id":"122B8BDA-F0CF-461F-99E5-597DDFC01070"},
+{"@id":"D0521BD5-CC9B-4E0E-B8FA-AB147FF0AF3D"},
+{"@id":"DB98793F-5A8B-432B-83C3-B7FC5532043F"},
+{"@id":"087BF772-AB80-4665-8348-F2D27D9FD480"},
+{"@id":"732257E6-51D3-4697-A3D8-B73762C010A4"},
+{"@id":"D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4"},
+{"@id":"20F23F4D-5509-4781-B3D2-73CDA9539A84"},
+{"@id":"F81138A7-86E3-4148-B405-ADEFDC7AC744"},
+{"@id":"8BF3C850-2B0D-4EE7-B06E-7523CF839F63"},
+{"@id":"5FC5DF9F-9C2F-450E-86A4-4703C4F7A00E"},
+{"@id":"E4CA3459-36C0-455C-B921-5A4D45BAE1A6"},
+{"@id":"46930DBB-8B8B-47EE-98B5-95790AA3BC6F"},
+{"@id":"3D12B02A-B006-45DF-8B70-346E8AD06334"},
+{"@id":"43802E66-12E0-406B-A38D-7F3A46F46812"},
+{"@id":"C70DC674-CDDE-4624-9E49-5D9BA8536B2D"},
+{"@id":"701C7831-7780-4DD6-9A33-CB60B7972C46"},
+{"@id":"11999A67-9FD5-447B-9CA3-952B8F3DD1A7"},
+{"@id":"71E807D1-54C3-4844-B327-63363C5DC845"},
+{"@id":"941851CB-FB28-4F57-85F4-85BEB05F0E50"},
+{"@id":"83042CE8-E080-4BD6-AB4C-7DCE7D7FF81E"},
+{"@id":"29571F5F-0910-4307-A50F-C2FE90570FA2"},
+{"@id":"FC0661C4-AF3C-414C-8FB4-D2B23B99E0FB"},
+{"@id":"8002A07A-436B-4C44-8945-DCF153E45B1C"},
+{"@id":"36036497-B27C-4409-AEC1-445D99C2F069"},
+{"@id":"69C51E54-868A-457B-A0BE-A899F27AF6AD"},
+{"@id":"99E66FDA-26EE-402F-9EC9-F38A283EA645"},
+{"@id":"6314401E-0CDE-4E2D-A11E-C052BCB525A5"},
+{"@id":"C0C39005-4100-4859-B878-E352E1A2D04C"},
+{"@id":"331E6555-9958-4FFC-AD89-DFDC3B2E29AC"},
+{"@id":"3E48A820-ECD5-49D0-8E0F-955629E39D85"},
+{"@id":"2FD035B1-1624-4B8D-999A-0B48969967FA"},
+{"@id":"66B87B97-76D6-44ED-B279-12532D0B88CA"},
+{"@id":"0AE4C72D-8E9F-4002-8804-6E5DE09B92EE"},
+{"@id":"3777F9DA-FB77-42CB-AC42-CF568DDF2C85"},
+{"@id":"C3401E1F-C6E5-4984-9AE2-CC2A9EAB5934"},
+{"@id":"E7E3AEC1-D147-4DE1-896A-A684805B5659"},
+{"@id":"286B123F-4B9D-44FD-868D-5D24D979FF81"},
+{"@id":"D60774DB-059A-4DFF-BA5C-5BA857997A41"},
+{"@id":"FF3B5D29-F5DF-4599-801B-C13ED606B428"},
+{"@id":"916271A9-24FC-4A93-BFAC-9B3A903A2BD4"},
+{"@id":"7EFE6E85-8C84-42E2-A359-10D7710AB45B"},
+{"@id":"79D6AB60-D679-49CE-9573-7176DFEEB7C3"},
+{"@id":"A8B566D7-E456-492D-936C-62B3994C03C2"}]},
+{
+   "@id":"{86F2E76A-434D-4D3F-9147-CD0CABCCA074}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Mario",
+  "familyName":"Rossi"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"1975-03-20T12:00:00Z"
+   }
+   ]
+},
+{
+   "@id":"{E9AA4F26-D187-4F32-A602-86A6DF4B8528}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Albert",
+  "familyName":"Jerska"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"1984-12-18T12:00:00Z"
+   }
+   ]
+},
+{
+   "@id":"{530646A9-4290-4C02-B0B3-FD2EC363834A}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Georg",
+  "familyName":"Dreyman"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"1994-06-04T08:12:14Z"
+   }
+   ]
+},
+{
+   "@id":"{B1C22D51-4A3F-4353-84FB-E210B5EFDA48}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Anton",
+  "familyName":"Grubitz"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"1986-05-04T10:00:14Z"
+   }
+   ]
+},
+{
+   "@id":"{367AB001-5CF4-48B5-BBD5-743ED57888E1}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Maria",
+  "familyName":"Sieland"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"2004-05-04T09:00:14Z"
+   }
+   ]
+},
+{
+   "@id":"{B8CF8274-B8C1-41E8-9221-03624FB6CA0B}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Giampaolo ",
+  "familyName":"Morelli"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"1982-07-04T09:00:14Z"
+   }
+   ]
+},
+{
+   "@id":"{D6EFD4D5-8BF0-4404-A812-33A71296CAAC}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Veronica",
+  "familyName":"Logan"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"1990-05-02T09:00:15Z"
+   }
+   ]
+},
+{
+   "@id":"{9ACDE9B7-6985-4AD0-9C6A-D4A131F069CB}",
+   "@type":"Identity",
+   "propertyBundle":[
+   {
+  "@type":"SimpleName",
+  "givenName":"Paolo",
+  "familyName":"Sassanelli"
+   },
+   {
+  "@type":"BirthInformation",
+  "birthDate":"1972-11-27T18:00:17Z"
+   }
+   ]
+},
+{
+   "@id":"{99266518-8EC4-42FC-B937-DFDBA02F458B}",
+   "@type":"InvestigativeAction",
+   "name":"preserved",
+   "description":"Search and seizure",
+   "startTime":"2018-10-10T08:00:14Z", 
+   "endTime":"2018-10-10T18:12:14Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{79D6AB60-D679-49CE-9573-7176DFEEB7C3}",
+  "location":"{582CAF46-0F32-4A77-9A5F-3D576F994011}",
+"performer":"{B1C22D51-4A3F-4353-84FB-E210B5EFDA48}",
+  "object":[
+  ],
+  "result":[
+"{A2C17345-C5B9-42AE-BA97-3C0CB0A57902}"
+  ]
+   }]},
+{
+   "@id":"{1C922B87-1CD2-492F-8B49-253762FEE934}",
+   "@type":"InvestigativeAction",
+   "name":"transferred",
+   "description":"Transferred to the Forenisc Expert Geeks, Berlin, Germany",
+   "startTime":"2018-10-11T09:00:14Z", 
+   "endTime":"2018-10-11T12:20:14Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{79D6AB60-D679-49CE-9573-7176DFEEB7C3}",
+  "location":"{309BC178-1836-47B7-AA15-94EA3A2C7401}",
+"performer":"{B1C22D51-4A3F-4353-84FB-E210B5EFDA48}",
+  "object":[
+ "{A2C17345-C5B9-42AE-BA97-3C0CB0A57902}"
+  ],
+  "result":[
+"{96398C01-778B-4F81-9B93-F6A6445AB25E}"
+  ]
+   }]},
+{
+   "@id":"{320331AF-825F-450C-ABBE-0BC62E5F8C7D}",
+   "@type":"InvestigativeAction",
+   "name":"extracted",
+   "description":"Mobile device logical acquisition",
+   "startTime":"2018-10-19T12:54:06Z", 
+   "endTime":"2018-10-19T12:55:40Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{0E13BE7F-2944-4B28-B629-655CF5AB866E}",
+  "location":"{309BC178-1836-47B7-AA15-94EA3A2C7401}",
+"performer":"{E9AA4F26-D187-4F32-A602-86A6DF4B8528}",
+  "object":[
+ "{96398C01-778B-4F81-9B93-F6A6445AB25E}"
+  ],
+  "result":[
+ "{F0B0231B-385D-4581-B7F0-D84A1FD65C8D}", "{51793C56-55A7-4668-8504-632B67814329}","{12C53D68-E9D0-4313-947E-31A669DA55E9}"
+  ]
+   }   ,{
+  "@type":"ConfigurationSetting",
+  "ExtractionMethod":"ADB_BACKUP",
+  "ExtractionType":"Logical"
+   }
+]},
+{
+   "@id":"{219189B6-356C-4D53-A844-F0031E74F156}",
+   "@type":"InvestigativeAction",
+   "name":"extracted",
+   "description":"Mobile device physical acquisition",
+   "startTime":"2018-10-19T12:17:31Z", 
+   "endTime":"2018-10-19T12:47:32Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{4A00884D-82A2-421A-B326-B18834AD9438}",
+  "location":"{309BC178-1836-47B7-AA15-94EA3A2C7401}",
+"performer":"{E9AA4F26-D187-4F32-A602-86A6DF4B8528}",
+  "object":[
+ "{96398C01-778B-4F81-9B93-F6A6445AB25E}"
+  ],
+  "result":[
+ "{90F73123-DB7E-41E5-B6CA-493B96E4B89F}", "{97C74753-FCEB-49C8-A611-7A70EF46AB5D}", "{EBAB06EE-7522-42D6-96EA-E3121D67E393}", "{48C0F0E8-9A63-45EE-99BF-23CC354C3252}","{B2A7B20E-8307-40CF-ABAF-9733ABBF4335}"
+  ]
+   }   ,{
+  "@type":"ConfigurationSetting",
+  "ExtractionType":"Physical",
+  "UFEDExtractionMethod":"ADB_Rooted"
+   }
+]},
+{
+   "@id":"{D3BD81F0-4F2C-4B2F-BF9C-62EB0E74F449}",
+   "@type":"InvestigativeAction",
+   "name":"extracted",
+   "description":"Extraction/Parser messages (Facebook)",
+   "startTime":"2018-10-20T17:00:31Z", 
+   "endTime":"2018-10-20T17:15:00Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{122B8BDA-F0CF-461F-99E5-597DDFC01070}",
+  "location":"{309BC178-1836-47B7-AA15-94EA3A2C7401}",
+"performer":"{E9AA4F26-D187-4F32-A602-86A6DF4B8528}",
+  "object":[
+ "{F0B0231B-385D-4581-B7F0-D84A1FD65C8D}"
+  ],
+  "result":[
+"{5298B593-E030-4043-9ED5-9C75A7D2FC27}"
+  ]
+   }]},
+{
+   "@id":"{AA5C69BE-A8C9-4858-B5AF-9BC761D36013}",
+   "@type":"InvestigativeAction",
+   "name":"preserved",
+   "description":"Search and Seizure computer of Mario Rossi (suspect)",
+   "startTime":"2018-10-15T08:30:14Z", 
+   "endTime":"2018-10-15T12:30:14Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{A8B566D7-E456-492D-936C-62B3994C03C2}",
+  "location":"{BA100CD9-A3D7-46C8-9537-053451DBD620}",
+"performer":"{B8CF8274-B8C1-41E8-9221-03624FB6CA0B}",
+  "object":[
+  ],
+  "result":[
+ "{6C5D5143-55C1-4951-B0A1-FE78F7846739}","{76596F86-C95B-4B52-8D44-ACE0E6A3F954}"
+  ]
+   }]},
+{
+   "@id":"{999A632C-C4F7-4EB1-B09B-87CAD53A3821}",
+   "@type":"InvestigativeAction",
+   "name":"transferred",
+   "description":"Transfer of Hard Disk inside the computer of Mario Rossi (suspect)",
+   "startTime":"2018-10-18T08:30:14Z", 
+   "endTime":"2018-10-18T10:30:14Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{A8B566D7-E456-492D-936C-62B3994C03C2}",
+  "location":"{CCD2D15D-19A1-4BE1-AEB9-3BFA2217B217}",
+"performer":"{B8CF8274-B8C1-41E8-9221-03624FB6CA0B}",
+  "object":[
+ "{76596F86-C95B-4B52-8D44-ACE0E6A3F954}"
+  ],
+  "result":[
+"{FE44B228-C332-46C4-A9BD-3A3D5AABBC59}"
+  ]
+   }]},
+{
+   "@id":"{CC2F460F-A020-4F33-9984-9691A306B297}",
+   "@type":"InvestigativeAction",
+   "name":"extracted",
+   "description":"Acquisition Hard Disk inside the computer of Mario Rossi (suspect)",
+   "startTime":"2018-10-19T18:29:14Z", 
+   "endTime":"2018-10-19T20:05:14Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{D0521BD5-CC9B-4E0E-B8FA-AB147FF0AF3D}",
+  "location":"{CCD2D15D-19A1-4BE1-AEB9-3BFA2217B217}",
+"performer":"{9ACDE9B7-6985-4AD0-9C6A-D4A131F069CB}",
+  "object":[
+ "{FE44B228-C332-46C4-A9BD-3A3D5AABBC59}"
+  ],
+  "result":[
+"{21758431-B6BB-44A7-9DEB-33D27F9D9CBB}"
+  ]
+   }]},
+{
+   "@id":"{2C20D71D-276C-494E-85F6-4FC0C50325FF}",
+   "@type":"InvestigativeAction",
+   "name":"extracted",
+   "description":"Extraction 10 images from hard disk of computer (Mario Rossi)",
+   "startTime":"2018-10-20T08:40:14Z", 
+   "endTime":"2018-10-20T11:05:14Z",
+   "propertyBundle":[   {
+  "@type":"ActionReferences",
+  "instrument":"{D0521BD5-CC9B-4E0E-B8FA-AB147FF0AF3D}",
+  "location":"{CCD2D15D-19A1-4BE1-AEB9-3BFA2217B217}",
+"performer":"{9ACDE9B7-6985-4AD0-9C6A-D4A131F069CB}",
+  "object":[
+ "{21758431-B6BB-44A7-9DEB-33D27F9D9CBB}"
+  ],
+  "result":[
+"{F291F4D6-72F3-4A44-AE86-5ED52C7FD67A}"
+  ]
+   }]},
+{
+   "@id":"{582CAF46-0F32-4A77-9A5F-3D576F994011}",
+   "@type":"Location", 
+   "propertyBundle":[
+   {
+  "@type":"SimpleAddress", 
+  "locality":"Berlin", 
+  "region":"Germany", 
+  "postalCode":"12621", 
+  "street":"Heinrich-Grüber-Straße 118"
+   }, 
+   {
+  "@type":"LatLongCoordinates", 
+  "latitude":"52.521532", 
+  "longitude":"13.599471" 
+   }
+   ]
+},
+{
+   "@id":"{309BC178-1836-47B7-AA15-94EA3A2C7401}",
+   "@type":"Location", 
+   "propertyBundle":[
+   {
+  "@type":"SimpleAddress", 
+  "locality":"Berlin", 
+  "region":"Germany", 
+  "postalCode":"10407", 
+  "street":"Werner-Kube-Straße 7-5"
+   }, 
+   {
+  "@type":"LatLongCoordinates", 
+  "latitude":"52.535312", 
+  "longitude":"13.441749" 
+   }
+   ]
+},
+{
+   "@id":"{BA100CD9-A3D7-46C8-9537-053451DBD620}", 
+   "@type":"Location", 
+   "propertyBundle":[
+   {
+  "@type":"SimpleAddress", 
+  "locality":"Torino", 
+  "region":"Italy", 
+  "postalCode":"10125", 
+  "street":"via Madam Cristina 103"
+   }, 
+   {
+  "@type":"LatLongCoordinates", 
+  "latitude":"45.049311", 
+  "longitude":"7.677132" 
+   }
+   ]
+},
+{
+   "@id":"{CCD2D15D-19A1-4BE1-AEB9-3BFA2217B217}", 
+   "@type":"Location", 
+   "propertyBundle":[
+   {
+  "@type":"SimpleAddress", 
+  "locality":"Torino", 
+  "region":"Italy", 
+  "postalCode":"10126", 
+  "street":"via Giovanni Argentero, 4"
+   }, 
+   {
+  "@type":"LatLongCoordinates", 
+  "latitude":"45.051068", 
+  "longitude":"7.673663" 
+   }
+   ]
+},
+{
+   "@id":"{A2C17345-C5B9-42AE-BA97-3C0CB0A57902}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-04-02T09:40:14Z", 
+   "description":"Samsung SM-G900F of Maria Sieland volunatrily handed over to the LEA", 
+   "exhibitNumber":"IT_2018_00150", 
+   "object":[  "{FF3B5D29-F5DF-4599-801B-C13ED606B428}"
+   ]
+},
+{
+   "@id":"{96398C01-778B-4F81-9B93-F6A6445AB25E}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-04-11T09:00:14Z", 
+   "description":"Samsung SM-G900F of Maria Sieland transferred to FEG", 
+   "exhibitNumber":"IT_2018_FEGeeks_00192", 
+   "object":[  "{FF3B5D29-F5DF-4599-801B-C13ED606B428}"
+   ]
+},
+{"@id":"{F0B0231B-385D-4581-B7F0-D84A1FD65C8D}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Logical Aquisition (Galaxy S5.zip)", 
+"exhibitNumber":"EFGeeks_00192_001", 
+"object":["{F81138A7-86E3-4148-B405-ADEFDC7AC744}"]},
+{"@id":"{51793C56-55A7-4668-8504-632B67814329}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Logical Acquisition (report.xml)", 
+"exhibitNumber":"EFGeeks_00192_002", 
+"object":["{5FC5DF9F-9C2F-450E-86A4-4703C4F7A00E}"]},
+{"@id":"{12C53D68-E9D0-4313-947E-31A669DA55E9}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Logical Acquisition (log UFD)", 
+"exhibitNumber":"EFGeeks_00192_003", 
+"object":["{8BF3C850-2B0D-4EE7-B06E-7523CF839F63}"]},
+{"@id":"{90F73123-DB7E-41E5-B6CA-493B96E4B89F}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Physical Acquisition (dump blk0.bin)", 
+"exhibitNumber":"EFGeeks_00192_004", 
+"object":["{E4CA3459-36C0-455C-B921-5A4D45BAE1A6}"]},
+{"@id":"{97C74753-FCEB-49C8-A611-7A70EF46AB5D}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Physical Acquisition (dumprpmb.bin)", 
+"exhibitNumber":"EFGeeks_00192_005", 
+"object":["{46930DBB-8B8B-47EE-98B5-95790AA3BC6F}"]},
+{"@id":"{EBAB06EE-7522-42D6-96EA-E3121D67E393}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Physical Acquisition (procdata.zip)", 
+"exhibitNumber":"EFGeeks_00192_006", 
+"object":["{3D12B02A-B006-45DF-8B70-346E8AD06334}"]},
+{"@id":"{48C0F0E8-9A63-45EE-99BF-23CC354C3252}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Physical Acquisition (log.txt)", 
+"exhibitNumber":"EFGeeks_00192_007", 
+"object":["{43802E66-12E0-406B-A38D-7F3A46F46812}"]},
+{"@id":"{B2A7B20E-8307-40CF-ABAF-9733ABBF4335}",
+"@type":"ProvenanceRecord",
+"createdTime":"2018-04-16T17:00:14Z", 
+"description":"Physical Acquisition (log UFD)", 
+"exhibitNumber":"EFGeeks_00192_008", 
+"object":["{C70DC674-CDDE-4624-9E49-5D9BA8536B2D}"]},
+{
+   "@id":"{5298B593-E030-4043-9ED5-9C75A7D2FC27}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-06-19T17:00:14Z", 
+   "description":"Extraction messages (Facebook) - from physical acquisition", 
+   "exhibitNumber":"EFGeeks_00192_009", 
+   "object":[  "{2FD035B1-1624-4B8D-999A-0B48969967FA}",  "{66B87B97-76D6-44ED-B279-12532D0B88CA}",  "{0AE4C72D-8E9F-4002-8804-6E5DE09B92EE}",  "{3777F9DA-FB77-42CB-AC42-CF568DDF2C85}",  "{6314401E-0CDE-4E2D-A11E-C052BCB525A5}",  "{C0C39005-4100-4859-B878-E352E1A2D04C}",  "{331E6555-9958-4FFC-AD89-DFDC3B2E29AC}",  "{3E48A820-ECD5-49D0-8E0F-955629E39D85}"
+   ]
+},
+{
+   "@id":"{6C5D5143-55C1-4951-B0A1-FE78F7846739}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-10-15T08:40:14Z", 
+   "description":"Computer of  Mario Rossi seized by LEA", 
+   "exhibitNumber":"IT_2018_00183", 
+   "object":[
+  "{DB98793F-5A8B-432B-83C3-B7FC5532043F}"
+   ]
+},
+{
+   "@id":"{76596F86-C95B-4B52-8D44-ACE0E6A3F954}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-10-15T09:00:14Z", 
+   "description":"Hard disk from Computer of  Mario Rossi  seized  by LEA", 
+   "exhibitNumber":"IT_2018_00184", 
+   "object":[
+  "{732257E6-51D3-4697-A3D8-B73762C010A4}"
+   ]
+},
+{
+   "@id":"{21758431-B6BB-44A7-9DEB-33D27F9D9CBB}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-10-19T11:00:14Z", 
+   "description":"Acquisition ( Image of HD Toshiba, computer Mario Rossi)", 
+   "exhibitNumber":"DFB_Forensic_2018_00154", 
+   "object":[  "{701C7831-7780-4DD6-9A33-CB60B7972C46}"
+   ]
+},
+{
+   "@id":"{FE44B228-C332-46C4-A9BD-3A3D5AABBC59}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-10-18T08:30:14Z", 
+   "description":"Hard disk from Computer of  Mario Rossi   transferred to DFB_Forensic by LEA", 
+   "exhibitNumber":"IT_2018_00184", 
+   "object":[  "{732257E6-51D3-4697-A3D8-B73762C010A4}"
+   ]
+},
+{
+   "@id":"{F291F4D6-72F3-4A44-AE86-5ED52C7FD67A}",
+   "@type":"ProvenanceRecord",
+   "createdTime":"2018-10-19T08:30:14Z", 
+   "description":"Images (10) from the hard disk from Computer of  Mario Rossi  ", 
+   "exhibitNumber":"DFB_Forensic_2018_00155", 
+   "object":[  "{11999A67-9FD5-447B-9CA3-952B8F3DD1A7}",  "{71E807D1-54C3-4844-B327-63363C5DC845}",  "{941851CB-FB28-4F57-85F4-85BEB05F0E50}",  "{83042CE8-E080-4BD6-AB4C-7DCE7D7FF81E}",  "{29571F5F-0910-4307-A50F-C2FE90570FA2}",  "{FC0661C4-AF3C-414C-8FB4-D2B23B99E0FB}",  "{8002A07A-436B-4C44-8945-DCF153E45B1C}",  "{36036497-B27C-4409-AEC1-445D99C2F069}",  "{69C51E54-868A-457B-A0BE-A899F27AF6AD}",  "{99E66FDA-26EE-402F-9EC9-F38A283EA645}"
+   ]
+},
+{
+   "@id":"{F07EF9C8-D6EC-4614-88DA-34D7D11582A2}",
+   "@type":"Relationship",
+   "source":"{B1C22D51-4A3F-4353-84FB-E210B5EFDA48}",
+   "target":"{CC5F1E8B-9B80-4D41-AE7A-9A5343368106}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{2534E104-B73A-4FD8-9FA3-52BA839F8E01}",
+   "@type":"Relationship",
+   "source":"{86F2E76A-434D-4D3F-9147-CD0CABCCA074}",
+   "target":"{AE406771-A95F-4920-8602-695A3DCC553C}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{1E953952-22E6-48BD-9A5F-AEEDF41BE58B}",
+   "@type":"Relationship",
+   "source":"{530646A9-4290-4C02-B0B3-FD2EC363834A}",
+   "target":"{67AD1ABC-7DF0-4B14-A376-AB43D0E6CB19}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{1FDD45BD-76CE-4504-9278-C00715E94D8E}",
+   "@type":"Relationship",
+   "source":"{E9AA4F26-D187-4F32-A602-86A6DF4B8528}",
+   "target":"{FA6A02F7-6449-4553-A475-38473A273A75}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{249EE48F-7C04-49CA-A8F5-176F88D03F77}",
+   "@type":"Relationship",
+   "source":"{7EFE6E85-8C84-42E2-A359-10D7710AB45B}",
+   "target":"{FF3B5D29-F5DF-4599-801B-C13ED606B428}",
+   "kindOfRelationship":"contained_within",
+   "isDirectional":"True"
+},
+{
+   "@id":"{FF7B492A-F309-4593-B105-0D0BCCEABA55}",
+   "@type":"Relationship",
+   "source":"{367AB001-5CF4-48B5-BBD5-743ED57888E1}",
+   "target":"{90AC5DEC-647E-489F-A3C0-EF8BF2437C8C}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{F1085EB2-D597-403D-8E73-2FAAD3427BD8}",
+   "@type":"Relationship",
+   "source":"{B8CF8274-B8C1-41E8-9221-03624FB6CA0B}",
+   "target":"{CC5F1E8B-9B80-4D41-AE7A-9A5343368106}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{81B83026-C659-4D66-A42B-27A5B26F8A08}",
+   "@type":"Relationship",
+   "source":"{D6EFD4D5-8BF0-4404-A812-33A71296CAAC}",
+   "target":"{67AD1ABC-7DF0-4B14-A376-AB43D0E6CB19}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{D3CD91B0-0B45-4A90-868E-7B8346FEDC6F}",
+   "@type":"Relationship",
+   "source":"{9ACDE9B7-6985-4AD0-9C6A-D4A131F069CB}",
+   "target":"{FA6A02F7-6449-4553-A475-38473A273A75}",
+   "kindOfRelationship":"has_role",
+   "isDirectional":"True"
+},
+{
+   "@id":"{AE406771-A95F-4920-8602-695A3DCC553C}",
+   "@type":"Role",
+   "name":"Offender"
+},
+{
+   "@id":"{67AD1ABC-7DF0-4B14-A376-AB43D0E6CB19}",
+   "@type":"Role",
+   "name":"Judge"
+},
+{
+   "@id":"{CC5F1E8B-9B80-4D41-AE7A-9A5343368106}",
+   "@type":"Role",
+   "name":"Investigator"
+},
+{
+   "@id":"{FA6A02F7-6449-4553-A475-38473A273A75}",
+   "@type":"Role",
+   "name":"Forensic Expert"
+},
+{
+   "@id":"{90AC5DEC-647E-489F-A3C0-EF8BF2437C8C}", 
+   "@type":"Role",
+   "name":"Victim"
+},
+{
+   "@id":"{0E13BE7F-2944-4B28-B629-655CF5AB866E}", 
+   "@type":"Tool", 
+   "name":"UFED 4PC (Logical A.)",
+   "toolType":"Extraction", 
+   "creator":"Cellebrite", 
+   "version":"7.3.0.809",
+   "propertyBundle":[
+   {
+  "@type":"ToolConfiguration",
+  "configurationSetting":[
+{
+ "@type":"ConfigurationSetting", 
+ "itemName":"ExtractionMethod",
+ "itemValue":"ADB_BACKUP"
+  },
+{
+ "@type":"ConfigurationSetting", 
+ "itemName":"ExtractionType",
+ "itemValue":"Logical"
+  }
+  ]
+   }
+   ]
+},
+{
+   "@id":"{4A00884D-82A2-421A-B326-B18834AD9438}", 
+   "@type":"Tool", 
+   "name":"UFED 4PC (Physical A.)",
+   "toolType":"Extraction", 
+   "creator":"Cellebrite", 
+   "version":"7.3.0.809",
+   "propertyBundle":[
+   {
+  "@type":"ToolConfiguration",
+  "configurationSetting":[
+{
+ "@type":"ConfigurationSetting", 
+ "itemName":"ConnectionType",
+ "itemValue":"Cable No. 100"
+  },
+{
+ "@type":"ConfigurationSetting", 
+ "itemName":"UFEDExtractionMethod",
+ "itemValue":"ADB_Rooted"
+  },
+{
+ "@type":"ConfigurationSetting", 
+ "itemName":"ExtractionType",
+ "itemValue":"Physical"
+  }
+  ]
+   }
+   ]
+},
+{
+   "@id":"{122B8BDA-F0CF-461F-99E5-597DDFC01070}", 
+   "@type":"Tool", 
+   "name":"UFED  PA (Facebook and other traces Extraction)",
+   "toolType":"Parser", 
+   "creator":"Cellebrite", 
+   "version":"7.11"
+},
+{
+   "@id":"{D0521BD5-CC9B-4E0E-B8FA-AB147FF0AF3D}", 
+   "@type":"Tool", 
+   "name":"X-Ways Forensics (HD imaging)",
+   "toolType":"Extraction", 
+   "creator":"X-Ways", 
+   "version":"19.6 SR-6 x64"
+},
+{
+   "@id":"{DB98793F-5A8B-432B-83C3-B7FC5532043F}", 
+   "@type":"Trace",
+   "propertyBundle":[
+  {
+ "@type":"Device",
+ "manufacturer":"ASUS",
+ "model":"E200HA-FD0004TS",
+ "serialNumber":"AS3434123412TKX"
+  },
+  {
+ "@type":"OperatingSystem",
+ "name":"Windows",
+ "version":"10",
+ "manufacturer":"ASUS"
+  },
+  {
+ "@type":"MACAddress",
+ "address":"6a:1c:4f:30:04:83"
+  },
+  {
+ "@type":"ComputerSpecification",
+ "biosVersion":"12.89.32", 
+ "cpuFamily":"INTEL", 
+ "totalRam":"64GB" 
+  }
+   ]   
+},
+{
+   "@id":"{087BF772-AB80-4665-8348-F2D27D9FD480}", 
+   "@type":"Trace",
+   "propertyBundle":[
+  {
+ "@type":"Disk",
+ "manufacturer":"TOSHIBA",
+ "model":"TOSHIBA_MQ01ABD100",
+ "serialNumber":"Z612S32MS"
+ "capacity":"1000204886016"
+  },
+   ]   
+},
+{
+   "@id":"{732257E6-51D3-4697-A3D8-B73762C010A4}", 
+   "@type":"Trace",
+   "propertyBundle":[
+{"@type":"DiskPartition", 
+"diskPartitionType":"NTFS", 
+"partitionID":"1009932",
+"partitionOffset":"2048",
+"partitionLength":"156.299.263"}
+,
+   {
+  "type":"ContentData",
+  "hash":[
+  {"@type":"Hash",
+  "hashMethod":"SHA256",
+  "hashValue":"87E9F652464A8BB729DF78276B3183DF9FF7D01E8CC26D94A08BC72E6889B15F"
+   }
+   ], 
+  "SizeInBytes":"732257E6-51D3-4697-A3D8-B73762C010A4}"
+   }
+   ]
+},
+{
+   "@id":"{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}", 
+   "@type":"Trace", 
+   "propertyBundle":[
+   {
+  "@type":"Account", 
+  "accountIssuer":"Maria.Sieland", 
+  "isActive":"true"
+   },
+   {
+  "@type":"FacebookAccount", 
+  "accountID":"marisa.sieland@gmail.com"
+   }
+]},
+{
+   "@id":"{20F23F4D-5509-4781-B3D2-73CDA9539A84}", 
+   "@type":"Trace", 
+   "propertyBundle":[
+   {
+  "@type":"Account", 
+  "accountIssuer":"mario.rossi.1999", 
+  "isActive":"true"
+   },
+   {
+  "@type":"FacebookAccount", 
+  "accountID":"654772123"
+   }
+   ]
+},
+{"@id":"{F81138A7-86E3-4148-B405-ADEFDC7AC744}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"Samsung GSM_SM-G900F Galaxy S5.zip",
+	"filePath":"evidence/FEGeeks/00192/",
+	"extension":"zip",
+	"fileSystemType":"Android",
+	"isDirectory":"False",
+	"sizeInBytes":"234567890018",
+	"createdTime":"2018-06-19T12:55:40Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"A2920F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"}
+], 
+"SizeInBytes":"123697980797821"
+}]},
+{"@id":"{8BF3C850-2B0D-4EE7-B06E-7523CF839F63}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"Samsung GSM_SM-G900F_Galaxy_S5_Logical.ufd",
+	"filePath":"evidence/FEGeeks_00192/",
+	"extension":"ufd",
+	"fileSystemType":"Windows",
+	"isDirectory":"False",
+	"sizeInBytes":"3096",
+	"createdTime":"2018-06-19T12:55:01Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"FF01EF4644492EB3B638F2961C8934B05014B4C80DA2EA5570F085C7CBE4FF01"}
+], 
+"SizeInBytes":"256"
+}]},
+{"@id":"{5FC5DF9F-9C2F-450E-86A4-4703C4F7A00E}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"Report.xml",
+	"filePath":"evidence/FEGeeks_00192/",
+	"extension":"xml",
+	"fileSystemType":"Windows",
+	"isDirectory":"False",
+	"sizeInBytes":"102400",
+	"createdTime":"2018-06-19T12:55:02Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"394FEF4644492EB3B638F2961C8934B05014B4C80DA2EA5570F085C7CBE40F7F"}
+], 
+"SizeInBytes":"256"
+}]},
+{"@id":"{E4CA3459-36C0-455C-B921-5A4D45BAE1A6}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"blk0_mmcblk0.bin",
+	"filePath":"evidence/EFGeeks_00192/",
+	"extension":"bin",
+	"fileSystemType":"Windows",
+	"isDirectory":"False",
+	"sizeInBytes":"16985678911",
+	"createdTime":"2018-06-19T12:47:32Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"43F011AE63E843FF7DB94B84F03CCBF903EA0D7915BDDC262902C9D430DE2D57"}
+], 
+"SizeInBytes":"256"
+}]},
+{"@id":"{46930DBB-8B8B-47EE-98B5-95790AA3BC6F}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"blk32_mmcblk0rpmb.bin",
+	"filePath":"evidence/EFGeeks_00192/",
+	"extension":"bin",
+	"fileSystemType":"Windows",
+	"isDirectory":"False",
+	"sizeInBytes":"4912670",
+	"createdTime":"2018-06-19T12:47:04Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"B77B5AC1E87DAE8050AC63614C22070AB608AC8732FC182F275501050DB92EBF"}
+], 
+"SizeInBytes":"256"
+}]},
+{"@id":"{3D12B02A-B006-45DF-8B70-346E8AD06334}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"procdata.zip",
+	"filePath":"evidence/EFGeeks_00192/",
+	"extension":"zip",
+	"fileSystemType":"Windows",
+	"isDirectory":"False",
+	"sizeInBytes":"10784652",
+	"createdTime":"2018-06-19T12:47:06Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"F1AAB9D2900F7AFB4A15712FD6480F0AB280428E90BFB7883832A1B4878CC06F"}
+], 
+"SizeInBytes":"256"
+}]},
+{"@id":"{43802E66-12E0-406B-A38D-7F3A46F46812}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"log.txt",
+	"filePath":"evidence/EFGeeks_00192/",
+	"extension":"txt",
+	"fileSystemType":"Windows",
+	"isDirectory":"False",
+	"sizeInBytes":"1024",
+	"createdTime":"2018-06-19T12:47:05Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"1BB0662B0608FB0F11488005F2B304EF2450ED404B0000B087AB24E8287FA48C"}
+], 
+"SizeInBytes":"256"
+}]},
+{"@id":"{C70DC674-CDDE-4624-9E49-5D9BA8536B2D}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"File",
+	"fileName":"Samsung GSM_SM-G900F_Galaxy_S5_Physical.ufd",
+	"filePath":"evidence/EFGeeks_00192/",
+	"extension":"ufd",
+	"fileSystemType":"Windows",
+	"isDirectory":"False",
+	"sizeInBytes":"1024",
+	"createdTime":"2018-06-19T16:47:14Z"},
+	{"type":"ContentData",
+"hash":[
+{"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"E51234807EFF5D9AB558FCEA751EA7B5D3BEDF050C2B41E1389EA0979FCB3FF01"}
+], 
+"SizeInBytes":"256"
+}]},
+{
+   "@id":"{701C7831-7780-4DD6-9A33-CB60B7972C46}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"ROSSI_HD",
+  "filePath":"evidence/DFB_2018_00035/",
+  "extension":"001",
+  "fileSystemType":"NTFS",
+  "isDirectory":"False",
+  "sizeInBytes":"79993765888",
+  "createdTime":"2018-10-20T15:55:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"87E9F652464A8BB729DF78276B3183DF9FF7D01E8CC26D94A08BC72E6889B15F"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{11999A67-9FD5-447B-9CA3-952B8F3DD1A7}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_01",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"7K",
+  "createdTime":"2018-10-08T22:10:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"A2920F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{71E807D1-54C3-4844-B327-63363C5DC845}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_02",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"9K",
+  "createdTime":"2018-10-08T22:15:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"B1820F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{941851CB-FB28-4F57-85F4-85BEB05F0E50}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_03",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"5K",
+  "createdTime":"2018-10-08T22:16:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"C2220F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{83042CE8-E080-4BD6-AB4C-7DCE7D7FF81E}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_04",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"9K",
+  "createdTime":"2018-10-08T22:16:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"D4320F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{29571F5F-0910-4307-A50F-C2FE90570FA2}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_05",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"9K",
+  "createdTime":"2018-10-08T22:18:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"E9820F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{FC0661C4-AF3C-414C-8FB4-D2B23B99E0FB}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_06",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"43K",
+  "createdTime":"2018-10-08T22:19:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"F6220F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{8002A07A-436B-4C44-8945-DCF153E45B1C}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_07",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"71K",
+  "createdTime":"2018-10-08T22:19:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"G1920F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{36036497-B27C-4409-AEC1-445D99C2F069}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_08",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"367K",
+  "createdTime":"2018-10-08T22:20:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"H8220F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{69C51E54-868A-457B-A0BE-A899F27AF6AD}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_09",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"7K",
+  "createdTime":"2018-10-08T22:20:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"I09220F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{99E66FDA-26EE-402F-9EC9-F38A283EA645}", 
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"File",
+  "fileName":"44269428_10",
+  "filePath":"evidence/",
+  "extension":"jpg",
+  "fileSystemType":"Windows",
+  "isDirectory":"False",
+  "sizeInBytes":"7K",
+  "createdTime":"2018-10-08T22:20:40Z"},
+  {
+ "type":"ContentData",
+ "hash":[
+ {
+"@type":"Hash",
+"hashMethod":"SHA256",
+"hashValue":"B66220F123BF7D65AEC139B52A4E5B046F2EC925F5D8116AFB6D6375D3D748776"
+ }
+ ], 
+ "SizeInBytes":"256"
+  }
+   ]},
+{
+   "@id":"{6314401E-0CDE-4E2D-A11E-C052BCB525A5}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"I saw some of your photos, you wore very sexy dress, why do not you send me some more provocative photos, more sensual images?", 
+  "from":"vodafone.it@{20F23F4D-5509-4781-B3D2-73CDA9539A84}", 
+  "to":[
+  "{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}"],
+  "sentTime":"20180920T21:45:00Z"
+   }]
+}
+,
+{
+   "@id":"{C0C39005-4100-4859-B878-E352E1A2D04C}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"I am not sure, what do you want to do with my pictures?", 
+  "from":"gmail.com@{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}", 
+  "to":[
+  "{20F23F4D-5509-4781-B3D2-73CDA9539A84}"],
+  "sentTime":"20180920T21:50:00Z"
+   }]
+}
+,
+{
+   "@id":"{331E6555-9958-4FFC-AD89-DFDC3B2E29AC}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"Only for my pleasure, come on you do not risk anything", 
+  "from":"vodafone.it@{20F23F4D-5509-4781-B3D2-73CDA9539A84}", 
+  "to":[
+  "{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}"],
+  "sentTime":"20180920T21:55:00Z"
+   }]
+}
+,
+{
+   "@id":"{3E48A820-ECD5-49D0-8E0F-955629E39D85}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"ok. but please do not share it with anyone else", 
+  "from":"gmail.com@{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}", 
+  "to":[
+  "{20F23F4D-5509-4781-B3D2-73CDA9539A84}"],
+  "sentTime":"20180920T22:00:00Z"
+   }]
+}
+,
+{
+   "@id":"{2FD035B1-1624-4B8D-999A-0B48969967FA}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"Maria, you are so beautiful and sweet!", 
+  "from":"vodafone.it@{20F23F4D-5509-4781-B3D2-73CDA9539A84}", 
+  "to":[
+  "{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}"],
+  "sentTime":"20180920T21:30:07Z"
+   }]
+}
+,
+{
+   "@id":"{66B87B97-76D6-44ED-B279-12532D0B88CA}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"Thanks, but I do not think I am so beautiful", 
+  "from":"gmail.com@{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}", 
+  "to":[
+  "{20F23F4D-5509-4781-B3D2-73CDA9539A84}"],
+  "sentTime":"20180920T21:35:11Z"
+   }]
+}
+,
+{
+   "@id":"{0AE4C72D-8E9F-4002-8804-6E5DE09B92EE}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"Believe me, I'm an expert! ANd I can assert, from your eyes ho confident you are, so do not be shy", 
+  "from":"vodafone.it@{20F23F4D-5509-4781-B3D2-73CDA9539A84}", 
+  "to":[
+  "{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}"],
+  "sentTime":"20180920T21:38:11Z"
+   }]
+}
+,
+{
+   "@id":"{3777F9DA-FB77-42CB-AC42-CF568DDF2C85}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"I have never received such compliment before, thank you", 
+  "from":"gmail.com@{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}", 
+  "to":[
+  "{20F23F4D-5509-4781-B3D2-73CDA9539A84}"],
+  "sentTime":"20180920T21:40:45Z"
+   }]
+}
+,
+{
+   "@id":"{C3401E1F-C6E5-4984-9AE2-CC2A9EAB5934}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"It is extremely sexy! But now you have to send me other pictures pf the same kind", 
+  "from":"vodafone.it@{20F23F4D-5509-4781-B3D2-73CDA9539A84}", 
+  "to":[
+  "{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}"],
+  "sentTime":"20180920T22:10:00Z"
+   }]
+}
+,
+{
+   "@id":"{E7E3AEC1-D147-4DE1-896A-A684805B5659}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"No, I cannot send further pictures, I regret to having sent it before", 
+  "from":"gmail.com@{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}", 
+  "to":[
+  "{20F23F4D-5509-4781-B3D2-73CDA9539A84}"],
+  "sentTime":"20180920T22:15:00Z"
+   }]
+}
+,
+{
+   "@id":"{286B123F-4B9D-44FD-868D-5D24D979FF81}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"If you do not send me other pictures, I promise to share the èrevious one with all my friends, and I have lots of friends", 
+  "from":"vodafone.it@{20F23F4D-5509-4781-B3D2-73CDA9539A84}", 
+  "to":[
+  "{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}"],
+  "sentTime":"20180920T22:20:00Z"
+   }]
+}
+,
+{
+   "@id":"{D60774DB-059A-4DFF-BA5C-5BA857997A41}",
+   "@type":"Trace",
+   "propertyBundle":[
+   {
+  "@type":"Message",
+  "application":"Facebook chat",
+  "messageText":"I am going to send you but you are a liar and  you should ashamed of yourself!", 
+  "from":"gmail.com@{D1C2DD6C-1730-4026-BAF3-8E5FF9D5FFF4}", 
+  "to":[
+  "{20F23F4D-5509-4781-B3D2-73CDA9539A84}"],
+  "sentTime":"20180920T22:30:00Z"
+   }]
+},
+{"@id":"{FF3B5D29-F5DF-4599-801B-C13ED606B428}", "@type":"Trace",
+"propertyBundle":[
+{
+	"@type":"Device",
+	"manufacturer":"Samsung",
+	"model":"SM-G900F",
+	"serialNumber":"FDG764192"
+	},	{"@type":"MobileDevice",
+	"IMEI":"356765064657669",
+	"storageCapacity":"64 GB",
+	"clockSetting":"2018-06-10T08:30:14Z"}	, 
+{"@type":"MobileAccount", "MSISDN":"+393319420019"}
+
+	]
+},
+{
+   "@id":"{916271A9-24FC-4A93-BFAC-9B3A903A2BD4}", 
+   "@type":"Trace", 
+   "propertyBundle":[{
+   "@type":"Account", 
+   "accountIssuer":"Maria Sieland", 
+   "isActive":"true"
+},
+   {
+  "@type":"PhoneAccount", 
+  "phoneNumber":"+393319420019"
+   }
+]},
+{"@id":"{7EFE6E85-8C84-42E2-A359-10D7710AB45B}", "@type":"Trace",
+	"propertyBundle":[
+{
+	"SIMType":"SIM", 
+	"SIMForm":"Micro SIM", 
+	"StorageCapacity":"1097983645", 
+	"Carrier":"Vodafone Italia", 	"ICCID":"89390100001847875453", 	"PhoneNumber":"393319420019" , 
+	"PIN":"7571" , 
+	"PUK":"91287655" }
+	]
+},
+{
+   "@id":"{79D6AB60-D679-49CE-9573-7176DFEEB7C3}",
+   "@type":"Authorization",
+   "propertyBundle":[
+   {
+  "@authorizationType":"Warrant",
+  "authorizationIdentifier":"WARRANT_2018_00091",
+  "authorizationAuthority":"{530646A9-4290-4C02-B0B3-FD2EC363834A}",
+  "authorizationIssuedDate":"20181002"
+   }
+   ]
+},
+{
+   "@id":"{A8B566D7-E456-492D-936C-62B3994C03C2}",
+   "@type":"Authorization",
+   "propertyBundle":[
+   {
+  "@authorizationType":"Warrant",
+  "authorizationIdentifier":"WARRANT_IT_2018_00033",
+  "authorizationAuthority":"{D6EFD4D5-8BF0-4404-A812-33A71296CAAC}",
+  "authorizationIssuedDate":"20181012"
+   }
+   ]
+}
+]}

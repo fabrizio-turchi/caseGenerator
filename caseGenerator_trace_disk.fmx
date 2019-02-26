@@ -1,0 +1,192 @@
+object formTraceDisk: TformTraceDisk
+  Left = 0
+  Top = 0
+  Caption = 'Trace Hard Disk'
+  ClientHeight = 456
+  ClientWidth = 662
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Panel1: TPanel
+    Position.X = 144.000000000000000000
+    Position.Y = 24.000000000000000000
+    Size.Width = 377.000000000000000000
+    Size.Height = 145.000000000000000000
+    Size.PlatformDefault = False
+    StyleLookup = 'calloutpanelstyle'
+    TabOrder = 12
+    object edDeviceCapacity: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 0
+      Position.X = 96.000000000000000000
+      Position.Y = 116.000000000000000000
+      Size.Width = 241.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label4: TLabel
+      Position.X = 8.000000000000000000
+      Position.Y = 120.000000000000000000
+      Size.Width = 81.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Capacity'
+      TabOrder = 1
+    end
+  end
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 16.000000000000000000
+    Position.Y = 187.000000000000000000
+    Size.Width = 137.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Hard Disks'
+    TabOrder = 0
+  end
+  object edDeviceManufacturer: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    Position.X = 240.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label2: TLabel
+    Position.X = 152.000000000000000000
+    Position.Y = 48.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Manufacturer'
+    TabOrder = 6
+  end
+  object Label3: TLabel
+    Position.X = 152.000000000000000000
+    Position.Y = 80.000000000000000000
+    Size.Width = 57.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Model'
+    TabOrder = 4
+  end
+  object btnClose: TButton
+    Position.X = 272.000000000000000000
+    Position.Y = 574.000000000000000000
+    Size.Width = 104.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    Text = 'Save and close'
+    OnClick = btnCloseClick
+  end
+  object btnAddTool: TButton
+    Position.X = 232.000000000000000000
+    Position.Y = 194.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 9
+    Text = 'Add trace'
+    OnClick = btnAddToolClick
+  end
+  object btnDeleteTool: TButton
+    Position.X = 416.000000000000000000
+    Position.Y = 194.000000000000000000
+    Size.Width = 96.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 10
+    Text = 'Delete trace'
+    OnClick = btnDeleteToolClick
+  end
+  object Label5: TLabel
+    Position.X = 152.000000000000000000
+    Position.Y = 112.000000000000000000
+    Size.Width = 57.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Serial no.'
+    TabOrder = 5
+  end
+  object edDeviceSerial: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Position.X = 240.000000000000000000
+    Position.Y = 104.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object lbTrace: TListBox
+    Position.X = 8.000000000000000000
+    Position.Y = 220.000000000000000000
+    Size.Width = 633.000000000000000000
+    Size.Height = 177.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 11
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbTraceChange
+    Viewport.Width = 629.000000000000000000
+    Viewport.Height = 173.000000000000000000
+  end
+  object edDeviceModel: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 2
+    Position.X = 240.000000000000000000
+    Position.Y = 72.000000000000000000
+    Size.Width = 241.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label6: TLabel
+    Position.X = 295.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 44.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Device'
+    TabOrder = 13
+  end
+  object btnModifyTrace: TButton
+    Position.X = 324.000000000000000000
+    Position.Y = 194.000000000000000000
+    Size.Width = 85.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 14
+    Text = 'Modify trace'
+    OnClick = btnModifyTraceClick
+  end
+  object btnCancel: TButton
+    Position.X = 392.000000000000000000
+    Position.Y = 576.000000000000000000
+    TabOrder = 15
+    Text = 'Cancel'
+    OnClick = btnCancelClick
+  end
+  object Button1: TButton
+    Position.X = 192.000000000000000000
+    Position.Y = 402.000000000000000000
+    Size.Width = 104.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 25
+    Text = 'Save and close'
+    OnClick = btnCloseClick
+  end
+  object Button2: TButton
+    Position.X = 312.000000000000000000
+    Position.Y = 402.000000000000000000
+    TabOrder = 38
+    Text = 'Cancel'
+    OnClick = btnCancelClick
+  end
+end

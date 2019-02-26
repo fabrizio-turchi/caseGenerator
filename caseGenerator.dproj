@@ -363,10 +363,6 @@
             <Form>formTraceMobile</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="caseGenerator_trace_computer.pas">
-            <Form>formTraceComputer</Form>
-            <FormType>fmx</FormType>
-        </DCCReference>
         <DCCReference Include="caseGenerator_relationship.pas">
             <Form>formRelationship</Form>
             <FormType>fmx</FormType>
@@ -414,6 +410,14 @@
         </DCCReference>
         <DCCReference Include="caseGenerator_trace_phone_account.pas">
             <Form>formTracePhoneAccount</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="caseGenerator_trace_disk.pas">
+            <Form>formTraceDisk</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="caseGenerator_trace_computer.pas">
+            <Form>formTraceComputer</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

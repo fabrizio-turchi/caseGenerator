@@ -12,10 +12,9 @@ object formMain: TformMain
   DesignerMasterStyle = 0
   object Label1: TLabel
     StyledSettings = [Family]
-    Position.X = 254.000000000000000000
-    Position.Y = 8.000000000000000000
-    Size.Width = 281.000000000000000000
-    Size.Height = 18.000000000000000000
+    Position.X = 222.000000000000000000
+    Size.Width = 243.000000000000000000
+    Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 14.000000000000000000
     TextSettings.FontColor = claBrown
@@ -81,8 +80,8 @@ object formMain: TformMain
     Size.Height = 137.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 23
-    Viewport.Width = 381.000000000000000000
-    Viewport.Height = 133.000000000000000000
+    Viewport.Width = 385.000000000000000000
+    Viewport.Height = 137.000000000000000000
   end
   object btnSaveToJSON: TButton
     Position.X = 495.000000000000000000
@@ -115,6 +114,7 @@ object formMain: TformMain
       'SIM'
       'Computer'
       'File'
+      'Hard Disk'
       'Disk Partition'
       'Phone account'
       'Mobile account'
@@ -160,8 +160,8 @@ object formMain: TformMain
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 115.000000000000000000
-    Viewport.Height = 26.000000000000000000
+    Viewport.Width = 119.000000000000000000
+    Viewport.Height = 30.000000000000000000
     object Label2: TLabel
       Position.X = 3.000000000000000000
       Position.Y = 75.000000000000000000
@@ -308,8 +308,8 @@ object formMain: TformMain
     Size.Height = 49.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 20
-    Viewport.Width = 493.000000000000000000
-    Viewport.Height = 45.000000000000000000
+    Viewport.Width = 497.000000000000000000
+    Viewport.Height = 49.000000000000000000
   end
   object Label7: TLabel
     Position.X = 16.000000000000000000
@@ -331,8 +331,8 @@ object formMain: TformMain
     Size.Height = 73.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 19
-    Viewport.Width = 493.000000000000000000
-    Viewport.Height = 69.000000000000000000
+    Viewport.Width = 497.000000000000000000
+    Viewport.Height = 73.000000000000000000
   end
   object btnTimeline: TButton
     Position.X = 24.000000000000000000
