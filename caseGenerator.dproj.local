@@ -50,12 +50,12 @@
     <Transaction>2018/06/19 16:07:04.000.012,Z:\CASE\generator\caseGenerator_trace_phone_account.fmx=Z:\CASE\generator\caseGenerator_trace_mobile_account.fmx</Transaction>
     <Transaction>2018/06/19 16:07:04.000.012,Z:\CASE\generator\caseGenerator_trace_phone_account.pas=Z:\CASE\generator\caseGenerator_trace_mobile_account.pas</Transaction>
     <Transaction>2018/06/21 13:57:39.000.652,=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
-    <Transaction>2018/10/31 15:11:30.000.208,Z:\CASE\generator\caseGenerator_trace_facebook_account.fmx=Z:\CASE\generator\caseGenerator_trace_phone_account.fmx</Transaction>
     <Transaction>2018/10/31 15:11:30.000.208,Z:\CASE\generator\caseGenerator_trace_facebook_account.pas=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
+    <Transaction>2018/10/31 15:11:30.000.208,Z:\CASE\generator\caseGenerator_trace_facebook_account.fmx=Z:\CASE\generator\caseGenerator_trace_phone_account.fmx</Transaction>
     <Transaction>2018/10/31 15:43:24.000.342,=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
     <Transaction>2019/02/22 21:14:09.000.624,Z:\CASE\generator\caseGenerator_trace_computer.fmx=Z:\CASE\generator\caseGenerator_trace_disk.fmx</Transaction>
     <Transaction>2019/02/22 21:14:09.000.624,Z:\CASE\generator\caseGenerator_trace_computer.pas=Z:\CASE\generator\caseGenerator_trace_disk.pas</Transaction>
-    <Transaction>2019/02/26 15:47:08.787,=Z:\CASE\generator\caseGenerator_trace_computer.pas</Transaction>
+    <Transaction>2019/02/26 15:47:08.000.787,=Z:\CASE\generator\caseGenerator_trace_computer.pas</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<PcnMacOSX iOSSimulator="iPhone5"/>

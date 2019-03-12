@@ -80,13 +80,13 @@ object formMain: TformMain
     Size.Height = 137.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 23
-    Viewport.Width = 385.000000000000000000
-    Viewport.Height = 137.000000000000000000
+    Viewport.Width = 381.000000000000000000
+    Viewport.Height = 133.000000000000000000
   end
   object btnSaveToJSON: TButton
-    Position.X = 495.000000000000000000
-    Position.Y = 474.000000000000000000
-    Size.Width = 129.000000000000000000
+    Position.X = 560.000000000000000000
+    Position.Y = 482.000000000000000000
+    Size.Width = 112.000000000000000000
     Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 16
@@ -160,8 +160,8 @@ object formMain: TformMain
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 119.000000000000000000
-    Viewport.Height = 30.000000000000000000
+    Viewport.Width = 115.000000000000000000
+    Viewport.Height = 26.000000000000000000
     object Label2: TLabel
       Position.X = 3.000000000000000000
       Position.Y = 75.000000000000000000
@@ -183,9 +183,9 @@ object formMain: TformMain
     OnClick = btnWarrantClick
   end
   object btnGenerateCaseJson: TButton
-    Position.X = 344.000000000000000000
-    Position.Y = 474.000000000000000000
-    Size.Width = 144.000000000000000000
+    Position.X = 416.000000000000000000
+    Position.Y = 483.000000000000000000
+    Size.Width = 136.000000000000000000
     Size.Height = 26.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 15
@@ -308,8 +308,8 @@ object formMain: TformMain
     Size.Height = 49.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 20
-    Viewport.Width = 497.000000000000000000
-    Viewport.Height = 49.000000000000000000
+    Viewport.Width = 493.000000000000000000
+    Viewport.Height = 45.000000000000000000
   end
   object Label7: TLabel
     Position.X = 16.000000000000000000
@@ -331,14 +331,14 @@ object formMain: TformMain
     Size.Height = 73.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 19
-    Viewport.Width = 497.000000000000000000
-    Viewport.Height = 73.000000000000000000
+    Viewport.Width = 493.000000000000000000
+    Viewport.Height = 69.000000000000000000
   end
   object btnTimeline: TButton
     Position.X = 24.000000000000000000
-    Position.Y = 464.000000000000000000
+    Position.Y = 478.000000000000000000
     Size.Width = 249.000000000000000000
-    Size.Height = 33.000000000000000000
+    Size.Height = 34.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 14
     Text = 'Timeline Overview'
@@ -347,5 +347,14 @@ object formMain: TformMain
   object SaveDialog: TSaveDialog
     Left = 528
     Top = 328
+  end
+  object cbNewOntology: TCheckBox
+    Position.X = 280.000000000000000000
+    Position.Y = 488.000000000000000000
+    Size.Width = 137.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 33
+    Text = 'new UCO ontology'
   end
 end

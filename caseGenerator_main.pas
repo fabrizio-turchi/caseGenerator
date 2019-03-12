@@ -43,6 +43,7 @@ type
     btnTimeline: TButton;
     SaveDialog: TSaveDialog;
     btnModify: TButton;
+    cbNewOntology: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure btnNewCaseClick(Sender: TObject);
     procedure btnIdentityClick(Sender: TObject);
@@ -426,8 +427,8 @@ end;
 
 procedure TformMain.btnGenerateCaseJsonClick(Sender: TObject);
 var
-  idx: Integer;
-  crlf, recSep, space4, space8, line: String;
+  idx, guuidLength: Integer;
+  crlf, recSep, space4, space8, line, subStr: String;
 begin
   if lbObjects.Items.Count = 0 then
     ShowMessage('No CASE selected')
@@ -444,10 +445,36 @@ begin
       //7. add the last two character ]}
       btnGenerateCaseJson.Cursor := crHourGlass;
       memoJSON.Lines.Clear;
+
+
       crlf := #13 + #10;
       recSep := #30 + #30;
       space4 := '    ';
       space8 := space4 + space4;
+      subStr := 'investigation-';
+      guuidLength := 36;
+
+{
+*--- if the new ontology generation is required,  the investigation-xxx is to be changed  in the form
+*--- "@id":"B941D0A6-F446-4CA9-BF6C-EA6D3E72C2DB-investigation",
+}
+      if cbNewOntology.IsChecked then
+      begin
+        for idx:=0 to lbObjects.Items.Count -1 do
+        begin
+          if (AnsiContainsStr(lbObjects.Items[idx], subStr))then
+          begin
+
+            line := lbObjects.Items[idx];
+            line := Copy(line, 1, Pos(subStr, line)  - 1) + Copy(line, Pos(subStr, line) + Length(subStr), Length(line));
+            line := Copy(line, 1, Pos('@id":"', line) + guuidLength + 5)  + '-' + Copy(subStr, 1, Length(subStr) - 1) +
+              Copy(line, Pos('@id":"', line) + guuidLength + 6, Length(line));
+            lbObjects.Items[idx] := line;
+            break;
+          end;
+        end;
+      end;
+
       for idx:=0 to lbObjects.Items.Count - 1 do
       begin
         if (AnsiContainsStr(lbObjects.Items[idx], '"object":['))  then
@@ -680,9 +707,11 @@ function TformMain.generateUUID(Sender: TObject): String;
 var
   Uid: TGUID;
   Value: HResult;
+  uuidBraced : String;
 begin
     Value := CreateGUID(Uid);
-    Result := GuidToString(Uid);
+    uuidBraced := GuidToString(Uid);
+    Result := Copy(uuidBraced, 2, Length(uuidBraced) - 2);
 end;
 
 procedure TformMain.SetHomeCases(const Value: String);
@@ -721,7 +750,11 @@ begin
   listFiles.Sorted := True;   // files ordered by name
 
   //path := GetCurrentDir + '\';
-  resFiles := FindFirst(FHomeCases + FpathCase + FuuidCase + '*.json', faAnyfile, searchResult);
+  if cbNewOntology.IsChecked then
+    resFiles := FindFirst(FHomeCases + FpathCase + 'newontology_' + FuuidCase + '*.json', faAnyfile, searchResult)
+  else
+    resFiles := FindFirst(FHomeCases + FpathCase + FuuidCase + '*.json', faAnyfile, searchResult);
+
   if resFiles = 0 then
   try
     while resFiles = 0 do
@@ -759,12 +792,14 @@ begin
             objectsList.Add(line + ',');
             if (AnsiContainsStr(line, '"@id":"')) then
             begin
-              //objectID := Copy(line, Pos('"@id"', line) + 7, 38);
-              objectID := Copy(line, Pos('"@id"', line) + 1 , 5) +
-                Copy(line, Pos('"@id"', line) + 6, 39);
-              objectID := stringreplace(objectID, '{', '', [rfReplaceAll]);
-              objectID := stringreplace(objectID, '}', '', [rfReplaceAll]);
-              IDList.Add('{"' + objectID + '"},');
+{
+*--- get rid of braces containing the guuid, whose length is 36 chars, so the line will have the form
+*--- "@id":"1C922B87-1CD2-492F-8B49-253762FEE934"
+}
+              objectID := Copy(line, Pos('"@id"', line), 6) + Copy(line, Pos('"@id"', line) + 6, 38);
+              //objectID := stringreplace(objectID, '{', '', [rfReplaceAll]);
+              //objectID := stringreplace(objectID, '}', '', [rfReplaceAll]);
+              IDList.Add('{' + objectID + '},');
             end;
           end;
         end;
