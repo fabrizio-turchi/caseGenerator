@@ -50,21 +50,21 @@ object formTraceDiskPartition: TformTraceDiskPartition
     end
     object lbPartition: TListBox
       Position.X = 152.000000000000000000
-      Position.Y = 48.000000000000000000
+      Position.Y = 88.000000000000000000
       Size.Width = 528.000000000000000000
-      Size.Height = 97.000000000000000000
+      Size.Height = 57.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 8
       DisableFocusEffect = True
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
-      Viewport.Width = 528.000000000000000000
-      Viewport.Height = 97.000000000000000000
+      Viewport.Width = 524.000000000000000000
+      Viewport.Height = 53.000000000000000000
     end
     object btnAddPartition: TButton
-      Position.X = 48.000000000000000000
-      Position.Y = 66.000000000000000000
+      Position.X = 200.000000000000000000
+      Position.Y = 58.000000000000000000
       Size.Width = 97.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -73,8 +73,8 @@ object formTraceDiskPartition: TformTraceDiskPartition
       OnClick = btnAddPartitionClick
     end
     object btnRemovePartition: TButton
-      Position.X = 48.000000000000000000
-      Position.Y = 96.000000000000000000
+      Position.X = 304.000000000000000000
+      Position.Y = 56.000000000000000000
       Size.Width = 97.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
@@ -142,8 +142,8 @@ object formTraceDiskPartition: TformTraceDiskPartition
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 769.000000000000000000
-    Viewport.Height = 177.000000000000000000
+    Viewport.Width = 765.000000000000000000
+    Viewport.Height = 173.000000000000000000
   end
   object Label6: TLabel
     Position.X = 315.000000000000000000

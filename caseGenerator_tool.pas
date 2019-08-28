@@ -211,7 +211,7 @@ end;
 
 function TformTool.prepareItemTool(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces, lineConfiguration, sConfiguration: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -224,14 +224,12 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbTool.ItemIndex;
-    line := line + indent + '"@id":"' + ExtractField(lbTool.Items[idx], '"@id":"') + '", '+ recSep;
-  end;
+    guidNoBraces :=  ExtractField(lbTool.Items[lbTool.ItemIndex], '"@id":"');
 
+  line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
   line := line + indent + '"@type":"Tool", ' + recSep;
   line := line + indent + '"name":"' + edName.Text + '",' + recSep;
   line:= line +  indent + '"toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ' + recSep;
@@ -240,16 +238,35 @@ begin
 
   if lbConfigurationSettingTool.Items.Count > 0 then
   begin
+    sConfiguration :=  '"@type":"ConfigurationSetting';
     line := line + ',' + recSep;
     line := line  + indent + '"propertyBundle":[' + recSep;
     line := line  + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-ToolConfiguration",' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"ToolConfiguration",' + recSep;
     line := line + RepeatString(indent, 2) + '"configurationSetting":[' + recSep;
     //line := line + RepeatString(indent, 2) + '{' + recSep;
     for idx:=0 to  lbConfigurationSettingTool.Items.Count - 2 do
-      line := line + lbConfigurationSettingTool.Items[idx] + ',' + recSep;
+    begin
+      lineConfiguration := lbConfigurationSettingTool.Items[idx];
+      lineConfiguration := Copy(lineConfiguration, 1, Pos(sConfiguration, lineConfiguration) - 1) +
+        '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep +
+        Copy(lineConfiguration, Pos(sConfiguration, lineConfiguration), Length(lineConfiguration));
 
-    line := line + lbConfigurationSettingTool.Items[idx] + recSep;
+      //line := line + '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep;
+      line := line + lineConfiguration + ',' + recSep;
+    end;
+
+
+    lineConfiguration := lbConfigurationSettingTool.Items[idx];
+    lineConfiguration := Copy(lineConfiguration, 1, Pos(sConfiguration, lineConfiguration) - 1) +
+      '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep +
+      Copy(lineConfiguration, Pos(sConfiguration, lineConfiguration), Length(lineConfiguration));
+      //line := line + '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep;
+    line := line + lineConfiguration + recSep;
+
+    //line := line + '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep;
+    //line := line + lbConfigurationSettingTool.Items[idx] + recSep;
     line := line  + RepeatString(indent, 2) + ']' + recSep;
     line := line +  indent + '}' + recSep;
     line := line +  indent + ']' + recSep;

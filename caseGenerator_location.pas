@@ -120,7 +120,7 @@ end;
 
 function TformLocation.prepareObjectCaseLine(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -132,19 +132,16 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbLocation.ItemIndex;
-    line := line + indent + '"@id":"' + ExtractField(lbLocation.Items[idx], '"@id":"') + '",' + recSep;
-  end;
+     guidNoBraces :=  ExtractField(lbLocation.Items[lbLocation.ItemIndex], '"@id":"');
 
-
+  line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
   line := line + indent + '"@type":"Location", ' + recSep;
   line := line + indent +  '"propertyBundle":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"@type":"SimpleAddress", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-SimpleAddress", ' + recSep;
   line := line + RepeatString(indent, 2) + '"locality":"' + edLocality.Text + '", ' + recSep;
   line := line + RepeatString(indent, 2) + '"region":"' + edRegion.Text + '", ' + recSep;
   line := line + RepeatString(indent, 2) + '"postalCode":"' + edPostalCode.Text + '", ' + recSep;
@@ -155,7 +152,7 @@ begin
   else
   begin
     line := line + ', ' + recSep;
-    line := line + indent + '{' + recSep + RepeatString(indent, 2) + '"@type":"LatLongCoordinates", ' + recSep;
+    line := line + indent + '{' + recSep + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-LatLongCoordinates", ' + recSep;
     line := line + RepeatString(indent, 2) + '"latitude":"' + edLatitude.Text + '", ' + recSep;
     line := line + RepeatString(indent, 2) + '"longitude":"' + edLongitude.Text + '" ' + recSep;
     line := line + indent + '}' + recSep;

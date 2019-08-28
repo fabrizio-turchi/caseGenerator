@@ -78,7 +78,7 @@ end;
 
 function TformTraceFacebookAccount.prepareTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -93,22 +93,22 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
-    begin
-      idx := lbFacebookAccount.ItemIndex;
-      line := line + indent + '"@id":"' + ExtractField(lbFacebookAccount.Items[idx], '"@id":"') + '", ' + recSep;
-    end;
+      guidNoBraces :=  ExtractField(lbFacebookAccount.Items[lbFacebookAccount.ItemIndex], '"@id":"');
 
+    line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"Trace", ' + recSep;
     line := line + indent + '"propertyBundle":[' + recSep;
     line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-Account", ' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"Account", ' + recSep;
     line := line + RepeatString(indent, 2) + '"accountIssuer":"' + edIssuer.Text + '", ' + recSep;
     line := line + RepeatString(indent, 2) + '"isActive":"true"' + recSep ;
     line := line + indent + '},' + recSep;
     line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-FacebookAccount", ' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"FacebookAccount", ' + recSep;
     line := line + RepeatString(indent, 2) + '"accountID":"' + edID.Text + '"' + recSep;
     line := line + indent + '}' + recSep;

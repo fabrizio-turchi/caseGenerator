@@ -222,7 +222,7 @@ end;
 
 function TformTraceMobile.prepareItemTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -234,24 +234,24 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbTrace.ItemIndex;
-    line := line + indent + '"@id":"' +  ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
-  end;
+    guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
+
+    line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
+    line := line + indent + '"@type":"Trace",' + recSep;
     line := line + indent + '"propertyBundle":[' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-Device",' + recSep;
     line := line + RepeatString(indent, 3) + '"@type":"Device",' + recSep;
     line := line + RepeatString(indent, 3) + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
     line := line + RepeatString(indent, 3) + '"model":"' + edDeviceModel.Text + '",' + recSep;
     line := line + RepeatString(indent, 3) + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
     line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-MobileDevice",' + recSep;
     line := line + RepeatString(indent, 3) + '"@type":"MobileDevice",' + recSep;
     line := line + RepeatString(indent, 3) + '"IMEI":"' + edMobileIMEI.Text + '",' + recSep;
     line := line + RepeatString(indent, 3) + '"storageCapacity":"' + edMobileStorage.Text + '",' + recSep;
@@ -264,6 +264,7 @@ begin
     begin
       line := line + ', ' + recSep;
       line := line + RepeatString(indent, 2) + '{' + recSep;
+      line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-iPhoneDevice",' + recSep;
       line := line + RepeatString(indent, 3) + '"@type":"iPhoneDevice",' + recSep;
       line := line + RepeatString(indent, 3) + '"uniqueID":"' + edIphoneID.Text + '",' + recSep;
       line := line + RepeatString(indent, 3) + '"ownerName":"' + edIphoneOwner.Text + '"}' + recSep;
@@ -273,6 +274,7 @@ begin
     begin
       line := line + ', ' + recSep;
       line := line + RepeatString(indent, 2) + '{' + recSep;
+      line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-OperatingSystem",' + recSep;
       line := line + RepeatString(indent, 3) + '"@type":"OperatingSystem",' + recSep;
       line := line + RepeatString(indent, 3) + '"name": "' + edOsName.Text + '",' + recSep;
       line := line + RepeatString(indent, 4) + '"manufacturer":"' + edOsManufacturer.Text + '", ' + recSep;
@@ -283,6 +285,7 @@ begin
     begin
       line := line + ', ' + recSep;
       line := line + RepeatString(indent, 2) + '{' + recSep;
+      line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-MobileAccount", ' + recSep;
       line := line + RepeatString(indent, 3) + '"@type":"MobileAccount", ' + recSep;
       line := line + RepeatString(indent, 3) + '"MSISDN":"' + edAccountMSISDN.Text + '"' + recSep;
       line := line + RepeatString(indent, 2) + '}' + recSep;

@@ -191,7 +191,7 @@ end;
 
 function TformWarrant.prepareItemWarrant(operation: String): String;
 var
-  line, recSep, lineID, indent: string;
+  line, recSep, lineID, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -202,18 +202,16 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbWarrant.ItemIndex;
-    line := line + indent + '"@id":"' + ExtractField(lbWarrant.Items[idx], '"@id":"') + '",' + recSep;
-  end;
+    guidNoBraces :=  ExtractField(lbWarrant.Items[lbWarrant.ItemIndex], '"@id":"');
 
-
+  line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   line := line + indent + '"@type":"Authorization",' + recSep;
   line := line + indent + '"propertyBundle":[' + recSep;
   line := line + indent + '{' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-authorizationType",' + recSep;
   line := line + RepeatString(indent, 2) + '"@authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
   line := line + RepeatString(indent, 2) + '"authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
   lineID := extractID(cbAuthority.Items[cbAuthority.ItemIndex]);
@@ -301,7 +299,7 @@ var
   inSource, inTarget: Boolean;
   source, target: string;
   listRelationship, idIdentities: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -336,6 +334,7 @@ begin
         begin
           if inTarget then begin
             target := jreader.Value.AsString;
+
             for idx:=0 to idRoles.Count - 1 do
               if idRoles[idx] =  target then
                 idIdentities.Add(source);

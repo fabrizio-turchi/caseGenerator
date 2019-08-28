@@ -133,6 +133,7 @@ begin
     edHashSize.Text := ExtractField(line, '"sizeInBytes":"');
     partitionType := ExtractField(line, '"diskPartitionType":"');
 
+    (*
     nPosLength := Pos('partitionLength',line);
     while  nPosLength > 0 do
     begin
@@ -145,14 +146,15 @@ begin
       line := Copy(line, nPosLength  + 14, Length(line));
       nPosLength := Pos('partitionLength',line);
     end;
+    *)
   end;
 
-  if lbPartition.Items.Count > 0 then
-  begin
-    edID.Text := ExtractField(lbPartition.Items[0], '"partitionID":"');
-    edOffset.Text := ExtractField(lbPartition.Items[0], '"partitionOffset":"');
-    edLength.Text := ExtractField(lbPartition.Items[0], '"partitionLength":"');
-  end;
+  (* if lbPartition.Items.Count > 0 then *)
+  (* begin *)
+  edID.Text := ExtractField(line, '"partitionID":"');
+  edOffset.Text := ExtractField(line, '"partitionOffset":"');
+  edLength.Text := ExtractField(line, '"partitionLength":"');
+  (* end; *)
 
   for idx:= 0 to cbType.Items.Count - 1 do
   begin
@@ -167,7 +169,7 @@ end;
 
 function TformTraceDiskPartition.prepareTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces, lineConfiguration, sConfiguration: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -181,30 +183,51 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
-      line := line + indent + '"@type":"Trace",' + recSep;
+      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
-    begin
-      idx := lbTrace.ItemIndex;
-      line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
-      line := line + indent + '"@type":"Trace",' + recSep;
-    end;
+      guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
-    line := line +  indent + '"propertyBundle":[' + recSep;
-    for idx:=0  to lbPartition.Items.Count - 1 do
-      line := line + lbPartition.Items[idx] + ',' + recSep;
+    line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
+    line := line + indent + '"@type":"Trace",' + recSep;
+    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-DiskPartition", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"DiskPartition", ' + recSep;
+    line := line +  RepeatString(indent, 2) + '"partitionID":"' + edID.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 2) + '"partitionOffset":"' + edOffset.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 2) + '"partitionLength":"' + edLength.Text + '"' + recSep;
+    line := line + indent + '},' + recSep;
+    line := line + indent + '{';
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-FileSystem",' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"FileSystem",' + recSep;
+    line := line + RepeatString(indent, 2) + '"diskPartitionType":"' + cbType.Items[cbType.ItemIndex] + '" ' + recSep;
+    line := line + indent + '},';
+    (*
+    for idx := 0  to lbPartition.Items.Count - 1 do
+    begin
+      lineConfiguration := lbPartition.Items[idx];
+      lineConfiguration := Copy(lineConfiguration, 1, Pos(sConfiguration, lineConfiguration) - 1) +
+        '"@id":"' + guidNoBraces + '-DiskPartition' + IntToStr(idx) + '" ,' + recSep +
+        Copy(lineConfiguration, Pos(sConfiguration, lineConfiguration), Length(lineConfiguration));
+      line := line + lineConfiguration + ',' + recSep;
+    end;
+    *)
+
 
     line := line + indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"type":"ContentData",' + recSep;
+    line := line + RepeatString(indent, 2) + '"SizeInBytes":"' + edHashSize.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"hash":[' + recSep;
-    line := line + RepeatString(indent, 2) + '{"@type":"Hash",' + recSep;
+    line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-Hash",' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"Hash",' + recSep;
     line := line + RepeatString(indent, 2) + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"hashValue":"' + edHashValue.Text + '"' + recSep;
     line := line + indent + '}' + recSep;
-    line := line + indent + '], ' + recSep;
-    line := line + RepeatString(indent, 2) + '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
-    line := line + indent + '}' + recSep + indent + ']' + recSep + '}';
+    line := line + indent + '] ' + recSep;
+
+    line := line + indent + '}' + recSep + ']' + recSep + '}';
     Result := line;
 end;
 
@@ -260,10 +283,13 @@ begin
   begin
     line := indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"DiskPartition", ' + recSep;
-    line := line + RepeatString(indent, 2) + '"diskPartitionType":"' + cbType.Items[cbType.ItemIndex] + '", ' + recSep;
     line := line +  RepeatString(indent, 2) + '"partitionID":"' + edID.Text + '",' + recSep;
     line := line +  RepeatString(indent, 2) + '"partitionOffset":"' + edOffset.Text + '",' + recSep;
     line := line +  RepeatString(indent, 2) + '"partitionLength":"' + edLength.Text + '"' + recSep;
+    line := line + indent + '},' + recSep;
+    line := line + indent + '{';
+    line := line + RepeatString(indent, 2) + '"@type":"FileSystem",' + recSep;
+    line := line + RepeatString(indent, 2) + '"diskPartitionType":"' + cbType.Items[cbType.ItemIndex] + '" ' + recSep;
     line := line + indent + '}';
     lbPartition.Items.Add(line);
   end;
@@ -272,7 +298,7 @@ end;
 
 procedure TformTraceDiskPartition.btnAddTraceClick(Sender: TObject);
 begin
-  if (lbPartition.Items.Count = 0) or (Trim(edHashValue.Text) = '')  then
+  if (Trim(edID.Text) = '') or (Trim(edHashValue.Text) = '')  then
     ShowMessage('Partition data and/or Hash value are missing!')
   else
   begin

@@ -2,17 +2,19 @@ unit caseGenerator_util;
 
 interface
 uses
-  System.Classes, System.SysUtils;
+  System.Classes, System.SysUtils, System.StrUtils;
 
 function ExtractField(line, subLine: String): String;
 function ExtractArray(line, subline: String): TStringList;
 function ExtractArrayID(line, subline: String): TStringList;
 function RepeatString(const s: String; count: cardinal): String;
+function SearchItemList(itemList: String; list:TStringList): Integer;
+function CountOccurrences(substringText, stringText: String): Integer;
 
 implementation
 
 
-{ utlCase }
+
 
 function ExtractField(line, subLine: String): String;
 var
@@ -28,6 +30,22 @@ begin
 
 end;
 
+function SearchItemList(itemList: String; list: TStringList): Integer;
+var
+i: integer;
+begin
+  Result := -1;
+  for i:=0 to list.Count - 1 do
+  begin
+    if AnsiContainsStr(list[i], itemList) then
+    begin
+      Result := i;
+      exit;
+    end;
+
+  end;
+
+end;
 
 function ExtractArray(line, subLine: String): TStringList;
 var
@@ -94,6 +112,14 @@ begin
   Result := '';
   for i := 1 to count do
     Result := Result + s;
+end;
+
+function CountOccurrences(substringText, stringText: String): Integer;
+begin
+  if (substringText = '') OR (stringText = '') OR (Pos(substringText, stringText) = 0) then
+    Result := 0
+  else
+    Result := (Length(stringText) - Length(StringReplace(stringText, substringText, '', [rfReplaceAll]))) div  Length(substringText);
 end;
 
 end.

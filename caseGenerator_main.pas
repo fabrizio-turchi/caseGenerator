@@ -125,7 +125,7 @@ begin
   lbObjects.Items.Add(space4 + '"@type":"Bundle",' + recSep);
   lbObjects.Items.Add(space8 + '"description":"' + memoDescription.Text + '",' + recSep);
   lbObjects.Items.Add(space4 + '"content":[' + recSep);
-  lbObjects.Items.Add(space8 + '{"@id":"investigation-' + FuuidCase + '",' + recSep);
+  lbObjects.Items.Add(space8 + '{"@id":"' + FuuidCase + '-investigation",' + recSep);
   lbObjects.Items.Add(space8 + '"@type":"Investigation",' + recSep);
   lbObjects.Items.Add(space8 + '"name":"' + edName.Text + '",' + recSep);
   lbObjects.Items.Add(space8 + '"focus":"' + edFocus.Text + '",' + recSep);
@@ -137,10 +137,6 @@ begin
   //itemContext.ParentItem :=itemRoot;
   //tvObjects.InsertObject(0, itemContext);
   //addChildren(itemContext, '"@vocab": "http://case.example.org/core#",' + recSep);
-  //addChildren(itemContext, '"case": "http://case.example.org/core#",' + recSep);
-  //addChildren(itemContext, '"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",' + recSep);
-  //addChildren(itemContext, '"rdfs": "http://www.w3.org/2000/01/rdf-schema#",' + recSep);
-  //addChildren(itemContext, '"xsd": "http://www.w3.org/2001/XMLSchema#"},' + recSep);
   //itemContext := TTreeViewItem.Create(nil);
   //itemContext.Text := '"@id": "bundle-' + generateUUID(Sender) + '",' + recSep;
   //itemContext.ParentItem :=itemRoot;
@@ -155,11 +151,6 @@ begin
   //itemContext.Parent :=itemRoot;
   // FuuidCase is the unique identifier of the Case
   //addChildren(itemContext, '{"@id": "investigation-' + FuuidCase + '",' + recSep);
-  //addChildren(itemContext, '"@type": "Investigation",' + recSep);
-  //addChildren(itemContext, '"name": "' + formNewCase.editName.Text + '",' + recSep);
-  ////addChildren(itemContext, '"focus": "' + formNewCase.editFocus.Text + '",' + recSep);
-  //addChildren(itemContext, '"description": "' + formNewCase.memoShortDescription.Text + '",' + recSep);
-  //addChildren(itemContext, '"object":["", ""]}' + recSep);
 
 end;
 
@@ -454,26 +445,22 @@ begin
       subStr := 'investigation-';
       guuidLength := 36;
 
-{
-*--- if the new ontology generation is required,  the investigation-xxx is to be changed  in the form
-*--- "@id":"B941D0A6-F446-4CA9-BF6C-EA6D3E72C2DB-investigation",
-}
-      if cbNewOntology.IsChecked then
-      begin
-        for idx:=0 to lbObjects.Items.Count -1 do
-        begin
-          if (AnsiContainsStr(lbObjects.Items[idx], subStr))then
-          begin
-
-            line := lbObjects.Items[idx];
-            line := Copy(line, 1, Pos(subStr, line)  - 1) + Copy(line, Pos(subStr, line) + Length(subStr), Length(line));
-            line := Copy(line, 1, Pos('@id":"', line) + guuidLength + 5)  + '-' + Copy(subStr, 1, Length(subStr) - 1) +
-              Copy(line, Pos('@id":"', line) + guuidLength + 6, Length(line));
-            lbObjects.Items[idx] := line;
-            break;
-          end;
-        end;
-      end;
+//      if cbNewOntology.IsChecked then
+//      begin
+//        for idx:=0 to lbObjects.Items.Count -1 do
+//        begin
+//          if (AnsiContainsStr(lbObjects.Items[idx], subStr))then
+//          begin
+//
+//            line := lbObjects.Items[idx];
+//            line := Copy(line, 1, Pos(subStr, line)  - 1) + Copy(line, Pos(subStr, line) + Length(subStr), Length(line));
+//            line := Copy(line, 1, Pos('@id":"', line) + guuidLength + 5)  + '-' + Copy(subStr, 1, Length(subStr) - 1) +
+//              Copy(line, Pos('@id":"', line) + guuidLength + 6, Length(line));
+//            lbObjects.Items[idx] := line;
+//            break;
+//          end;
+//        end;
+//      end;
 
       for idx:=0 to lbObjects.Items.Count - 1 do
       begin
@@ -750,10 +737,11 @@ begin
   listFiles.Sorted := True;   // files ordered by name
 
   //path := GetCurrentDir + '\';
-  if cbNewOntology.IsChecked then
+(*  if cbNewOntology.IsChecked then
     resFiles := FindFirst(FHomeCases + FpathCase + 'newontology_' + FuuidCase + '*.json', faAnyfile, searchResult)
   else
-    resFiles := FindFirst(FHomeCases + FpathCase + FuuidCase + '*.json', faAnyfile, searchResult);
+*)
+  resFiles := FindFirst(FHomeCases + FpathCase + FuuidCase + '*.json', faAnyfile, searchResult);
 
   if resFiles = 0 then
   try
@@ -797,7 +785,7 @@ begin
 *--- "@id":"1C922B87-1CD2-492F-8B49-253762FEE934"
 }
               objectID := Copy(line, Pos('"@id"', line), 6) + Copy(line, Pos('"@id"', line) + 6, 38);
-              //objectID := stringreplace(objectID, '{', '', [rfReplaceAll]);
+              //objectID := stringreplace(object  ID, '{', '', [rfReplaceAll]);
               //objectID := stringreplace(objectID, '}', '', [rfReplaceAll]);
               IDList.Add('{' + objectID + '},');
             end;

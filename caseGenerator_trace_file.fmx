@@ -2,8 +2,8 @@ object formTraceFile: TformTraceFile
   Left = 0
   Top = 0
   Caption = 'Trace File'
-  ClientHeight = 615
-  ClientWidth = 791
+  ClientHeight = 644
+  ClientWidth = 792
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -13,7 +13,7 @@ object formTraceFile: TformTraceFile
     Position.X = 24.000000000000000000
     Position.Y = 8.000000000000000000
     Size.Width = 737.000000000000000000
-    Size.Height = 177.000000000000000000
+    Size.Height = 209.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
     TabOrder = 9
@@ -33,7 +33,7 @@ object formTraceFile: TformTraceFile
       Size.Height = 24.000000000000000000
       Size.PlatformDefault = False
       Text = 'Extension'
-      TabOrder = 11
+      TabOrder = 12
     end
     object Label3: TLabel
       Position.X = 405.000000000000000000
@@ -46,7 +46,7 @@ object formTraceFile: TformTraceFile
     end
     object edSystemType: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 8
+      TabOrder = 9
       Position.X = 480.000000000000000000
       Position.Y = 16.000000000000000000
       Size.Width = 249.000000000000000000
@@ -79,8 +79,8 @@ object formTraceFile: TformTraceFile
       Size.Width = 89.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 17
-      Text = 'File path'
+      TabOrder = 18
+      Text = 'Original path'
     end
     object rbURL: TRadioButton
       GroupName = 'FIleAddress'
@@ -89,8 +89,8 @@ object formTraceFile: TformTraceFile
       Size.Width = 89.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 18
-      Text = 'File URL'
+      TabOrder = 19
+      Text = 'Original URL'
     end
     object cbCreationDay: TComboBox
       Items.Strings = (
@@ -148,7 +148,7 @@ object formTraceFile: TformTraceFile
         '12')
       Position.X = 145.000000000000000000
       Position.Y = 104.000000000000000000
-      TabOrder = 16
+      TabOrder = 17
     end
     object cbCreationYear: TComboBox
       Items.Strings = (
@@ -177,11 +177,11 @@ object formTraceFile: TformTraceFile
       Size.Height = 24.000000000000000000
       Size.PlatformDefault = False
       Text = 'Creation time'
-      TabOrder = 10
+      TabOrder = 11
     end
     object edSize: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 9
+      TabOrder = 10
       Position.X = 480.000000000000000000
       Position.Y = 48.000000000000000000
       Size.Width = 249.000000000000000000
@@ -190,18 +190,36 @@ object formTraceFile: TformTraceFile
     end
     object edPath: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 7
-      Position.X = 89.000000000000000000
+      TabOrder = 8
+      Position.X = 120.000000000000000000
       Position.Y = 140.000000000000000000
-      Size.Width = 644.000000000000000000
+      Size.Width = 613.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
+    end
+    object edExtractionPath: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 7
+      Position.X = 120.000000000000000000
+      Position.Y = 172.000000000000000000
+      Size.Width = 613.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label13: TLabel
+      Position.X = 12.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 97.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Extraction path'
+      TabOrder = 20
     end
   end
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
-    Position.Y = 358.000000000000000000
+    Position.Y = 395.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
@@ -211,7 +229,7 @@ object formTraceFile: TformTraceFile
   end
   object btnClose: TButton
     Position.X = 280.000000000000000000
-    Position.Y = 574.000000000000000000
+    Position.Y = 611.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -221,7 +239,7 @@ object formTraceFile: TformTraceFile
   end
   object btnAddTool: TButton
     Position.X = 216.000000000000000000
-    Position.Y = 365.000000000000000000
+    Position.Y = 402.000000000000000000
     Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -231,7 +249,7 @@ object formTraceFile: TformTraceFile
   end
   object btnDeleteTool: TButton
     Position.X = 464.000000000000000000
-    Position.Y = 365.000000000000000000
+    Position.Y = 402.000000000000000000
     Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -241,7 +259,7 @@ object formTraceFile: TformTraceFile
   end
   object lbTrace: TListBox
     Position.X = 16.000000000000000000
-    Position.Y = 391.000000000000000000
+    Position.Y = 428.000000000000000000
     Size.Width = 769.000000000000000000
     Size.Height = 177.000000000000000000
     Size.PlatformDefault = False
@@ -251,8 +269,8 @@ object formTraceFile: TformTraceFile
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 769.000000000000000000
-    Viewport.Height = 177.000000000000000000
+    Viewport.Width = 765.000000000000000000
+    Viewport.Height = 173.000000000000000000
   end
   object Label6: TLabel
     Position.X = 314.000000000000000000
@@ -283,7 +301,7 @@ object formTraceFile: TformTraceFile
   end
   object panelHash: TPanel
     Position.X = 24.000000000000000000
-    Position.Y = 208.000000000000000000
+    Position.Y = 245.000000000000000000
     Size.Width = 737.000000000000000000
     Size.Height = 137.000000000000000000
     Size.PlatformDefault = False
@@ -348,7 +366,7 @@ object formTraceFile: TformTraceFile
   end
   object Label9: TLabel
     Position.X = 372.000000000000000000
-    Position.Y = 192.000000000000000000
+    Position.Y = 229.000000000000000000
     Size.Width = 53.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
@@ -357,7 +375,7 @@ object formTraceFile: TformTraceFile
   end
   object btnModifyTrace: TButton
     Position.X = 344.000000000000000000
-    Position.Y = 365.000000000000000000
+    Position.Y = 402.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -367,7 +385,7 @@ object formTraceFile: TformTraceFile
   end
   object btnCancel: TButton
     Position.X = 399.000000000000000000
-    Position.Y = 574.000000000000000000
+    Position.Y = 611.000000000000000000
     TabOrder = 16
     Text = 'Cancel'
     OnClick = btnCancelClick
@@ -381,7 +399,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 44.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Viewport.Width = 299.000000000000000000
-    Viewport.Height = 44.000000000000000000
+    Viewport.Width = 295.000000000000000000
+    Viewport.Height = 40.000000000000000000
   end
 end

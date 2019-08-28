@@ -248,7 +248,7 @@ end;
 
 function TformTraceMessage.prepareItemMessage(operation: String): String;
 var
-  line, recSep, idLine, indent: string;
+  line, recSep, idLine, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -261,17 +261,16 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbMessage.ItemIndex;
-    line := line + indent + '"@id":"' + ExtractField(lbMessage.Items[idx], '"@id":"') + '",' + recSep;
-  end;
+    guidNoBraces :=  ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"@id":"');
 
+  line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   line := line + indent + '"@type":"Trace",' + recSep;
   line := line + indent + '"propertyBundle":[' + recSep;
   line := line + indent + '{' + recSep;
+  line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-Message",' + recSep;
   line := line + RepeatString(indent, 2) + '"@type":"Message",' + recSep;
   line := line + RepeatString(indent, 2) + '"application":"' + edApplication.Text + '",' + recSep;
   line := line + RepeatString(indent, 2) + '"messageText":"' + memoMessageText.Text + '", ' + recSep;
@@ -306,7 +305,7 @@ var
   inID, inModel, inMSISDN: Boolean;
   id, model, msisdn: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens: integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -352,6 +351,11 @@ begin
           if inMSISDN then
           begin
             msisdn := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
             cbMobileFrom.Items.Add(model + ' ' + msisdn + '@' + id);
             cbMobileTo.Items.Add(model + ' ' + msisdn + '@' + id);
           end;
@@ -374,7 +378,7 @@ var
   inID, inPhoneNumber: Boolean;
   id, phoneNumber: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens: integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -412,6 +416,12 @@ begin
 
           if inPhoneNumber then
           begin
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             phoneNumber := jreader.Value.AsString;
             cbMobileFrom.Items.Add('Phone account ' + phoneNumber + '@' + id);
             cbMobileTo.Items.Add('Phone account ' + phoneNumber + '@' + id);
@@ -435,7 +445,7 @@ var
   inAccountID, inID: Boolean;
   accountID, id: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens: integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -474,6 +484,12 @@ begin
           if inAccountID then
           begin
             accountID := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+            accountID := stringreplace(accountID, '@', '#',[rfReplaceAll]);
             cbMobileFrom.Items.Add('Facebook account ' + accountID + '@' + id);
             cbMobileTo.Items.Add('Facebook account ' + accountID + '@' + id);
           end;

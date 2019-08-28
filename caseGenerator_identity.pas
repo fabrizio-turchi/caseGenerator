@@ -218,7 +218,7 @@ end;
 
 function TformIdentity.prepareObjectCaseLine(operation: String): String;
 var
- line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
 begin
   recSep := #30 + #30;
@@ -227,21 +227,30 @@ begin
   line := '{' + recSep;
   if operation = 'add' then
   begin
-    CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
+    CreateGUID(Uid);      (* includes the braces*)
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   end
   else
-    line := line + indent + '"@id":"' + ExtractField(lbIdentity.Items[lbIdentity.ItemIndex], '"@id":"') + '",' + recSep;
+  begin
+    guidNoBraces := ExtractField(lbIdentity.Items[lbIdentity.ItemIndex], '"@id":"');
+    (*
+    if Copy(guidNoBraces, 1, 1) = '{' then
+      guidNoBraces := Copy(guidNoBraces, 2, Length(guidNoBraces) - 2);
+    *)
+    line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
+  end;
 
 
   line := line + indent + '"@type":"Identity",' + recSep;
   line := line + indent + '"propertyBundle":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"@type":"SimpleName",' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-SimpleName",' + recSep;
   line := line + RepeatString(indent, 2) + '"givenName":"' + edName.Text + '",' + recSep;
   line := line + RepeatString(indent, 2) + '"familyName":"' + edFamilyName.Text + '"' + recSep;
   line := line + indent + '},' + recSep;
   line := line + indent + '{' + recSep;
+  line := line +  RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-BirthInformation",' + recSep;
   line := line +  RepeatString(indent, 2) + '"@type":"BirthInformation",' + recSep;
   line := line +  RepeatString(indent, 2) + '"birthDate":"';
   line := line +  cbYear.Items[cbYear.ItemIndex] + '-' + cbMonth.Items[cbMonth.ItemIndex] + '-' + cbDay.Items[cbDay.ItemIndex];

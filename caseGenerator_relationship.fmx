@@ -86,7 +86,7 @@ object formRelationship: TformRelationship
       Position.X = 104.000000000000000000
       Position.Y = 24.000000000000000000
       Enabled = False
-      Size.Width = 601.000000000000000000
+      Size.Width = 577.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
     end

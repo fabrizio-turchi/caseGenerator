@@ -77,7 +77,7 @@ end;
 
 function TformTracePhoneAccount.prepareTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -92,20 +92,20 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
-    end
-    else
-    begin
-      idx := lbPhoneAccount.ItemIndex;
-      line := line + indent + '"@id":"' + ExtractField(lbPhoneAccount.Items[idx], '"@id":"') + '", ' + recSep;
-    end;
+      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+  end
+  else
+    guidNoBraces :=  ExtractField(lbPhoneAccount.Items[lbPhoneAccount.ItemIndex], '"@id":"');
 
+    line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"Trace", ' + recSep;
     line := line + indent + '"propertyBundle":[{' + recSep;
+    line := line + indent + '"@id":"' + guidNoBraces + '-Account", ' + recSep;
     line := line + indent + '"@type":"Account", ' + recSep;
     line := line + indent + '"accountIssuer":"' + edIssuer.Text + '", ' + recSep;
     line := line + indent + '"isActive":"true"' + recSep + '},' + recSep;
     line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-PhoneAccount", ' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"PhoneAccount", ' + recSep;
     line := line + RepeatString(indent, 2) + '"phoneNumber":"' + edPhoneNumber.Text + '"' + recSep;
     line := line + indent + '}' + recSep;

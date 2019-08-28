@@ -31,8 +31,8 @@ object formLocation: TformLocation
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbLocationChange
-    Viewport.Width = 685.000000000000000000
-    Viewport.Height = 189.000000000000000000
+    Viewport.Width = 689.000000000000000000
+    Viewport.Height = 193.000000000000000000
   end
   object edLocality: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]

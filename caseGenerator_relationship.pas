@@ -68,6 +68,7 @@ type
     function JsonTokenToString(const t: TJsonToken): string;
     procedure readIdentityFromFile;
     procedure readRoleFromFile;
+    procedure readFacebookAccountFromFile;
     procedure readLocationFromFile;
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
@@ -153,7 +154,7 @@ begin
     cbSourceIdentity.Enabled := True;
     cbSourceRole.Enabled := False;
     cbSourceTrace.Enabled := False;
-    cbTargetRole.Enabled  := False;
+    cbTargetRole.Enabled  := True;
     cbTargetTrace.Enabled  := True;
     cbTargetLocation.Enabled  := False;
   end;
@@ -245,6 +246,7 @@ begin
   cbTargetTrace.Items.Clear;
   readIdentityFromFile;
   readRoleFromFile;
+  readFacebookAccountFromFile;
   readLocationFromFile;
   readTraceFromFile;
   cbSourceIdentity.Enabled := False;
@@ -398,7 +400,7 @@ end;
 
 function TformRelationship.prepareObjectCaseLine(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -410,13 +412,12 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbRelationship.ItemIndex;
-    line := line + indent + '"@id":"' + ExtractField(lbRelationship.Items[idx], '"@id":"') + '",'+ recSep;
-  end;
+    guidNoBraces :=  ExtractField(lbRelationship.Items[lbRelationship.ItemIndex], '"@id":"');
+
+  line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   line := line + indent + '"@type":"Relationship",' + recSep;
   line := line + indent + '"source":"' + edSourceID.Text + '",' + recSep;
   line := line + indent + '"target":"' + edTargetID.Text + '",' + recSep;
@@ -428,6 +429,77 @@ end;
 
 
 
+procedure TformRelationship.readFacebookAccountFromFile;
+var
+  json, recSep, crlf: string;
+  sreader: TStringReader;
+  jreader: TJsonTextReader;
+  inAccountIssuer, inAccountID, inID: Boolean;
+  id, accountIssuer, accountID: string;
+  listAccount: TStringList;
+  idx:integer;
+begin
+  recSep := #30 + #30;
+  crlf := #13 + #10;
+  (* read file JSON uuidCase-identity.json: fill in cbSourceIdentity component *)
+  if FileExists(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json') then
+  begin
+    listAccount := TStringList.Create;
+    listAccount.LoadFromFile(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
+    //JSON string here
+    json := stringreplace(listAccount.Text, recSep, crlf,[rfReplaceAll]);
+    try
+      sreader := TStringReader.Create(json);
+      jreader := TJsonTextReader.Create(sreader);
+      inAccountIssuer := False;
+      inAccountID := False;
+      inID := False;
+      while jreader.Read do
+      begin
+        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
+        begin
+          if jreader.Value.AsString = 'accountIssuer' then
+            inAccountIssuer := True
+          else
+            inAccountIssuer := False;
+
+          if jreader.Value.AsString = 'accountID' then
+            inAccountID := True
+          else
+            inAccountID := False;
+
+          if jreader.Value.AsString = '@id' then
+            inID := True
+          else
+            inID := False;
+
+        end;
+        if JsonTokenToString(jreader.TokenType) = 'String' then
+        begin
+          if inAccountID then begin
+            accountID := jreader.Value.AsString;
+            cbTargetRole.Items.Add(accountIssuer + ' ' + accountID + ' ' + '@' + id);
+            accountIssuer := '';
+            accountID := '';
+            id := '';
+          end;
+
+          if inID then
+            id := jreader.Value.AsString;
+
+          if inAccountIssuer then
+            accountIssuer := jreader.Value.AsString;
+
+        end;
+      end;
+    finally
+      jreader.Free;
+      sreader.Free;
+    end;
+  end;
+
+end;
+
 procedure TformRelationship.readIdentityFromFile;
 var
   json, recSep, crlf: string;
@@ -436,7 +508,7 @@ var
   inName, inFamilyName, inID: Boolean;
   id, name, familyName: string;
   listIdentity: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -487,6 +559,12 @@ begin
           if inFamilyName then
           begin
             familyName := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbSourceIdentity.Items.Add(name + ' ' + familyName + '@' + id);
             name := '';
             id:= '';
@@ -509,7 +587,7 @@ var
   inName, inID, inLocality, inRegion, inStreet: Boolean;
   id, locality, region, street: string;
   listLocation: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -574,6 +652,11 @@ begin
           if inStreet then
           begin
             street := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
             cbTargetLocation.Items.Add(street + ' ' + locality + ' ' + region + '@' + id);
             street := '';
             locality := '';
@@ -661,7 +744,7 @@ var
   inID, inManufacturer, inModel: Boolean;
   id, cManufacturer, cModel: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -708,6 +791,12 @@ begin
           if inModel then
           begin
             cModel := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbSourceTrace.Items.Add('Computer ' + cManufacturer + ' ' + cModel + '@' + id);
             cbTargetTrace.Items.Add('Computer ' + cManufacturer + ' ' + cModel + '@' + id);
           end;
@@ -730,7 +819,7 @@ var
   inID, inModel, inManufacturer, inSN, inCapacity: Boolean;
   id, dManufacturer, dModel, dSN, dCapacity: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -790,6 +879,12 @@ begin
           if inCapacity then
           begin
             dCapacity := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbSourceTrace.Items.Add('Hard Disk ' + dManufacturer + ' ' + dModel + ' ' + dSN + '@' + id);
             cbTargetTrace.Items.Add('Hard Disk ' + dManufacturer + ' ' + dModel + ' ' + dSN + '@' + id);
           end;
@@ -812,7 +907,7 @@ var
   inID, inPartitionType, inPartitionID, inPartitionSize: Boolean;
   id, pType, pID, pSize: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -866,6 +961,12 @@ begin
           if inPartitionSize then
           begin
             pSize := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbSourceTrace.Items.Add('Disk Partition ' + pType + ' ' + pID + ' ' + pSize + '@' + id);
             cbTargetTrace.Items.Add('Disk Partition ' + pType + ' ' + pID + ' ' + pSize + '@' + id);
           end;
@@ -888,7 +989,7 @@ var
   inEmailAddress, inID: Boolean;
   id, emailAddress: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -926,6 +1027,12 @@ begin
           if inEmailAddress then
           begin
             emailAddress := stringreplace(jreader.Value.AsString, '@', 'AT', [rfReplaceAll]);
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbTargetTrace.Items.Add(emailAddress + ' '  + '@' + id);
             cbSourceTrace.Items.Add(emailAddress + ' '  + '@' + id);
           end;
@@ -948,7 +1055,7 @@ var
   inFileName, inID: Boolean;
   id, fileName: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -986,6 +1093,12 @@ begin
           if inFileName then
           begin
             fileName := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbSourceTrace.Items.Add(fileName + ' '  + '@' + id);
             cbTargetTrace.Items.Add(fileName + ' '  + '@' + id);
           end;
@@ -1021,7 +1134,7 @@ var
   inID, inApplication, inMessageText: Boolean;
   id, application, messageText: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -1068,6 +1181,12 @@ begin
           if inMessageText then
           begin
             messageText := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbTargetTrace.Items.Add(application + ' ' + messageText + ' ' + '@' + id);
             cbSourceTrace.Items.Add(application + ' ' + messageText + ' ' + '@' + id);
           end;
@@ -1090,7 +1209,7 @@ var
   inID, inManufacturer, inModel, inSerial: Boolean;
   id, manufacturer, model, serial: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -1144,6 +1263,12 @@ begin
           if inSerial then
           begin
             serial := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbSourceTrace.Items.Add(manufacturer + ' ' + model + ' ' + serial + '@' + id);
             cbTargetTrace.Items.Add(manufacturer + ' ' + model + ' ' + serial + '@' + id);
           end;
@@ -1165,7 +1290,7 @@ var
   inID, inSimType, inICCID: Boolean;
   id, simType, ICCID: string;
   listTrace: TStringList;
-  idx:integer;
+  idx, nHypens:integer;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
@@ -1212,6 +1337,12 @@ begin
           if inICCID then
           begin
             ICCID := jreader.Value.AsString;
+            nHypens := CountOccurrences('-', id);
+            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
+                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
+            if nHypens > 4  then
+              id := Copy(id, 1, LastDelimiter('-', id) - 1);
+
             cbSourceTrace.Items.Add(simType + ' ' + ICCID + '@' + id);
             cbTargetTrace.Items.Add(simType + ' ' + ICCID + '@' + id);
           end;

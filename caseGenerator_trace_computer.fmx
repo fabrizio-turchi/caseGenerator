@@ -116,8 +116,8 @@ object formTraceComputer: TformTraceComputer
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbTraceChange
-    Viewport.Width = 769.000000000000000000
-    Viewport.Height = 122.000000000000000000
+    Viewport.Width = 765.000000000000000000
+    Viewport.Height = 118.000000000000000000
   end
   object edDeviceModel: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]

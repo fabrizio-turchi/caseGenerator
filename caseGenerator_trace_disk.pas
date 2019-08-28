@@ -30,6 +30,12 @@ type
     Label4: TLabel;
     Button1: TButton;
     Button2: TButton;
+    Panel3: TPanel;
+    Label7: TLabel;
+    edHashMethod: TEdit;
+    Label8: TLabel;
+    Label9: TLabel;
+    edHashValue: TEdit;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -118,13 +124,15 @@ begin
     edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
     edDeviceModel.Text := ExtractField(line, '"model":"');
     edDeviceSerial.Text := ExtractField(line, '"serialNumber":"');
-    edDeviceCapacity.Text := ExtractField(line, '"capacity":"');
+    edDeviceCapacity.Text := ExtractField(line, '"diskSize":"');
+    edHashMethod.Text :=     ExtractField(line, '"hashMethod":"');
+    edHashValue.Text :=     ExtractField(line, '"hashValue":"');
   end;
 end;
 
 function TformTraceDisk.prepareItemTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -144,23 +152,40 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
-    begin
-      idx := lbTrace.ItemIndex;
-      line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + recSep;
-    end;
+      guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
+    line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"Trace",' + recSep;
     line := line + indent + '"propertyBundle":[' + recSep;
     line := line +  RepeatString(indent, 2) + '{' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@type":"Disk",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-Device",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"Device",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"model":"' + edDeviceModel.Text + '",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"serialNumber":"' + edDeviceSerial.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"capacity":"' + edDeviceCapacity.Text + '"' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"devideType":"HDD"' + recSep;
+    line := line +  RepeatString(indent, 2)  + '},' + recSep;
+    line := line +  RepeatString(indent, 2) + '{' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-Disk",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"Disk",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"diskSize":"' + edDeviceCapacity.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"diskType":"Fixed"' + recSep;
+    line := line +  RepeatString(indent, 2)  + '},' + recSep;
+    line := line +  RepeatString(indent, 2) + '{' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-ContentData",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"ContentData",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"hash":[' + recSep;
+    line := line +  RepeatString(indent, 3)  + '{' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"hashMethod":"' + edHashMethod.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"hashValue":"' + edHashValue.Text + '"' + recSep;
     line := line +  RepeatString(indent, 2)  + '}' + recSep;
+    line := line +  RepeatString(indent, 2)  + ']' + recSep;
+    line := line +  indent  + '}' + recSep;
+
+
     line := line + indent + ']' + indent + recSep + '}' + recSep;
     Result := line;
   end;

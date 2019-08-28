@@ -163,7 +163,7 @@ end;
 
 function TformTraceSIM.PrepareItemTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -175,20 +175,17 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbTrace.ItemIndex;
-    line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
-  end;
+    guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
+  line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
+  line := line + indent + '"@type":"Trace",' + recSep;
   line := line + indent + '"propertyBundle":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"SIMType":"' + edType.Text + '", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"SIMForm":"' + cbForm.Items[cbForm.ItemIndex] + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"' + edType.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"Form":"' + cbForm.Items[cbForm.ItemIndex] + '", ' + recSep;
   line := line + RepeatString(indent, 2) + '"StorageCapacity":"' + edCapacity.Text + '", ' + recSep;
   line := line + RepeatString(indent, 2) + '"Carrier":"' + edCarrier.Text + '", ';
   line := line + RepeatString(indent, 2) + '"ICCID":"' + edICCID.Text + '", ';

@@ -150,7 +150,7 @@ end;
 
 function TformTraceComputer.prepareItemTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -170,33 +170,35 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
-    else
-    begin
-      idx := lbTrace.ItemIndex;
-      line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + recSep;
-    end;
+   else
+      guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
+    line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"Trace",' + recSep;
     line := line + indent + '"propertyBundle":[' + recSep;
     line := line +  RepeatString(indent, 2) + '{' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-Device",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"@type":"Device",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"model":"' + edDeviceModel.Text + '",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
     line := line +  RepeatString(indent, 2)  + '},' + recSep;
     line := line +  RepeatString(indent, 2)  + '{' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-OperatingSystem",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"@type":"OperatingSystem",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"name":"' + edOsName.Text + '",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"version":"' + edOsVersion.Text + '",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edOsManufacturer.Text + '"' + recSep;
     line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-MACAddress",' + recSep;
     line := line + RepeatString(indent, 3) + '"@type":"MACAddress",' + recSep;
     line := line + RepeatString(indent, 3)  + '"address":"' + edMacAddress.Text + '"' + recSep;
     line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
+    line := line +  RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-ComputerSpecification",' + recSep;
     line := line +  RepeatString(indent, 3) + '"@type":"ComputerSpecification",' + recSep;
     line := line +  RepeatString(indent, 3) + '"biosVersion":"' + edBiosVersion.Text + '", ' + recSep;
     line := line +  RepeatString(indent, 3) + '"cpuFamily":"' + edCpuFamily.Text + '", ' + recSep;

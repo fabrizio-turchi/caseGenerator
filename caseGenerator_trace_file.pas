@@ -46,6 +46,8 @@ type
     btnModifyTrace: TButton;
     btnCancel: TButton;
     memoName: TMemo;
+    edExtractionPath: TEdit;
+    Label13: TLabel;
     procedure btnAddToolClick(Sender: TObject);
     procedure btnDeleteToolClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -155,6 +157,7 @@ begin
     line := lbTrace.Items[lbTrace.ItemIndex];
     memoName.Lines.Text := ExtractField(line, '"fileName":"');
     edPath.Text := ExtractField(line, '"filePath":"');
+    edExtractionPath.Text := ExtractField(line, '"fileExtractionPath":"');
     edExtension.Text := ExtractField(line, '"extension":"');
     edSystemType.Text := ExtractField(line, '"fileSystemType":"');
     cbDirectory.Items.Text :=  ExtractField(line, '"isDirectory":"');
@@ -213,7 +216,7 @@ end;
 
 function TformTraceFile.PrepareItemTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: integer;
 begin
@@ -229,20 +232,20 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
-    begin
-      idx := lbTrace.ItemIndex;
-      line := line + indent + '"@id":"' + ExtractField(lbTrace.Items[idx], '"@id":"') + '", ' + recSep;
-    end;
+      guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
+    line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"Trace",' + recSep;
     line := line +  indent + '"propertyBundle":[' + recSep;
     line := line + indent + '{' + recSep;
+    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-File",' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"File",' + recSep;
     line := line + RepeatString(indent, 2) + '"fileName":"' + memoName.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"filePath":"' + edPath.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"fileExtractionPath":"' + edExtractionPath.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"extension":"' + edExtension.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"fileSystemType":"' + edSystemType.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"isDirectory":"' + cbDirectory.Items[cbDirectory.ItemIndex] + '",' + recSep;
@@ -256,6 +259,7 @@ begin
     line := line + RepeatString(indent, 3) + '"type":"ContentData",' + recSep;
     line := line + RepeatString(indent, 3) + '"hash":[' + recSep;
     line := line + RepeatString(indent, 3) + '{' + recSep;
+    line := line + RepeatString(indent, 4) + '"@id":"' + guidNoBraces + '-Hash",' + recSep;
     line := line + RepeatString(indent, 4) + '"@type":"Hash",' + recSep;
     line := line + RepeatString(indent, 4) + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
     line := line + RepeatString(indent, 4) + '"hashValue":"' + edHashValue.Text  + '"' + recSep;
@@ -323,6 +327,7 @@ begin
     edHashValue.Text := '';
     edHashSize.Text := '';
     edPath.Text := '';
+    edExtractionPath.Text := '';
     cbHashMethod.ItemIndex := 0;
     cbDirectory.ItemIndex := 0;
 

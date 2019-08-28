@@ -32,8 +32,8 @@ object formIdentity: TformIdentity
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbIdentityChange
-    Viewport.Width = 689.000000000000000000
-    Viewport.Height = 249.000000000000000000
+    Viewport.Width = 685.000000000000000000
+    Viewport.Height = 245.000000000000000000
   end
   object edName: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]

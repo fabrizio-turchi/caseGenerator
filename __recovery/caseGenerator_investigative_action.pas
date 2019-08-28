@@ -566,10 +566,13 @@ begin
           exitLoop :=  True;
           break;
         end;
-        if exitLoop then
-          break;
       end;
+      if exitLoop then
+          break;
     end;
+
+    if not exitLoop then
+      cbObject.ItemIndex := -1;
 
     provenanceStringList := TStringList.Create;
     provenanceStringList := ExtractArrayID(line, '"result":[');

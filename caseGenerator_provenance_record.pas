@@ -237,7 +237,7 @@ end;
 
 function TformProvenanceRecord.prepareProvenanceRecord(operation: String): String;
 var
-  line, recSep, indent, sObject: string;
+  line, recSep, indent, sObject, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -247,15 +247,12 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := '{' + recSep + indent + '"@id":"' + GuidToString(Uid) + '",' + recSep;
+    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-  begin
-    idx := lbProvenanceRecord.ItemIndex;
-    line := '{' + recSep + indent + '"@id":"' + ExtractField(lbProvenanceRecord.Items[idx], '"@id":"') + '",' + recSep;
-  end;
+    guidNoBraces :=  ExtractField(lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex], '"@id":"');
 
-
+  line := '{' + recSep + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   line := line + indent + '"@type":"ProvenanceRecord",' + recSep;
   line := line + indent + '"createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
   line := line +  cbPRMonth.Items[cbPRMonth.ItemIndex] + '-';
