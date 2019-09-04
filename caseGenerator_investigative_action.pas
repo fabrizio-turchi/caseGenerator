@@ -292,7 +292,7 @@ begin
             description := jreader.Value.AsString;
 
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
           if inExhibitNumber then begin
             exhibitNumber := jreader.Value.AsString;
             for idx:= 0 to  ListIdProvenance.Count - 1 do
@@ -566,10 +566,13 @@ begin
           exitLoop :=  True;
           break;
         end;
-        if exitLoop then
-          break;
       end;
+      if exitLoop then
+          break;
     end;
+
+    if not exitLoop then
+      cbObject.ItemIndex := -1;
 
     provenanceStringList := TStringList.Create;
     provenanceStringList := ExtractArrayID(line, '"result":[');
@@ -766,7 +769,12 @@ begin
             name := jreader.Value.AsString;
 
           if inID then
-            id := jreader.Value.AsString;
+{
+*---  the first 36 chars represent the guuid, in the property propertyBundle the property @type is
+*---  identified by the guid + "-" + propertyName, such as in the location property whose value is
+*---  "BA100CD9-A3D7-46C8-9537-053451DBD620-SimpleAddress",
+}
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inLocality then
             locality := jreader.Value.AsString;
@@ -844,7 +852,7 @@ begin
             description := jreader.Value.AsString;
 
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inExhibitNumber then begin
             exhibitNumber := jreader.Value.AsString;
@@ -971,7 +979,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            idRole := jreader.Value.AsString;
+            idRole := Copy(jreader.Value.AsString, 1, 36);
 
           if inName then
           begin
@@ -1041,7 +1049,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inGivenName then
             givenName := jreader.Value.AsString;
@@ -1140,7 +1148,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inName then
             name := jreader.Value.AsString;
@@ -1212,7 +1220,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inName then
             name := jreader.Value.AsString;
@@ -1302,7 +1310,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inManufacturer then
             manufacturer := jreader.Value.AsString;
@@ -1371,7 +1379,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inSIMType then
             simType := jreader.Value.AsString;
@@ -1441,7 +1449,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inType then
             typeWarrant := jreader.Value.AsString;
