@@ -343,7 +343,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);  // only the guuid
 
           if inModel then
             model := jreader.Value.AsString;
@@ -412,7 +412,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inPhoneNumber then
           begin
@@ -479,7 +479,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := jreader.Value.AsString;
+            id := Copy(jreader.Value.AsString, 1, 36);
 
           if inAccountID then
           begin

@@ -269,7 +269,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then begin
-            idIdentity := jreader.Value.AsString;
+            idIdentity := Copy(jreader.Value.AsString, 1, 36);
           end;
 
           if inName then
@@ -405,7 +405,7 @@ begin
           end;
 
           if inID then
-            id := jreader.Value.AsString;;
+            id := Copy(jreader.Value.AsString, 1, 36);
         end;
       end;
     finally
