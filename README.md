@@ -15,21 +15,21 @@ The necessity to conduct a depth study of the UCO/CASE standard has led to the d
 > * Trace (Mobile device, SIM, Computer, File, Disk Partition, Phone account, Mobile Account, Email Account, Facebook Account, Message)
 > * Provenance Record
 
-![Figure 1: caseGenerator, main form](/caseGenerator_01.png)
+![Figure 1: caseGenerator, main form](images/caseGenerator_01.png)
 
 *Figure 2 (caseGenerator, Identity form)* shows the information related to the Identity Object
 
 
-![Figure 2: caseGenerator, Identity form](http://storeroom.igsg.cnr.it/caseGenerator_02.png)
+![Figure 2: caseGenerator, Identity form](images/caseGenerator_02.png)
 
 *Figure 3 (caseGenerator, Mobile Device form)* represents the information related to the Mobile Device Object, while *Figure 4 (caseGenerator, Investigative Action form)* shows the InvestigativeAction Object and finally *Figure 5 (caseGenerator, Timeline related to the images extraction)* shows the timeline of the investigative case, related to the extraction of the images (Use Case D).
 
 
-![Figure 3: caseGenerator, Mobile Device form](http://storeroom.igsg.cnr.it/caseGenerator_03.png)
+![Figure 3: caseGenerator, Mobile Device form](images/caseGenerator_03.png)
 
-![Figure 4: caseGenerator, Investigative Action form](http://storeroom.igsg.cnr.it/caseGenerator_04.png)
+![Figure 4: caseGenerator, Investigative Action form](images/caseGenerator_04.png)
 
-![Figure 5: caseGenerator, Timeline related to the images extraction](http://storeroom.igsg.cnr.it/caseGenerator_05.png)
+![Figure 5: caseGenerator, Timeline related to the images extraction](images/caseGenerator_05.png)
 
 **Processing flow**
 The UCO/CASE Objects creation processing flow must act in accordance with the following order, because of some dependencies that have to be satisfied:
