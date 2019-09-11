@@ -1,4 +1,4 @@
-## caseGenerator,  tool for generating JSON files in UCO/CASE ontology.
+## caseGenerator a cross-platform (Windows/OSX) tool for generating JSON files in UCO/CASE ontology.
 
 **CASE** (see https://caseontology.org/index.html) stands for Cyber-investigation Analysis Standard Expression (CASE) and it is based on the Unified Cyber Ontology (UCO).
 
