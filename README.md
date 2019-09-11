@@ -15,7 +15,7 @@ The necessity to conduct a depth study of the UCO/CASE standard has led to the d
 > * Trace (Mobile device, SIM, Computer, File, Disk Partition, Phone account, Mobile Account, Email Account, Facebook Account, Message)
 > * Provenance Record
 
-![Figure 1: caseGenerator, main form](http://storeroom.igsg.cnr.it/caseGenerator_01.png)
+![Figure 1: caseGenerator, main form](/caseGenerator_01.png)
 
 *Figure 2 (caseGenerator, Identity form)* shows the information related to the Identity Object
 
