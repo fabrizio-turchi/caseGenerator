@@ -4,6 +4,7 @@
 OSX32/
 Win32/
 Win64/
-__history/
+__*
+__recovery/
 *pdf
 *fsf

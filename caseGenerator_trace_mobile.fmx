@@ -16,16 +16,32 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 72.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
-    TabOrder = 37
+    TabOrder = 33
   end
-  object Panel1: TPanel
+  object panel_device: TPanel
     Position.X = 16.000000000000000000
     Position.Y = 32.000000000000000000
     Size.Width = 345.000000000000000000
-    Size.Height = 120.000000000000000000
+    Size.Height = 153.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
-    TabOrder = 41
+    TabOrder = 37
+    object Label11: TLabel
+      Position.X = 7.000000000000000000
+      Position.Y = 123.000000000000000000
+      Size.Width = 81.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Owner name'
+    end
+    object edPhoneOwner: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Position.X = 96.000000000000000000
+      Position.Y = 118.000000000000000000
+      Size.Width = 241.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
   end
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
@@ -54,7 +70,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Manufacturer'
-    TabOrder = 26
+    TabOrder = 22
   end
   object Label3: TLabel
     Position.X = 24.000000000000000000
@@ -63,7 +79,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Model'
-    TabOrder = 20
+    TabOrder = 17
   end
   object btnClose: TButton
     Position.X = 280.000000000000000000
@@ -71,7 +87,7 @@ object formTraceMobile: TformTraceMobile
     Size.Width = 89.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 29
+    TabOrder = 25
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
@@ -81,7 +97,7 @@ object formTraceMobile: TformTraceMobile
     Size.Width = 89.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 30
+    TabOrder = 26
     Text = 'Add trace'
     OnClick = btnAddToolClick
   end
@@ -91,7 +107,7 @@ object formTraceMobile: TformTraceMobile
     Size.Width = 92.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 31
+    TabOrder = 27
     Text = 'Delete trace'
     OnClick = btnDeleteToolClick
   end
@@ -102,7 +118,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Serial no.'
-    TabOrder = 25
+    TabOrder = 21
   end
   object edDeviceSerial: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -119,7 +135,7 @@ object formTraceMobile: TformTraceMobile
     Size.Width = 769.000000000000000000
     Size.Height = 160.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 32
+    TabOrder = 28
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
@@ -144,7 +160,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Device'
-    TabOrder = 42
+    TabOrder = 38
   end
   object Label4: TLabel
     Position.X = 538.000000000000000000
@@ -153,7 +169,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Mobile Device'
-    TabOrder = 39
+    TabOrder = 35
   end
   object Panel2: TPanel
     Position.X = 372.000000000000000000
@@ -162,7 +178,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 120.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
-    TabOrder = 38
+    TabOrder = 34
     object cbMobileDay: TComboBox
       Items.Strings = (
         '01'
@@ -196,6 +212,7 @@ object formTraceMobile: TformTraceMobile
         '29'
         '30'
         '31')
+      ItemIndex = 0
       Position.X = 110.000000000000000000
       Position.Y = 86.000000000000000000
       Size.Width = 47.000000000000000000
@@ -205,13 +222,34 @@ object formTraceMobile: TformTraceMobile
     end
     object cbMobileYear: TComboBox
       Items.Strings = (
-        '1950'
-        '1951'
-        '1952'
-        '1953'
-        '1954'
-        '1955'
-        '1956')
+        '2000'
+        '2001'
+        '2002'
+        '2003'
+        '2004'
+        '2005'
+        '2006'
+        '2007'
+        '2008'
+        '2009'
+        '2010'
+        '2011'
+        '2012'
+        '2013'
+        '2014'
+        '2015'
+        '2016'
+        '2017'
+        '2018'
+        '2019'
+        '2020'
+        '2021'
+        '2022'
+        '2023'
+        '2024'
+        '2025')
+      ItemIndex = 20
+      ItemHeight = 50.000000000000000000
       Position.X = 226.000000000000000000
       Position.Y = 86.000000000000000000
       Size.Width = 100.000000000000000000
@@ -233,6 +271,7 @@ object formTraceMobile: TformTraceMobile
         '10'
         '11'
         '12')
+      ItemIndex = 0
       Position.X = 159.000000000000000000
       Position.Y = 86.000000000000000000
       Size.Width = 61.000000000000000000
@@ -285,7 +324,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'IMEI'
-    TabOrder = 14
+    TabOrder = 12
   end
   object edMobileIMEI: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -296,60 +335,40 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 25.000000000000000000
     Size.PlatformDefault = False
   end
-  object Panel3: TPanel
+  object panel_iPhone: TPanel
     Position.X = 16.000000000000000000
-    Position.Y = 177.000000000000000000
+    Position.Y = 211.000000000000000000
     Size.Width = 345.000000000000000000
-    Size.Height = 97.000000000000000000
+    Size.Height = 64.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
-    TabOrder = 40
-  end
-  object edIphoneID: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 9
-    Position.X = 112.000000000000000000
-    Position.Y = 193.000000000000000000
-    Size.Width = 241.000000000000000000
-    Size.Height = 25.000000000000000000
-    Size.PlatformDefault = False
-  end
-  object Label10: TLabel
-    Position.X = 24.000000000000000000
-    Position.Y = 201.000000000000000000
-    Size.Width = 81.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    Text = 'Unique ID'
-    TabOrder = 24
-  end
-  object Label11: TLabel
-    Position.X = 24.000000000000000000
-    Position.Y = 233.000000000000000000
-    Size.Width = 81.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    Text = 'Owner name'
-    TabOrder = 19
-  end
-  object edIphoneOwner: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 10
-    Position.X = 112.000000000000000000
-    Position.Y = 228.000000000000000000
-    Size.Width = 241.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
+    TabOrder = 36
+    object edIphoneID: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Position.X = 104.000000000000000000
+      Position.Y = 23.000000000000000000
+      Size.Width = 241.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label10: TLabel
+      Position.X = 16.000000000000000000
+      Position.Y = 23.000000000000000000
+      Size.Width = 81.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Unique ID'
+    end
   end
   object Label13: TLabel
     Position.X = 128.000000000000000000
-    Position.Y = 161.000000000000000000
+    Position.Y = 199.000000000000000000
     Size.Width = 118.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     TextSettings.HorzAlign = Center
     Text = 'iPhone Device'
-    TabOrder = 36
+    TabOrder = 32
   end
   object Label12: TLabel
     Position.X = 501.000000000000000000
@@ -359,7 +378,7 @@ object formTraceMobile: TformTraceMobile
     Size.PlatformDefault = False
     TextSettings.HorzAlign = Center
     Text = 'Operating System'
-    TabOrder = 34
+    TabOrder = 30
   end
   object Label14: TLabel
     Position.X = 400.000000000000000000
@@ -368,7 +387,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Unique ID'
-    TabOrder = 21
+    TabOrder = 18
   end
   object Label15: TLabel
     Position.X = 400.000000000000000000
@@ -377,7 +396,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Owner name'
-    TabOrder = 18
+    TabOrder = 16
   end
   object Edit5: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -390,7 +409,7 @@ object formTraceMobile: TformTraceMobile
   end
   object Edit7: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 28
+    TabOrder = 24
     Position.X = 488.000000000000000000
     Position.Y = 227.000000000000000000
     Size.Width = 241.000000000000000000
@@ -404,7 +423,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 121.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
-    TabOrder = 33
+    TabOrder = 29
   end
   object Label16: TLabel
     Position.X = 400.000000000000000000
@@ -413,11 +432,11 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Name'
-    TabOrder = 22
+    TabOrder = 19
   end
   object edOsName: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 11
+    TabOrder = 9
     Position.X = 488.000000000000000000
     Position.Y = 200.000000000000000000
     Size.Width = 241.000000000000000000
@@ -431,11 +450,11 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Manufacturer'
-    TabOrder = 17
+    TabOrder = 15
   end
   object edOsManufacturer: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 12
+    TabOrder = 10
     Position.X = 488.000000000000000000
     Position.Y = 235.000000000000000000
     Size.Width = 241.000000000000000000
@@ -449,11 +468,11 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Version'
-    TabOrder = 16
+    TabOrder = 14
   end
   object edOsVersion: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 13
+    TabOrder = 11
     Position.X = 488.000000000000000000
     Position.Y = 267.000000000000000000
     Size.Width = 241.000000000000000000
@@ -467,7 +486,7 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Mobile Account'
-    TabOrder = 35
+    TabOrder = 31
   end
   object Label20: TLabel
     Position.X = 24.000000000000000000
@@ -476,11 +495,11 @@ object formTraceMobile: TformTraceMobile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'MSISDN'
-    TabOrder = 23
+    TabOrder = 20
   end
   object edAccountMSISDN: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 15
+    TabOrder = 13
     Position.X = 112.000000000000000000
     Position.Y = 321.000000000000000000
     Size.Width = 241.000000000000000000
@@ -493,14 +512,14 @@ object formTraceMobile: TformTraceMobile
     Size.Width = 89.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 43
+    TabOrder = 39
     Text = 'Modify Trace'
     OnClick = btnModifyTraceClick
   end
   object btnCancel: TButton
     Position.X = 384.000000000000000000
     Position.Y = 576.000000000000000000
-    TabOrder = 45
+    TabOrder = 41
     Text = 'Cancel'
     OnClick = btnCancelClick
   end

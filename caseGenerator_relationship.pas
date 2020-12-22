@@ -68,7 +68,7 @@ type
     function JsonTokenToString(const t: TJsonToken): string;
     procedure readIdentityFromFile;
     procedure readRoleFromFile;
-    procedure readFacebookAccountFromFile;
+    procedure readAppAccountFromFile;
     procedure readLocationFromFile;
     procedure readTraceFromFile;
     procedure readTraceMobileFromFile;
@@ -246,7 +246,7 @@ begin
   cbTargetTrace.Items.Clear;
   readIdentityFromFile;
   readRoleFromFile;
-  readFacebookAccountFromFile;
+  readAppAccountFromFile;
   readLocationFromFile;
   readTraceFromFile;
   cbSourceIdentity.Enabled := False;
@@ -296,7 +296,7 @@ begin
   if lbRelationship.ItemIndex > - 1 then
   begin
     line := lbRelationship.Items[lbRelationship.ItemIndex];
-    edNameRelationShip.Text := ExtractField(line, '"kindOfRelationship":"');
+    edNameRelationShip.Text := ExtractField(line, '"uco-observable:kindOfRelationship":"');
     for idx:=0 to cbDefaultKinds.Items.Count - 1 do
     begin
       if cbDefaultKinds.Items[idx] =  edNameRelationShip.Text then
@@ -305,7 +305,7 @@ begin
         break;
       end;
     end;
-    propertyValue := ExtractField(line, '"isDirectional":"');
+    propertyValue := ExtractField(line, '"uco-observable:isDirectional":"');
     for idx:=0 to cbDirectional.Items.Count - 1 do
     begin
       if cbDirectional.Items[idx] =  propertyValue then
@@ -314,7 +314,7 @@ begin
         break;
       end;
     end;
-    edSourceID.Text := ExtractField(line, '"source":"');
+    edSourceID.Text := ExtractField(line, '"uco-observable:source":"');
 
     // to be optimized: when a cb Sourcexxx is enable the other two must not be
     // processed
@@ -354,7 +354,7 @@ begin
       end;
     end;
 
-    edTargetID.Text := ExtractField(line, '"target":"');
+    edTargetID.Text := ExtractField(line, '"uco-observable:target":"');
 
     // to be optimized: when a cb Sourcexxx is enable the other two must not be
     // processed
@@ -412,24 +412,24 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbRelationship.Items[lbRelationship.ItemIndex], '"@id":"');
 
   line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
-  line := line + indent + '"@type":"Relationship",' + recSep;
-  line := line + indent + '"source":"' + edSourceID.Text + '",' + recSep;
-  line := line + indent + '"target":"' + edTargetID.Text + '",' + recSep;
-  line := line + indent + '"kindOfRelationship":"' + edNameRelationship.Text + '",' + recSep;
-  line := line + indent + '"isDirectional":"' + cbDirectional.Items[cbDirectional.ItemIndex]+ '"' + recSep;
+  line := line + indent + '"@type":"uco-observable:Relationship",' + recSep;
+  line := line + indent + '"uco-observable:source":"' + edSourceID.Text + '",' + recSep;
+  line := line + indent + '"uco-observable:target":"' + edTargetID.Text + '",' + recSep;
+  line := line + indent + '"uco-observable:kindOfRelationship":"' + edNameRelationship.Text + '",' + recSep;
+  line := line + indent + '"uco-observable:isDirectional":"' + cbDirectional.Items[cbDirectional.ItemIndex]+ '"' + recSep;
   line := line + '}';
   Result := line;
 end;
 
 
 
-procedure TformRelationship.readFacebookAccountFromFile;
+procedure TformRelationship.readAppAccountFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -442,10 +442,10 @@ begin
   recSep := #30 + #30;
   crlf := #13 + #10;
   (* read file JSON uuidCase-identity.json: fill in cbSourceIdentity component *)
-  if FileExists(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceAPP_ACCOUNT.json') then
   begin
     listAccount := TStringList.Create;
-    listAccount.LoadFromFile(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
+    listAccount.LoadFromFile(FpathCase + FuuidCase + '-traceAPP_ACCOUNT.json');
     //JSON string here
     json := stringreplace(listAccount.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -458,12 +458,12 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'accountIssuer' then
+          if jreader.Value.AsString = 'uco-observable:accountIssuer' then
             inAccountIssuer := True
           else
             inAccountIssuer := False;
 
-          if jreader.Value.AsString = 'accountID' then
+          if jreader.Value.AsString = 'uco-observable:applicationIdentifier' then
             inAccountID := True
           else
             inAccountID := False;
@@ -531,7 +531,7 @@ begin
         begin
 
         //locality := jreader.ReadAsString;
-          if jreader.Value.AsString = 'givenName' then
+          if jreader.Value.AsString = 'uco-identity:givenName' then
             inName := True
           else
             inName := False;
@@ -541,7 +541,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'familyName' then
+          if jreader.Value.AsString = 'uco-identity:familyName' then
             inFamilyName := True
           else
             inFamilyName := False;
@@ -607,27 +607,22 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'name' then
-            inName := True
-          else
-            inName := False;
-
           if jreader.Value.AsString = '@id' then
             inID := True
           else
             inID := False;
 
-          if jreader.Value.AsString = 'locality' then
+          if jreader.Value.AsString = 'uco-location:locality' then
             inLocality := True
           else
             inLocality := False;
 
-          if jreader.Value.AsString = 'region' then
+          if jreader.Value.AsString = 'uco-location:region' then
             inRegion := True
           else
             inRegion := False;
 
-          if jreader.Value.AsString = 'street' then
+          if jreader.Value.AsString = 'uco-location:street' then
             inStreet := True
           else
             inStreet := False;
@@ -635,10 +630,6 @@ begin
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
-          if inName then begin
-            name := jreader.Value.AsString;
-            cbSourceRole.Items.Add(name + ' ' + '@' + id);
-          end;
 
           if inID then
             id := jreader.Value.AsString;
@@ -704,7 +695,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'name' then
+          if jreader.Value.AsString = 'uco-role:name' then
             inName := True
           else
             inName := False;
@@ -764,7 +755,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'manufacturer' then
+          if jreader.Value.AsString = 'uco-observable:manufacturer' then
             inManufacturer := True
           else
             inManufacturer := False;
@@ -774,7 +765,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'model' then
+          if jreader.Value.AsString = 'uco-observable:model' then
             inModel := True
           else
             inModel := False;
@@ -839,17 +830,17 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'manufacturer' then
+          if jreader.Value.AsString = 'uco-observable:manufacturer' then
             inManufacturer := True
           else
             inModel := False;
 
-          if jreader.Value.AsString = 'model' then
+          if jreader.Value.AsString = 'uco-observable:model' then
             inModel := True
           else
             inModel := False;
 
-        if jreader.Value.AsString = 'capacity' then
+        if jreader.Value.AsString = 'uco-observable:capacity' then
             inCapacity := True
           else
             inCapacity := False;
@@ -859,7 +850,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'serialNumber' then
+          if jreader.Value.AsString = 'uco-observable:serialNumber' then
             inSN := True
           else
             inSN := False;
@@ -927,7 +918,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'diskPartitionType' then
+          if jreader.Value.AsString = 'uco-observable:diskPartitionType' then
             inPartitionType := True
           else
             inPartitionType := False;
@@ -937,12 +928,12 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'partitionID' then
+          if jreader.Value.AsString = 'uco-observable:partitionID' then
             inPartitionID := True
           else
             inPartitionID := False;
 
-          if jreader.Value.AsString = 'partitionLength' then
+          if jreader.Value.AsString = 'uco-observable:partitionLength' then
             inPartitionSize := True
           else
             inPartitionSize := False;
@@ -1009,7 +1000,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'emailAddress' then
+          if jreader.Value.AsString = 'uco-observable:emailAddress' then
             inEmailAddress := True
           else
             inEmailAddress := False;
@@ -1075,7 +1066,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'fileName' then
+          if jreader.Value.AsString = 'uco-observable:fileName' then
             inFileName := True
           else
             inFileName := False;
@@ -1154,7 +1145,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'application' then
+          if jreader.Value.AsString = 'uco-observable:application' then
             inApplication := True
           else
             inApplication := False;
@@ -1164,7 +1155,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'messageText' then
+          if jreader.Value.AsString = 'uco-observable:messageText' then
             inMessageText := True
           else
             inMessageText := False;
@@ -1229,7 +1220,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'manufacturer' then
+          if jreader.Value.AsString = 'uco-observable:manufacturer' then
             inManufacturer := True
           else
             inManufacturer := False;
@@ -1239,12 +1230,12 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'model' then
+          if jreader.Value.AsString = 'uco-observable:model' then
             inModel := True
           else
             inModel := False;
 
-          if jreader.Value.AsString = 'serialNumber' then
+          if jreader.Value.AsString = 'uco-observable:serialNumber' then
             inSerial := True
           else
             inSerial := False;
@@ -1310,7 +1301,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'SIMType' then
+          if jreader.Value.AsString = 'uco-observable:SIMType' then
             inSimType := True
           else
             inSimType := False;
@@ -1320,7 +1311,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'ICCID' then
+          if jreader.Value.AsString = 'uco-observable:ICCID' then
             inICCID := True
           else
             inICCID := False;

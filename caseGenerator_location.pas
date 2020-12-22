@@ -109,12 +109,12 @@ begin
   if  lbLocation.ItemIndex > - 1 then
   begin
     line := lbLocation.Items[lbLocation.ItemIndex];
-    edRegion.Text := ExtractField(line, '"region":"');
-    edLocality.Text := ExtractField(line, '"locality":"');
-    edPostalCode.Text := ExtractField(line, '"postalCode":"');
-    edStreet.Text := ExtractField(line, '"street":"');
-    edLatitude.Text := ExtractField(line, '"latitude":"');
-    edLongitude.Text := ExtractField(line,'"longitude":"');
+    edRegion.Text := ExtractField(line, '"uco-location:region":"');
+    edLocality.Text := ExtractField(line, '"uco-location:locality":"');
+    edPostalCode.Text := ExtractField(line, '"uco-location:postalCode":"');
+    edStreet.Text := ExtractField(line, '"uco-location:street":"');
+    edLatitude.Text := ExtractField(line, '"uco-location:latitude":"');
+    edLongitude.Text := ExtractField(line,'"uco-location:longitude":"');
   end;
 end;
 
@@ -132,20 +132,20 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
      guidNoBraces :=  ExtractField(lbLocation.Items[lbLocation.ItemIndex], '"@id":"');
 
   line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-  line := line + indent + '"@type":"Location", ' + recSep;
+  line := line + indent + '"@type":"uco-location:Location", ' + recSep;
   line := line + indent +  '"propertyBundle":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-SimpleAddress", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"locality":"' + edLocality.Text + '", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"region":"' + edRegion.Text + '", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"postalCode":"' + edPostalCode.Text + '", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"street":"' + edStreet.Text + '"' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + 'uco-location:SimpleAddress", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-location:locality":"' + edLocality.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-location:region":"' + edRegion.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-location:postalCode":"' + edPostalCode.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-location:street":"' + edStreet.Text + '"' + recSep;
   line := line + indent + '}';
   if (Trim(edLatitude.Text) ='') or (Trim(edLongitude.Text) = '') then
     line := line + recSep
@@ -153,8 +153,8 @@ begin
   begin
     line := line + ', ' + recSep;
     line := line + indent + '{' + recSep + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-LatLongCoordinates", ' + recSep;
-    line := line + RepeatString(indent, 2) + '"latitude":"' + edLatitude.Text + '", ' + recSep;
-    line := line + RepeatString(indent, 2) + '"longitude":"' + edLongitude.Text + '" ' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-location:latitude":"' + edLatitude.Text + '", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-location:longitude":"' + edLongitude.Text + '" ' + recSep;
     line := line + indent + '}' + recSep;
     line := line + indent  + ']' + recSep + '}';
   end;

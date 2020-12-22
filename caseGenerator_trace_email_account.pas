@@ -68,7 +68,7 @@ begin
   if lbEmailAccount.ItemIndex > - 1 then
   begin
     line := lbEmailAccount.Items[lbEmailAccount.ItemIndex];
-    edEmail.Text := ExtractField(line, '"emailAddress":"');
+    edEmail.Text := ExtractField(line, '"uco-observable:emailAddress":"');
   end;
 end;
 
@@ -89,7 +89,7 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + indent + '"@id":"' + GuidToString(Uid) + '", ' + recSep;
+      line := line + '"@id":":' + GuidToString(Uid) + '", ' + recSep;
     end
     else
     begin
@@ -97,10 +97,10 @@ begin
       line := line + indent + '"@id":"' + ExtractField(lbEmailAccount.Items[idx], '"@id":"') + '", ' + recSep;
     end;
 
-    line := line + indent + '"@type":"Trace", ' + recSep;
-    line := line + indent + '"propertyBundle":[{' + recSep;
-    line := line + indent + '"@type":"EmailAccount", ' + recSep;
-    line := line + indent + '"emailAddress":"' + edEmail.Text + '"' + recSep;
+    line := line + indent + '"@type":"uco-observable:CyberItem", ' + recSep;
+    line := line + indent + '"uco-core:facets":[{' + recSep;
+    line := line + indent + '"@type":"uco-observable:EmailAccount", ' + recSep;
+    line := line + indent + '"uco-observable:emailAddress":"' + edEmail.Text + '"' + recSep;
     line := line + '}' + recSep + ']}';
   end;
   Result := line;

@@ -22,7 +22,7 @@ type
     edDeviceSerial: TEdit;
     lbTrace: TListBox;
     edDeviceModel: TEdit;
-    Panel1: TPanel;
+    panel_device: TPanel;
     Label6: TLabel;
     Label4: TLabel;
     Panel2: TPanel;
@@ -31,11 +31,11 @@ type
     Label8: TLabel;
     Label9: TLabel;
     edMobileIMEI: TEdit;
-    Panel3: TPanel;
+    panel_iPhone: TPanel;
     edIphoneID: TEdit;
     Label10: TLabel;
     Label11: TLabel;
-    edIphoneOwner: TEdit;
+    edPhoneOwner: TEdit;
     Label13: TLabel;
     cbMobileDay: TComboBox;
     cbMobileYear: TComboBox;
@@ -169,13 +169,17 @@ begin
   if lbTrace.ItemIndex > -1 then
   begin
     line := lbTrace.Items[lbTrace.ItemIndex];
-    eddeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
-    edDeviceModel.Text :=  ExtractField(line, '"model":"');
-    edDeviceSerial.Text :=  ExtractField(line, '"serialNumber":"');
-    edMobileIMEI.Text := ExtractField(line, '"IMEI":"');
-    edMobileStorage.Text := ExtractField(line, '"storageCapacity":"');
-    edAccountMSISDN.Text := ExtractField(line, '"MSISDN":"');
-    mobileDateTime := ExtractField(line, '"clockSetting":"');
+    eddeviceManufacturer.Text := ExtractField(line, '"uco-observable:manufacturer":"');
+    edDeviceModel.Text :=  ExtractField(line, '"uco-observable:model":"');
+    edDeviceSerial.Text :=  ExtractField(line, '"uco-observable:serialNumber":"');
+    edMobileIMEI.Text := ExtractField(line, '"uco-observable:IMEI":"');
+    edMobileStorage.Text := ExtractField(line, '"uco-observable:storageCapacity":"');
+    edAccountMSISDN.Text := ExtractField(line, '"uco-observable:MSISDN":"');
+    mobileDateTime := ExtractField(line, '"uco-observable:clockSetting":"');
+    edPhoneOwner.Text := ExtractField(line, '"uco-observable:ownerName":"');
+    edOsName.Text := ExtractField(line, '"uco-observable:osName":"');
+    edOsManufacturer.Text := ExtractField(line, '"uco-observable:osManufacturer":"');
+    edOsVersion.Text := ExtractField(line, '"uco-observable:osVersion":"');
     sDate := Copy(mobileDateTime, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbMobileDay.Items.Count - 1 do
@@ -210,12 +214,8 @@ begin
     timeMobile.Text := Copy(mobileDateTime, 12, 8);
 
     edIphoneID.Text := '';
-    edIphoneOwner.Text := '';
     if (Pos('iPhoneDevice', line) > 0) then
-    begin
-      edIphoneID.Text :=  ExtractField(line, '"uniquueID":"');
-      edIphoneOwner.Text := ExtractField(line, '"ownerName":"');
-    end;
+      edIphoneID.Text :=  ExtractField(line, '"uco-observable:uniqueID":"');
   end;
 
 end;
@@ -234,28 +234,27 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
-    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
+    line := line + indent + '"uco-core:facets":[' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
-    line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-Device",' + recSep;
-    line := line + RepeatString(indent, 3) + '"@type":"Device",' + recSep;
-    line := line + RepeatString(indent, 3) + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
-    line := line + RepeatString(indent, 3) + '"model":"' + edDeviceModel.Text + '",' + recSep;
-    line := line + RepeatString(indent, 3) + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
+    line := line + RepeatString(indent, 3) + '"@type":"uco-observable:Device",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:model":"' + edDeviceModel.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
     line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
-    line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-MobileDevice",' + recSep;
-    line := line + RepeatString(indent, 3) + '"@type":"MobileDevice",' + recSep;
-    line := line + RepeatString(indent, 3) + '"IMEI":"' + edMobileIMEI.Text + '",' + recSep;
-    line := line + RepeatString(indent, 3) + '"storageCapacity":"' + edMobileStorage.Text + '",' + recSep;
-    line := line + RepeatString(indent, 3) + '"clockSetting":"' + cbMobileYear.Items[cbMobileYear.ItemIndex] + '-';
+    line := line + RepeatString(indent, 3) + '"@type":"uco-observable:MobileDevice",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:IMEI":"' + edMobileIMEI.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:storageCapacity":"' + edMobileStorage.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:ownerName":"' + edPhoneOwner.Text + '",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:clockSetting":"' + cbMobileYear.Items[cbMobileYear.ItemIndex] + '-';
     line := line + cbMobileMonth.Items[cbMobileMonth.ItemIndex] + '-';
     line := line + cbMobileDay.Items[cbMobileDay.ItemIndex];
     line := line + 'T' + TimeToStr(timeMobile.Time) + 'Z"}';
@@ -264,30 +263,26 @@ begin
     begin
       line := line + ', ' + recSep;
       line := line + RepeatString(indent, 2) + '{' + recSep;
-      line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-iPhoneDevice",' + recSep;
-      line := line + RepeatString(indent, 3) + '"@type":"iPhoneDevice",' + recSep;
-      line := line + RepeatString(indent, 3) + '"uniqueID":"' + edIphoneID.Text + '",' + recSep;
-      line := line + RepeatString(indent, 3) + '"ownerName":"' + edIphoneOwner.Text + '"}' + recSep;
+      line := line + RepeatString(indent, 3) + '"@type":"uco-observable:AppleDeviceID",' + recSep;
+      line := line + RepeatString(indent, 3) + '"uco-observable:AppleDevideSerialNumber":"' + edIphoneID.Text + '",' + recSep;
     end;
 
     if Trim(edOsName.Text) <> '' then
     begin
       line := line + ', ' + recSep;
       line := line + RepeatString(indent, 2) + '{' + recSep;
-      line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-OperatingSystem",' + recSep;
-      line := line + RepeatString(indent, 3) + '"@type":"OperatingSystem",' + recSep;
-      line := line + RepeatString(indent, 3) + '"name": "' + edOsName.Text + '",' + recSep;
-      line := line + RepeatString(indent, 4) + '"manufacturer":"' + edOsManufacturer.Text + '", ' + recSep;
-      line := line + RepeatString(indent, 5) + '"version":"' + edOsVersion.Text + '"}' + recSep;
+      line := line + RepeatString(indent, 3) + '"@type":"uco-observable:OperatingSystem",' + recSep;
+      line := line + RepeatString(indent, 3) + '"uco-observable:osName":"' + edOsName.Text + '",' + recSep;
+      line := line + RepeatString(indent, 4) + '"uco-observable:osManufacturer":"' + edOsManufacturer.Text + '", ' + recSep;
+      line := line + RepeatString(indent, 5) + '"uco-observable:osVersion":"' + edOsVersion.Text + '"}' + recSep;
     end;
 
     if Trim(edAccountMSISDN.Text) <> '' then
     begin
       line := line + ', ' + recSep;
       line := line + RepeatString(indent, 2) + '{' + recSep;
-      line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-MobileAccount", ' + recSep;
-      line := line + RepeatString(indent, 3) + '"@type":"MobileAccount", ' + recSep;
-      line := line + RepeatString(indent, 3) + '"MSISDN":"' + edAccountMSISDN.Text + '"' + recSep;
+      line := line + RepeatString(indent, 3) + '"@type":"uco-observable:MobileAccount", ' + recSep;
+      line := line + RepeatString(indent, 3) + '"uco-observable:MSISDN":"' + edAccountMSISDN.Text + '"' + recSep;
       line := line + RepeatString(indent, 2) + '}' + recSep;
     end;
 

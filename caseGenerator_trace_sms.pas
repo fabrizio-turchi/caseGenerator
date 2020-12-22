@@ -1,4 +1,4 @@
-unit caseGenerator_trace_message;
+unit caseGenerator_trace_sms;
 
 interface
 
@@ -11,7 +11,7 @@ uses
   FMX.Memo.Types;
 
 type
-  TformTraceMessage = class(TForm)
+  TformTraceSMS = class(TForm)
     Label1: TLabel;
     lbMessage: TListBox;
     btnClose: TButton;
@@ -73,7 +73,7 @@ type
   end;
 
 var
-  formTraceMessage: TformTraceMessage;
+  formTraceSMS: TformTraceSMS;
 
 implementation
 
@@ -82,31 +82,31 @@ uses StrUtils;
 
 { TForm1 }
 
-procedure TformTraceMessage.btnRemoveMessageClick(Sender: TObject);
+procedure TformTraceSMS.btnRemoveMessageClick(Sender: TObject);
 begin
   if lbMessage.ItemIndex > -1 then
     lbMessage.Items.Delete(lbMessage.ItemIndex);
 end;
 
-procedure TformTraceMessage.btnRemoveMobileClick(Sender: TObject);
+procedure TformTraceSMS.btnRemoveMobileClick(Sender: TObject);
 begin
   lbMobile.Items.Delete(lbMobile.ItemIndex);
 end;
 
 
-function TformTraceMessage.extractID(line: String): String;
+function TformTraceSMS.extractID(line: String): String;
 begin
   Result := Copy(line, Pos('@', line) + 1, Length(line));
 end;
 
 
 
-function TformTraceMessage.extractLastID(line: String): String;
+function TformTraceSMS.extractLastID(line: String): String;
 begin
    Result := Copy(line, LastDelimiter('@', line) + 1, Length(line));
 end;
 
-procedure TformTraceMessage.FormShow(Sender: TObject);
+procedure TformTraceSMS.FormShow(Sender: TObject);
 var
   idx: Integer;
 begin
@@ -125,7 +125,7 @@ begin
 
 end;
 
-function TformTraceMessage.JsonTokenToString(const t: TJsonToken): string;
+function TformTraceSMS.JsonTokenToString(const t: TJsonToken): string;
 begin
   case t of
     TJsonToken.None: Result := 'None';
@@ -157,7 +157,7 @@ begin
 end;
 
 
-procedure TformTraceMessage.lbMessageChange(Sender: TObject);
+procedure TformTraceSMS.lbMessageChange(Sender: TObject);
 var
   line, sentDate, sDay, sMonth, sYear, sDate, messageType: String;
   idx: Integer;
@@ -236,7 +236,7 @@ begin
 
 end;
 
-procedure TformTraceMessage.lbMobileChange(Sender: TObject);
+procedure TformTraceSMS.lbMobileChange(Sender: TObject);
 var
   line: String;
   idx: Integer;
@@ -258,7 +258,7 @@ begin
 
 end;
 
-function TformTraceMessage.prepareItemMessage(operation: String): String;
+function TformTraceSMS.prepareItemMessage(operation: String): String;
 var
   line, recSep, idLine, indent, guidNoBraces: string;
   Uid: TGUID;
@@ -301,7 +301,7 @@ begin
   Result := line;
 end;
 
-procedure TformTraceMessage.readTraceFromFile;
+procedure TformTraceSMS.readTraceFromFile;
 
 begin
   readTraceMobileFromFile;
@@ -309,7 +309,7 @@ begin
   readTraceFacebookAccountFromFile;
 end;
 
-procedure TformTraceMessage.readTraceMobileFromFile;
+procedure TformTraceSMS.readTraceMobileFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -382,7 +382,7 @@ begin
 end;
 
 
-procedure TformTraceMessage.readTracePhoneAccountFromFile;
+procedure TformTraceSMS.readTracePhoneAccountFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -415,7 +415,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'phoneNumber' then
+          if jreader.Value.AsString = 'uco-observable:phoneNumber' then
             inPhoneNumber := True
           else
             inPhoneNumber := False;
@@ -449,7 +449,7 @@ begin
 
 end;
 
-procedure TformTraceMessage.readTraceFacebookAccountFromFile;
+procedure TformTraceSMS.readTraceFacebookAccountFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -515,7 +515,7 @@ begin
 
 end;
 
-procedure TformTraceMessage.btnAddMobileClick(Sender: TObject);
+procedure TformTraceSMS.btnAddMobileClick(Sender: TObject);
 var
   line: String;
 begin
@@ -530,12 +530,12 @@ begin
 
 end;
 
-procedure TformTraceMessage.btnCancelClick(Sender: TObject);
+procedure TformTraceSMS.btnCancelClick(Sender: TObject);
 begin
-  formTraceMessage.Close;
+  formTraceSMS.Close;
 end;
 
-procedure TformTraceMessage.btnCloseClick(Sender: TObject);
+procedure TformTraceSMS.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
   line: String;
@@ -564,16 +564,16 @@ begin
   else
     deleteFile(FpathCase + FuuidCase + '-traceMESSAGE.json');
 
-  formTraceMessage.Close;
+  formTraceSMS.Close;
 end;
 
-procedure TformTraceMessage.btnModifyMessageClick(Sender: TObject);
+procedure TformTraceSMS.btnModifyMessageClick(Sender: TObject);
 begin
   if lbMessage.ItemIndex > - 1 then
     lbMessage.Items[lbMessage.ItemIndex] := prepareItemMessage('modify');
 end;
 
-procedure TformTraceMessage.btnAddMessageClick(Sender: TObject);
+procedure TformTraceSMS.btnAddMessageClick(Sender: TObject);
 var
   line, recSep, idLine: string;
   Uid: TGUID;
@@ -595,17 +595,17 @@ begin
   end;
 end;
 
-procedure TformTraceMessage.SetpathCase(const Value: String);
+procedure TformTraceSMS.SetpathCase(const Value: String);
 begin
   FpathCase := Value;
 end;
 
-procedure TformTraceMessage.SetuuidCase(const Value: string);
+procedure TformTraceSMS.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
 end;
 
-procedure TformTraceMessage.ShowWithParamater(pathCase: String; uuidCase: String);
+procedure TformTraceSMS.ShowWithParamater(pathCase: String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine: String;
@@ -614,9 +614,9 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-identity.json
-  if FileExists(FpathCase + FuuidCase + '-traceMESSAGE.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceSMS.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json', CP_UTF8);
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceSMS.json', CP_UTF8);
     Reset(fileJSON);
     lbMessage.Items.Clear;
     while not Eof(fileJSON) do
@@ -639,7 +639,7 @@ begin
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
 
-  formTraceMessage.ShowModal;
+  formTraceSMS.ShowModal;
 end;
 
 end.

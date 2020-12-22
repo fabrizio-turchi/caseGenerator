@@ -23,10 +23,15 @@ var
 begin
   recSep := #30 + #30;
   fieldStart := Pos(subLine, line); // search pos of subLine inside line
-  fieldValue := Copy(line, fieldStart + Length(subLine), Length(line));
-  fieldValue := stringreplace(fieldValue, recSep, '',[rfReplaceAll]);
-  fieldEnd   := Pos('"', fieldValue);
-  Result := Copy(fieldValue, 1, fieldEnd - 1);
+  if fieldStart = 0 then // not found
+    Result := ''
+  else
+  begin
+    fieldValue := Copy(line, fieldStart + Length(subLine), Length(line));
+    fieldValue := stringreplace(fieldValue, recSep, '',[rfReplaceAll]);
+    fieldEnd   := Pos('"', fieldValue);
+    Result := Copy(fieldValue, 1, fieldEnd - 1);
+  end;
 
 end;
 

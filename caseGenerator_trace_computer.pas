@@ -135,16 +135,16 @@ begin
   if lbTrace.ItemIndex > - 1 then
   begin
     line := lbTrace.Items[lbTrace.ItemIndex];
-    edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
-    edDeviceModel.Text := ExtractField(line, '"model":"');
-    edDeviceSerial.Text := ExtractField(line, '"serialNumber":"');
-    edMacAddress.Text := ExtractField(line, '"address":"');
-    edBIOSVersion.Text := ExtractField(line, '"biosVersion":"');
-    edCPUfamily.Text := ExtractField(line, '"cpuFamily":"');
-    edRam.Text := ExtractField(line, '"totalRam":"');
-    edOsName.Text := ExtractField(line, '"name":"');
-    edOsManufacturer.Text := ExtractField(line, '"manufacturer":"');
-    edOsVersion.Text := ExtractField(line, '"version":"');
+    edDeviceManufacturer.Text := ExtractField(line, '"uco-observable:manufacturer":"');
+    edDeviceModel.Text := ExtractField(line, '"uco-observable:model":"');
+    edDeviceSerial.Text := ExtractField(line, '"uco-observable:serialNumber":"');
+    edMacAddress.Text := ExtractField(line, '"uco-observable:address":"');
+    edBIOSVersion.Text := ExtractField(line, '"uco-observable:biosVersion":"');
+    edCPUfamily.Text := ExtractField(line, '"uco-observable:cpuFamily":"');
+    edRam.Text := ExtractField(line, '"uco-observable:totalRam":"');
+    edOsName.Text := ExtractField(line, '"uco-observable:name":"');
+    edOsManufacturer.Text := ExtractField(line, '"uco-observable:manufacturer":"');
+    edOsVersion.Text := ExtractField(line, '"uco-observable:version":"');
   end;
 end;
 
@@ -170,39 +170,35 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
    else
       guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
-    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
+    line := line + indent + '"uco-core:facets":[' + recSep;
     line := line +  RepeatString(indent, 2) + '{' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-Device",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@type":"Device",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"model":"' + edDeviceModel.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"uco-observable:Device",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:model":"' + edDeviceModel.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:serialNumber":"' + edDeviceSerial.Text + '"' + recSep;
     line := line +  RepeatString(indent, 2)  + '},' + recSep;
     line := line +  RepeatString(indent, 2)  + '{' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-OperatingSystem",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@type":"OperatingSystem",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"name":"' + edOsName.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"version":"' + edOsVersion.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edOsManufacturer.Text + '"' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"uco-observable:OperatingSystem",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:name":"' + edOsName.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:version":"' + edOsVersion.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:manufacturer":"' + edOsManufacturer.Text + '"' + recSep;
     line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
-    line := line + RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-MACAddress",' + recSep;
-    line := line + RepeatString(indent, 3) + '"@type":"MACAddress",' + recSep;
-    line := line + RepeatString(indent, 3)  + '"address":"' + edMacAddress.Text + '"' + recSep;
+    line := line + RepeatString(indent, 3) + '"@type":"uco-observable:MACAddress",' + recSep;
+    line := line + RepeatString(indent, 3)  + '"uco-observable:address":"' + edMacAddress.Text + '"' + recSep;
     line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
-    line := line +  RepeatString(indent, 3) + '"@id":"' + guidNoBraces + '-ComputerSpecification",' + recSep;
-    line := line +  RepeatString(indent, 3) + '"@type":"ComputerSpecification",' + recSep;
-    line := line +  RepeatString(indent, 3) + '"biosVersion":"' + edBiosVersion.Text + '", ' + recSep;
-    line := line +  RepeatString(indent, 3) + '"cpuFamily":"' + edCpuFamily.Text + '", ' + recSep;
-    line := line +  RepeatString(indent, 3) + '"totalRam":"' + edRam.Text + '" ' + recSep;
+    line := line +  RepeatString(indent, 3) + '"@type":"uco-observable:ComputerSpecification",' + recSep;
+    line := line +  RepeatString(indent, 3) + '"uco-observable:biosVersion":"' + edBiosVersion.Text + '", ' + recSep;
+    line := line +  RepeatString(indent, 3) + '"uco-observable:cpuFamily":"' + edCpuFamily.Text + '", ' + recSep;
+    line := line +  RepeatString(indent, 3) + '"uco-observable:totalRam":"' + edRam.Text + '" ' + recSep;
     line := line + RepeatString(indent, 2) + '}' + recSep;
     line := line + indent + ']' + indent + recSep + '}' + recSep;
     Result := line;

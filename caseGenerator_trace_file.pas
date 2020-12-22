@@ -7,7 +7,8 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.DateTimeCtrls, FMX.Calendar, FMX.Edit, FMX.StdCtrls, FMX.Layouts,
   FMX.ListBox, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
-  System.JSON.Readers, System.JSON.Types, System.JSON, caseGenerator_util;
+  System.JSON.Readers, System.JSON.Types, System.JSON, caseGenerator_util,
+  FMX.Memo.Types;
 
 type
   TformTraceFile = class(TForm)
@@ -155,18 +156,18 @@ begin
   if lbTrace.ItemIndex > - 1 then
   begin
     line := lbTrace.Items[lbTrace.ItemIndex];
-    memoName.Lines.Text := ExtractField(line, '"fileName":"');
-    edPath.Text := ExtractField(line, '"filePath":"');
-    edExtractionPath.Text := ExtractField(line, '"fileExtractionPath":"');
-    edExtension.Text := ExtractField(line, '"extension":"');
-    edSystemType.Text := ExtractField(line, '"fileSystemType":"');
-    cbDirectory.Items.Text :=  ExtractField(line, '"isDirectory":"');
+    memoName.Lines.Text := ExtractField(line, '"uco-observable:fileName":"');
+    edPath.Text := ExtractField(line, '"uco-observable:filePath":"');
+    edExtractionPath.Text := ExtractField(line, '"uco-observable:fileExtractionPath":"');
+    edExtension.Text := ExtractField(line, '"uco-observable:extension":"');
+    edSystemType.Text := ExtractField(line, '"uco-observable:fileSystemType":"');
+    cbDirectory.Items.Text :=  ExtractField(line, '"uco-observable:isDirectory":"');
     cbDirectory.ItemIndex := 0;
-    edSize.Text :=   ExtractField(line, '"sizeInBytes":"');
-    edHashValue.Text :=  ExtractField(line, '"hashValue":"');
-    cbValue := ExtractField(line, '"hashMethod":"');
+    edSize.Text :=   ExtractField(line, '"uco-observable:sizeInBytes":"');
+    edHashValue.Text :=  ExtractField(line, '"uco-observable:hashValue":"');
+    cbValue := ExtractField(line, '"uco-observable:hashMethod":"');
 
-    creationDate := ExtractField(line, '"createdTime":"');
+    creationDate := ExtractField(line, '"uco-observable:createdTime":"');
     sDate := Copy(creationDate, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbCreationDay.Items.Count - 1 do
@@ -211,7 +212,7 @@ begin
   end;
 
   //line := Copy(line, Pos('"sizeInBytes', line) + 10,Length(line));
-  edHashSize.Text :=   ExtractField(line, '"SizeInBytes":"');
+  edHashSize.Text :=   ExtractField(line, '"uco-observable:SizeInBytes":"');
 end;
 
 function TformTraceFile.PrepareItemTrace(operation: String): String;
@@ -232,38 +233,45 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
       guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
-    line := line +  indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
+    line := line +  indent + '"uco-core:facets":[' + recSep;
     line := line + indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-File",' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":"File",' + recSep;
-    line := line + RepeatString(indent, 2) + '"fileName":"' + memoName.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"uco-observable:File",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:fileName":"' + memoName.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"filePath":"' + edPath.Text + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"fileExtractionPath":"' + edExtractionPath.Text + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"extension":"' + edExtension.Text + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"fileSystemType":"' + edSystemType.Text + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"isDirectory":"' + cbDirectory.Items[cbDirectory.ItemIndex] + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"sizeInBytes":"' + edSize.Text + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"createdTime":"';
+    line := line + RepeatString(indent, 2) + '"uco-observable:fileExtractionPath":"' + edExtractionPath.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:extension":"' + edExtension.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:fileSystemType":"' + edSystemType.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:isDirectory":"' + cbDirectory.Items[cbDirectory.ItemIndex] + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:sizeInBytes": {'+ recSep;
+    line := line + RepeatString(indent, 3) + '"@type":"xsd:long",' + recSep;
+    line := line + RepeatString(indent, 3) + '"@value":"' + edSize.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + cbCreationYear.Items[cbCreationYear.ItemIndex] + '-';
     line := line + cbCreationMonth.Items[cbCreationMonth.ItemIndex] + '-';
     line := line + cbCreationDay.Items[cbCreationDay.ItemIndex];
     line := line + 'T' + TimeToStr(timeCreation.Time) + 'Z"},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
-    line := line + RepeatString(indent, 3) + '"type":"ContentData",' + recSep;
+    line := line + RepeatString(indent, 3) + '"type":"uco-observable:ContentData",' + recSep;
     line := line + RepeatString(indent, 3) + '"hash":[' + recSep;
     line := line + RepeatString(indent, 3) + '{' + recSep;
     line := line + RepeatString(indent, 4) + '"@id":"' + guidNoBraces + '-Hash",' + recSep;
-    line := line + RepeatString(indent, 4) + '"@type":"Hash",' + recSep;
-    line := line + RepeatString(indent, 4) + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
-    line := line + RepeatString(indent, 4) + '"hashValue":"' + edHashValue.Text  + '"' + recSep;
-    line := line + RepeatString(indent, 3) + '}' + recSep;
+    line := line + RepeatString(indent, 4) + '"@type":"uco-types:Hash",' + recSep;
+    line := line + RepeatString(indent, 4) + '"uco-types:hashMethod":{' + recSep;
+    line := line + RepeatString(indent, 5) + ' "@type": "uco-core:HashNameEnum",' + recSep;
+    line := line + RepeatString(indent, 5) + '	"@value": "' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '"' + recSep;
+    line := line + RepeatString(indent, 4) + '},' + recSep;
+    line := line + RepeatString(indent, 4) + '"uco-types:hashValue":{' + recSep;
+    line := line + RepeatString(indent, 5) + '"@type": "xsd:hexBinary",' + recSep;
+    line := line + RepeatString(indent, 5) + '"@value":"' + edHashValue.Text  + '"' + recSep;
+    line := line + RepeatString(indent, 4) + '}' + recSep;
     line := line + RepeatString(indent, 3) + '], ' + recSep;
     line := line + RepeatString(indent, 3) +  '"SizeInBytes":"' + edHashSize.Text + '"' + recSep;
     line := line + RepeatString(indent, 2) + '}' + recSep;

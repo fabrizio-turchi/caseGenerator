@@ -178,9 +178,9 @@ begin
   if lbIdentity.ItemIndex > - 1 then
   begin
     line := lbIdentity.Items[lbIdentity.ItemIndex];
-    edName.Text := ExtractField(line, '"givenName":"');
-    edFamilyName.Text := ExtractField(line, '"familyName":"');
-    birthDate := ExtractField(line, '"birthDate":"');
+    edName.Text := ExtractField(line, '"uco-identity:givenName":"');
+    edFamilyName.Text := ExtractField(line, '"uco-identity:familyName":"');
+    birthDate := ExtractField(line, '"uco-identity:birthDate":"');
     sDate := Copy(birthDate, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbDay.Items.Count - 1 do
@@ -229,30 +229,24 @@ begin
   begin
     CreateGUID(Uid);      (* includes the braces*)
     guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
-    line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
+    line := line + indent + '"@id":":' + guidNoBraces + '",' + recSep;
   end
   else
   begin
     guidNoBraces := ExtractField(lbIdentity.Items[lbIdentity.ItemIndex], '"@id":"');
-    (*
-    if Copy(guidNoBraces, 1, 1) = '{' then
-      guidNoBraces := Copy(guidNoBraces, 2, Length(guidNoBraces) - 2);
-    *)
     line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   end;
 
-
-  line := line + indent + '"@type":"Identity",' + recSep;
-  line := line + indent + '"propertyBundle":[' + recSep;
+  line := line + indent + '"@type":"uco-identity:Identity",' + recSep;
+  line := line + indent + '"uco-core:facets":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-SimpleName",' + recSep;
-  line := line + RepeatString(indent, 2) + '"givenName":"' + edName.Text + '",' + recSep;
-  line := line + RepeatString(indent, 2) + '"familyName":"' + edFamilyName.Text + '"' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"uco-identity:SimpleName",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-identity:givenName":"' + edName.Text + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-identity:familyName":"' + edFamilyName.Text + '"' + recSep;
   line := line + indent + '},' + recSep;
   line := line + indent + '{' + recSep;
-  line := line +  RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-BirthInformation",' + recSep;
-  line := line +  RepeatString(indent, 2) + '"@type":"BirthInformation",' + recSep;
-  line := line +  RepeatString(indent, 2) + '"birthDate":"';
+  line := line +  RepeatString(indent, 2) + '"@type":"uco-identity:BirthInformation",' + recSep;
+  line := line +  RepeatString(indent, 2) + '"uco-identity:birthDate":"';
   line := line +  cbYear.Items[cbYear.ItemIndex] + '-' + cbMonth.Items[cbMonth.ItemIndex] + '-' + cbDay.Items[cbDay.ItemIndex];
   line := line + 'T' + TimeToStr(timeBirthTime.Time) + 'Z"' + recSep;
   line := line +  indent + '}' + recSep + indent + ']' + recSep + '}';

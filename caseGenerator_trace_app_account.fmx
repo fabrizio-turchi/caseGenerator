@@ -1,4 +1,4 @@
-object formTraceFacebookAccount: TformTraceFacebookAccount
+object formTraceAppAccount: TformTraceAppAccount
   Left = 0
   Top = 0
   Caption = 'Trace Phone Account'

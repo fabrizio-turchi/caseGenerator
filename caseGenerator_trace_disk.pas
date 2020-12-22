@@ -121,12 +121,12 @@ begin
   if lbTrace.ItemIndex > - 1 then
   begin
     line := lbTrace.Items[lbTrace.ItemIndex];
-    edDeviceManufacturer.Text := ExtractField(line, '"manufacturer":"');
-    edDeviceModel.Text := ExtractField(line, '"model":"');
-    edDeviceSerial.Text := ExtractField(line, '"serialNumber":"');
-    edDeviceCapacity.Text := ExtractField(line, '"diskSize":"');
-    edHashMethod.Text :=     ExtractField(line, '"hashMethod":"');
-    edHashValue.Text :=     ExtractField(line, '"hashValue":"');
+    edDeviceManufacturer.Text := ExtractField(line, '"uco-observable:manufacturer":"');
+    edDeviceModel.Text := ExtractField(line, '"uco-observable:model":"');
+    edDeviceSerial.Text := ExtractField(line, '"uco-observable:serialNumber":"');
+    edDeviceCapacity.Text := ExtractField(line, '"uco-observable:diskSize":"');
+    edHashMethod.Text :=     ExtractField(line, '"uco-observable:hashMethod":"');
+    edHashValue.Text :=     ExtractField(line, '"uco-observable:hashValue":"');
   end;
 end;
 
@@ -152,35 +152,32 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
       guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
-    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
+    line := line + indent + '"uco-core:facets":[' + recSep;
     line := line +  RepeatString(indent, 2) + '{' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-Device",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@type":"Device",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"model":"' + edDeviceModel.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"serialNumber":"' + edDeviceSerial.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"devideType":"HDD"' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"uco-observable:Device",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:manufacturer":"' + edDeviceManufacturer.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:model":"' + edDeviceModel.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:serialNumber":"' + edDeviceSerial.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:devideType":"HDD"' + recSep;
     line := line +  RepeatString(indent, 2)  + '},' + recSep;
     line := line +  RepeatString(indent, 2) + '{' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-Disk",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@type":"Disk",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"diskSize":"' + edDeviceCapacity.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"diskType":"Fixed"' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"uco-observable:Disk",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:diskSize":"' + edDeviceCapacity.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:diskType":"Fixed"' + recSep;
     line := line +  RepeatString(indent, 2)  + '},' + recSep;
     line := line +  RepeatString(indent, 2) + '{' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@id":"' + guidNoBraces + '-ContentData",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"@type":"ContentData",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"hash":[' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"@type":"uco-observable:ContentData",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:hash":[' + recSep;
     line := line +  RepeatString(indent, 3)  + '{' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"hashMethod":"' + edHashMethod.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"hashValue":"' + edHashValue.Text + '"' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:hashMethod":"' + edHashMethod.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:hashValue":"' + edHashValue.Text + '"' + recSep;
     line := line +  RepeatString(indent, 2)  + '}' + recSep;
     line := line +  RepeatString(indent, 2)  + ']' + recSep;
     line := line +  indent  + '}' + recSep;

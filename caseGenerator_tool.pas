@@ -160,8 +160,8 @@ begin
     editemName.Text := '';
     editemValue.Text := '';
     line := lbTool.Items[lbTool.ItemIndex];
-    edName.Text := ExtractField(line, '"name":"');
-    cbValue  := ExtractField(line, '"toolType":"');
+    edName.Text := ExtractField(line, '"uco-tool:name":"');
+    cbValue  := ExtractField(line, '"uco-tool:toolType":"');
     for idx := 0 to cbToolType.Count-1 do
     begin
       if AnsiContainsStr(cbToolType.Items[idx], cbValue) then
@@ -170,8 +170,8 @@ begin
         break;
       end;
     end;
-    edCreator.Text := ExtractField(line, '"creator":"');
-    edVersion.Text := ExtractField(line, '"version":"');
+    edCreator.Text := ExtractField(line, '"uco-tool:creator":"');
+    edVersion.Text := ExtractField(line, '"uco-tool:version":"');
 
     lbConfigurationSettingTool.Items.Clear;
     itemFound :=  AnsiContainsStr(line, '"itemName":"');
@@ -181,7 +181,7 @@ begin
     begin
       itemName := ExtractField(line, '"itemName":"');
       itemValue := ExtractField(line, '"itemValue":"');
-      itemTool := '{' + recSep +  RepeatString(indent, 3) + '"@type":"ConfigurationSetting", ' + recSep;
+      itemTool := '{' + recSep +  RepeatString(indent, 3) + '"@type":"uco-tool:ConfigurationSetting", ' + recSep;
       itemTool := itemTool +  RepeatString(indent, 3) + '"itemName":"' + itemName + '",' + recSep;
       itemTool := itemTool +  RepeatString(indent, 3) + '"itemValue":"' + itemValue + '"' + recSep;
       itemTool := itemTool +  RepeatString(indent, 2) + '}';
@@ -202,7 +202,7 @@ begin
   indent := '   ';
 
   itemTool :=  RepeatString(indent, 2) + '{' + recSep;
-  itemTool := itemTool +  RepeatString(indent, 3) + '"@type":"ConfigurationSetting", ' + recSep;
+  itemTool := itemTool +  RepeatString(indent, 3) + '"@type":"uco-tool:ConfigurationSetting", ' + recSep;
   itemTool := itemTool +  RepeatString(indent, 3) + '"itemName":"' + edItemName.Text + '",' + recSep;
   itemTool := itemTool +  RepeatString(indent, 3) + '"itemValue":"' + edItemValue.Text + '"' + recSep;
   itemTool := itemTool +  RepeatString(indent, 2) + '}';
@@ -224,33 +224,32 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbTool.Items[lbTool.ItemIndex], '"@id":"');
 
+
   line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-  line := line + indent + '"@type":"Tool", ' + recSep;
-  line := line + indent + '"name":"' + edName.Text + '",' + recSep;
-  line:= line +  indent + '"toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ' + recSep;
-  line := line + indent + '"creator":"' + edCreator.Text + '", ' + recSep;
-  line := line + indent + '"version":"' + edVersion.Text + '"';
+  line := line + indent + '"@type":"uco-tool:Tool", ' + recSep;
+  line := line + indent + '"uco-tool:name":"' + edName.Text + '",' + recSep;
+  line:= line +  indent + '"uco-tool:toolType":"' + cbToolType.Items[cbToolType.ItemIndex] + '", ' + recSep;
+  line := line + indent + '"uco-tool:creator":"' + edCreator.Text + '", ' + recSep;
+  line := line + indent + '"uco-tool:version":"' + edVersion.Text + '"';
 
   if lbConfigurationSettingTool.Items.Count > 0 then
   begin
-    sConfiguration :=  '"@type":"ConfigurationSetting';
+    sConfiguration :=  '"@type":"uco-tool:ConfigurationSetting';
     line := line + ',' + recSep;
-    line := line  + indent + '"propertyBundle":[' + recSep;
+    line := line  + indent + '"facets":[' + recSep;
     line := line  + indent + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-ToolConfiguration",' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":"ToolConfiguration",' + recSep;
-    line := line + RepeatString(indent, 2) + '"configurationSetting":[' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"uco-tool:ToolConfiguration",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-tool:configurationSetting":[' + recSep;
     //line := line + RepeatString(indent, 2) + '{' + recSep;
     for idx:=0 to  lbConfigurationSettingTool.Items.Count - 2 do
     begin
       lineConfiguration := lbConfigurationSettingTool.Items[idx];
       lineConfiguration := Copy(lineConfiguration, 1, Pos(sConfiguration, lineConfiguration) - 1) +
-        '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep +
         Copy(lineConfiguration, Pos(sConfiguration, lineConfiguration), Length(lineConfiguration));
 
       //line := line + '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep;
@@ -260,13 +259,8 @@ begin
 
     lineConfiguration := lbConfigurationSettingTool.Items[idx];
     lineConfiguration := Copy(lineConfiguration, 1, Pos(sConfiguration, lineConfiguration) - 1) +
-      '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep +
       Copy(lineConfiguration, Pos(sConfiguration, lineConfiguration), Length(lineConfiguration));
-      //line := line + '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep;
     line := line + lineConfiguration + recSep;
-
-    //line := line + '"@id":"' + guidNoBraces + '-ConfigurationSetting' + IntToStr(idx) + '" ,' + recSep;
-    //line := line + lbConfigurationSettingTool.Items[idx] + recSep;
     line := line  + RepeatString(indent, 2) + ']' + recSep;
     line := line +  indent + '}' + recSep;
     line := line +  indent + ']' + recSep;

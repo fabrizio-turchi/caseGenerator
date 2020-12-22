@@ -228,7 +228,7 @@ begin
  if lbRole.ItemIndex > - 1 then
   begin
     line := lbRole.Items[lbRole.ItemIndex];
-    edName.Text := ExtractField(line, '"name":"');
+    edName.Text := ExtractField(line, '"uco-role:name":"');
     for idx:=0 to cbDefaultNames.Items.Count - 1 do
     begin
       if cbDefaultNames.Items[idx] =  edName.Text then
@@ -243,7 +243,7 @@ end;
 
 function TformRole.prepareObjectCaseLine(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -255,16 +255,16 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    line := line + indent + '"@id":"' +  GuidToString(Uid) + '", ' + recSep;
+    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    line := line + indent + '"@id":":' +  guidNoBraces + '", ' + recSep;
   end
   else
   begin
     idx := lbRole.ItemIndex;
     line := line + '"@id":"' + ExtractField(lbRole.Items[idx], '"@id":"') + '",'+ recSep;
   end;
-
-  line := line + indent + '"@type":"Role",' + recSep;
-  line := line + indent + '"name":"' + edName.Text + '"' + recSep;
+  line := line + indent + '"@type":"uco-role:Role",' + recSep;
+  line := line + indent + '"uco-role:name":"' + edName.Text + '"' + recSep;
   line := line + '}';
   Result := line;
 end;

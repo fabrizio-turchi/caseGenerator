@@ -142,9 +142,9 @@ begin
   if lbWarrant.ItemIndex > - 1 then
   begin
     line := lbWarrant.Items[lbWarrant.ItemIndex];
-    edAuthorizationType.Text := ExtractField(line, '"@authorizationType":"');
-    edIdentifier.Text := ExtractField(line, '"authorizationIdentifier":"');
-    issuedDate := ExtractField(line, '"authorizationIssuedDate":"');
+    edAuthorizationType.Text := ExtractField(line, '"uco-investigation:authorizationType":"');
+    edIdentifier.Text := ExtractField(line, '"uco-investigation:authorizationIdentifier":"');
+    issuedDate := ExtractField(line, '"uco-investigation:authorizationIssuedDate":"');
     sDate := Copy(issuedDate, 1, 10);
     sDay := Copy(sDate, 7, 2);
     for idx:=0 to cbDay.Items.Count - 1 do
@@ -176,7 +176,7 @@ begin
       end;
     end;
 
-    line := ExtractField(line, '"authorizationAuthority":"');
+    line := ExtractField(line, '"uco-investigation:authorizationAuthority":"');
     for idx:=0 to cbAuthority.Items.Count - 1 do
     begin
       if AnsiContainsStr(cbAuthority.Items[idx],  line) then
@@ -202,21 +202,20 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbWarrant.Items[lbWarrant.ItemIndex], '"@id":"');
 
   line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
-  line := line + indent + '"@type":"Authorization",' + recSep;
-  line := line + indent + '"propertyBundle":[' + recSep;
+  line := line + indent + '"@type":"uco-investigation:Authorization",' + recSep;
+  line := line + indent + '"facets":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + '-authorizationType",' + recSep;
-  line := line + RepeatString(indent, 2) + '"@authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
-  line := line + RepeatString(indent, 2) + '"authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
   lineID := extractID(cbAuthority.Items[cbAuthority.ItemIndex]);
-  line := line + RepeatString(indent, 2) + '"authorizationAuthority":"' + lineID + '",' + recSep;
-  line := line + RepeatString(indent, 2) + '"authorizationIssuedDate":"' + cbYear.Items[cbYear.ItemIndex];
+  line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationAuthority":"' + lineID + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationIssuedDate":"' + cbYear.Items[cbYear.ItemIndex];
   line := line + cbMonth.Items[cbMonth.ItemIndex];
   line := line + cbDay.Items[cbDay.ItemIndex] + '"' + recSep;
   line := line +   indent + '}' + recSep;
@@ -251,12 +250,12 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'givenName' then
+          if jreader.Value.AsString = 'uco-identity:givenName' then
             inName := True
           else
             inName := False;
 
-          if jreader.Value.AsString = 'familyName' then
+          if jreader.Value.AsString = 'uco-identity:familyName' then
             inFamilyName := True
           else
             inFamilyName := False;
@@ -269,7 +268,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then begin
-            idIdentity := Copy(jreader.Value.AsString, 1, 36);
+            idIdentity := Copy(jreader.Value.AsString, 1, 37);
           end;
 
           if inName then
@@ -320,12 +319,12 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'source' then
+          if jreader.Value.AsString = 'uco-observable:source' then
             inSource := True
           else
             inSource := False;
 
-          if jreader.Value.AsString = 'target' then
+          if jreader.Value.AsString = 'uco-observable:target' then
             inTarget := True
           else
             inTarget := False;
@@ -383,7 +382,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'name' then
+          if jreader.Value.AsString = 'uco-role:name' then
             inName := True
           else
             inName := False;
@@ -405,7 +404,7 @@ begin
           end;
 
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 36);
+            id := Copy(jreader.Value.AsString, 1, 37);
         end;
       end;
     finally

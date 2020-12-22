@@ -1,4 +1,4 @@
-unit caseGenerator_trace_facebook_account;
+unit caseGenerator_trace_app_account;
 
 interface
 
@@ -9,7 +9,7 @@ uses
   FMX.ListBox, FMX.Controls.Presentation, caseGenerator_util;
 
 type
-  TformTraceFacebookAccount = class(TForm)
+  TformTraceAppAccount = class(TForm)
     Label1: TLabel;
     lbFacebookAccount: TListBox;
     btnClose: TButton;
@@ -45,7 +45,7 @@ type
   end;
 
 var
-  formTraceFacebookAccount: TformTraceFacebookAccount;
+  formTraceAppAccount: TformTraceAppAccount;
 
 implementation
 
@@ -54,19 +54,19 @@ uses StrUtils;
 
 { TForm1 }
 
-procedure TformTraceFacebookAccount.btnDeletePhoneAccountClick(Sender: TObject);
+procedure TformTraceAppAccount.btnDeletePhoneAccountClick(Sender: TObject);
 begin
   lbFacebookAccount.Items.Delete(lbFacebookAccount.ItemIndex);
 end;
 
 
-procedure TformTraceFacebookAccount.btnModifyTraceClick(Sender: TObject);
+procedure TformTraceAppAccount.btnModifyTraceClick(Sender: TObject);
 begin
   if lbFacebookAccount.ItemIndex > - 1 then
     lbFacebookAccount.Items[lbFacebookAccount.ItemIndex] := prepareTrace('modify');
 end;
 
-procedure TformTraceFacebookAccount.lbFacebookAccountChange(Sender: TObject);
+procedure TformTraceAppAccount.lbFacebookAccountChange(Sender: TObject);
 var
   line: String;
 begin
@@ -79,7 +79,7 @@ begin
   end;
 end;
 
-function TformTraceFacebookAccount.prepareTrace(operation: String): String;
+function TformTraceAppAccount.prepareTrace(operation: String): String;
 var
   line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
@@ -123,26 +123,24 @@ begin
 
 end;
 
-procedure TformTraceFacebookAccount.btnCancelClick(Sender: TObject);
+procedure TformTraceAppAccount.btnCancelClick(Sender: TObject);
 begin
-  formTraceFacebookAccount.Close;
+  formTraceAppAccount.Close;
 end;
 
-procedure TformTraceFacebookAccount.btnCloseClick(Sender: TObject);
+procedure TformTraceAppAccount.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
   line:string;
   idx: integer;
 begin
-  //dir := GetCurrentDir;
-  // create file JSON uuidCase-phone_account.json
-  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
+  AssignFile(fileJSON, FpathCase + FuuidCase + '-traceAPP_ACCOUNT.json');
   if lbFacebookAccount.Items.Count > 0 then
   begin
     idx := 0;
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_FACEBOOK_ACCOUNT":[';
+    line := #9 + '"OBJECTS_APP_ACCOUNT":[';
     WriteLn(fileJSON, line);
 
     for idx:= 0 to lbFacebookAccount.Items.Count - 2 do
@@ -154,29 +152,29 @@ begin
     CloseFile(fileJSON);
   end
   else
-    deleteFile(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
+    deleteFile(FpathCase + FuuidCase + '-traceAPP_ACCOUNT.json');
 
-  formTraceFacebookAccount.Close;
+  formTraceAppAccount.Close;
 end;
 
-procedure TformTraceFacebookAccount.btnAddPhoneAccountClick(Sender: TObject);
+procedure TformTraceAppAccount.btnAddPhoneAccountClick(Sender: TObject);
 begin
     lbFacebookAccount.Items.Add(prepareTrace('add'));
     edID.Text := '';
     edIssuer.Text := '';
 end;
 
-procedure TformTraceFacebookAccount.SetpathCase(const Value: String);
+procedure TformTraceAppAccount.SetpathCase(const Value: String);
 begin
   FpathCase := Value;
 end;
 
-procedure TformTraceFacebookAccount.SetuuidCase(const Value: string);
+procedure TformTraceAppAccount.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
 end;
 
-procedure TformTraceFacebookAccount.ShowWithParamater(pathCase: String; uuidCase: String);
+procedure TformTraceAppAccount.ShowWithParamater(pathCase: String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine:string;
@@ -210,7 +208,7 @@ begin
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
 
-  formTraceFacebookAccount.ShowModal;
+  formTraceAppAccount.ShowModal;
 end;
 
 end.

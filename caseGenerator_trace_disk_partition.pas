@@ -129,9 +129,9 @@ begin
   begin
     recSep := #30 + #30;
     line := lbTrace.Items[lbTrace.ItemIndex];
-    edHashValue.Text := ExtractField(line, '"hashValue":"');
-    edHashSize.Text := ExtractField(line, '"sizeInBytes":"');
-    partitionType := ExtractField(line, '"diskPartitionType":"');
+    edHashValue.Text := ExtractField(line, '"uco-observable:hashValue":"');
+    edHashSize.Text := ExtractField(line, '"uco-observable:sizeInBytes":"');
+    partitionType := ExtractField(line, '"uco-observable:diskPartitionType":"');
 
     (*
     nPosLength := Pos('partitionLength',line);
@@ -183,47 +183,32 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
       guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-    line := line + indent + '"@type":"Trace",' + recSep;
-    line := line + indent + '"propertyBundle":[' + recSep;
+    line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
+    line := line + indent + '"uco-core:facets":[' + recSep;
     line := line + indent + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-DiskPartition", ' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":"DiskPartition", ' + recSep;
-    line := line +  RepeatString(indent, 2) + '"partitionID":"' + edID.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 2) + '"partitionOffset":"' + edOffset.Text + '",' + recSep;
-    line := line +  RepeatString(indent, 2) + '"partitionLength":"' + edLength.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"uco-observable:DiskPartition", ' + recSep;
+    line := line +  RepeatString(indent, 2) + '"uco-observable:partitionID":"' + edID.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 2) + '"uco-observable:partitionOffset":"' + edOffset.Text + '",' + recSep;
+    line := line +  RepeatString(indent, 2) + '"uco-observable::partitionLength":"' + edLength.Text + '"' + recSep;
     line := line + indent + '},' + recSep;
     line := line + indent + '{';
-    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-FileSystem",' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":"FileSystem",' + recSep;
-    line := line + RepeatString(indent, 2) + '"diskPartitionType":"' + cbType.Items[cbType.ItemIndex] + '" ' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":uco-observable:FileSystem",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:diskPartitionType":"' + cbType.Items[cbType.ItemIndex] + '" ' + recSep;
     line := line + indent + '},';
-    (*
-    for idx := 0  to lbPartition.Items.Count - 1 do
-    begin
-      lineConfiguration := lbPartition.Items[idx];
-      lineConfiguration := Copy(lineConfiguration, 1, Pos(sConfiguration, lineConfiguration) - 1) +
-        '"@id":"' + guidNoBraces + '-DiskPartition' + IntToStr(idx) + '" ,' + recSep +
-        Copy(lineConfiguration, Pos(sConfiguration, lineConfiguration), Length(lineConfiguration));
-      line := line + lineConfiguration + ',' + recSep;
-    end;
-    *)
-
-
     line := line + indent + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"type":"ContentData",' + recSep;
-    line := line + RepeatString(indent, 2) + '"SizeInBytes":"' + edHashSize.Text + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"hash":[' + recSep;
+    line := line + RepeatString(indent, 2) + '"type":"uco-observable:ContentData",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:SizeInBytes":"' + edHashSize.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:hash":[' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-Hash",' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"Hash",' + recSep;
-    line := line + RepeatString(indent, 2) + '"hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"hashValue":"' + edHashValue.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:hashMethod":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:hashValue":"' + edHashValue.Text + '"' + recSep;
     line := line + indent + '}' + recSep;
     line := line + indent + '] ' + recSep;
 

@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
   FMX.TreeView, System.JSON, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Edit,
-  FMX.ListBox, FMX.ScrollBox, FMX.Memo, StrUtils, IOUtils, caseGenerator_util;
+  FMX.ListBox, FMX.ScrollBox, FMX.Memo, StrUtils, IOUtils, caseGenerator_util,
+  FMX.Memo.Types;
 
 type
   TformMain = class(TForm)
@@ -69,7 +70,7 @@ type
     FuuidCase: String;
     FPathCase: String;
     FHomeCases: String;
-    procedure addRootChildren(Sender:TObject);{ Private declarations }
+    procedure addRootChildren(Sender:TObject; uuidGenerated: String);{ Private declarations }
     procedure addRootCase(Sender:TObject);
     procedure addChildren(itemParent: TTreeViewItem; itemText: String);
     function generateUUID(Sender: TObject): String;
@@ -93,65 +94,45 @@ var
 implementation
 
 uses
-  //caseGenerator_GeneralData,
   caseGenerator_identity, caseGenerator_location,
   caseGenerator_role, caseGenerator_tool, caseGenerator_trace_mobile,
   caseGenerator_trace_SIM, caseGenerator_trace_computer, caseGenerator_relationship,
   caseGenerator_investigative_action, caseGenerator_trace_file, caseGenerator_provenance_record,
-  caseGenerator_trace_phone_account, caseGenerator_trace_message, caseGenerator_trace_disk_partition,
+  caseGenerator_trace_phone_account, caseGenerator_trace_sms, caseGenerator_trace_disk_partition,
   caseGenerator_warrant, caseGenerator_overview, caseGenerator_trace_email_account,
   caseGenerator_GeneralData, caseGenerator_trace_mobile_account, caseGenerator_trace_disk,
-  caseGenerator_trace_facebook_account;
+  caseGenerator_trace_app_account;
 {$R *.fmx}
 
-procedure TformMain.addRootChildren(Sender: TObject);
+procedure TformMain.addRootChildren(Sender: TObject; uuidGenerated: String);
 var
   itemRoot: TTreeViewItem;
   itemContext, itemGeneric: TTreeViewItem;
   itemIdx, idx : Integer;
-  uuidGenerated, recSep, space4, space8, line: String;
+  recSep, space4, space8, line: String;
 begin
   recSep := #30 + #30;
   space4 := '    ';
   space8 := space4 + space4;
-  //itemIdx := 0;
   lbObjects.Items.Add(space4 + '"@context":{' + recSep);
-  lbObjects.Items.Add(space8 + '"@vocab":"http://case.example.org/core#",' + recSep);
-  lbObjects.Items.Add(space8 + '"case":"http://case.example.org/core#",' + recSep);
+  lbObjects.Items.Add(space8 + '"@vocab": "http://caseontology.org/core#",' + recSep);
+  lbObjects.Items.Add(space8 + '"case-investigation": "https://caseontology.org/ontology/case/investigation#",' + recSep);
   lbObjects.Items.Add(space8 + '"rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#",' + recSep);
   lbObjects.Items.Add(space8 + '"rdfs":"http://www.w3.org/2000/01/rdf-schema#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-action": "https://unifiedcyberontology.org/ontology/uco/action#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-core": "https://unifiedcyberontology.org/ontology/uco/core#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-observable": "https://unifiedcyberontology.org/ontology/uco/observable#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-tool": "https://unifiedcyberontology.org/ontology/uco/tool#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-types": "https://unifiedcyberontology.org/ontology/uco/types#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-vocabulary": "https://unifiedcyberontology.org/ontology/uco/vocabulary#",' + recSep);
   lbObjects.Items.Add(space8 + '"xsd":"http://www.w3.org/2001/XMLSchema#"},' + recSep);
-  lbObjects.Items.Add(space4 + '"@id":"bundle-' + generateUUID(Sender) + '",' + recSep);
-  lbObjects.Items.Add(space4 + '"@type":"Bundle",' + recSep);
-  lbObjects.Items.Add(space8 + '"description":"' + memoDescription.Text + '",' + recSep);
-  lbObjects.Items.Add(space4 + '"content":[' + recSep);
-  lbObjects.Items.Add(space8 + '{"@id":"' + FuuidCase + '-investigation",' + recSep);
-  lbObjects.Items.Add(space8 + '"@type":"Investigation",' + recSep);
-  lbObjects.Items.Add(space8 + '"name":"' + edName.Text + '",' + recSep);
-  lbObjects.Items.Add(space8 + '"focus":"' + edFocus.Text + '",' + recSep);
-  lbObjects.Items.Add(space8 + '"description":"' + memoShortDescription.Text + '",' + recSep);
-  lbObjects.Items.Add(space8 + '"object":["", ""]}]}' + recSep);
-  //itemRoot := tvObjects.ItemByIndex(0);
-  //itemContext := TTreeViewItem.Create(nil);
-  //itemContext.Text := '"@context":{' + recSep;
-  //itemContext.ParentItem :=itemRoot;
-  //tvObjects.InsertObject(0, itemContext);
-  //addChildren(itemContext, '"@vocab": "http://case.example.org/core#",' + recSep);
-  //itemContext := TTreeViewItem.Create(nil);
-  //itemContext.Text := '"@id": "bundle-' + generateUUID(Sender) + '",' + recSep;
-  //itemContext.ParentItem :=itemRoot;
-  //itemContext := TTreeViewItem.Create(nil);
-  //itemContext.Text := '"@type": "Bundle",' + recSep;
-  //itemContext.Parent :=itemRoot;
-  //itemContext := TTreeViewItem.Create(nil);
-  //itemContext.Text := '"@description":[' + recSep + formNewCase.memoDescription.Text + '"],' + recSep;
-  //itemContext.Parent :=itemRoot;
-  ////itemContext := TTreeViewItem.Create(nil);
-  ////itemContext.Text := '"content":' + recSep;
-  //itemContext.Parent :=itemRoot;
-  // FuuidCase is the unique identifier of the Case
-  //addChildren(itemContext, '{"@id": "investigation-' + FuuidCase + '",' + recSep);
-
+  lbObjects.Items.Add(space4 + '"@id":"bundle-' + uuidGenerated + '",' + recSep);
+  lbObjects.Items.Add(space4 + '"@type":"uco-core:Bundle",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-core:__caseNationalNumber":"' + edName.Text + '",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-core:focus":"' + edFocus.Text + '",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-core:name":"' + memoShortDescription.Text + '",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-core:description":"' + memoDescription.Text + '",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-core:object":["", ""]}]}' + recSep);
 end;
 
 procedure TformMain.addRootCase(Sender: TObject);
@@ -250,8 +231,6 @@ end;
 
 procedure TformMain.btnRoleClick(Sender: TObject);
 begin
-// debub I put the fix value to 43E9FE90-F5DC-47C4-95F6-3C5BD6DFAA77
-//  formIdentity.ShowWithParamater(uuidCase);
   if lbObjects.Items.Count = 0 then
     ShowMessage('Select a case or create a new case')
   else
@@ -307,8 +286,8 @@ begin
       6: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       7: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       8: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      9: formTraceFacebookAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      10: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      9: formTraceAppAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      10: formTraceSMS.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       else
         ShowMessage('Form has not implemented yet');
     end
@@ -350,8 +329,7 @@ begin
     memoShortDescription.Lines.Clear;
     memoDescription.Lines.Clear;
     uuidGenerated := generateUUID(Sender);
-    uuidGenerated := copy(uuidGenerated, 2, length(uuidGenerated) - 2);
-  // get rid of of { begining and end of the uuid
+    uuidGenerated := Copy(uuidGenerated, 2, Length(uuidGenerated) - 2);
     SetuuidCase(uuidGenerated); // set the private field FuuidCase
     SetPathCase(uuidGenerated); // set the property FCasePath, the path of the new Case
     ForceDirectories(FHomeCases + FPathCase); // create the folder of the new Case
@@ -365,18 +343,19 @@ begin
     else
     begin
       addRootCase(Sender);
-      addRootChildren(Sender);
+      addRootChildren(Sender, uuidGenerated);
     //sCase := lbObjects.Items.Text;
       recSep := #30 + #30;
       crlf := #13 + #10;
     //sCase := stringreplace(sCase, recSep, crlf,[rfReplaceAll]);
       lbObjects.Items.SaveToFile(FHomeCases + FPathCase +  FuuidCase + '-CASE.json');
-      caseName := ExtractField(lbObjects.Items.Text, '"name":"');
-      caseID := ExtractField(lbObjects.Items.Text, '"investigation-');
-      caseFocus := ExtractField(lbObjects.Items.Text, '"focus":"');
-      cbCases.Items.Add(caseFocus + ' ' + caseName + '@' + caseID);
+      caseName := ExtractField(lbObjects.Items.Text, '"uco-core:__caseNationalNumber":"');
+      //caseID := ExtractField(lbObjects.Items.Text, '"-investigation');
+      //caseID := uuidGenerated;
+      caseFocus := ExtractField(lbObjects.Items.Text, '"uco-core:focus":"');
+      cbCases.Items.Add(caseFocus + ' ' + caseName + '@' + uuidGenerated);
       // select the new case just added
-      cbCases.ItemIndex := cbCases.Items.IndexOf(caseFocus + ' ' + caseName + '@' + caseID)
+      cbCases.ItemIndex := cbCases.Items.IndexOf(caseFocus + ' ' + caseName + '@' + uuidGenerated)
     end;
   end;
 
@@ -393,8 +372,6 @@ end;
 
 procedure TformMain.btnIdentityClick(Sender: TObject);
 begin
-// debub I put the fix value to 43E9FE90-F5DC-47C4-95F6-3C5BD6DFAA77
-//  formIdentity.ShowWithParamater(uuidCase);
   if lbObjects.Items.Count = 0 then
     ShowMessage('Select a case or create a new case')
   else
@@ -403,8 +380,6 @@ end;
 
 procedure TformMain.btnRelationshipClick(Sender: TObject);
 begin
-// debub I put the fix value to 43E9FE90-F5DC-47C4-95F6-3C5BD6DFAA77
-//  formIdentity.ShowWithParamater(uuidCase);
   if lbObjects.Items.Count = 0 then
     ShowMessage('Select a case or create a new case')
   else
@@ -550,11 +525,11 @@ begin
     caseListString := TStringList.Create;
     caseListString.LoadFromFile(FHomeCases + FPathCase + caseID + '-CASE.json');
     line := caseListString.Text;
-    edName.Text := ExtractField(line, '"name":"');
-    edFocus.Text := ExtractField(line, '"focus":"');
-    memoDescription.Lines.Add(ExtractField(line, '"description":"'));
-    line := Copy(line, Pos('"description"', line) + 12, Length(line));
-    memoShortDescription.Lines.Add(ExtractField(line, '"description":"'));
+    edFocus.Text := ExtractField(line, '"uco-core:focus":"');
+    edName.Text := ExtractField(line, '"uco-core:__caseNationalNumber":"');
+    memoShortDescription.Lines.Add(ExtractField(line, '"uco-core:name":"'));
+    memoDescription.Lines.Add(ExtractField(line, '"uco-core:description":"'));
+
     //lbObjects.Items.Add(caseListString.Text);
     lbObjects.Items.LoadFromFile(FHomeCases + FPathCase + caseID + '-CASE.json');
   end;
@@ -596,9 +571,9 @@ begin
         if (searchResult.Attr and faDirectory) = 0 then
         begin
           caseFile.LoadFromFile(path + searchResult.Name);
-          caseName := ExtractField(caseFile.Text, '"name":"');
-          caseID := ExtractField(caseFile.Text, '"investigation-');
-          caseFocus := ExtractField(caseFile.Text, '"focus":"');
+          caseName := ExtractField(caseFile.Text, '"uco-core:__caseNationalNumber":"');
+          caseID := ExtractField(caseFile.Text, '"bundle-');
+          caseFocus := ExtractField(caseFile.Text, '"uco-core:focus":"');
           cbCases.Items.Add(caseFocus + ' ' + caseName + '@' + caseID);
         end
         else
@@ -659,34 +634,6 @@ begin
 
   ExtractAllFiles(FHomeCases);
   lbObjects.Visible := False;
-  //btnGenerateJSON.Visible := False;
-
-
-  {
-  resFiles := FindFirst(FCasesHome + '*-CASE.json', faAnyfile, searchResult);
-  if resFiles = 0 then
-  try
-    while resFiles = 0 do
-    begin
-      if (searchResult.Attr and faDirectory <> faDirectory) then
-      begin
-        caseList.LoadFromFile(path + searchResult.Name );
-        casePos := Pos('"*CASE*":', caseList.Text);
-        caseName := Copy(caseList.Text, casePos + 10, Length(caseList.Text));
-        casePos := Pos('",', caseName);
-        caseName := Copy(caseName, 1, casePos - 1);
-        casePos := Pos('"investigation-', caseList.Text);
-        caseID := Copy(caseList.Text, casePos + 15, Length(caseList.Text));
-        casePos := Pos('",', caseID);
-        caseID := Copy(caseID, 1, casePos - 1);
-        cbCases.Items.Add(caseName + '@' + caseID);
-      end;
-      resFiles := FindNext(searchResult);
-    end;
-  finally
-    FindClose(searchResult)
-  end;
-  }
 
 end;
 

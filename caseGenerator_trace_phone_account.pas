@@ -21,6 +21,8 @@ type
     btnModifyTrace: TButton;
     Label2: TLabel;
     edIssuer: TEdit;
+    Label4: TLabel;
+    edName: TEdit;
     procedure btnAddPhoneAccountClick(Sender: TObject);
     procedure btnDeletePhoneAccountClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -70,8 +72,9 @@ begin
   if lbPhoneAccount.ItemIndex > - 1 then
   begin
     line := lbPhoneAccount.Items[lbPhoneAccount.ItemIndex];
-    edPhoneNumber.Text := ExtractField(line, '"phoneNumber":"');
-    edIssuer.Text := ExtractField(line, '"accountIssuer":"');
+    edPhoneNumber.Text := ExtractField(line, '"uco-observable:phoneNumber":"');
+    edIssuer.Text := ExtractField(line, '"uco-observable:accountIssuer":"');
+    edName.Text := ExtractField(line, '"uco-observable:name":"');
   end;
 end;
 
@@ -92,22 +95,21 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbPhoneAccount.Items[lbPhoneAccount.ItemIndex], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
-    line := line + indent + '"@type":"Trace", ' + recSep;
-    line := line + indent + '"propertyBundle":[{' + recSep;
-    line := line + indent + '"@id":"' + guidNoBraces + '-Account", ' + recSep;
-    line := line + indent + '"@type":"Account", ' + recSep;
-    line := line + indent + '"accountIssuer":"' + edIssuer.Text + '", ' + recSep;
-    line := line + indent + '"isActive":"true"' + recSep + '},' + recSep;
+    line := line + indent + '"@type":"uco-observable:CyberItem", ' + recSep;
+    line := line + indent + '"facets":[{' + recSep;
+    line := line + indent + '"@type":"uco-observable:Account", ' + recSep;
+    line := line + indent + '"uco-observable:accountIssuer":"' + edIssuer.Text + '", ' + recSep;
+    line := line + indent + '"uco-observable:isActive":"true"' + recSep + '},' + recSep;
     line := line + indent + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"@id":"' + guidNoBraces + '-PhoneAccount", ' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":"PhoneAccount", ' + recSep;
-    line := line + RepeatString(indent, 2) + '"phoneNumber":"' + edPhoneNumber.Text + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"uco-observable:PhoneAccount", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:phoneNumber":"' + edPhoneNumber.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:name":"' + edName.Text + '"' + recSep;
     line := line + indent + '}' + recSep;
     line := line + ']}';
   end;

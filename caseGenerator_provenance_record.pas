@@ -189,9 +189,9 @@ begin
   begin
     lbObjects.Items.Clear;
     line := lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex];
-    edDescription.Text := ExtractField(line, '"description":"');
-    edExhibitNumber.Text := ExtractField(line, '"exhibitNumber":"');
-    creationDate := ExtractField(line, '"createdTime":"');
+    edDescription.Text := ExtractField(line, '"uco-observable:description":"');
+    edExhibitNumber.Text := ExtractField(line, '"uco-observable:exhibitNumber":"');
+    creationDate := ExtractField(line, '"uco-observable:createdTime":"');
     sDate := Copy(creationDate, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbPRDay.Items.Count - 1 do
@@ -224,7 +224,7 @@ begin
     end;
 
     timePR.Text := Copy(creationDate, 12, 8);
-    objectList := ExtractArray(line, '"object":[');
+    objectList := ExtractArray(line, '"uco-observable:object":[');
     exitLoop := false;
 
     for idx := 0 to objectList.Count -1 do
@@ -247,20 +247,20 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex], '"@id":"');
 
   line := '{' + recSep + indent + '"@id":"' + guidNoBraces + '",' + recSep;
-  line := line + indent + '"@type":"ProvenanceRecord",' + recSep;
-  line := line + indent + '"createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
+  line := line + indent + '"@type":"uco-investigation:ProvenanceRecord",' + recSep;
+  line := line + indent + '"uco-investigation:createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
   line := line +  cbPRMonth.Items[cbPRMonth.ItemIndex] + '-';
   line := line +  cbPRDay.Items[cbPRDay.ItemIndex] + 'T';
   line := line +  TimeToStr(timePR.Time) + 'Z", ' + recSep;
-  line := line +  indent + '"description":"' + edDescription.Text + '", ' + recSep;
-  line := line +  indent + '"exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
-  line := line +  indent + '"object":[';
+  line := line +  indent + '"uco-investigation:description":"' + edDescription.Text + '", ' + recSep;
+  line := line +  indent + '"uco-investigation:exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
+  line := line +  indent + '"uco-investigation:object":[';
   idx := 0;
   for idx:=0 to lbObjects.Count - 2 do
     line := line +  RepeatString(indent, 2)  + lbObjects.Items[idx] + ',';
@@ -297,7 +297,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'emailAddress' then
+          if jreader.Value.AsString = 'uco-observable:emailAddress' then
             inEmailAddress := True
           else
             inEmailAddress := False;
@@ -356,7 +356,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'fileName' then
+          if jreader.Value.AsString = 'uco-observable:fileName' then
             inName := True
           else
             inName := False;
@@ -366,7 +366,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'filePath' then
+          if jreader.Value.AsString = 'uco-observable:filePath' then
             inPath := True
           else
             inPath := False;
@@ -424,7 +424,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'manufacturer' then
+          if jreader.Value.AsString = 'uco-observable:manufacturer' then
             inManufacturer := True
           else
             inManufacturer := False;
@@ -434,7 +434,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'model' then
+          if jreader.Value.AsString = 'uco-observable:model' then
             inModel := True
           else
             inModel := False;
@@ -492,7 +492,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'diskPartitionType' then
+          if jreader.Value.AsString = 'uco-observable:diskPartitionType' then
             inDiskPartitionType := True
           else
             inDiskPartitionType := False;
@@ -502,7 +502,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'partitionLength' then
+          if jreader.Value.AsString = 'uco-observable:partitionLength' then
             inPartitionLength := True
           else
             inPartitionLength := False;
@@ -573,7 +573,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'application' then
+          if jreader.Value.AsString = 'uco-observable:application' then
             inApplication := True
           else
             inApplication := False;
@@ -583,7 +583,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'messageText' then
+          if jreader.Value.AsString = 'uco-observable:messageText' then
             inMessageText := True
           else
             inMessageText := False;
@@ -641,7 +641,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'manufacturer' then
+          if jreader.Value.AsString = 'uco-observable:manufacturer' then
             inManufacturer := True
           else
             inManufacturer := False;
@@ -651,12 +651,12 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'model' then
+          if jreader.Value.AsString = 'uco-observable:model' then
             inModel := True
           else
             inModel := False;
 
-          if jreader.Value.AsString = 'serialNumber' then
+          if jreader.Value.AsString = 'uco-observable:serialNumber' then
             inSerial := True
           else
             inSerial := False;
@@ -720,7 +720,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'phoneNumber' then
+          if jreader.Value.AsString = 'uco-observable:phoneNumber' then
             inPhoneNumber := True
           else
             inPhoneNumber := False;
