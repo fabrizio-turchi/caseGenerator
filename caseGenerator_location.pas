@@ -139,7 +139,7 @@ begin
 
   line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
   line := line + indent + '"@type":"uco-location:Location", ' + recSep;
-  line := line + indent +  '"propertyBundle":[' + recSep;
+  line := line + indent +  '"uco-core:facets":[' + recSep;
   line := line + indent + '{' + recSep;
   line := line + RepeatString(indent, 2) + '"@type":"' + guidNoBraces + 'uco-location:SimpleAddress", ' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-location:locality":"' + edLocality.Text + '", ' + recSep;

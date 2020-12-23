@@ -25,7 +25,8 @@ uses
   caseGenerator_trace_facebook_account in 'caseGenerator_trace_facebook_account.pas' {formTraceFacebookAccount},
   caseGenerator_trace_phone_account in 'caseGenerator_trace_phone_account.pas' {formTracePhoneAccount},
   caseGenerator_trace_disk in 'caseGenerator_trace_disk.pas' {formTraceDisk},
-  caseGenerator_trace_computer in 'caseGenerator_trace_computer.pas' {formTraceComputer};
+  caseGenerator_trace_computer in 'caseGenerator_trace_computer.pas' {formTraceComputer},
+  caseGenerator_trace_sms in 'caseGenerator_trace_sms.pas' {formTraceSMS};
 
 {$R *.res}
 
@@ -54,5 +55,6 @@ begin
   Application.CreateForm(TformTracePhoneAccount, formTracePhoneAccount);
   Application.CreateForm(TformTraceDisk, formTraceDisk);
   Application.CreateForm(TformTraceComputer, formTraceComputer);
+  Application.CreateForm(TformTraceSMS, formTraceSMS);
   Application.Run;
 end.

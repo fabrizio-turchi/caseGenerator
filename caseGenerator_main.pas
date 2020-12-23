@@ -97,11 +97,12 @@ uses
   caseGenerator_identity, caseGenerator_location,
   caseGenerator_role, caseGenerator_tool, caseGenerator_trace_mobile,
   caseGenerator_trace_SIM, caseGenerator_trace_computer, caseGenerator_relationship,
-  caseGenerator_investigative_action, caseGenerator_trace_file, caseGenerator_provenance_record,
-  caseGenerator_trace_phone_account, caseGenerator_trace_sms, caseGenerator_trace_disk_partition,
+  caseGenerator_investigative_action, caseGenerator_trace_file,
+  caseGenerator_provenance_record, caseGenerator_trace_phone_account,
+  caseGenerator_trace_sms, caseGenerator_trace_disk_partition,
   caseGenerator_warrant, caseGenerator_overview, caseGenerator_trace_email_account,
-  caseGenerator_GeneralData, caseGenerator_trace_mobile_account, caseGenerator_trace_disk,
-  caseGenerator_trace_app_account;
+  caseGenerator_GeneralData, caseGenerator_trace_mobile_account,
+  caseGenerator_trace_disk, caseGenerator_trace_app_account;
 {$R *.fmx}
 
 procedure TformMain.addRootChildren(Sender: TObject; uuidGenerated: String);
@@ -132,7 +133,7 @@ begin
   lbObjects.Items.Add(space8 + '"uco-core:focus":"' + edFocus.Text + '",' + recSep);
   lbObjects.Items.Add(space8 + '"uco-core:name":"' + memoShortDescription.Text + '",' + recSep);
   lbObjects.Items.Add(space8 + '"uco-core:description":"' + memoDescription.Text + '",' + recSep);
-  lbObjects.Items.Add(space8 + '"uco-core:object":["", ""]}]}' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-core:object":[' + recSep);
 end;
 
 procedure TformMain.addRootCase(Sender: TObject);
@@ -418,37 +419,16 @@ begin
       space4 := '    ';
       space8 := space4 + space4;
       subStr := 'investigation-';
-      guuidLength := 36;
+      guuidLength := 37; // includes the initial :
 
-//      if cbNewOntology.IsChecked then
-//      begin
-//        for idx:=0 to lbObjects.Items.Count -1 do
-//        begin
-//          if (AnsiContainsStr(lbObjects.Items[idx], subStr))then
-//          begin
-//
-//            line := lbObjects.Items[idx];
-//            line := Copy(line, 1, Pos(subStr, line)  - 1) + Copy(line, Pos(subStr, line) + Length(subStr), Length(line));
-//            line := Copy(line, 1, Pos('@id":"', line) + guuidLength + 5)  + '-' + Copy(subStr, 1, Length(subStr) - 1) +
-//              Copy(line, Pos('@id":"', line) + guuidLength + 6, Length(line));
-//            lbObjects.Items[idx] := line;
-//            break;
-//          end;
-//        end;
-//      end;
 
       for idx:=0 to lbObjects.Items.Count - 1 do
       begin
-        if (AnsiContainsStr(lbObjects.Items[idx], '"object":['))  then
-          memoJSON.Lines.Add('"object":[')
-        else
-        begin
-          line := lbObjects.Items[idx];
-          line := stringreplace(line, recSep, crlf,[rfReplaceAll]);
-          line := stringreplace(line, space8, '',[rfReplaceAll]);
-          line := stringreplace(line, space4, '',[rfReplaceAll]);
-          memoJSON.Lines.Add(line)
-        end;
+        line := lbObjects.Items[idx];
+        line := stringreplace(line, recSep, crlf,[rfReplaceAll]);
+        line := stringreplace(line, space8, '',[rfReplaceAll]);
+        line := stringreplace(line, space4, '',[rfReplaceAll]);
+        memoJSON.Lines.Add(line)
       end;
       WriteObjectCASE;
       memoJSON.Lines.Add(']}');
@@ -683,11 +663,6 @@ begin
   listFiles := TStringList.Create;
   listFiles.Sorted := True;   // files ordered by name
 
-  //path := GetCurrentDir + '\';
-(*  if cbNewOntology.IsChecked then
-    resFiles := FindFirst(FHomeCases + FpathCase + 'newontology_' + FuuidCase + '*.json', faAnyfile, searchResult)
-  else
-*)
   resFiles := FindFirst(FHomeCases + FpathCase + FuuidCase + '*.json', faAnyfile, searchResult);
 
   if resFiles = 0 then
@@ -725,35 +700,16 @@ begin
             objectsList.Add(line)
           else
             objectsList.Add(line + ',');
-            if (AnsiContainsStr(line, '"@id":"')) then
-            begin
-{
-*--- get rid of braces containing the guuid, whose length is 36 chars, so the line will have the form
-*--- "@id":"1C922B87-1CD2-492F-8B49-253762FEE934"
-}
-              objectID := Copy(line, Pos('"@id"', line), 6) + Copy(line, Pos('"@id"', line) + 6, 38);
-              //objectID := stringreplace(object  ID, '{', '', [rfReplaceAll]);
-              //objectID := stringreplace(objectID, '}', '', [rfReplaceAll]);
-              IDList.Add('{' + objectID + '},');
-            end;
           end;
         end;
   end;
 
-  for idx:=0 to IDList.Count - 2 do
-    memoJSON.Lines.Add(IDList[idx]);
-
-  if IDList.Count > 0 then
-  begin
-    line := Trim(IDList[idx]);
-    line := Copy(line, 1, Length(line) - 1); // get rid of comma
-  end;
 
 
-  if objectsList.Count > 0 then
-    memoJSON.Lines.Add(line + ']},')
-  else
-    memoJSON.Lines.Add(line + ']}');
+//  if objectsList.Count > 0 then
+//    memoJSON.Lines.Add(line + ']},')
+//  else
+//    memoJSON.Lines.Add(line + ']}');
 
 
   crlf := #13 + #10;

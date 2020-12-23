@@ -189,9 +189,9 @@ begin
   begin
     lbObjects.Items.Clear;
     line := lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex];
-    edDescription.Text := ExtractField(line, '"uco-observable:description":"');
-    edExhibitNumber.Text := ExtractField(line, '"uco-observable:exhibitNumber":"');
-    creationDate := ExtractField(line, '"uco-observable:createdTime":"');
+    edDescription.Text := ExtractField(line, '"uco-investigation:description":"');
+    edExhibitNumber.Text := ExtractField(line, '"uco-investigation:exhibitNumber":"');
+    creationDate := ExtractField(line, '"uco-investigation:createdTime":"');
     sDate := Copy(creationDate, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbPRDay.Items.Count - 1 do
@@ -224,7 +224,7 @@ begin
     end;
 
     timePR.Text := Copy(creationDate, 12, 8);
-    objectList := ExtractArray(line, '"uco-observable:object":[');
+    objectList := ExtractArray(line, '"uco-investigation:object":[');
     exitLoop := false;
 
     for idx := 0 to objectList.Count -1 do

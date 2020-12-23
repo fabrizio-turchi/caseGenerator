@@ -218,8 +218,9 @@ var
 begin
   if cbTargetRole.ItemIndex > -1 then
   begin
+    edTargetID.Text := '';
     line := cbTargetRole.Items[cbTargetRole.ItemIndex];
-    line := Copy(line, Pos('@{', line) +1, Length(line));
+    line := Copy(line, Pos('@', line) + 1, Length(line));
     edTargetID.Text :=  line;
   end;
 end;
@@ -1388,7 +1389,8 @@ begin
     ShowMessage('ID Source and/or Target are missing!')
   else
   begin
-    lbRelationship.Items.Add(prepareObjectCaseLine('add'));
+    lbRelationship.Items.Add(prepareObjectCaseLine
+    ('add'));
     edNameRelationship.Text := '';
     edSourceID.Text := '';
     edTargetID.Text := '';

@@ -158,8 +158,8 @@ object formOverview: TformOverview
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 17
-    Viewport.Width = 285.000000000000000000
-    Viewport.Height = 46.000000000000000000
+    Viewport.Width = 289.000000000000000000
+    Viewport.Height = 50.000000000000000000
   end
   object cbPreview: TCheckBox
     Position.X = 472.000000000000000000

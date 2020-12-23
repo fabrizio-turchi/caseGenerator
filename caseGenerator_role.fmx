@@ -32,8 +32,8 @@ object formRole: TformRole
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbRoleChange
-    Viewport.Width = 521.000000000000000000
-    Viewport.Height = 137.000000000000000000
+    Viewport.Width = 517.000000000000000000
+    Viewport.Height = 133.000000000000000000
   end
   object edName: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]

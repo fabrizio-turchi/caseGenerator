@@ -12,7 +12,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.TreeView,
   FMX.Layouts, FMX.ScrollBox, FMX.Memo, FMX.Edit, FMX.Controls.Presentation,
-  FMX.StdCtrls, System.StrUtils, caseGenerator_util, FMX.Objects;
+  FMX.StdCtrls, System.StrUtils, caseGenerator_util, FMX.Objects, FMX.Memo.Types;
 
 type
   TformOverview = class(TForm)
@@ -295,7 +295,7 @@ var
   itemNode: TTreeViewItem;
   idx, idy : Integer;
 begin
-  lblResult.Text := 'Traces';
+  lblResult.Text := 'Cyber items';
   tvTraces.Clear;
   edWho.Text := '';
   edRole.Text := '';
@@ -304,17 +304,17 @@ begin
   memoWhat.Lines.Clear;
   edInstrument.Text := '';
   edObject.Text := '';
-  addTreeViewRoot('Traces', tvTraces);
+  addTreeViewRoot('Cyber items', tvTraces);
 
   if FlistMobiles.Count > 0 then
   begin
     itemText := 'Mobile devices (' + IntToStr(FlistMobiles.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistMobiles.Count - 1 do
     begin
-      model := ExtractField(FlistMobiles[idx], '"model":"');
-      manufacturer := ExtractField(FlistMobiles[idx], '"manufacturer":"');
-      msisdn := ExtractField(FlistMobiles[idx], '"MSISDN":"');
+      model := ExtractField(FlistMobiles[idx], '"uco-observable:model":"');
+      manufacturer := ExtractField(FlistMobiles[idx], '"uco-observable:manufacturer":"');
+      msisdn := ExtractField(FlistMobiles[idx], '"uco-observable:MSISDN":"');
       addTreeViewItemtoRoot(model+ ' ' + manufacturer + ' (' + msisdn + ')', tvTraces, itemText, itemNode);
     end;
   end;
@@ -322,7 +322,7 @@ begin
   if FlistSIMs.Count > 0 then
   begin
     itemText := 'SIMs (' + IntToStr(FlistSIMs.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistSIMs.Count - 1 do
     begin
       simForm := ExtractField(FlistSIMs[idx], '"SIMForm":"');
@@ -334,11 +334,11 @@ begin
   if FlistFiles.Count > 0 then
   begin
     itemText := 'FILEs (' + IntToStr(FlistFiles.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistFiles.Count - 1 do
     begin
-      fileName := ExtractField(FlistFiles[idx], '"fileName":"');
-      size := ExtractField(FlistFiles[idx], '"sizeInBytes":"');
+      fileName := ExtractField(FlistFiles[idx], '"uco-observable:fileName":"');
+      size := ExtractField(FlistFiles[idx], '"uco-observable:sizeInBytes":"');
       addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
     end;
   end;
@@ -346,11 +346,11 @@ begin
   if FlistDiskPartitions.Count > 0 then
   begin
     itemText := 'DISK PARTITIONs (' + IntToStr(FlistDiskPartitions.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistDiskPartitions.Count - 1 do
     begin
-      fileName := ExtractField(FlistDiskPartitions[idx], '"diskPartitionType":"');
-      size := ExtractField(FlistDiskPartitions[idx], '"partitionLength":"');
+      fileName := ExtractField(FlistDiskPartitions[idx], '"uco-observable:diskPartitionType":"');
+      size := ExtractField(FlistDiskPartitions[idx], '"uco-observable:partitionLength":"');
       addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
     end;
   end;
@@ -358,11 +358,11 @@ begin
   if FlistComputers.Count > 0 then
   begin
     itemText := 'COMPUTERs (' + IntToStr(FlistComputers.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistComputers.Count - 1 do
     begin
-      manufacturer := ExtractField(FlistComputers[idx], '"manufacturer":"');
-      model := ExtractField(FlistComputers[idx], '"model":"');
+      manufacturer := ExtractField(FlistComputers[idx], '"uco-observable:manufacturer":"');
+      model := ExtractField(FlistComputers[idx], '"uco-observable:model":"');
       addTreeViewItemtoRoot(manufacturer + ' (' + model + ')', tvTraces, itemText, itemNode);
     end;
   end;
@@ -370,10 +370,10 @@ begin
   if FlistEmailAccounts.Count > 0 then
   begin
     itemText := 'EMAIL ACCOUNTs (' + IntToStr(FlistEmailAccounts.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistEmailAccounts.Count - 1 do
     begin
-      fileName := ExtractField(FlistEmailAccounts[idx], '"emailAddress":"');
+      fileName := ExtractField(FlistEmailAccounts[idx], '"uco-observable:emailAddress":"');
       addTreeViewItemtoRoot(fileName, tvTraces, itemText, itemNode);
     end;
   end;
@@ -381,11 +381,11 @@ begin
   if FlistMessages.Count > 0 then
   begin
     itemText := 'SMSs (' + IntToStr(FlistMessages.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistMessages.Count - 1 do
     begin
-      fileName := ExtractField(FlistMessages[idx], '"application":"');
-      size := ExtractField(FlistMessages[idx], '"messageText":"');
+      fileName := ExtractField(FlistMessages[idx], '"uco-observable:application":"');
+      size := ExtractField(FlistMessages[idx], '"uco-observable:messageText":"');
       addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
     end;
   end;
@@ -393,11 +393,11 @@ begin
   if FlistPhoneAccounts.Count > 0 then
   begin
     itemText := 'PHONE ACCOUNTs (' + IntToStr(FlistPhoneAccounts.Count) + ')';
-    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Traces', nil);
+    itemNode := addTreeViewItemtoRoot(itemText, tvTraces, 'Cyber items', nil);
     for idx := 0 to FlistPhoneAccounts.Count - 1 do
     begin
-      fileName := ExtractField(FlistPhoneAccounts[idx], '"phoneNumber":"');
-      size := ExtractField(FlistPhoneAccounts[idx], '"accountIssuer":"');
+      fileName := ExtractField(FlistPhoneAccounts[idx], '"uco-observable:phoneNumber":"');
+      size := ExtractField(FlistPhoneAccounts[idx], '"uco-observable:accountIssuer":"');
       addTreeViewItemtoRoot(fileName + ' (' + size + ')', tvTraces, itemText, itemNode);
     end;
   end;
@@ -467,9 +467,9 @@ begin
   { extract name, descsription and startTIme from all Investigative_Actions}
   for idx:=0 to FListActions.Count - 1 do
   begin
-    sDescription := ExtractField(FListActions[idx], '"description":"');
-    sDate   := Copy(ExtractField(FListActions[idx], '"startTime":"'), 1, 10);
-    sTime := Copy(ExtractField(FListActions[idx], '"startTime":"'), 12, 8);
+    sDescription := ExtractField(FListActions[idx], '"uco-action:description":"');
+    sDate   := Copy(ExtractField(FListActions[idx], '"uco-action:startTime":"'), 1, 10);
+    sTime := Copy(ExtractField(FListActions[idx], '"uco-action:startTime":"'), 12, 8);
 
     addTreeViewItemToRoot(sDescription + ' (' + sDate + ' ' + sTime + ')', tvActions, 'Digital Evidence Timeline', nil);
   end;
@@ -531,22 +531,22 @@ begin
     tvTraces.Clear;
     lblResult.Text := 'Result/Output';
     line := FListActions[idx - 1];
-    IdPerformer := ExtractField(line, '"performer":"');
-    name := ExtractField(line, '"name":"');
-    IdLocation := ExtractField(line, '"location":"');
-    IdInstrument := ExtractField(line, '"instrument":"');
-    startTime := ExtractField(line, '"startTime":"');
-    endTime := ExtractField(line, '"endTime":"');
-    description := ExtractField(line, '"description":"');
-    IdObject := ExtractArray(line, '"object":[');
-    IdResults := ExtractArray(line, '"result":[');
+    IdPerformer := ExtractField(line, '"uco-action:performer":"');
+    name := ExtractField(line, '"uco-action:name":"');
+    IdLocation := ExtractField(line, '"uco-action:location":"');
+    IdInstrument := ExtractField(line, '"uco-action:instrument":"');
+    startTime := ExtractField(line, '"uco-action:startTime":"');
+    endTime := ExtractField(line, '"uco-action:endTime":"');
+    description := ExtractField(line, '"uco-action:description":"');
+    IdObject := ExtractArray(line, '"uco-action:object":[');
+    IdResults := ExtractArray(line, '"uco-action:result":[');
     // extract IdRole from Relationship
     for idx := 0 to FlistRelationships.Count - 1 do
     begin
       if AnsiContainsStr(FlistRelationships[idx], IdPerformer) then
       begin
-        IdIdentity := ExtractField(FlistRelationships[idx], '"source":"');
-        IdRole   := ExtractField(FlistRelationships[idx], '"target":"');
+        IdIdentity := ExtractField(FlistRelationships[idx], '"uco-observable:source":"');
+        IdRole   := ExtractField(FlistRelationships[idx], '"uco-observable:target":"');
         break
       end;
     end;
@@ -555,8 +555,8 @@ begin
     begin
       if AnsiContainsStr(FlistIdentities[idx], IdIdentity) then
       begin
-        edWho.Text := ExtractField(FlistIdentities[idx], '"givenName":"') + ' ' +
-                      ExtractField(FlistIdentities[idx], '"familyName":"');
+        edWho.Text := ExtractField(FlistIdentities[idx], '"uco-identity:givenName":"') + ' ' +
+                      ExtractField(FlistIdentities[idx], '"uco-identity:familyName":"');
         break
       end;
     end;
@@ -565,7 +565,7 @@ begin
     begin
       if AnsiContainsStr(FlistRoles[idx], IdRole) then
       begin
-        edRole.Text := ExtractField(FlistRoles[idx], '"name":"');
+        edRole.Text := ExtractField(FlistRoles[idx], '"uco-role:name":"');
         break
       end;
     end;
@@ -574,10 +574,10 @@ begin
     begin
       if AnsiContainsStr(FlistLocations[idx], IdLocation) then
       begin
-        edWhere.Text := ExtractField(FlistLocations[idx], '"street":"') + ' ' +
-                      ExtractField(FlistLocations[idx], '"postalCode":"') + ' ' +
-                      ExtractField(FlistLocations[idx], '"locality":"') + ' ' +
-                      ExtractField(FlistLocations[idx], '"region":"');
+        edWhere.Text := ExtractField(FlistLocations[idx], '"suco-location:treet":"') + ' ' +
+                      ExtractField(FlistLocations[idx], '"uco-location:postalCode":"') + ' ' +
+                      ExtractField(FlistLocations[idx], '"uco-location:locality":"') + ' ' +
+                      ExtractField(FlistLocations[idx], '"uco-location:region":"');
         break;
       end;
     end;
@@ -595,7 +595,7 @@ begin
       begin
         if AnsiContainsStr(FlistWarrants[idx], IdInstrument) then
         begin
-          edInstrument.Text := ExtractField(FlistWarrants[idx], '"authorizationIdentifier":"');
+          edInstrument.Text := ExtractField(FlistWarrants[idx], '"uco-investigation:authorizationIdentifier":"');
           break;
         end;
       end;
@@ -606,7 +606,7 @@ begin
       begin
         if AnsiContainsStr(FlistTools[idx], IdInstrument) then
         begin
-          edInstrument.Text := ExtractField(FlistTools[idx], '"name":"');
+          edInstrument.Text := ExtractField(FlistTools[idx], '"uco-tool:name":"');
           break;
         end;
       end;
@@ -616,7 +616,7 @@ begin
     begin
       if AnsiContainsStr(FlistProvenanceRecords[idx], IdObject[0]) then
       begin
-        edObject.Text := ExtractField(FlistProvenanceRecords[idx], '"description":"');
+        edObject.Text := ExtractField(FlistProvenanceRecords[idx], '"uco-investigation:description":"');
         break;
       end;
     end;
@@ -648,7 +648,7 @@ begin
       begin
         if AnsiContainsStr(FlistProvenanceRecords[idy], IdResults[idx]) then
         begin
-            itemsObjectPR := ExtractArray(FlistProvenanceRecords[idy], '"object":[');
+            itemsObjectPR := ExtractArray(FlistProvenanceRecords[idy], '"uco-investigation:object":[');
             if itemsObjectPR.Count = 0 then
             begin
               ShowMessage('Error: Provenance Record without Objects!');
@@ -662,9 +662,9 @@ begin
               begin
                 if AnsiContainsStr(FlistMobiles[idk], itemsObjectPR[idn]) then
                 begin
-                  itemsMobile.Add(ExtractField(FlistMobiles[idk], '"model":"') +
-                    ' ' +  ExtractField(FlistMobiles[idk], '"manufacturer":"') +
-                    ' (' + ExtractField(FlistMobiles[idk], '"MSISDN":"') + ')');
+                  itemsMobile.Add(ExtractField(FlistMobiles[idk], '"uco-observable:model":"') +
+                    ' ' +  ExtractField(FlistMobiles[idk], '"uco-observable:manufacturer":"') +
+                    ' (' + ExtractField(FlistMobiles[idk], '"uco-observable:MSISDN":"') + ')');
                     lObjectFound := True;
                     break;
                 end;
@@ -689,8 +689,8 @@ begin
                   break;
                 if AnsiContainsStr(FlistFiles[idk], itemsObjectPR[idn]) then
                 begin
-                  itemsFile.Add(ExtractField(FlistFiles[idk], '"fileName":"') +
-                    ' (' +  ExtractField(FlistFiles[idk], '"sizeInBytes":"') + ')');
+                  itemsFile.Add(ExtractField(FlistFiles[idk], '"uco-observable:fileName":"') +
+                    ' (' +  ExtractField(FlistFiles[idk], '"uco-observable:sizeInBytes":"') + ')');
                     lObjectFound := True;
                     break;
                 end;
@@ -715,8 +715,8 @@ begin
                 sId := ExtractField(FlistMessages[idk], '"@id":"');
                 if sId = itemsObjectPR[idn] then
                 begin
-                  itemsMessage.Add(ExtractField(FlistMessages[idk], '"application":"') +
-                  ' (' + ExtractField(FlistMessages[idk], '"messageText":"') + ')');
+                  itemsMessage.Add(ExtractField(FlistMessages[idk], '"uco-observable:application":"') +
+                  ' (' + ExtractField(FlistMessages[idk], '"uco-observable:messageText":"') + ')');
                   lObjectFound := True;
                   break;
                 end;
@@ -728,8 +728,8 @@ begin
                   break;
                 if AnsiContainsStr(FlistPhoneAccounts[idk], itemsObjectPR[idn]) then
                 begin
-                  itemsPhoneAccount.Add(ExtractField(FlistPhoneAccounts[idk], '"phoneNumber":"') +
-                  ' (' + ExtractField(FlistPhoneAccounts[idk], '"accountIssuer":"') + ')');
+                  itemsPhoneAccount.Add(ExtractField(FlistPhoneAccounts[idk], '"uco-observable:phoneNumber":"') +
+                  ' (' + ExtractField(FlistPhoneAccounts[idk], '"uco-observable:accountIssuer":"') + ')');
                   lObjectFound := True;
                   break;
                 end;
@@ -741,8 +741,8 @@ begin
                   break;
                 if AnsiContainsStr(FlistDiskPartitions[idk], itemsObjectPR[idn]) then
                 begin
-                  itemsDiskPartition.Add(ExtractField(FlistDiskPartitions[idk], '"diskPartitionType":"') +
-                  ' (' + ExtractField(FlistDiskPartitions[idk], '"partitionLength":"') + ')');
+                  itemsDiskPartition.Add(ExtractField(FlistDiskPartitions[idk], '"uco-observable:diskPartitionType":"') +
+                  ' (' + ExtractField(FlistDiskPartitions[idk], '"uco-observable:partitionLength":"') + ')');
                   lObjectFound := True;
                   break;
                 end;
@@ -754,8 +754,8 @@ begin
                   break;
                 if AnsiContainsStr(FlistComputers[idk], itemsObjectPR[idn]) then
                 begin
-                  itemsComputers.Add(ExtractField(FlistComputers[idk], '"manufacturer":"') +
-                  ' (' + ExtractField(FlistComputers[idx], '"model":"') + ')');
+                  itemsComputers.Add(ExtractField(FlistComputers[idk], '"uco-observable:manufacturer":"') +
+                  ' (' + ExtractField(FlistComputers[idx], '"uco-observable:model":"') + ')');
                   lObjectFound := True;
                   break;
                 end;
@@ -836,10 +836,12 @@ begin
 end;
 
 procedure TformOverview.tvTracesChange(Sender: TObject);
+const
+  extPreview = 'jpg-jpeg-png-gif-xxx"';
 var
   idx: Integer;
   itemNode: TTreeViewItem;
-  itemText, lineFile, filePath, fileExtension: String;
+  itemText, imgExt, lineFile, fileExtension, fileLocalPath: String;
 begin
   idx := tvTraces.Selected.GlobalIndex;
   itemNode := tvTraces.ItemByGlobalIndex(idx);
@@ -857,15 +859,18 @@ begin
   if lineFile = '' then
   else
   begin
-    filePath := ExtractField(lineFile, '"filePath":"');
-    filePath := stringreplace(filePath, '/', PathDelim,[rfReplaceAll]);
-    filePath := stringreplace(filePath, '\', PathDelim,[rfReplaceAll]);
-    fileExtension := ExtractField(lineFile, '"extension":"');
-    if (AnsiLowerCase(fileExtension) = 'jpg')  and (cbPreview.IsChecked) then
-       if FileExists(FPathCase + filePath + itemText + '.' + fileExtension) then
+    fileLocalPath := ExtractField(lineFile, '"uco-observable:__fileLocalPath":"');
+    fileLocalPath := stringreplace(fileLocalPath, '/', PathDelim,[rfReplaceAll]);
+    fileLocalPath := stringreplace(fileLocalPath, '\', PathDelim,[rfReplaceAll]);
+    fileExtension := ExtractField(lineFile, '"uco-observable:extension":"');
+    if True then
+
+    imgExt :=  ExtractField(extPreview, fileExtension);
+    if (length(imgExt) > 0) and (cbPreview.IsChecked) then
+       if FileExists(FPathCase + fileLocalPath + itemText + '.' + fileExtension) then
        begin
         imgpreview.Visible := True;
-        imgPreview.Bitmap.LoadFromFile(FPathCase + filePath + itemText + '.' + fileExtension);
+        imgPreview.Bitmap.LoadFromFile(FPathCase + fileLocalPath + itemText + '.' + fileExtension);
        end;
 
   end;
