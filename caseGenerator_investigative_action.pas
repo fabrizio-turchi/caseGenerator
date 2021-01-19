@@ -435,7 +435,7 @@ begin
 
     edDescription.Text := ExtractField(line, '"uco-action:description":"');
 
-    startTime := ExtractField(line, '"uco-action:startTime":"');
+    startTime := ExtractDataField(line, '"uco-action:startTime":');
     sDate := Copy(startTime, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbStartDay.Items.Count - 1 do
@@ -469,7 +469,7 @@ begin
 
     timeStart.Text := Copy(startTime, 12, 8);
 
-    endTime := ExtractField(line, '"uco-action:endTime":"');
+    endTime := ExtractDataField(line, '"uco-action:endTime":');
     sDate := Copy(endTime, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbEndDay.Items.Count - 1 do
@@ -606,7 +606,7 @@ end;
 
 function TformInvestigativeAction.prepareItemInvestigativeAction(operation: String): String;
 var
-  line, recSep, indent, nameTool, idValue, guidNoBraces: string;
+  line, recSep, indent, nameTool, idValue, guidNoBraces, actionTime: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -629,14 +629,20 @@ begin
     line := line + indent +  '"@type":"uco-action:Action",' + recSep;
     line := line + indent +  '"uco-action:name":"' + cbActionsName.Items[cbActions.ItemIndex] + '",' + recSep;
     line := line + indent + '"uco-action:description":"' + edDescription.Text + '",' + recSep;
-    line := line + indent + '"uco-action:startTime":"' + cbStartYear.Items[cbStartYear.ItemIndex] + '-';
-    line := line + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
-    line := line + cbStartDay.Items[cbStartDay.ItemIndex] + 'T';
-    line := line + TimeToStr(timeStart.Time) + 'Z", ' + recSep;
-    line := line + indent + '"uco-action:endTime":"' + cbEndYear.Items[cbEndYear.ItemIndex] + '-';
-    line := line + cbEndMonth.Items[cbEndMonth.ItemIndex] + '-';
-    line := line + cbEndDay.Items[cbEndDay.ItemIndex] + 'T';
-    line := line + TimeToStr(timeEnd.Time) + 'Z",' + recSep;
+    actionTime := cbStartYear.Items[cbStartYear.ItemIndex] + '-';
+    actionTime := actionTime + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
+    actionTime := actionTime +  cbStartDay.Items[cbStartDay.ItemIndex] + 'T';
+    actionTime := actionTime +  TimeToStr(timeStart.Time) + 'Z"';
+    line := line + indent + '"uco-action:startTime":' + recSep;
+    line := line + '{"@type":"xsd:dateTime",' + recSep;
+    line := line + '"@value":"' + actionTime + '"},' + recSep;
+    actionTime := cbStartYear.Items[cbEndYear.ItemIndex] + '-';
+    actionTime := actionTime + cbEndMonth.Items[cbEndMonth.ItemIndex] + '-';
+    actionTime := actionTime +  cbEndDay.Items[cbEndDay.ItemIndex] + 'T';
+    actionTime := actionTime +  TimeToStr(timeEnd.Time) + 'Z"';
+    line := line + '"uco-action:endTime":'  + recSep;
+    line := line + '{"@type":"xsd:dateTime",' + recSep;
+    line := line + '"@value":"' + actionTime + '"},' + recSep;
     line := line + indent + '"uco-core:facets":[';
     line := line + indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"uco-action:ActionReferences",' + recSep;

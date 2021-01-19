@@ -16,7 +16,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 209.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
-    TabOrder = 9
+    TabOrder = 10
     object Label2: TLabel
       Position.X = 8.000000000000000000
       Position.Y = 24.000000000000000000
@@ -215,6 +215,25 @@ object formTraceFile: TformTraceFile
       Text = 'Extraction path'
       TabOrder = 20
     end
+    object cbTag: TComboBox
+      Items.Strings = (
+        'Application'
+        'Archives'
+        'Audio'
+        'Binary'
+        'Configuration'
+        'Database'
+        'Document'
+        'Image'
+        'Text'
+        'Video'
+        'Uncategorized')
+      Position.X = 480.000000000000000000
+      Position.Y = 80.000000000000000000
+      Size.Width = 249.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
   end
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
@@ -233,7 +252,7 @@ object formTraceFile: TformTraceFile
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 6
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
@@ -243,7 +262,7 @@ object formTraceFile: TformTraceFile
     Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
+    TabOrder = 7
     Text = 'Add trace'
     OnClick = btnAddToolClick
   end
@@ -253,7 +272,7 @@ object formTraceFile: TformTraceFile
     Size.Width = 120.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 7
+    TabOrder = 8
     Text = 'Delete trace'
     OnClick = btnDeleteToolClick
   end
@@ -263,7 +282,7 @@ object formTraceFile: TformTraceFile
     Size.Width = 769.000000000000000000
     Size.Height = 177.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
+    TabOrder = 9
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
@@ -279,7 +298,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'File'
-    TabOrder = 11
+    TabOrder = 12
   end
   object Label7: TLabel
     Position.X = 248.000000000000000000
@@ -288,7 +307,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Directory'
-    TabOrder = 3
+    TabOrder = 4
   end
   object Label8: TLabel
     Position.X = 432.000000000000000000
@@ -297,7 +316,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Size (bytes)'
-    TabOrder = 2
+    TabOrder = 3
   end
   object panelHash: TPanel
     Position.X = 24.000000000000000000
@@ -306,7 +325,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 137.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'calloutpanelstyle'
-    TabOrder = 13
+    TabOrder = 14
     object cbHashMethod: TComboBox
       Items.Strings = (
         'SHA256'
@@ -371,7 +390,7 @@ object formTraceFile: TformTraceFile
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Hash file'
-    TabOrder = 10
+    TabOrder = 11
   end
   object btnModifyTrace: TButton
     Position.X = 344.000000000000000000
@@ -379,14 +398,14 @@ object formTraceFile: TformTraceFile
     Size.Width = 105.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 14
+    TabOrder = 15
     Text = 'Modify trace'
     OnClick = btnModifyTraceClick
   end
   object btnCancel: TButton
     Position.X = 399.000000000000000000
     Position.Y = 611.000000000000000000
-    TabOrder = 16
+    TabOrder = 17
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
@@ -401,5 +420,14 @@ object formTraceFile: TformTraceFile
     TabOrder = 1
     Viewport.Width = 295.000000000000000000
     Viewport.Height = 40.000000000000000000
+  end
+  object Label14: TLabel
+    Position.X = 432.000000000000000000
+    Position.Y = 90.000000000000000000
+    Size.Width = 81.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Tag/Kind'
+    TabOrder = 2
   end
 end

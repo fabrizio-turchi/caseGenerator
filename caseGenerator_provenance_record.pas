@@ -191,7 +191,7 @@ begin
     line := lbProvenanceRecord.Items[lbProvenanceRecord.ItemIndex];
     edDescription.Text := ExtractField(line, '"uco-investigation:description":"');
     edExhibitNumber.Text := ExtractField(line, '"uco-investigation:exhibitNumber":"');
-    creationDate := ExtractField(line, '"uco-investigation:createdTime":"');
+    creationDate := ExtractDataField(line, '"uco-investigation:createdTime":');
     sDate := Copy(creationDate, 1, 10);
     sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbPRDay.Items.Count - 1 do
@@ -254,10 +254,12 @@ begin
 
   line := '{' + recSep + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   line := line + indent + '"@type":"uco-investigation:ProvenanceRecord",' + recSep;
-  line := line + indent + '"uco-investigation:createdTime":"' + cbPRYear.Items[cbPRYear.ItemIndex] + '-';
+  line := line + indent + '"uco-investigation:createdTime":' + recSep;
+  line := line + '{"@type":"xsd:dateTime",' + recSep;
+  line := line + '"@value":"' +  cbPRYear.Items[cbPRYear.ItemIndex] + '-';
   line := line +  cbPRMonth.Items[cbPRMonth.ItemIndex] + '-';
   line := line +  cbPRDay.Items[cbPRDay.ItemIndex] + 'T';
-  line := line +  TimeToStr(timePR.Time) + 'Z", ' + recSep;
+  line := line +  TimeToStr(timePR.Time) + 'Z"}, ' + recSep;
   line := line +  indent + '"uco-investigation:description":"' + edDescription.Text + '", ' + recSep;
   line := line +  indent + '"uco-investigation:exhibitNumber":"' + edExhibitNumber.Text + '", ' + recSep;
   line := line +  indent + '"uco-investigation:object":[';

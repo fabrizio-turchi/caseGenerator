@@ -5,6 +5,7 @@ uses
   System.Classes, System.SysUtils, System.StrUtils;
 
 function ExtractField(line, subLine: String): String;
+function ExtractDataField(line, subLine: String): String;
 function ExtractArray(line, subline: String): TStringList;
 function ExtractArrayID(line, subline: String): TStringList;
 function RepeatString(const s: String; count: cardinal): String;
@@ -31,6 +32,32 @@ begin
     fieldValue := stringreplace(fieldValue, recSep, '',[rfReplaceAll]);
     fieldEnd   := Pos('"', fieldValue);
     Result := Copy(fieldValue, 1, fieldEnd - 1);
+  end;
+
+end;
+
+function ExtractDataField(line, subLine: String): String;
+var
+  fieldValue, dataValue, recSep: String;
+  fieldStart, fieldEnd: Integer;
+begin
+  recSep := #30 + #30;
+  fieldStart := Pos(subLine, line); // search pos of subLine inside line
+  if fieldStart = 0 then // not found
+    Result := ''
+  else
+  begin
+    dataValue := Copy(line, fieldStart + Length(subLine), Length(line));
+    fieldStart := Pos('"@value":"', dataValue); // search pos of data/time value inside dataValue
+    if fieldStart = 0 then // not found
+      Result := ''
+    else
+    begin
+      fieldValue := Copy(dataValue, fieldStart + Length('"@value":"'), Length(dataValue));
+      fieldValue := stringreplace(fieldValue, recSep, '',[rfReplaceAll]);
+      fieldEnd   := Pos('"', fieldValue);
+      Result := Copy(fieldValue, 1, fieldEnd - 1);
+    end;
   end;
 
 end;

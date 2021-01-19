@@ -80,8 +80,8 @@ object formMain: TformMain
     Size.Height = 137.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 23
-    Viewport.Width = 381.000000000000000000
-    Viewport.Height = 133.000000000000000000
+    Viewport.Width = 385.000000000000000000
+    Viewport.Height = 137.000000000000000000
   end
   object btnSaveToJSON: TButton
     Position.X = 560.000000000000000000
@@ -98,9 +98,9 @@ object formMain: TformMain
     Top = 328
   end
   object btnTrace: TButton
-    Position.X = 26.000000000000000000
-    Position.Y = 396.000000000000000000
-    Size.Width = 73.000000000000000000
+    Position.X = 216.000000000000000000
+    Position.Y = 394.000000000000000000
+    Size.Width = 59.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 10
@@ -122,9 +122,9 @@ object formMain: TformMain
       'Facebook account'
       'SMS'
       'Chat')
-    Position.X = 107.000000000000000000
+    Position.X = 24.000000000000000000
     Position.Y = 395.000000000000000000
-    Size.Width = 166.000000000000000000
+    Size.Width = 185.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 11
@@ -161,8 +161,8 @@ object formMain: TformMain
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    Viewport.Width = 115.000000000000000000
-    Viewport.Height = 26.000000000000000000
+    Viewport.Width = 119.000000000000000000
+    Viewport.Height = 30.000000000000000000
     object Label2: TLabel
       Position.X = 3.000000000000000000
       Position.Y = 75.000000000000000000
@@ -313,8 +313,8 @@ object formMain: TformMain
     Size.Height = 49.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 20
-    Viewport.Width = 493.000000000000000000
-    Viewport.Height = 45.000000000000000000
+    Viewport.Width = 497.000000000000000000
+    Viewport.Height = 49.000000000000000000
   end
   object Label7: TLabel
     Position.X = 16.000000000000000000
@@ -338,8 +338,8 @@ object formMain: TformMain
     Size.Height = 73.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 19
-    Viewport.Width = 493.000000000000000000
-    Viewport.Height = 69.000000000000000000
+    Viewport.Width = 497.000000000000000000
+    Viewport.Height = 73.000000000000000000
   end
   object btnTimeline: TButton
     Position.X = 24.000000000000000000
