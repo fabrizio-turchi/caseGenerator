@@ -401,10 +401,6 @@
             <Form>formTraceEmailAccount</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="caseGenerator_trace_facebook_account.pas">
-            <Form>formTraceFacebookAccount</Form>
-            <FormType>fmx</FormType>
-        </DCCReference>
         <DCCReference Include="caseGenerator_trace_phone_account.pas">
             <Form>formTracePhoneAccount</Form>
             <FormType>fmx</FormType>
@@ -419,6 +415,14 @@
         </DCCReference>
         <DCCReference Include="caseGenerator_trace_sms.pas">
             <Form>formTraceSMS</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="caseGenerator_trace_application_account.pas">
+            <Form>formTraceApplicationAccount</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="caseGenerator_trace_application.pas">
+            <Form>formTraceApplication</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
@@ -447,9 +451,9 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="OSX32\Debug\caseGenerator" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="OSX32\Debug\caseGenerator.info.plist" Configuration="Debug" Class="ProjectOSXInfoPList">
                     <Platform Name="OSX32">
-                        <RemoteName>caseGenerator</RemoteName>
+                        <RemoteName>Info.plist</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -496,14 +500,14 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libpcre.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
+                <DeployFile LocalName="OSX32\Debug\caseGenerator" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="OSX32">
+                        <RemoteName>caseGenerator</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="OSX32\Debug\caseGenerator.info.plist" Configuration="Debug" Class="ProjectOSXInfoPList">
-                    <Platform Name="OSX32">
-                        <RemoteName>Info.plist</RemoteName>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libpcre.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

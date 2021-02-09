@@ -1,4 +1,4 @@
-unit caseGenerator_trace_message;
+unit caseGenerator_trace_email;
 
 interface
 
@@ -11,7 +11,7 @@ uses
   FMX.Memo.Types;
 
 type
-  TformTraceMessage = class(TForm)
+  TformTraceEmail = class(TForm)
     Label1: TLabel;
     lbMessage: TListBox;
     btnClose: TButton;
@@ -21,36 +21,31 @@ type
     panelFrom: TPanel;
     Label5: TLabel;
     Label8: TLabel;
-    cbMobileFrom: TComboBox;
+    cbEmailFrom: TComboBox;
     panelTo: TPanel;
-    cbMobileTo: TComboBox;
+    cbEmailTo: TComboBox;
     Label11: TLabel;
     Label13: TLabel;
     edApplication: TEdit;
     memoMessageText: TMemo;
-    btnAddMobile: TButton;
-    btnRemoveMobile: TButton;
-    lbMobile: TListBox;
-    cbSentMonth: TComboBox;
-    timeSent: TTimeEdit;
-    cbSentYear: TComboBox;
+    cbMonth: TComboBox;
+    emailTime: TTimeEdit;
+    cbYear: TComboBox;
     Label3: TLabel;
     btnCancel: TButton;
     btnModifyMessage: TButton;
-    cbSentDay: TComboBox;
+    cbDay: TComboBox;
     Label2: TLabel;
-    Label4: TLabel;
-    cbMessageType: TComboBox;
     procedure btnAddMessageClick(Sender: TObject);
     procedure btnRemoveMessageClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure btnAddMobileClick(Sender: TObject);
+    procedure btnAddEmailClick(Sender: TObject);
     procedure btnRemoveMobileClick(Sender: TObject);
     procedure lbMessageChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnModifyMessageClick(Sender: TObject);
-    procedure lbMobileChange(Sender: TObject);
+    procedure lbMessagesChange(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -59,10 +54,7 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    procedure readTraceFromFile;
-    procedure readTraceMobileFromFile;
-    procedure readTraceFacebookAccountFromFile;
-    procedure readTracePhoneAccountFromFile;
+    procedure readTraceEmailAccountFromFile;
     function  extractID(line: String): String;
     function extractLastID(line: String): String;
     function prepareItemMessage(operation: String): String;
@@ -73,7 +65,7 @@ type
   end;
 
 var
-  formTraceMessage: TformTraceMessage;
+  formTraceEmail: TformTraceEmail;
 
 implementation
 
@@ -82,50 +74,50 @@ uses StrUtils;
 
 { TForm1 }
 
-procedure TformTraceMessage.btnRemoveMessageClick(Sender: TObject);
+procedure TformTraceEmail.btnRemoveMessageClick(Sender: TObject);
 begin
   if lbMessage.ItemIndex > -1 then
     lbMessage.Items.Delete(lbMessage.ItemIndex);
 end;
 
-procedure TformTraceMessage.btnRemoveMobileClick(Sender: TObject);
+procedure TformTraceEmail.btnRemoveMobileClick(Sender: TObject);
 begin
   lbMobile.Items.Delete(lbMobile.ItemIndex);
 end;
 
 
-function TformTraceMessage.extractID(line: String): String;
+function TformTraceEmail.extractID(line: String): String;
 begin
   Result := Copy(line, Pos('@', line) + 1, Length(line));
 end;
 
 
 
-function TformTraceMessage.extractLastID(line: String): String;
+function TformTraceEmail.extractLastID(line: String): String;
 begin
    Result := Copy(line, LastDelimiter('@', line) + 1, Length(line));
 end;
 
-procedure TformTraceMessage.FormShow(Sender: TObject);
+procedure TformTraceEmail.FormShow(Sender: TObject);
 var
   idx: Integer;
 begin
   for idx:=2000 to 2020 do
-    cbSentYear.Items.Add(IntToStr(idx));
+    cbYear.Items.Add(IntToStr(idx));
 
   edApplication.Text := '';
   memoMessageText.Text := '';
-  cbSentDay.ItemIndex := -1;
-  cbSentMonth.ItemIndex := -1;
-  cbSentYear.ItemIndex := -1;
-  readTraceFromFile;
-  cbMobileFrom.ItemIndex := -1;
-  cbMobileTo.ItemIndex := -1;
-  lbMobile.Items.Clear;
+  cbDay.ItemIndex := -1;
+  cbMonth.ItemIndex := -1;
+  cbYear.ItemIndex := -1;
+  readTraceEmailAccountFromFile;
+  cbEmailFrom.ItemIndex := -1;
+  cbEmailTo.ItemIndex := -1;
+  lbMessage.Items.Clear;
 
 end;
 
-function TformTraceMessage.JsonTokenToString(const t: TJsonToken): string;
+function TformTraceEmail.JsonTokenToString(const t: TJsonToken): string;
 begin
   case t of
     TJsonToken.None: Result := 'None';
@@ -157,7 +149,7 @@ begin
 end;
 
 
-procedure TformTraceMessage.lbMessageChange(Sender: TObject);
+procedure TformTraceEmail.lbMessageChange(Sender: TObject);
 var
   line, sentDate, sDay, sMonth, sYear, sDate, messageType: String;
   idx: Integer;
@@ -236,7 +228,7 @@ begin
 
 end;
 
-procedure TformTraceMessage.lbMobileChange(Sender: TObject);
+procedure TformTraceEmail.lbMessagesChange(Sender: TObject);
 var
   line: String;
   idx: Integer;
@@ -258,9 +250,9 @@ begin
 
 end;
 
-function TformTraceMessage.prepareItemMessage(operation: String): String;
+function TformTraceEmail.prepareItemMessage(operation: String): String;
 var
-  line, recSep, idLine, indent, guidNoBraces: string;
+  line, recSep, idLine, indent, guidNoBraces, msgTime: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -279,16 +271,33 @@ begin
     guidNoBraces :=  ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"@id":"');
 
   line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
+
+		"uco-observable:body":" <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> <html xmlns='http://www.w3.org/1999/xhtml' dir='ltr'>  <head> <style type='text/css'>  .link:link, .link:active, .link:visited {        color:#2672ec !important;        text-decoration:none !important;  }   .link:hover {        color:#4284ee !important;        text-decoration:none !important;  } </style> <title></title> </head> <body> <table dir='ltr'>       <tr><td id='i1' style='padding:0; font-family:'Segoe UI Semibold', 'Segoe UI Bold', 'Segoe UI', 'Helvetica Neue Medium', Arial, sans-serif; font-size:17px; color:#707070;'>Microsoft account</td></tr>       <tr><td id='i2' style='padding:0; font-family:'Segoe UI Light', 'Segoe UI', 'Helvetica Neue Medium', Arial, sans-serif; font-size:41px; color:#2672ec;'>Verify your email address</td></tr>       <tr><td id='i4' style='padding:0; padding-top:25px; font-family:'Segoe UI', Tahoma, Verdana, Arial, sans-serif; font-size:14px; color:#2a2a2a;'>To finish setting up your Microsoft account, we just need to make sure this email address is yours.</td></tr>       <tr><td style='padding:0; padding-top:25px; font-family:'Segoe UI', Tahoma, Verdana, Arial, sans-serif; font-size:14px; color:#2a2a2a;'>To verify your email address use this security code: <span style='font-family:'Segoe UI Bold', 'Segoe UI Semibold', 'Segoe UI', 'Helvetica Neue Medium', Arial, sans-serif; font-size:14px; font-weight:bold; color:#2a2a2a;'>7182</span></td></tr>       <tr><td id='i6' style='padding:0; padding-top:25px; font-family:'Segoe UI', Tahoma, Verdana, Arial, sans-serif; font-size:14px; color:#2a2a2a;'>If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake.</td></tr>       <tr><td style='padding:0; padding-top:25px; font-family:'Segoe UI', Tahoma, Verdana, Arial, sans-serif; font-size:14px; color:#2a2a2a;'>Thanks,</td></tr>       <tr><td id='i8' style='padding:0; font-family:'Segoe UI', Tahoma, Verdana, Arial, sans-serif; font-size:14px; color:#2a2a2a;'>The Microsoft account team</td></tr> </table> </body> </html>",
+		"uco-observable:subject":"Verify your email address",
+		"uco-observable:__status":"Intact"
+		}
+	]
+},
   line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
   line := line + indent + '"uco-core:facets":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Message",' + recSep;
+  line := line + RepeatString(indent, 2) + '"@type":"uco-observable:EmailMessage",' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-observable:application":"' + edApplication.Text + '",' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:SMSmessage":"true",' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:messageText":"' + memoMessageText.Text + '", ' + recSep;
-  idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
-  line := line + RepeatString(indent, 2) + '"uco-observable:from":"' + extractID(idLine) + '", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:to":[' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:sentTime":{' + recSep;
+  line := line + '"@type":"xsd:dateTime",' + recSep;
+  msgTime := cbYear.Items[cbYear.ItemIndex]  + '-';
+  msgTime := msgTime +  cbMonth.Items[cbMonth.ItemIndex]  + '-';
+  msgTime := msgTime +  cbDay.Items[cbDay.ItemIndex]  + 'T';
+  msgTime := msgTime +  TimeToStr(emailTimen.Time);
+  line := line + '"@value":"' + msgTime + '"},' recSep;
+  idLine := cbEmailFrom.Items[cbEmailFrom.ItemIndex];
+  line := line + '"uco-observable:fromRef":"' + idLine + '",' + recSep;
+  idLine := cbEmailTo.Items[cbEmailFrom.ItemIndex];
+  line := line + '"uco-observable:toRef":["' + idLine + '"],' + recSep;
+  line := line + '"uco-observable:ccRefs":[],' + recSep;
+  line := line + '"uco-observable:bccRefs":[],' + recSep;
+  line := line + '"uco-observable:body":"' + memoMessageText.Text + '",' + recSep;
+
   idx := 0;
   for idx:=0 to lbMobile.Items.Count - 2 do
     line := line  + RepeatString(indent, 2) + lbMobile.Items[idx] + ',';
@@ -302,21 +311,13 @@ begin
   Result := line;
 end;
 
-procedure TformTraceMessage.readTraceFromFile;
-
-begin
-  readTraceMobileFromFile;
-  readTracePhoneAccountFromFile;
-  readTraceFacebookAccountFromFile;
-end;
-
-procedure TformTraceMessage.readTraceMobileFromFile;
+procedure TformTraceEmail.readTraceEmailAccountFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
-  inID, inModel, inMSISDN: Boolean;
-  id, model, msisdn: string;
+  inID, inEmailAddress: Boolean;
+  id, emailAddress: string;
   listTrace: TStringList;
   idx, nHypens: integer;
 begin
@@ -324,10 +325,10 @@ begin
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-traceMOBILE.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMOBILE.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
@@ -343,83 +344,10 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'model' then
-            inModel := True
+          if jreader.Value.AsString = 'uco-observable:EmailAccount' then
+            inEmailAddress := True
           else
-            inModel := False;
-
-          if jreader.Value.AsString = 'MSISDN' then
-            inMSISDN := True
-          else
-            inMSISDN := False;
-        end;
-        if JsonTokenToString(jreader.TokenType) = 'String' then
-        begin
-          if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);  // only the guuid
-
-          if inModel then
-            model := jreader.Value.AsString;
-
-          if inMSISDN then
-          begin
-            msisdn := jreader.Value.AsString;
-            nHypens := CountOccurrences('-', id);
-            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
-                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
-            if nHypens > 4  then
-              id := Copy(id, 1, LastDelimiter('-', id) - 1);
-            cbMobileFrom.Items.Add(model + ' ' + msisdn + '@' + id);
-            cbMobileTo.Items.Add(model + ' ' + msisdn + '@' + id);
-          end;
-
-        end;
-      end;
-    finally
-      jreader.Free;
-      sreader.Free;
-    end;
-  end;
-end;
-
-
-procedure TformTraceMessage.readTracePhoneAccountFromFile;
-var
-  json, recSep, crlf: string;
-  sreader: TStringReader;
-  jreader: TJsonTextReader;
-  inID, inPhoneNumber: Boolean;
-  id, phoneNumber: string;
-  listTrace: TStringList;
-  idx, nHypens: integer;
-begin
-  //dir := GetCurrentDir;
-  recSep := #30 + #30;
-  crlf := #13 + #10;
-  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json') then
-  begin
-    listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-tracePHONE_ACCOUNT.json');
-    //JSON string here
-    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
-    try
-      sreader := TStringReader.Create(json);
-      jreader := TJsonTextReader.Create(sreader);
-
-      while jreader.Read do
-      begin
-        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
-        begin
-          if jreader.Value.AsString = '@id' then
-            inID := True
-          else
-            inID := False;
-
-          if jreader.Value.AsString = 'phoneNumber' then
-            inPhoneNumber := True
-          else
-            inPhoneNumber := False;
+            inEmailAddress := False;
 
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
@@ -435,9 +363,9 @@ begin
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
 
-            phoneNumber := jreader.Value.AsString;
-            cbMobileFrom.Items.Add('Phone account ' + phoneNumber + '@' + id);
-            cbMobileTo.Items.Add('Phone account ' + phoneNumber + '@' + id);
+            emailAddress := jreader.Value.AsString;
+            cbEmailFrom.Items.Add('Email account ' + emailAddress + '@' + id);
+            cbEmailTo.Items.Add('Email account ' + emailAddress + '@' + id);
           end;
 
         end;
@@ -450,73 +378,9 @@ begin
 
 end;
 
-procedure TformTraceMessage.readTraceFacebookAccountFromFile;
-var
-  json, recSep, crlf: string;
-  sreader: TStringReader;
-  jreader: TJsonTextReader;
-  inAccountID, inID: Boolean;
-  accountID, id: string;
-  listTrace: TStringList;
-  idx, nHypens: integer;
-begin
-  //dir := GetCurrentDir;
-  recSep := #30 + #30;
-  crlf := #13 + #10;
-  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json') then
-  begin
-    listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
-    //JSON string here
-    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
-    try
-      sreader := TStringReader.Create(json);
-      jreader := TJsonTextReader.Create(sreader);
 
-      while jreader.Read do
-      begin
-        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
-        begin
-          if jreader.Value.AsString = 'accountID' then
-            inAccountID := True
-          else
-            inAccountID := False;
 
-          if jreader.Value.AsString = '@id' then
-            inID := True
-          else
-            inID := False;
-        end;
-
-        if JsonTokenToString(jreader.TokenType) = 'String' then
-        begin
-          if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
-
-          if inAccountID then
-          begin
-            accountID := jreader.Value.AsString;
-            nHypens := CountOccurrences('-', id);
-            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
-                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
-            if nHypens > 4  then
-              id := Copy(id, 1, LastDelimiter('-', id) - 1);
-            accountID := stringreplace(accountID, '@', '#',[rfReplaceAll]);
-            cbMobileFrom.Items.Add('Facebook account ' + accountID + '@' + id);
-            cbMobileTo.Items.Add('Facebook account ' + accountID + '@' + id);
-          end;
-        end;
-      end;
-    finally
-      jreader.Free;
-      sreader.Free;
-    end;
-  end;
-
-end;
-
-procedure TformTraceMessage.btnAddMobileClick(Sender: TObject);
+procedure TformTraceEmail.btnAddEmailClick(Sender: TObject);
 var
   line: String;
 begin
@@ -531,12 +395,12 @@ begin
 
 end;
 
-procedure TformTraceMessage.btnCancelClick(Sender: TObject);
+procedure TformTraceEmail.btnCancelClick(Sender: TObject);
 begin
-  formTraceMessage.Close;
+  formTraceSMS.Close;
 end;
 
-procedure TformTraceMessage.btnCloseClick(Sender: TObject);
+procedure TformTraceEmail.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
   line: String;
@@ -565,48 +429,47 @@ begin
   else
     deleteFile(FpathCase + FuuidCase + '-traceMESSAGE.json');
 
-  formTraceMessage.Close;
+  formTraceSMS.Close;
 end;
 
-procedure TformTraceMessage.btnModifyMessageClick(Sender: TObject);
+procedure TformTraceEmail.btnModifyMessageClick(Sender: TObject);
 begin
   if lbMessage.ItemIndex > - 1 then
     lbMessage.Items[lbMessage.ItemIndex] := prepareItemMessage('modify');
 end;
 
-procedure TformTraceMessage.btnAddMessageClick(Sender: TObject);
+procedure TformTraceEmail.btnAddMessageClick(Sender: TObject);
 var
   line, recSep, idLine: string;
   Uid: TGUID;
   idx: Integer;
 begin
-  if (lbMobile.Items.Count = 0) or (cbMobileFrom.ItemIndex = -1)  then
-    ShowMessage('Mobile FROM or/and Mobile Source empty!')
+  if (cbEmailFrom.ItemIndex = 0-1 or (cbEmailTo.ItemIndex = -1)  then
+    ShowMessage('Email address FROM or TO is empty!')
   else
   begin
     lbMessage.Items.Add(prepareItemMessage('add'));
     edApplication.Text := '';
     memoMessageText.Lines.Clear;
-    cbMobileFrom.ItemIndex := -1;
-    cbMobileTo.ItemIndex := -1;
-    cbSentDay.ItemIndex := -1;
-    cbSentMonth.ItemIndex := -1;
-    cbSentYear.ItemIndex := -1;
-    lbMobile.Items.Clear;
+    cbEmailFrom.ItemIndex := -1;
+    cbEmailTo.ItemIndex := -1;
+    cbDay.ItemIndex := -1;
+    cbMonth.ItemIndex := -1;
+    cbYear.ItemIndex := -1;
   end;
 end;
 
-procedure TformTraceMessage.SetpathCase(const Value: String);
+procedure TformTraceEmail.SetpathCase(const Value: String);
 begin
   FpathCase := Value;
 end;
 
-procedure TformTraceMessage.SetuuidCase(const Value: string);
+procedure TformTraceEmail.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
 end;
 
-procedure TformTraceMessage.ShowWithParamater(pathCase: String; uuidCase: String);
+procedure TformTraceEmail.ShowWithParamater(pathCase: String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine: String;
@@ -615,9 +478,9 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-identity.json
-  if FileExists(FpathCase + FuuidCase + '-traceMESSAGE.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceSMS.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json', CP_UTF8);
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceSMS.json', CP_UTF8);
     Reset(fileJSON);
     lbMessage.Items.Clear;
     while not Eof(fileJSON) do
@@ -640,7 +503,7 @@ begin
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
 
-  formTraceMessage.ShowModal;
+  formTraceSMS.ShowModal;
 end;
 
 end.

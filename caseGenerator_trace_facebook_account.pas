@@ -103,6 +103,7 @@ begin
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"uco-observable:CyberItem", ' + recSep;
+    line := line + indent + '"uco-core:name":"Facebook",' + recSep;
     line := line + indent + '"uco-core:facets":[' + recSep;
     line := line + indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":""uco-observable:Account", ' + recSep;

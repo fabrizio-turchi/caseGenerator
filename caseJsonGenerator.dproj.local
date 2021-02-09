@@ -17,14 +17,14 @@
     <Transaction>2018/05/10 16:00:59.000.606,=Z:\CASE\generator\Unit1.pas</Transaction>
     <Transaction>2018/05/10 16:01:35.000.554,Z:\CASE\generator\Unit1.fmx=Z:\CASE\generator\caseGenerator_identity.fmx</Transaction>
     <Transaction>2018/05/10 16:01:35.000.554,Z:\CASE\generator\Unit1.pas=Z:\CASE\generator\caseGenerator_identity.pas</Transaction>
-    <Transaction>2018/05/10 16:02:14.000.924,Z:\CASE\generator\caseGenerator_u2.fmx=Z:\CASE\generator\caseGenerator_GeneralData.fmx</Transaction>
     <Transaction>2018/05/10 16:02:14.000.924,Z:\CASE\generator\caseGenerator_u2.pas=Z:\CASE\generator\caseGenerator_GeneralData.pas</Transaction>
+    <Transaction>2018/05/10 16:02:14.000.924,Z:\CASE\generator\caseGenerator_u2.fmx=Z:\CASE\generator\caseGenerator_GeneralData.fmx</Transaction>
     <Transaction>2018/05/10 16:15:10.000.361,Z:\CASE\generator\caseGenerator_u1.pas=Z:\CASE\generator\caseGenerator_main.pas</Transaction>
     <Transaction>2018/05/10 16:15:10.000.361,Z:\CASE\generator\caseGenerator_u1.fmx=Z:\CASE\generator\caseGenerator_main.fmx</Transaction>
-    <Transaction>2018/05/16 15:04:40.000.066,Z:\CASE\generator\caseGenerator_identity.pas=Z:\CASE\generator\caseGenerator_location.pas</Transaction>
     <Transaction>2018/05/16 15:04:40.000.066,Z:\CASE\generator\caseGenerator_identity.fmx=Z:\CASE\generator\caseGenerator_location.fmx</Transaction>
-    <Transaction>2018/05/16 15:05:14.000.703,Z:\CASE\generator\caseGenerator_location.pas=Z:\CASE\generator\caseGenerator_identity.pas</Transaction>
+    <Transaction>2018/05/16 15:04:40.000.066,Z:\CASE\generator\caseGenerator_identity.pas=Z:\CASE\generator\caseGenerator_location.pas</Transaction>
     <Transaction>2018/05/16 15:05:14.000.703,Z:\CASE\generator\caseGenerator_location.fmx=Z:\CASE\generator\caseGenerator_identity.fmx</Transaction>
+    <Transaction>2018/05/16 15:05:14.000.703,Z:\CASE\generator\caseGenerator_location.pas=Z:\CASE\generator\caseGenerator_identity.pas</Transaction>
     <Transaction>2018/05/16 15:40:19.000.160,=Z:\CASE\generator\Unit1.pas</Transaction>
     <Transaction>2018/05/16 15:40:43.000.072,=Z:\CASE\generator\caseGenerator_location.pas</Transaction>
     <Transaction>2018/05/17 10:35:28.000.462,=Z:\CASE\generator\caseGenerator_role.pas</Transaction>
@@ -50,14 +50,17 @@
     <Transaction>2018/06/19 16:07:04.000.012,Z:\CASE\generator\caseGenerator_trace_phone_account.pas=Z:\CASE\generator\caseGenerator_trace_mobile_account.pas</Transaction>
     <Transaction>2018/06/19 16:07:04.000.012,Z:\CASE\generator\caseGenerator_trace_phone_account.fmx=Z:\CASE\generator\caseGenerator_trace_mobile_account.fmx</Transaction>
     <Transaction>2018/06/21 13:57:39.000.652,=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
-    <Transaction>2018/10/31 15:11:30.000.208,Z:\CASE\generator\caseGenerator_trace_facebook_account.pas=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
     <Transaction>2018/10/31 15:11:30.000.208,Z:\CASE\generator\caseGenerator_trace_facebook_account.fmx=Z:\CASE\generator\caseGenerator_trace_phone_account.fmx</Transaction>
+    <Transaction>2018/10/31 15:11:30.000.208,Z:\CASE\generator\caseGenerator_trace_facebook_account.pas=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
     <Transaction>2018/10/31 15:43:24.000.342,=Z:\CASE\generator\caseGenerator_trace_phone_account.pas</Transaction>
-    <Transaction>2019/02/22 21:14:09.000.624,Z:\CASE\generator\caseGenerator_trace_computer.pas=Z:\CASE\generator\caseGenerator_trace_disk.pas</Transaction>
     <Transaction>2019/02/22 21:14:09.000.624,Z:\CASE\generator\caseGenerator_trace_computer.fmx=Z:\CASE\generator\caseGenerator_trace_disk.fmx</Transaction>
+    <Transaction>2019/02/22 21:14:09.000.624,Z:\CASE\generator\caseGenerator_trace_computer.pas=Z:\CASE\generator\caseGenerator_trace_disk.pas</Transaction>
     <Transaction>2019/02/26 15:47:08.000.787,=Z:\CASE\generator\caseGenerator_trace_computer.pas</Transaction>
     <Transaction>2020/12/23 11:09:27.000.200,=Z:\CASE\generator\caseGenerator_trace_sms.pas</Transaction>
     <Transaction>2021/01/14 16:51:09.000.295,Z:\CASE\generator\caseGenerator.dproj=Z:\CASE\generator\caseJsonGenerator.dproj</Transaction>
+    <Transaction>2021/02/09 15:22:36.834,Z:\CASE\generator\caseGenerator_trace_application_account.fmx=Z:\CASE\generator\caseGenerator_trace_facebook_account.fmx</Transaction>
+    <Transaction>2021/02/09 15:22:36.834,Z:\CASE\generator\caseGenerator_trace_application_account.pas=Z:\CASE\generator\caseGenerator_trace_facebook_account.pas</Transaction>
+    <Transaction>2021/02/09 15:51:02.081,=Z:\CASE\generator\caseGenerator_trace_application.pas</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<PcnMacOSX iOSSimulator="iPhone5"/>
@@ -110,8 +113,6 @@
     <File Path="caseGenerator_trace_disk_partition.fmx"/>
     <File Path="caseGenerator_trace_email_account.pas"/>
     <File Path="caseGenerator_trace_email_account.fmx"/>
-    <File Path="caseGenerator_trace_facebook_account.pas"/>
-    <File Path="caseGenerator_trace_facebook_account.fmx"/>
     <File Path="caseGenerator_trace_file.pas"/>
     <File Path="caseGenerator_trace_file.fmx"/>
     <File Path="caseGenerator_trace_message.pas"/>
@@ -129,5 +130,9 @@
     <File Path="caseGenerator_warrant.fmx"/>
     <File Path="caseGenerator_trace_sms.pas"/>
     <File Path="caseGenerator_trace_sms.fmx"/>
+    <File Path="caseGenerator_trace_application_account.pas"/>
+    <File Path="caseGenerator_trace_application_account.fmx"/>
+    <File Path="caseGenerator_trace_application.pas"/>
+    <File Path="caseGenerator_trace_application.fmx"/>
   </ProjectSortOrder>
 </BorlandProject>

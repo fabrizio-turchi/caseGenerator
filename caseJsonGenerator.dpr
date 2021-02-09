@@ -22,11 +22,12 @@ uses
   caseGenerator_util in 'caseGenerator_util.pas',
   caseGenerator_overview in 'caseGenerator_overview.pas' {formOverview},
   caseGenerator_trace_email_account in 'caseGenerator_trace_email_account.pas' {formTraceEmailAccount},
-  caseGenerator_trace_facebook_account in 'caseGenerator_trace_facebook_account.pas' {formTraceFacebookAccount},
   caseGenerator_trace_phone_account in 'caseGenerator_trace_phone_account.pas' {formTracePhoneAccount},
   caseGenerator_trace_disk in 'caseGenerator_trace_disk.pas' {formTraceDisk},
   caseGenerator_trace_computer in 'caseGenerator_trace_computer.pas' {formTraceComputer},
-  caseGenerator_trace_sms in 'caseGenerator_trace_sms.pas' {formTraceSMS};
+  caseGenerator_trace_sms in 'caseGenerator_trace_sms.pas' {formTraceSMS},
+  caseGenerator_trace_application_account in 'caseGenerator_trace_application_account.pas' {formTraceApplicationAccount},
+  caseGenerator_trace_application in 'caseGenerator_trace_application.pas' {formTraceApplication};
 
 {$R *.res}
 
@@ -51,10 +52,12 @@ begin
   Application.CreateForm(TformWarrant, formWarrant);
   Application.CreateForm(TformOverview, formOverview);
   Application.CreateForm(TformTraceEmailAccount, formTraceEmailAccount);
-  Application.CreateForm(TformTraceFacebookAccount, formTraceFacebookAccount);
+  Application.CreateForm(TformTraceApplicationAccount, formTraceApplicationAccount);
   Application.CreateForm(TformTracePhoneAccount, formTracePhoneAccount);
   Application.CreateForm(TformTraceDisk, formTraceDisk);
   Application.CreateForm(TformTraceComputer, formTraceComputer);
   Application.CreateForm(TformTraceSMS, formTraceSMS);
+  Application.CreateForm(TformTraceApplicationAccount, formTraceApplicationAccount);
+  Application.CreateForm(TformTraceApplication, formTraceApplication);
   Application.Run;
 end.

@@ -110,18 +110,19 @@ object formMain: TformMain
   object cbTrace: TComboBox
     DropDownCount = 10
     Items.Strings = (
-      'Mobile Device'
-      'SIM'
+      'Application'
+      'Application account'
+      'Chat'
       'Computer'
+      'Disk Partition'
+      'Email account'
       'File'
       'Hard Disk'
-      'Disk Partition'
-      'Phone account'
       'Mobile account'
-      'Email account'
-      'Facebook account'
-      'SMS'
-      'Chat')
+      'Mobile Device'
+      'Phone account'
+      'SIM'
+      'SMS')
     Position.X = 24.000000000000000000
     Position.Y = 395.000000000000000000
     Size.Width = 185.000000000000000000

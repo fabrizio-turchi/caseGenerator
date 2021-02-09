@@ -1,0 +1,115 @@
+object formTraceApplication: TformTraceApplication
+  Left = 0
+  Top = 0
+  Caption = 'Trace Phone Account'
+  ClientHeight = 343
+  ClientWidth = 606
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 16.000000000000000000
+    Position.Y = 105.000000000000000000
+    Size.Width = 169.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Application account'
+    TabOrder = 0
+  end
+  object lbAppAccount: TListBox
+    Position.X = 16.000000000000000000
+    Position.Y = 137.000000000000000000
+    Size.Width = 553.000000000000000000
+    Size.Height = 157.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnChange = lbAppAccountChange
+    Viewport.Width = 549.000000000000000000
+    Viewport.Height = 153.000000000000000000
+  end
+  object btnClose: TButton
+    Position.X = 176.000000000000000000
+    Position.Y = 301.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Text = 'Save and close'
+    OnClick = btnCloseClick
+  end
+  object btnAddTrace: TButton
+    Position.X = 208.000000000000000000
+    Position.Y = 105.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Text = 'Add trace'
+    OnClick = btnAddTraceClick
+  end
+  object btnDeleteTrace: TButton
+    Position.X = 440.000000000000000000
+    Position.Y = 105.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    Text = 'Delete trace'
+    OnClick = btnDeleteTraceClick
+  end
+  object btnCancel: TButton
+    Position.X = 288.000000000000000000
+    Position.Y = 301.000000000000000000
+    TabOrder = 7
+    Text = 'Cancel'
+    OnClick = btnCancelClick
+  end
+  object btnModifyTrace: TButton
+    Position.X = 325.000000000000000000
+    Position.Y = 105.000000000000000000
+    Size.Width = 106.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    Text = 'Modify trace'
+    OnClick = btnModifyTraceClick
+  end
+  object Label2: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 192.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 257.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Application Account '
+    TabOrder = 9
+  end
+  object edAppName: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    Position.X = 240.000000000000000000
+    Position.Y = 61.000000000000000000
+    Size.Width = 272.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label4: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 24.000000000000000000
+    Position.Y = 56.000000000000000000
+    Size.Width = 177.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 18.000000000000000000
+    Text = 'Application  name'
+    TabOrder = 8
+  end
+end

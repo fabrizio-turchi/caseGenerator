@@ -102,7 +102,8 @@ uses
   caseGenerator_trace_sms, caseGenerator_trace_disk_partition,
   caseGenerator_warrant, caseGenerator_overview, caseGenerator_trace_email_account,
   caseGenerator_GeneralData, caseGenerator_trace_mobile_account,
-  caseGenerator_trace_disk, caseGenerator_trace_app_account;
+  caseGenerator_trace_disk, caseGenerator_trace_application,
+  caseGenerator_trace_application_account, caseGenerator_trace_message;
 {$R *.fmx}
 
 procedure TformMain.addRootChildren(Sender: TObject; uuidGenerated: String);
@@ -278,17 +279,19 @@ begin
   else
   begin
     case cbTrace.ItemIndex of
-      0: formTraceMobile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      1: formTraceSIM.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      2: formTraceComputer.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      3: formTraceFile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      0: formTraceApplication.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      1: formTraceApplicationAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      2: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      3: formTraceComputer.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       4: formTraceDisk.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      5: formTraceDiskPartition.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      6: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      7: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      8: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      9: formTraceAppAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      10: formTraceSMS.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      5: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      6: formTraceFile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      7: formTraceDiskPartition.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      8: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      9: formTraceMobile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      10: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      11: formTraceSIM.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      12: formTraceSMS.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       else
         ShowMessage('Form has not implemented yet');
     end
