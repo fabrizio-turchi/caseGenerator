@@ -69,7 +69,7 @@ begin
   if lbAppAccount.ItemIndex > - 1 then
   begin
     line := lbAppAccount.Items[lbAppAccount.ItemIndex];
-    edAppName.Text := ExtractField(line, '"uco-core:name":"');
+    edAppName.Text := ExtractField(line, '"uco-core:proposed:appName":"');
   end;
 end;
 
@@ -90,18 +90,18 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
       guidNoBraces :=  ExtractField(lbAppAccount.Items[lbAppAccount.ItemIndex], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"uco-observable:CyberItem", ' + recSep;
-    line := line + indent + '"uco-core:name":"' + edAppName.Text + '",' + recSep;;
     line := line + indent + '"uco-core:facets":[' + recSep;
     line := line + indent + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Application"' + recSep;
-    line := line + indent + '},' + recSep;
+    line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Application",' + recSep;
+    line := line + indent + '"uco-core:proposed:appName":"' + edAppName.Text + '"' + recSep;;
+    line := line + indent + '}' + recSep;
     line := line + indent + ']' + recSep + '}';
   end;
   Result := line;

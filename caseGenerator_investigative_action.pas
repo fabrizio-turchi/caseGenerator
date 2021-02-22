@@ -113,7 +113,7 @@ type
     procedure readTraceSIMFromFile;
     procedure readTraceFileFromFile;
     procedure readProvenanceRecordFromFile;
-    procedure extractProvenanceRecordDescription(ListIdProvenance: TStringList);
+    procedure extractProvenanceRecordDescription(ListIdProvenance: TArray<String>);
     procedure readWarrantFromFile;
     function prepareItemInvestigativeAction(operation: String): String;
     property listWarrants: TStringList read FlistWarrants write SetlistWarrants;
@@ -243,7 +243,7 @@ begin
 
 end;
 
-procedure TformInvestigativeAction.extractProvenanceRecordDescription(ListIdProvenance: TStringList);
+procedure TformInvestigativeAction.extractProvenanceRecordDescription(ListIdProvenance: TArray<String>);
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -295,7 +295,7 @@ begin
             id := Copy(jreader.Value.AsString, 1, 37);
           if inExhibitNumber then begin
             exhibitNumber := jreader.Value.AsString;
-            for idx:= 0 to  ListIdProvenance.Count - 1 do
+            for idx:= 1 to  Length(ListIdProvenance) do
               if AnsiContainsStr(ListIdProvenance[idx], id) then
                 lbProvenanceRecords.Items.Add(description + ' ' + exhibitNumber + ' ' + '@' + id);
           end;
@@ -414,7 +414,7 @@ procedure TformInvestigativeAction.lbInvestigativeActionChange(Sender: TObject);
 var
   line, recSep, startTime, endTime, sDate, sDay, sMonth, sYear, sField: String;
   idx, idy, commaPos: Integer;
-  provenanceStringList, objectList: TStringList;
+  objectList, provenanceStringList : TArray<String>;
   exitLoop: Boolean;
 begin
   if lbInvestigativeAction.ItemIndex > -1  then
@@ -533,7 +533,7 @@ begin
 
 
 
-    sField := ExtractField(line, '"uco-action:performer":"');
+    sField := ExtractRefId(line, '"uco-action:performer":"');
     for idx := 0 to cbPerformer.Items.Count -1 do
     begin
       if AnsiContainsStr(cbPerformer.Items[idx], sField) then
@@ -543,7 +543,7 @@ begin
       end;
     end;
 
-    sField := ExtractField(line, '"uco-action:location":"');
+    sField := ExtractRefId(line, '"uco-action:location":"');
     for idx := 0 to cbLocation.Items.Count -1 do
     begin
       if AnsiContainsStr(cbLocation.Items[idx], sField) then
@@ -553,12 +553,12 @@ begin
       end;
     end;
 
-    objectList := ExtractArray(line, 'uco-action:"object":[');
+    objectList := ExtractArrayRefID(line, 'uco-action:"object":[');
     exitLoop := false;
 
     for idx := 0 to cbObject.Items.Count -1 do
     begin
-      for idy:=0 to objectList.Count - 1 do
+      for idy:=1 to Length(objectList) do
       begin
         if AnsiContainsStr(cbObject.Items[idx], objectList[idy]) then
         begin
@@ -574,8 +574,7 @@ begin
     if not exitLoop then
       cbObject.ItemIndex := -1;
 
-    provenanceStringList := TStringList.Create;
-    provenanceStringList := ExtractArrayID(line, '"uco-action:result":[');
+    provenanceStringList := ExtractArrayRefID(line, '"uco-action:result":[');
     extractProvenanceRecordDescription(provenanceStringList);
     if lbProvenanceRecords.Items.Count > 0 then
       lbProvenanceRecords.ItemIndex := 0;
@@ -632,14 +631,14 @@ begin
     actionTime := cbStartYear.Items[cbStartYear.ItemIndex] + '-';
     actionTime := actionTime + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
     actionTime := actionTime +  cbStartDay.Items[cbStartDay.ItemIndex] + 'T';
-    actionTime := actionTime +  TimeToStr(timeStart.Time) + 'Z"';
+    actionTime := actionTime +  TimeToStr(timeStart.Time) + 'Z';
     line := line + indent + '"uco-action:startTime":' + recSep;
     line := line + '{"@type":"xsd:dateTime",' + recSep;
     line := line + '"@value":"' + actionTime + '"},' + recSep;
     actionTime := cbStartYear.Items[cbEndYear.ItemIndex] + '-';
     actionTime := actionTime + cbEndMonth.Items[cbEndMonth.ItemIndex] + '-';
     actionTime := actionTime +  cbEndDay.Items[cbEndDay.ItemIndex] + 'T';
-    actionTime := actionTime +  TimeToStr(timeEnd.Time) + 'Z"';
+    actionTime := actionTime +  TimeToStr(timeEnd.Time) + 'Z';
     line := line + '"uco-action:endTime":'  + recSep;
     line := line + '{"@type":"xsd:dateTime",' + recSep;
     line := line + '"@value":"' + actionTime + '"},' + recSep;
@@ -648,14 +647,19 @@ begin
     line := line + RepeatString(indent, 2) + '"@type":"uco-action:ActionReferences",' + recSep;
     idValue :=  cbInstrument.Items[cbInstrument.ItemIndex];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + RepeatString(indent, 2) + '"uco-action:instrument":"' + idValue + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-action:instrument":{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@id":"' + idValue + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
     idValue := cbLocation.Items[cbLocation.ItemIndex];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + RepeatString(indent, 2) + '"uco-action:location":"' + idValue + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-action:location":{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@id":"' + idValue + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
     idValue :=  cbPerformer.Items[cbPerformer.ItemIndex];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + RepeatString(indent, 4) + '"uco-action:performer":"' + idValue + '",' + recSep;
-
+    line := line + RepeatString(indent, 2) + '"uco-action:performer":{' + recSep;
+    line := line + RepeatString(indent, 3) + '"@id":"' + idValue + '"' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
     if cbObject.ItemIndex = -1 then
       idValue := ''
     else
@@ -669,7 +673,7 @@ begin
       line := line + RepeatString(indent, 2) + '],' + recSep
     else
     begin
-      line := line + RepeatString(indent, 3) + '"' + idValue + '"' + recSep;
+      line := line + RepeatString(indent, 3) + '{"@id":"' + idValue + '"}' + recSep;
       line := line + RepeatString(indent, 2) + '],' + recSep;
     end;
 
@@ -681,12 +685,12 @@ begin
     begin
       idValue := lbProvenanceRecords.Items[idx];
       idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-      line := line + RepeatString(indent, 3) + '"' + idValue + '",';
+      line := line + RepeatString(indent, 3) + '{"@id":"' + idValue + '"},';
     end;
 
     idValue := lbProvenanceRecords.Items[idx];
     idValue := Copy(idValue, Pos('@', idValue) + 1, Length(idValue));
-    line := line + '"' + idValue + '"' + recSep + RepeatString(indent, 2) + ']' + recSep + indent + '}';
+    line := line + '{"@id":"' + idValue + '"}' + recSep + RepeatString(indent, 2) + ']' + recSep + indent + '}';
 
     if lbArguments.Items.Count > 0 then
     begin
@@ -1197,7 +1201,7 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'fileName' then
+          if jreader.Value.AsString = 'uco-observable:fileName' then
             inName := True
           else
             inName := False;
@@ -1207,7 +1211,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'filePath' then
+          if jreader.Value.AsString = 'uco-observable:filePath' then
             inPath := True
           else
             inPath := False;

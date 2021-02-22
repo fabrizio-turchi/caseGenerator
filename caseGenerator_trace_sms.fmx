@@ -2,7 +2,7 @@ object formTraceSMS: TformTraceSMS
   Left = 0
   Top = 0
   Caption = 'Trace Message'
-  ClientHeight = 649
+  ClientHeight = 601
   ClientWidth = 736
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -11,12 +11,12 @@ object formTraceSMS: TformTraceSMS
   DesignerMasterStyle = 0
   object panelTo: TPanel
     Position.X = 13.000000000000000000
-    Position.Y = 253.000000000000000000
+    Position.Y = 213.000000000000000000
     Size.Width = 697.000000000000000000
     Size.Height = 192.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 9
+    TabOrder = 8
     object cbMobileTo: TComboBox
       Position.X = 144.000000000000000000
       Position.Y = 23.000000000000000000
@@ -27,7 +27,7 @@ object formTraceSMS: TformTraceSMS
     end
     object Label13: TLabel
       Position.X = 6.000000000000000000
-      Position.Y = 26.000000000000000000
+      Position.Y = 18.000000000000000000
       Size.Width = 97.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
@@ -80,12 +80,12 @@ object formTraceSMS: TformTraceSMS
   end
   object panelFrom: TPanel
     Position.X = 11.000000000000000000
-    Position.Y = 148.000000000000000000
+    Position.Y = 108.000000000000000000
     Size.Width = 702.000000000000000000
     Size.Height = 61.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 10
+    TabOrder = 9
     object cbMobileFrom: TComboBox
       Position.X = 144.000000000000000000
       Position.Y = 27.000000000000000000
@@ -203,7 +203,7 @@ object formTraceSMS: TformTraceSMS
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
-    Position.Y = 456.000000000000000000
+    Position.Y = 416.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
@@ -213,7 +213,7 @@ object formTraceSMS: TformTraceSMS
   end
   object lbMessage: TListBox
     Position.X = 16.000000000000000000
-    Position.Y = 496.000000000000000000
+    Position.Y = 448.000000000000000000
     Size.Width = 697.000000000000000000
     Size.Height = 97.000000000000000000
     Size.PlatformDefault = False
@@ -228,31 +228,31 @@ object formTraceSMS: TformTraceSMS
   end
   object btnClose: TButton
     Position.X = 227.000000000000000000
-    Position.Y = 609.000000000000000000
+    Position.Y = 569.000000000000000000
     Size.Width = 102.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 4
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
   object btnAddMessage: TButton
     Position.X = 144.000000000000000000
-    Position.Y = 457.000000000000000000
+    Position.Y = 417.000000000000000000
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
+    TabOrder = 5
     Text = 'Add message'
     OnClick = btnAddMessageClick
   end
   object btnRemoveMessage: TButton
     Position.X = 456.000000000000000000
-    Position.Y = 457.000000000000000000
+    Position.Y = 417.000000000000000000
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 7
+    TabOrder = 6
     Text = 'Remove message'
     OnClick = btnRemoveMessageClick
   end
@@ -263,7 +263,7 @@ object formTraceSMS: TformTraceSMS
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Application'
-    TabOrder = 8
+    TabOrder = 7
   end
   object edApplication: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
@@ -282,24 +282,24 @@ object formTraceSMS: TformTraceSMS
     Size.Width = 601.000000000000000000
     Size.Height = 41.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 11
+    TabOrder = 10
     Viewport.Width = 597.000000000000000000
     Viewport.Height = 37.000000000000000000
   end
   object btnCancel: TButton
     Position.X = 352.000000000000000000
-    Position.Y = 608.000000000000000000
-    TabOrder = 12
+    Position.Y = 568.000000000000000000
+    TabOrder = 11
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
   object btnModifyMessage: TButton
     Position.X = 312.000000000000000000
-    Position.Y = 456.000000000000000000
+    Position.Y = 416.000000000000000000
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 13
+    TabOrder = 12
     Text = 'Modify message'
     OnClick = btnModifyMessageClick
   end
@@ -310,15 +310,6 @@ object formTraceSMS: TformTraceSMS
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Message text'
-    TabOrder = 4
-  end
-  object Label4: TLabel
-    Position.X = 14.000000000000000000
-    Position.Y = 123.000000000000000000
-    Size.Width = 91.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    Text = 'Message type'
     TabOrder = 3
   end
   object cbMessageType: TComboBox

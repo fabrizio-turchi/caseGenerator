@@ -247,14 +247,14 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
       guidNoBraces :=  ExtractField(lbTrace.Items[lbTrace.ItemIndex], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '", ' + recSep;
     line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
-    line := line + indent + '"tag":["' + cbTag.Items[cbTag.ItemIndex] + '"],' + recSep;
+    line := line + indent + '"uco-core:tag":["' + cbTag.Items[cbTag.ItemIndex] + '"],' + recSep;
     line := line +  indent + '"uco-core:facets":[' + recSep;
     line := line + indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"uco-observable:File",' + recSep;
@@ -276,12 +276,13 @@ begin
     line := line + '"@value":"' + cTime + TimeToStr(timeCreation.Time) + 'Z"},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
     line := line + RepeatString(indent, 3) + '"type":"uco-observable:ContentData",' + recSep;
-    line := line + RepeatString(indent, 3) + '"hash":[' + recSep;
+    line := line + RepeatString(indent, 3) + '""uco-observable:hash":[' + recSep;
     line := line + RepeatString(indent, 3) + '{' + recSep;
     line := line + RepeatString(indent, 4) + '"@type":"uco-types:Hash",' + recSep;
     line := line + RepeatString(indent, 4) + '"uco-types:hashMethod":' + recSep;
-    line := line + RepeatString(indent, 5) + ' "@type": "uco-core:HashNameEnum",' + recSep;
-    line := line + RepeatString(indent, 5) + '	"@value":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '"' + recSep;
+    line := line + RepeatString(indent, 4) + '{' + recSep;
+    line := line + RepeatString(indent, 5) + '"@type": "uco-vocabulary:HashNameVocab",' + recSep;
+    line := line + RepeatString(indent, 5) + '"@value":"' + cbHashMethod.Items[cbHashMethod.ItemIndex] + '"' + recSep;
     line := line + RepeatString(indent, 4) + '},' + recSep;
     line := line + RepeatString(indent, 4) + '"uco-types:hashValue":{' + recSep;
     line := line + RepeatString(indent, 5) + '"@type": "xsd:hexBinary",' + recSep;

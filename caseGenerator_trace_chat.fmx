@@ -1,7 +1,7 @@
-object formTraceMessage: TformTraceMessage
+object formTraceChat: TformTraceChat
   Left = 0
   Top = 0
-  Caption = 'Trace Message'
+  Caption = 'CHAT'
   ClientHeight = 649
   ClientWidth = 736
   FormFactor.Width = 320
@@ -11,13 +11,13 @@ object formTraceMessage: TformTraceMessage
   DesignerMasterStyle = 0
   object panelTo: TPanel
     Position.X = 13.000000000000000000
-    Position.Y = 253.000000000000000000
+    Position.Y = 274.000000000000000000
     Size.Width = 697.000000000000000000
-    Size.Height = 192.000000000000000000
+    Size.Height = 164.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 9
-    object cbMobileTo: TComboBox
+    TabOrder = 12
+    object cbAccountTo: TComboBox
       Position.X = 104.000000000000000000
       Position.Y = 23.000000000000000000
       Size.Width = 577.000000000000000000
@@ -42,58 +42,50 @@ object formTraceMessage: TformTraceMessage
       Text = 'TO'
       TabOrder = 2
     end
-    object btnAddMobile: TButton
+    object btnAddAccountTo: TButton
       Position.X = 184.000000000000000000
       Position.Y = 58.000000000000000000
       Size.Width = 96.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
-      Text = 'Add mobile n.'
-      OnClick = btnAddMobileClick
+      Text = 'Add account'
+      OnClick = btnAddAccountToClick
     end
-    object btnRemoveMobile: TButton
+    object btnRemoveAccountTo: TButton
       Position.X = 304.000000000000000000
       Position.Y = 58.000000000000000000
       Size.Width = 113.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
-      Text = 'Remove mobile n.'
-      OnClick = btnRemoveMobileClick
+      Text = 'Remove account'
+      OnClick = btnRemoveAccountToClick
     end
-    object lbMobile: TListBox
+    object lbAccountTo: TListBox
       Position.X = 8.000000000000000000
       Position.Y = 96.000000000000000000
       Size.Width = 673.000000000000000000
-      Size.Height = 88.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 5
       DisableFocusEffect = True
       DefaultItemStyles.ItemStyle = ''
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
-      OnChange = lbMobileChange
+      OnChange = lbAccountToChange
       Viewport.Width = 673.000000000000000000
-      Viewport.Height = 88.000000000000000000
+      Viewport.Height = 49.000000000000000000
     end
   end
   object panelFrom: TPanel
     Position.X = 11.000000000000000000
-    Position.Y = 148.000000000000000000
+    Position.Y = 177.000000000000000000
     Size.Width = 702.000000000000000000
     Size.Height = 96.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 10
-    object cbMobileFrom: TComboBox
-      Position.X = 112.000000000000000000
-      Position.Y = 27.000000000000000000
-      Size.Width = 576.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 3
-    end
+    TabOrder = 13
     object Label8: TLabel
       Position.X = 4.000000000000000000
       Position.Y = 30.000000000000000000
@@ -138,14 +130,6 @@ object formTraceMessage: TformTraceMessage
       TabOrder = 7
     end
     object cbSentYear: TComboBox
-      Items.Strings = (
-        '1950'
-        '1951'
-        '1952'
-        '1953'
-        '1954'
-        '1955'
-        '1956')
       Position.X = 274.000000000000000000
       Position.Y = 66.000000000000000000
       TabOrder = 6
@@ -199,30 +183,38 @@ object formTraceMessage: TformTraceMessage
       Size.PlatformDefault = False
       TabOrder = 4
     end
+    object cbAccountFrom: TComboBox
+      Position.X = 112.000000000000000000
+      Position.Y = 27.000000000000000000
+      Size.Width = 576.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+    end
   end
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
-    Position.Y = 456.000000000000000000
+    Position.Y = 468.000000000000000000
     Size.Width = 105.000000000000000000
-    Size.Height = 33.000000000000000000
+    Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
     Text = 'Messages'
     TabOrder = 0
   end
-  object lbMessage: TListBox
+  object lbMessages: TListBox
     Position.X = 16.000000000000000000
     Position.Y = 496.000000000000000000
     Size.Width = 697.000000000000000000
     Size.Height = 97.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
+    OnClick = lbMessagesClick
     DisableFocusEffect = True
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    OnChange = lbMessageChange
     Viewport.Width = 697.000000000000000000
     Viewport.Height = 97.000000000000000000
   end
@@ -232,7 +224,7 @@ object formTraceMessage: TformTraceMessage
     Size.Width = 102.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
+    TabOrder = 6
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
@@ -242,7 +234,7 @@ object formTraceMessage: TformTraceMessage
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
+    TabOrder = 7
     Text = 'Add message'
     OnClick = btnAddMessageClick
   end
@@ -252,7 +244,7 @@ object formTraceMessage: TformTraceMessage
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 7
+    TabOrder = 10
     Text = 'Remove message'
     OnClick = btnRemoveMessageClick
   end
@@ -263,33 +255,24 @@ object formTraceMessage: TformTraceMessage
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Application'
-    TabOrder = 8
-  end
-  object edApplication: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 2
-    Position.X = 104.000000000000000000
-    Position.Y = 20.000000000000000000
-    Size.Width = 601.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
+    TabOrder = 11
   end
   object memoMessageText: TMemo
     Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
     DataDetectorTypes = []
-    Position.X = 104.000000000000000000
-    Position.Y = 56.000000000000000000
-    Size.Width = 601.000000000000000000
-    Size.Height = 41.000000000000000000
+    Position.X = 128.000000000000000000
+    Position.Y = 93.000000000000000000
+    Size.Width = 585.000000000000000000
+    Size.Height = 76.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 11
-    Viewport.Width = 601.000000000000000000
-    Viewport.Height = 41.000000000000000000
+    TabOrder = 14
+    Viewport.Width = 585.000000000000000000
+    Viewport.Height = 76.000000000000000000
   end
   object btnCancel: TButton
     Position.X = 352.000000000000000000
     Position.Y = 608.000000000000000000
-    TabOrder = 12
+    TabOrder = 15
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
@@ -299,36 +282,100 @@ object formTraceMessage: TformTraceMessage
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 13
+    TabOrder = 16
     Text = 'Modify message'
     OnClick = btnModifyMessageClick
   end
   object Label2: TLabel
-    Position.X = 14.000000000000000000
-    Position.Y = 67.000000000000000000
-    Size.Width = 113.000000000000000000
+    Position.X = 9.000000000000000000
+    Position.Y = 112.000000000000000000
+    Size.Width = 75.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Message text'
-    TabOrder = 4
+    TabOrder = 5
   end
   object Label4: TLabel
     Position.X = 14.000000000000000000
-    Position.Y = 123.000000000000000000
+    Position.Y = 64.000000000000000000
     Size.Width = 91.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Message type'
-    TabOrder = 3
+    TabOrder = 4
   end
   object cbMessageType: TComboBox
     Items.Strings = (
       'Incoming'
       'Outgoing')
-    Position.X = 104.000000000000000000
-    Position.Y = 116.000000000000000000
+    Position.X = 128.000000000000000000
+    Position.Y = 62.000000000000000000
     Size.Width = 185.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
+  end
+  object edNewChatName: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 3
+    Position.X = 456.000000000000000000
+    Position.Y = 18.000000000000000000
+    Size.Width = 249.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label9: TLabel
+    Position.X = 336.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Chat name'
+    TabOrder = 9
+  end
+  object cbChatName: TComboBox
+    Position.X = 408.000000000000000000
+    Position.Y = 61.000000000000000000
+    Size.Width = 185.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChange = cbChatNameChange
+  end
+  object btnNewChatName: TButton
+    Position.X = 337.000000000000000000
+    Position.Y = 19.000000000000000000
+    Size.Width = 107.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'New chat name'
+    OnClick = btnNewChatNameClick
+  end
+  object edNumMessages: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 2
+    TextSettings.Font.StyleExt = {00070000000000000004000000}
+    TextSettings.FontColor = claBrown
+    Position.X = 664.000000000000000000
+    Position.Y = 58.000000000000000000
+    Enabled = False
+    Size.Width = 39.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    StyledSettings = [Family, Size]
+  end
+  object cbAppName: TComboBox
+    Position.X = 128.000000000000000000
+    Position.Y = 23.000000000000000000
+    Size.Width = 185.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label7: TLabel
+    Position.X = 615.000000000000000000
+    Position.Y = 61.000000000000000000
+    Size.Width = 51.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'N. msg.'
+    TabOrder = 8
   end
 end

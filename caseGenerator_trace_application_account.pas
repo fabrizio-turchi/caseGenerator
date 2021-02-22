@@ -25,7 +25,7 @@ type
     Label5: TLabel;
     edAppDisplayName: TEdit;
     Label6: TLabel;
-    edAppIdentifier: TEdit;
+    edAccountIdentifier: TEdit;
     cbAppID: TComboBox;
     procedure btnAddTraceClick(Sender: TObject);
     procedure ùClick(Sender: TObject);
@@ -74,6 +74,7 @@ end;
 
 procedure TformTraceApplicationAccount.FormShow(Sender: TObject);
 begin
+  cbAppId.Items.Clear;
   readTraceApplication;
 end;
 
@@ -128,16 +129,17 @@ begin
       end;
     end;
 
-    edAppName.Text := ExtractField(line, '"uco-observable:applicationIdentifier":"');
+    edAppName.Text := ExtractField(line, '"uco-core:name":"');
+    edAccountIdentifier.Text := ExtractField(line, '"uco-observable:accountIdentifier":"');
     edAppDisplayName.Text:=  ExtractField(line, '"uco-observable:displayName":"');
   end;
 end;
 
 function TformTraceApplicationAccount.prepareTrace(operation: String): String;
 var
-  line, recSep, indent, guidNoBraces: string;
+  line, recSep, indent, guidNoBraces, idApp: string;
   Uid: TGUID;
-  idx: Integer;
+  idx, posId: Integer;
 begin
   recSep := #30 + #30; // record separator, not printable
   indent := '   ';
@@ -150,7 +152,7 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
       guidNoBraces :=  ExtractField(lbAppAccount.Items[lbAppAccount.ItemIndex], '"@id":"');
@@ -160,15 +162,18 @@ begin
     line := line + indent + '"uco-core:name":"' + edAppName.Text  + '",' + recSep;
     line := line + indent + '"uco-core:facets":[' + recSep;
     line := line + indent + '{' + recSep;
-    line := line + RepeatString(indent, 2) + '"@type":""uco-observable:Account", ' + recSep;
-    line := line + RepeatString(indent, 2) + '""uco-observable:accountIssuer":"' + edAppName.Text + '", ' + recSep;
-    line := line + RepeatString(indent, 2) + '""uco-observable:applicationIdentifier":"' + edAppIdentifier.Text + '", ' + recSep;
-    line := line + RepeatString(indent, 2) + '""uco-observable:isActive":"true"' + recSep ;
+    line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Account", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:accountIssuer":"' + edAppName.Text + '", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:accountIdentifier":"' + edAccountIdentifier.Text + '", ' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:isActive":"true"' + recSep ;
     line := line + indent + '},' + recSep;
     line := line + indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"uco-observable:ApplicationAccount", ' + recSep;
-		line := line + RepeatString(indent, 2) + '"uco-observable:application":"{' +
-      cbAppId.Items[cbAppId.ItemIndex] + '"}' + recSep;
+		line := line + RepeatString(indent, 2) + '"uco-observable:application":{"@id":"';
+    idApp := cbAppId.Items[cbAppId.ItemIndex];
+    posId := Pos('@', idApp);
+    idApp := Copy(idApp, posId + 1, Length(idApp));
+    line := line + idApp + '"}' + recSep;
 		line := line + indent + '},' + recSep;
 		line := line + indent + '{' + recSep;
 		line := line + RepeatString(indent, 2) + '"@type":"uco-observable:DigitalAccount", ' + recSep;
@@ -226,7 +231,7 @@ begin
 
           if inAppName then begin
             appName := jreader.Value.AsString;
-            cbAppID.Items.Add(appName + ' ' + '@' + appID);
+            cbAppID.Items.Add(appName + StringofChar(' ', 50) + '@'  + appID);
           end;
 
         end;
@@ -280,7 +285,7 @@ begin
     lbAppAccount.Items.Add(prepareTrace('add'));
     cbAppID.ItemIndex := -1;
     edAppName.Text := '';
-    edAppIdentifier.Text:= '';
+    edAccountIdentifier.Text:= '';
 end;
 
 procedure TformTraceApplicationAccount.SetpathCase(const Value: String);
@@ -302,9 +307,9 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-tracePHONE_ACCOUNT.json
-  if FileExists(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceAPPLICATION_ACCOUNT.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceAPPLICATION_ACCOUNT.json');
     Reset(fileJSON);
     lbAppAccount.Items.Clear;
     while not Eof(fileJSON) do

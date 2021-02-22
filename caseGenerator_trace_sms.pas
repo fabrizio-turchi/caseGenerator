@@ -1,3 +1,4 @@
+
 unit caseGenerator_trace_sms;
 
 interface
@@ -39,8 +40,6 @@ type
     btnModifyMessage: TButton;
     cbSentDay: TComboBox;
     Label2: TLabel;
-    Label4: TLabel;
-    cbMessageType: TComboBox;
     procedure btnAddMessageClick(Sender: TObject);
     procedure btnRemoveMessageClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
@@ -219,16 +218,6 @@ begin
     end;
 
     timeSent.Text := Copy(sentDate, 10, 8);
-    messageType := ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:messageType":"');
-    for idx:=0 to cbMessageType.Items.Count - 1 do
-    begin
-      if cbMessageType.Items[idx] = messageType then
-      begin
-        cbMessageType.ItemIndex := idx;
-        break;
-      end;
-    end;
-
   end;
 
     // read trace-MOBILE fro extracting all ID with model and MSISDN
@@ -273,7 +262,7 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"@id":"');
@@ -285,18 +274,23 @@ begin
   line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Message",' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-observable:application":"' + edApplication.Text + '",' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-observable:messageText":"' + memoMessageText.Text + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:proposed:allocationStatus":"Intact",' + recSep;
   idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
-  line := line + RepeatString(indent, 2) + '"uco-observable:from":"' + extractID(idLine) + '", ' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:from":{' + recSep;
+  line := line + RepeatString(indent, 3) + '"@id":"' + extractID(idLine) + '"' + recSep;
+  line := line + RepeatString(indent, 2) + '},' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-observable:to":[' + recSep;
   idx := 0;
   for idx:=0 to lbMobile.Items.Count - 2 do
-    line := line  + RepeatString(indent, 2) + lbMobile.Items[idx] + ',';
+    line := line  + RepeatString(indent, 2) + '"@id":"' + lbMobile.Items[idx] + '"},';
 
-  line := line  + RepeatString(indent, 2) + lbMobile.Items[idx] + '],' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:sentTime":"' + cbSentYear.Items[cbSentYear.ItemIndex];
+  line := line  + RepeatString(indent, 2) + '"@id":"' +lbMobile.Items[idx] + '"}],' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:sentTime":{' + recSep;
+  line := line + RepeatString(indent, 3) +  '"@type": "xsd:dateTime", ' + recSep;
+  line := line + RepeatString(indent, 3) +  '"@value": "' + cbSentYear.Items[cbSentYear.ItemIndex];
   line := line + cbSentMonth.Items[cbSentMonth.ItemIndex];
-  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T' + timeSent.Text + 'Z",' + recSep;
-  line := line + '"uco-observable:messageType":"' + cbMessageType.Items[cbMessageType.ItemIndex] +'"' + recSep;
+  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T' + timeSent.Text + '"' + recSep;
+  line := line + RepeatString(indent, 2) +  '}' + recSep;
   line := line  + indent + '}]' + recSep + '}' + recSep;
   Result := line;
 end;
@@ -546,10 +540,10 @@ begin
     //dir := GetCurrentDir;
     idx := 0;
   // create file JSON uuidCase-traceMESSAGE.json
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json', CP_UTF8);
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceSMS.json', CP_UTF8);
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_MESSAGE":[';
+    line := #9 + '"OBJECTS_SMS":[';
     WriteLn(fileJSON, UTF8Encode(line));
 
 

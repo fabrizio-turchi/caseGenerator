@@ -384,8 +384,8 @@
             <Form>formTraceMobileAccount</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="caseGenerator_trace_message.pas">
-            <Form>formTraceMessage</Form>
+        <DCCReference Include="caseGenerator_trace_chat.pas">
+            <Form>formTraceChat</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="caseGenerator_warrant.pas">
@@ -413,16 +413,20 @@
             <Form>formTraceComputer</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="caseGenerator_trace_sms.pas">
-            <Form>formTraceSMS</Form>
-            <FormType>fmx</FormType>
-        </DCCReference>
         <DCCReference Include="caseGenerator_trace_application_account.pas">
             <Form>formTraceApplicationAccount</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="caseGenerator_trace_application.pas">
-            <Form>formTraceApplication</Form>
+        <DCCReference Include="caseGenerator_trace_url_history.pas">
+            <Form>formTraceUrlHistory</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="caseGenerator_trace_email.pas">
+            <Form>formTraceEmail</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="caseGenerator_trace_phone_call.pas">
+            <Form>formTracePhoneCall</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
@@ -451,9 +455,9 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="OSX32\Debug\caseGenerator.info.plist" Configuration="Debug" Class="ProjectOSXInfoPList">
-                    <Platform Name="OSX32">
-                        <RemoteName>Info.plist</RemoteName>
+                <DeployFile LocalName="Win32\Debug\caseJsonGenerator.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>caseJsonGenerator.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -478,6 +482,11 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libpcre.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
                     <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
@@ -494,20 +503,15 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win32\Debug\caseJsonGenerator.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>caseJsonGenerator.exe</RemoteName>
+                <DeployFile LocalName="OSX32\Debug\caseGenerator.info.plist" Configuration="Debug" Class="ProjectOSXInfoPList">
+                    <Platform Name="OSX32">
+                        <RemoteName>Info.plist</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="OSX32\Debug\caseGenerator" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="OSX32">
                         <RemoteName>caseGenerator</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libpcre.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

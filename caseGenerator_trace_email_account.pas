@@ -89,7 +89,7 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + '"@id":":' + GuidToString(Uid) + '", ' + recSep;
+      line := line + '"@id":"kb:' + GuidToString(Uid) + '", ' + recSep;
     end
     else
     begin

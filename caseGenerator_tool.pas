@@ -224,7 +224,7 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
     guidNoBraces :=  ExtractField(lbTool.Items[lbTool.ItemIndex], '"@id":"');

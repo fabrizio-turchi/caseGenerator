@@ -115,14 +115,17 @@ object formMain: TformMain
       'Chat'
       'Computer'
       'Disk Partition'
+      'Email'
       'Email account'
       'File'
       'Hard Disk'
       'Mobile account'
       'Mobile Device'
       'Phone account'
+      'PhoneCall'
       'SIM'
-      'SMS')
+      'SMS'
+      'URL History')
     Position.X = 24.000000000000000000
     Position.Y = 395.000000000000000000
     Size.Width = 185.000000000000000000

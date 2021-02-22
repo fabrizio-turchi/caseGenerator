@@ -17,7 +17,7 @@ uses
   caseGenerator_provenance_record in 'caseGenerator_provenance_record.pas' {formProvenanceRecord},
   caseGenerator_trace_disk_partition in 'caseGenerator_trace_disk_partition.pas' {formTraceDiskPartition},
   caseGenerator_trace_mobile_account in 'caseGenerator_trace_mobile_account.pas' {formTraceMobileAccount},
-  caseGenerator_trace_message in 'caseGenerator_trace_message.pas' {formTraceMessage},
+  caseGenerator_trace_chat in 'caseGenerator_trace_chat.pas' {formTraceChat},
   caseGenerator_warrant in 'caseGenerator_warrant.pas' {formWarrant},
   caseGenerator_util in 'caseGenerator_util.pas',
   caseGenerator_overview in 'caseGenerator_overview.pas' {formOverview},
@@ -25,9 +25,10 @@ uses
   caseGenerator_trace_phone_account in 'caseGenerator_trace_phone_account.pas' {formTracePhoneAccount},
   caseGenerator_trace_disk in 'caseGenerator_trace_disk.pas' {formTraceDisk},
   caseGenerator_trace_computer in 'caseGenerator_trace_computer.pas' {formTraceComputer},
-  caseGenerator_trace_sms in 'caseGenerator_trace_sms.pas' {formTraceSMS},
   caseGenerator_trace_application_account in 'caseGenerator_trace_application_account.pas' {formTraceApplicationAccount},
-  caseGenerator_trace_application in 'caseGenerator_trace_application.pas' {formTraceApplication};
+  caseGenerator_trace_url_history in 'caseGenerator_trace_url_history.pas' {formTraceUrlHistory},
+  caseGenerator_trace_email in 'caseGenerator_trace_email.pas' {formTraceEmail},
+  caseGenerator_trace_phone_call in 'caseGenerator_trace_phone_call.pas' {formTracePhoneCall};
 
 {$R *.res}
 
@@ -48,7 +49,7 @@ begin
   Application.CreateForm(TformProvenanceRecord, formProvenanceRecord);
   Application.CreateForm(TformTraceDiskPartition, formTraceDiskPartition);
   Application.CreateForm(TformTraceMobileAccount, formTraceMobileAccount);
-  Application.CreateForm(TformTraceMessage, formTraceMessage);
+  Application.CreateForm(TformTraceChat, formTraceChat);
   Application.CreateForm(TformWarrant, formWarrant);
   Application.CreateForm(TformOverview, formOverview);
   Application.CreateForm(TformTraceEmailAccount, formTraceEmailAccount);
@@ -56,8 +57,10 @@ begin
   Application.CreateForm(TformTracePhoneAccount, formTracePhoneAccount);
   Application.CreateForm(TformTraceDisk, formTraceDisk);
   Application.CreateForm(TformTraceComputer, formTraceComputer);
-  Application.CreateForm(TformTraceSMS, formTraceSMS);
+  Application.CreateForm(TformTracePhoneCall, formTracePhoneCall);
   Application.CreateForm(TformTraceApplicationAccount, formTraceApplicationAccount);
-  Application.CreateForm(TformTraceApplication, formTraceApplication);
+  Application.CreateForm(TformTraceUrlHistory, formTraceUrlHistory);
+  Application.CreateForm(TformTraceEmail, formTraceEmail);
+  Application.CreateForm(TformTracePhoneCall, formTracePhoneCall);
   Application.Run;
 end.

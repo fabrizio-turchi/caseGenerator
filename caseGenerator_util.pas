@@ -5,6 +5,10 @@ uses
   System.Classes, System.SysUtils, System.StrUtils;
 
 function ExtractField(line, subLine: String): String;
+function ExtractRefID(line, subline: String): String;
+function ExtractDateValue(line, subline: String): String;
+function ExtractNumericValue(line, subline: String): String;
+function ExtractArrayRefID(line, subline: String): TArray<String>;
 function ExtractDataField(line, subLine: String): String;
 function ExtractArray(line, subline: String): TStringList;
 function ExtractArrayID(line, subline: String): TStringList;
@@ -15,7 +19,39 @@ function CountOccurrences(substringText, stringText: String): Integer;
 implementation
 
 
+function ExtractRefId(line, subline: String): String;
+var
+  posId: Integer;
+  uuid: String;
+begin
+  posId := Pos(subline, line);
+  uuid := Copy(line, posId + Length(subline) + 1, Length(line));
+  Result := ExtractField(uuid, '@id":"');
+end;
 
+function ExtractDateValue(line, subline: String): String;
+var
+  posId: Integer;
+  uuid: String;
+begin
+  posId := Pos(subline, line);
+  uuid := Copy(line, posId + Length(subline) + 1, Length(line));
+  Result := ExtractField(uuid, '"@value":"');
+end;
+
+function ExtractNumericValue(line, subline: String): String;
+var
+  posId, posValue, posRecSep: Integer;
+  lineValue, numValue, recSep: String;
+begin
+  recSep := #30 + #30;
+  posId := Pos(subline, line);
+  lineValue := Copy(line, posId + Length(subline) + 1, Length(line));
+  posValue := Pos('"@value":', lineValue);
+  numValue  := Copy(lineValue, posValue + Length('"@value":') + 1, Length(lineValue));
+  posRecSep  := Pos(recSep, numValue);
+  Result := Copy(numValue, 1, posRecSep - 1);
+end;
 
 function ExtractField(line, subLine: String): String;
 var
@@ -135,6 +171,28 @@ begin
   end;
   itemsList.Add(itemsArray);
   Result := itemsList;
+end;
+
+function ExtractArrayRefID(line, subLine: String): TArray<String>;
+var
+  fieldValue: String;
+  posStart, posEnd, idx: Integer;
+  listId: TArray<String>;
+begin
+  posStart := Pos(subLine, line); // search pos of subLine inside line
+  fieldValue := Copy(line, posStart + Length(subLine), Length(line));
+  posEnd := Pos(']', fieldValue);
+  fieldValue := Copy(fieldValue, 1, posEnd - 1);
+  listId := SplitString(',', fieldValue);
+
+  for idx:=1 to Length(listId) do
+  begin
+    fieldValue := ExtractField(listId[idx], '"@id":"');
+    listId[idx] := fieldValue;
+  end;
+
+  Result := listId;
+
 end;
 
 function RepeatString(const s: String; count: cardinal): String;

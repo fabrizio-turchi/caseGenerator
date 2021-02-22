@@ -1,4 +1,4 @@
-unit caseGenerator_trace_message;
+unit caseGenerator_trace_phone_call;
 
 interface
 
@@ -11,13 +11,12 @@ uses
   FMX.Memo.Types;
 
 type
-  TformTraceMessage = class(TForm)
+  TformTracePhoneCall = class(TForm)
     Label1: TLabel;
-    lbMessage: TListBox;
+    lbCalls: TListBox;
     btnClose: TButton;
-    btnAddMessage: TButton;
-    btnRemoveMessage: TButton;
-    Label6: TLabel;
+    btnAddCall: TButton;
+    btnRemoveCall: TButton;
     panelFrom: TPanel;
     Label5: TLabel;
     Label8: TLabel;
@@ -26,31 +25,22 @@ type
     cbMobileTo: TComboBox;
     Label11: TLabel;
     Label13: TLabel;
-    edApplication: TEdit;
-    memoMessageText: TMemo;
-    btnAddMobile: TButton;
-    btnRemoveMobile: TButton;
-    lbMobile: TListBox;
     cbSentMonth: TComboBox;
     timeSent: TTimeEdit;
     cbSentYear: TComboBox;
     Label3: TLabel;
     btnCancel: TButton;
-    btnModifyMessage: TButton;
+    btnModifyCall: TButton;
     cbSentDay: TComboBox;
     Label2: TLabel;
-    Label4: TLabel;
-    cbMessageType: TComboBox;
-    procedure btnAddMessageClick(Sender: TObject);
-    procedure btnRemoveMessageClick(Sender: TObject);
+    edDuration: TEdit;
+    procedure btnAddCallClick(Sender: TObject);
+    procedure btnRemoveCallClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure btnAddMobileClick(Sender: TObject);
-    procedure btnRemoveMobileClick(Sender: TObject);
-    procedure lbMessageChange(Sender: TObject);
+    procedure lbCallsChange(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
-    procedure btnModifyMessageClick(Sender: TObject);
-    procedure lbMobileChange(Sender: TObject);
+    procedure btnModifyCallClick(Sender: TObject);
   private
     FuuidCase: string;
     FpathCase: String;
@@ -65,7 +55,7 @@ type
     procedure readTracePhoneAccountFromFile;
     function  extractID(line: String): String;
     function extractLastID(line: String): String;
-    function prepareItemMessage(operation: String): String;
+    function prepareItemCall(operation: String): String;
     { Private declarations }
   public
     procedure ShowWithParamater(pathCase: String; uuidCase: String);
@@ -73,7 +63,7 @@ type
   end;
 
 var
-  formTraceMessage: TformTraceMessage;
+  formTracePhoneCall: TformTracePhoneCall;
 
 implementation
 
@@ -82,50 +72,41 @@ uses StrUtils;
 
 { TForm1 }
 
-procedure TformTraceMessage.btnRemoveMessageClick(Sender: TObject);
+procedure TformTracePhoneCall.btnRemoveCallClick(Sender: TObject);
 begin
-  if lbMessage.ItemIndex > -1 then
-    lbMessage.Items.Delete(lbMessage.ItemIndex);
+  if lbCalls.ItemIndex > -1 then
+    lbCalls.Items.Delete(lbCalls.ItemIndex);
 end;
 
-procedure TformTraceMessage.btnRemoveMobileClick(Sender: TObject);
-begin
-  lbMobile.Items.Delete(lbMobile.ItemIndex);
-end;
-
-
-function TformTraceMessage.extractID(line: String): String;
+function TformTracePhoneCall.extractID(line: String): String;
 begin
   Result := Copy(line, Pos('@', line) + 1, Length(line));
 end;
 
 
 
-function TformTraceMessage.extractLastID(line: String): String;
+function TformTracePhoneCall.extractLastID(line: String): String;
 begin
    Result := Copy(line, LastDelimiter('@', line) + 1, Length(line));
 end;
 
-procedure TformTraceMessage.FormShow(Sender: TObject);
+procedure TformTracePhoneCall.FormShow(Sender: TObject);
 var
   idx: Integer;
 begin
   for idx:=2000 to 2020 do
     cbSentYear.Items.Add(IntToStr(idx));
 
-  edApplication.Text := '';
-  memoMessageText.Text := '';
   cbSentDay.ItemIndex := -1;
   cbSentMonth.ItemIndex := -1;
   cbSentYear.ItemIndex := -1;
   readTraceFromFile;
   cbMobileFrom.ItemIndex := -1;
   cbMobileTo.ItemIndex := -1;
-  lbMobile.Items.Clear;
 
 end;
 
-function TformTraceMessage.JsonTokenToString(const t: TJsonToken): string;
+function TformTracePhoneCall.JsonTokenToString(const t: TJsonToken): string;
 begin
   case t of
     TJsonToken.None: Result := 'None';
@@ -157,36 +138,35 @@ begin
 end;
 
 
-procedure TformTraceMessage.lbMessageChange(Sender: TObject);
+procedure TformTracePhoneCall.lbCallsChange(Sender: TObject);
 var
-  line, sentDate, sDay, sMonth, sYear, sDate, messageType: String;
+  line, field, sentDate, sDay, sMonth, sYear, sDate, messageType: String;
   idx: Integer;
-  mobileTo: TStringList;
 begin
-  if lbMessage.ItemIndex > - 1 then
+  if lbCalls.ItemIndex > - 1 then
   begin
-    lbMobile.Items.Clear;
-    line := lbMessage.Items[lbMessage.ItemIndex];
-    edApplication.Text := ExtractField(line, '"uco-observable:application":"');
-    memoMessageText.Lines.Text := ExtractField(line, '"uco-observable:messageText":"');
-    line := ExtractField(line, '"uco-observable:from":"');
+    line := lbCalls.Items[lbCalls.ItemIndex];
+    field := ExtractRefId(line, '"uco-observable:from":{');
     for idx:=0 to cbMobileFrom.Items.Count - 1 do
     begin
-      if AnsiContainsStr(cbMobileFrom.Items[idx], line) then
+      if AnsiContainsStr(cbMobileFrom.Items[idx], field) then
       begin
         cbMobileFrom.ItemIndex := idx;
         Break;
       end;
     end;
-    mobileTo := ExtractArray(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:to":[');
-    if mobileTo.Count > 0 then
+
+    field := ExtractRefId(line, '"uco-observable:to":{');
+    for idx:=0 to cbMobileTo.Items.Count - 1 do
     begin
-      for idx:=0 to mobileTo.Count - 1 do
-        lbMobile.Items.Add('"' + mobileTo[idx] + '"');
-      lbMobile.ItemIndex := 0;
+      if AnsiContainsStr(cbMobileTo.Items[idx], field) then
+      begin
+        cbMobileTo.ItemIndex := idx;
+        Break;
+      end;
     end;
 
-    sentDate := ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:sentTime":"');
+    sentDate := ExtractDateValue(line, '"uco-observable:sentTime":"');
     sDate := Copy(sentDate, 1, 10);
     sDay := Copy(sDate, 7, 2);
     for idx:=0 to cbSentDay.Items.Count - 1 do
@@ -219,46 +199,13 @@ begin
     end;
 
     timeSent.Text := Copy(sentDate, 10, 8);
-    messageType := ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:messageType":"');
-    for idx:=0 to cbMessageType.Items.Count - 1 do
-    begin
-      if cbMessageType.Items[idx] = messageType then
-      begin
-        cbMessageType.ItemIndex := idx;
-        break;
-      end;
-    end;
-
-  end;
-
-    // read trace-MOBILE fro extracting all ID with model and MSISDN
-
-
-end;
-
-procedure TformTraceMessage.lbMobileChange(Sender: TObject);
-var
-  line: String;
-  idx: Integer;
-begin
-  if lbMobile.ItemIndex > - 1 then
-  begin
-    line := lbMobile.Items[lbMobile.ItemIndex];
-    line := stringreplace(line, '"', '',[rfReplaceAll]);
-    for idx:=0 to cbMobileTo.Count - 1 do
-    begin
-      if AnsiContainsStr(cbMobileTo.Items[idx], line) then
-      begin
-        cbMobileTo.ItemIndex := idx;
-        break
-      end;
-    end;
+    edDuration.Text := ExtractNumericValue(line, '"uco-observable:duration":"');
 
   end;
 
 end;
 
-function TformTraceMessage.prepareItemMessage(operation: String): String;
+function TformTracePhoneCall.prepareItemCall(operation: String): String;
 var
   line, recSep, idLine, indent, guidNoBraces: string;
   Uid: TGUID;
@@ -273,36 +220,42 @@ begin
   if operation = 'add' then
   begin
     CreateGUID(Uid);
-    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
   end
   else
-    guidNoBraces :=  ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"@id":"');
+    guidNoBraces :=  ExtractField(lbCalls.Items[lbCalls.ItemIndex], '"@id":"');
 
   line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   line := line + indent + '"@type":"uco-observable:CyberItem",' + recSep;
   line := line + indent + '"uco-core:facets":[' + recSep;
   line := line + indent + '{' + recSep;
-  line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Message",' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:application":"' + edApplication.Text + '",' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:SMSmessage":"true",' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:messageText":"' + memoMessageText.Text + '", ' + recSep;
-  idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
-  line := line + RepeatString(indent, 2) + '"uco-observable:from":"' + extractID(idLine) + '", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:to":[' + recSep;
-  idx := 0;
-  for idx:=0 to lbMobile.Items.Count - 2 do
-    line := line  + RepeatString(indent, 2) + lbMobile.Items[idx] + ',';
-
-  line := line  + RepeatString(indent, 2) + lbMobile.Items[idx] + '],' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:sentTime":"' + cbSentYear.Items[cbSentYear.ItemIndex];
+  line := line + RepeatString(indent, 2) + '"@type":"uco-observable:PhoneCall",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:sentTime":' + recSep;
+  line := line +  RepeatString(indent, 3)  + '{' + recSep;
+  line := line +  RepeatString(indent, 3)  + '"@type":"xsd:dateTime",' + recSep;
+  line := line +  RepeatString(indent, 3)  + '"@value":"' + cbSentYear.Items[cbSentYear.ItemIndex];
   line := line + cbSentMonth.Items[cbSentMonth.ItemIndex];
-  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T' + timeSent.Text + 'Z",' + recSep;
-  line := line + '"uco-observable:messageType":"' + cbMessageType.Items[cbMessageType.ItemIndex] +'"' + recSep;
+  line := line + cbSentDay.Items[cbSentDay.ItemIndex] + 'T' + timeSent.Text + '"' + recSep;
+  line := line +  RepeatString(indent, 3)  + '},' + recSep;
+  idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
+  line := line + RepeatString(indent, 2) + '"uco-observable:from":{' + recSep;
+  line := line + RepeatString(indent, 3) + '"@id":"' + extractID(idLine) + '" ' + recSep;
+  line := line + RepeatString(indent, 2) + '},' + recSep;
+  idLine := cbMobileTo.Items[cbMobileTo.ItemIndex];
+  line := line + RepeatString(indent, 2) + '"uco-observable:to":{' + recSep;
+  line := line + RepeatString(indent, 3) + '"@id":"' + extractID(idLine) + '" ' + recSep;
+  line := line + RepeatString(indent, 2) + '},' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:duration":{' + recSep;
+  line := line +  RepeatString(indent, 3)  + '"@type":"xsd:long",' + recSep;
+  line := line +  RepeatString(indent, 3)  + '"@value":' + edDuration.Text + recSep;
+  line := line + RepeatString(indent, 2) + '},' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:proposed:outcome":"Established",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:proposed:allocationStatus":"Intact"' + recSep;
   line := line  + indent + '}]' + recSep + '}' + recSep;
   Result := line;
 end;
 
-procedure TformTraceMessage.readTraceFromFile;
+procedure TformTracePhoneCall.readTraceFromFile;
 
 begin
   readTraceMobileFromFile;
@@ -310,7 +263,7 @@ begin
   readTraceFacebookAccountFromFile;
 end;
 
-procedure TformTraceMessage.readTraceMobileFromFile;
+procedure TformTracePhoneCall.readTraceMobileFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -369,8 +322,8 @@ begin
                   for instance for Identity it can be @id:"...-...-SimpleName" ---*)
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
-            cbMobileFrom.Items.Add(model + ' ' + msisdn + '@' + id);
-            cbMobileTo.Items.Add(model + ' ' + msisdn + '@' + id);
+            cbMobileFrom.Items.Add(model + ' ' + msisdn + StringOfChar(' ', 100) + '@' + id);
+            cbMobileTo.Items.Add(model + ' ' + msisdn + StringOfChar(' ', 100) +'@' + id);
           end;
 
         end;
@@ -383,7 +336,7 @@ begin
 end;
 
 
-procedure TformTraceMessage.readTracePhoneAccountFromFile;
+procedure TformTracePhoneCall.readTracePhoneAccountFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -416,7 +369,7 @@ begin
           else
             inID := False;
 
-          if jreader.Value.AsString = 'phoneNumber' then
+          if jreader.Value.AsString = 'uco-observable:phoneNumber' then
             inPhoneNumber := True
           else
             inPhoneNumber := False;
@@ -450,7 +403,7 @@ begin
 
 end;
 
-procedure TformTraceMessage.readTraceFacebookAccountFromFile;
+procedure TformTracePhoneCall.readTraceFacebookAccountFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
@@ -516,97 +469,79 @@ begin
 
 end;
 
-procedure TformTraceMessage.btnAddMobileClick(Sender: TObject);
-var
-  line: String;
+procedure TformTracePhoneCall.btnCancelClick(Sender: TObject);
 begin
-  if cbMobileFrom.ItemIndex = cbMobileTo.ItemIndex then
-    ShowMessage('Mobile numbers FROM and TO are equal')
-  else
-  begin
-    line := cbMobileTo.Items[cbMobileTo.ItemIndex];
-    line := '"' + extractLastID(line) + '"';
-    lbMobile.Items.Add(line);
-  end;
-
+  formTracePhoneCall.Close;
 end;
 
-procedure TformTraceMessage.btnCancelClick(Sender: TObject);
-begin
-  formTraceMessage.Close;
-end;
-
-procedure TformTraceMessage.btnCloseClick(Sender: TObject);
+procedure TformTracePhoneCall.btnCloseClick(Sender: TObject);
 var
   fileJSON: TextFile;
   line: String;
   idx: integer;
 begin
-  if lbMessage.Items.Count > 0 then
+  if lbCalls.Items.Count > 0 then
   begin
     //dir := GetCurrentDir;
     idx := 0;
-  // create file JSON uuidCase-traceMESSAGE.json
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json', CP_UTF8);
+  // create file JSON uuidCase-tracePHONE_CALL.json
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_CALL.json', CP_UTF8);
     Rewrite(fileJSON);  // create new file
     WriteLn(fileJSON, '{');
-    line := #9 + '"OBJECTS_MESSAGE":[';
+    line := #9 + '"OBJECTS_SMS":[';
     WriteLn(fileJSON, UTF8Encode(line));
 
 
-    for idx:= 0 to lbMessage.Items.Count - 2 do
-      WriteLn(fileJSON, UTF8Encode(#9#9 + lbMessage.Items[idx] + ','));
+    for idx:= 0 to lbCalls.Items.Count - 2 do
+      WriteLn(fileJSON, UTF8Encode(#9#9 + lbCalls.Items[idx] + ','));
 
-    WriteLn(fileJSON, UTF8Encode(#9#9 + lbMessage.Items[idx]));
+    WriteLn(fileJSON, UTF8Encode(#9#9 + lbCalls.Items[idx]));
     WriteLn(fileJSON, UTF8Encode(#9#9 + ']'));
     Write(fileJSON,'}');
     CloseFile(fileJSON);
   end
   else
-    deleteFile(FpathCase + FuuidCase + '-traceMESSAGE.json');
+    deleteFile(FpathCase + FuuidCase + '-tracePHONE_CALL.json');
 
-  formTraceMessage.Close;
+  formTracePhoneCall.Close;
 end;
 
-procedure TformTraceMessage.btnModifyMessageClick(Sender: TObject);
+procedure TformTracePhoneCall.btnModifyCallClick(Sender: TObject);
 begin
-  if lbMessage.ItemIndex > - 1 then
-    lbMessage.Items[lbMessage.ItemIndex] := prepareItemMessage('modify');
+  if lbCalls.ItemIndex > - 1 then
+    lbCalls.Items[lbCalls.ItemIndex] := prepareItemCall('modify');
 end;
 
-procedure TformTraceMessage.btnAddMessageClick(Sender: TObject);
+procedure TformTracePhoneCall.btnAddCallClick(Sender: TObject);
 var
   line, recSep, idLine: string;
   Uid: TGUID;
   idx: Integer;
 begin
-  if (lbMobile.Items.Count = 0) or (cbMobileFrom.ItemIndex = -1)  then
+  if (cbMobileTo.ItemIndex = -1) or (cbMobileFrom.ItemIndex = -1)  then
     ShowMessage('Mobile FROM or/and Mobile Source empty!')
   else
   begin
-    lbMessage.Items.Add(prepareItemMessage('add'));
-    edApplication.Text := '';
-    memoMessageText.Lines.Clear;
+    lbCalls.Items.Add(prepareItemCall('add'));
     cbMobileFrom.ItemIndex := -1;
     cbMobileTo.ItemIndex := -1;
     cbSentDay.ItemIndex := -1;
     cbSentMonth.ItemIndex := -1;
     cbSentYear.ItemIndex := -1;
-    lbMobile.Items.Clear;
   end;
 end;
 
-procedure TformTraceMessage.SetpathCase(const Value: String);
+procedure TformTracePhoneCall.SetpathCase(const Value: String);
 begin
   FpathCase := Value;
 end;
 
-procedure TformTraceMessage.SetuuidCase(const Value: string);
+procedure TformTracePhoneCall.SetuuidCase(const Value: string);
 begin
   FuuidCase := Value;
 end;
 
-procedure TformTraceMessage.ShowWithParamater(pathCase: String; uuidCase: String);
+procedure TformTracePhoneCall.ShowWithParamater(pathCase: String; uuidCase: String);
 var
   fileJSON: TextFile;
   line, subLine: String;
@@ -615,11 +550,11 @@ begin
   SetPathCase(pathCase);
   //dir := GetCurrentDir;
   // read file JSON uuidCase-identity.json
-  if FileExists(FpathCase + FuuidCase + '-traceMESSAGE.json') then
+  if FileExists(FpathCase + FuuidCase + '-tracePHONE_CALL.json') then
   begin
-    AssignFile(fileJSON, FpathCase + FuuidCase + '-traceMESSAGE.json', CP_UTF8);
+    AssignFile(fileJSON, FpathCase + FuuidCase + '-tracePHONE_CALL.json', CP_UTF8);
     Reset(fileJSON);
-    lbMessage.Items.Clear;
+    lbCalls.Items.Clear;
     while not Eof(fileJSON) do
     begin
       ReadLn(fileJSON, line);
@@ -632,7 +567,7 @@ begin
         if subLine = ',' then
           line := Copy(line, 1, Length(line) - 1);
 
-        lbMessage.Items.Add(line);
+        lbCalls.Items.Add(line);
       end;
     end;
     CloseFile(fileJSON);
@@ -640,7 +575,7 @@ begin
 //  else
 //    ShowMessage(dir + uuidCase + '-identity.json' + ' doesn''t exist');
 
-  formTraceMessage.ShowModal;
+  formTracePhoneCall.ShowModal;
 end;
 
 end.

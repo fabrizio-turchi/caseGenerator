@@ -1,9 +1,9 @@
-object formTraceEmail: TformTraceEmail
+object formTracePhoneCall: TformTracePhoneCall
   Left = 0
   Top = 0
-  Caption = 'Trace Message'
-  ClientHeight = 516
-  ClientWidth = 722
+  Caption = 'Trace Phone Call'
+  ClientHeight = 442
+  ClientWidth = 721
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -11,19 +11,19 @@ object formTraceEmail: TformTraceEmail
   DesignerMasterStyle = 0
   object panelTo: TPanel
     Position.X = 13.000000000000000000
-    Position.Y = 227.000000000000000000
+    Position.Y = 133.000000000000000000
     Size.Width = 697.000000000000000000
-    Size.Height = 70.000000000000000000
+    Size.Height = 60.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 8
-    object cbEmailTo: TComboBox
+    TabOrder = 5
+    object cbMobileTo: TComboBox
       Position.X = 144.000000000000000000
       Position.Y = 23.000000000000000000
       Size.Width = 537.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 3
+      TabOrder = 5
     end
     object Label13: TLabel
       Position.X = 6.000000000000000000
@@ -31,7 +31,7 @@ object formTraceEmail: TformTraceEmail
       Size.Width = 97.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
-      Text = 'Account Email'
+      Text = 'Account ID'
       TabOrder = 1
     end
     object Label11: TLabel
@@ -45,19 +45,27 @@ object formTraceEmail: TformTraceEmail
   end
   object panelFrom: TPanel
     Position.X = 11.000000000000000000
-    Position.Y = 156.000000000000000000
+    Position.Y = 12.000000000000000000
     Size.Width = 702.000000000000000000
     Size.Height = 61.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
-    TabOrder = 9
+    TabOrder = 6
+    object cbMobileFrom: TComboBox
+      Position.X = 144.000000000000000000
+      Position.Y = 27.000000000000000000
+      Size.Width = 544.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+    end
     object Label8: TLabel
       Position.X = 4.000000000000000000
       Position.Y = 30.000000000000000000
       Size.Width = 93.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
-      Text = 'Account Email'
+      Text = 'Account ID'
       TabOrder = 1
     end
     object Label5: TLabel
@@ -69,7 +77,7 @@ object formTraceEmail: TformTraceEmail
       Text = 'FROM'
       TabOrder = 2
     end
-    object cbMonth: TComboBox
+    object cbSentMonth: TComboBox
       Items.Strings = (
         '01'
         '02'
@@ -83,18 +91,18 @@ object formTraceEmail: TformTraceEmail
         '10'
         '11'
         '12')
-      Position.X = 194.000000000000000000
-      Position.Y = -38.000000000000000000
+      Position.X = 202.000000000000000000
+      Position.Y = 74.000000000000000000
       TabOrder = 5
     end
-    object emailTime: TTimeEdit
+    object timeSent: TTimeEdit
       Time = 0.675166099537036900
       TimeFormatKind = Long
-      Position.X = 402.000000000000000000
-      Position.Y = -38.000000000000000000
+      Position.X = 410.000000000000000000
+      Position.Y = 74.000000000000000000
       TabOrder = 7
     end
-    object cbYear: TComboBox
+    object cbSentYear: TComboBox
       Items.Strings = (
         '1950'
         '1951'
@@ -103,20 +111,20 @@ object formTraceEmail: TformTraceEmail
         '1954'
         '1955'
         '1956')
-      Position.X = 298.000000000000000000
-      Position.Y = -38.000000000000000000
+      Position.X = 306.000000000000000000
+      Position.Y = 74.000000000000000000
       TabOrder = 6
     end
     object Label3: TLabel
       Position.X = 4.000000000000000000
-      Position.Y = -35.000000000000000000
+      Position.Y = 77.000000000000000000
       Size.Width = 122.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       Text = 'Sent/Received time'
       TabOrder = 0
     end
-    object cbDay: TComboBox
+    object cbSentDay: TComboBox
       Items.Strings = (
         '01'
         '02'
@@ -149,36 +157,28 @@ object formTraceEmail: TformTraceEmail
         '29'
         '30'
         '31')
-      Position.X = 136.000000000000000000
-      Position.Y = -38.000000000000000000
+      Position.X = 144.000000000000000000
+      Position.Y = 74.000000000000000000
       Size.Width = 54.000000000000000000
       Size.Height = 22.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
     end
-    object cbEmailFrom: TComboBox
-      Position.X = 144.000000000000000000
-      Position.Y = 27.000000000000000000
-      Size.Width = 544.000000000000000000
-      Size.Height = 22.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 3
-    end
   end
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
-    Position.Y = 313.000000000000000000
+    Position.Y = 256.000000000000000000
     Size.Width = 105.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Messages'
+    Text = 'Calls'
     TabOrder = 0
   end
-  object lbMessage: TListBox
+  object lbCalls: TListBox
     Position.X = 16.000000000000000000
-    Position.Y = 353.000000000000000000
+    Position.Y = 296.000000000000000000
     Size.Width = 697.000000000000000000
     Size.Height = 97.000000000000000000
     Size.PlatformDefault = False
@@ -187,94 +187,68 @@ object formTraceEmail: TformTraceEmail
     DefaultItemStyles.ItemStyle = ''
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
-    OnChange = lbMessageChange
-    Viewport.Width = 693.000000000000000000
-    Viewport.Height = 93.000000000000000000
+    OnChange = lbCallsChange
+    Viewport.Width = 697.000000000000000000
+    Viewport.Height = 97.000000000000000000
   end
   object btnClose: TButton
-    Position.X = 227.000000000000000000
-    Position.Y = 481.000000000000000000
+    Position.X = 228.000000000000000000
+    Position.Y = 404.000000000000000000
     Size.Width = 102.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 4
+    TabOrder = 2
     Text = 'Save and close'
     OnClick = btnCloseClick
   end
-  object btnAddMessage: TButton
+  object btnAddCall: TButton
     Position.X = 144.000000000000000000
-    Position.Y = 314.000000000000000000
+    Position.Y = 257.000000000000000000
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 5
-    Text = 'Add message'
-    OnClick = btnAddMessageClick
+    TabOrder = 3
+    Text = 'Add call'
+    OnClick = btnAddCallClick
   end
-  object btnRemoveMessage: TButton
-    Position.X = 456.000000000000000000
-    Position.Y = 314.000000000000000000
+  object btnRemoveCall: TButton
+    Position.X = 448.000000000000000000
+    Position.Y = 257.000000000000000000
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
-    Text = 'Remove message'
-    OnClick = btnRemoveMessageClick
-  end
-  object Label6: TLabel
-    Position.X = 23.000000000000000000
-    Position.Y = 22.000000000000000000
-    Size.Width = 97.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    Text = 'Application'
-    TabOrder = 7
-  end
-  object edApplication: TEdit
-    Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 2
-    Position.X = 107.000000000000000000
-    Position.Y = 18.000000000000000000
-    Size.Width = 605.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-  end
-  object memoMessageText: TMemo
-    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
-    DataDetectorTypes = []
-    Position.X = 109.000000000000000000
-    Position.Y = 54.000000000000000000
-    Size.Width = 601.000000000000000000
-    Size.Height = 41.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 10
-    Viewport.Width = 601.000000000000000000
-    Viewport.Height = 41.000000000000000000
+    TabOrder = 4
+    Text = 'Remove call'
+    OnClick = btnRemoveCallClick
   end
   object btnCancel: TButton
-    Position.X = 352.000000000000000000
-    Position.Y = 480.000000000000000000
-    TabOrder = 11
+    Position.X = 364.000000000000000000
+    Position.Y = 404.000000000000000000
+    TabOrder = 7
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
-  object btnModifyMessage: TButton
+  object btnModifyCall: TButton
     Position.X = 312.000000000000000000
-    Position.Y = 313.000000000000000000
+    Position.Y = 256.000000000000000000
     Size.Width = 129.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 12
-    Text = 'Modify message'
-    OnClick = btnModifyMessageClick
+    TabOrder = 8
+    Text = 'Modify call'
+    OnClick = btnModifyCallClick
   end
   object Label2: TLabel
-    Position.X = 21.000000000000000000
-    Position.Y = 65.000000000000000000
-    Size.Width = 113.000000000000000000
-    Size.Height = 17.000000000000000000
+    Position.X = 16.000000000000000000
+    Position.Y = 216.000000000000000000
+    Text = 'Duration (seconds):'
+  end
+  object edDuration: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Position.X = 152.000000000000000000
+    Position.Y = 208.000000000000000000
+    Size.Width = 193.000000000000000000
+    Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    Text = 'Email body'
-    TabOrder = 3
   end
 end

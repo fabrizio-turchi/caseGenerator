@@ -256,7 +256,7 @@ begin
   begin
     CreateGUID(Uid);
     guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
-    line := line + indent + '"@id":":' +  guidNoBraces + '", ' + recSep;
+    line := line + indent + '"@id":"kb:' +  guidNoBraces + '", ' + recSep;
   end
   else
   begin

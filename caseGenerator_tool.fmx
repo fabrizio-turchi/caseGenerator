@@ -190,8 +190,8 @@ object formTool: TformTool
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbConfigurationSettingToolChange
-    Viewport.Width = 465.000000000000000000
-    Viewport.Height = 81.000000000000000000
+    Viewport.Width = 461.000000000000000000
+    Viewport.Height = 77.000000000000000000
   end
   object Label9: TLabel
     Position.X = 392.000000000000000000
@@ -222,8 +222,8 @@ object formTool: TformTool
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbToolChange
-    Viewport.Width = 1000.000000000000000000
-    Viewport.Height = 185.000000000000000000
+    Viewport.Width = 996.000000000000000000
+    Viewport.Height = 181.000000000000000000
   end
   object btnModifyItem: TButton
     Position.X = 558.000000000000000000

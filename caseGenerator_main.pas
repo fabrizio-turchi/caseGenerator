@@ -99,11 +99,11 @@ uses
   caseGenerator_trace_SIM, caseGenerator_trace_computer, caseGenerator_relationship,
   caseGenerator_investigative_action, caseGenerator_trace_file,
   caseGenerator_provenance_record, caseGenerator_trace_phone_account,
-  caseGenerator_trace_sms, caseGenerator_trace_disk_partition,
+  caseGenerator_trace_Phone_Call, caseGenerator_trace_sms, caseGenerator_trace_disk_partition,
   caseGenerator_warrant, caseGenerator_overview, caseGenerator_trace_email_account,
-  caseGenerator_GeneralData, caseGenerator_trace_mobile_account,
-  caseGenerator_trace_disk, caseGenerator_trace_application,
-  caseGenerator_trace_application_account, caseGenerator_trace_message;
+  caseGenerator_trace_email, caseGenerator_GeneralData, caseGenerator_trace_mobile_account,
+  caseGenerator_trace_disk, caseGenerator_trace_application, caseGenerator_trace_url_history,
+  caseGenerator_trace_application_account, caseGenerator_trace_chat;
 {$R *.fmx}
 
 procedure TformMain.addRootChildren(Sender: TObject; uuidGenerated: String);
@@ -124,6 +124,8 @@ begin
   lbObjects.Items.Add(space8 + '"uco-action": "https://unifiedcyberontology.org/ontology/uco/action#",' + recSep);
   lbObjects.Items.Add(space8 + '"uco-core": "https://unifiedcyberontology.org/ontology/uco/core#",' + recSep);
   lbObjects.Items.Add(space8 + '"uco-observable": "https://unifiedcyberontology.org/ontology/uco/observable#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-identity": "https://unifiedcyberontology.org/ontology/uco/identity#",' + recSep);
+  lbObjects.Items.Add(space8 + '"uco-location": "https://unifiedcyberontology.org/ontology/uco/location#",' + recSep);
   lbObjects.Items.Add(space8 + '"uco-tool": "https://unifiedcyberontology.org/ontology/uco/tool#",' + recSep);
   lbObjects.Items.Add(space8 + '"uco-types": "https://unifiedcyberontology.org/ontology/uco/types#",' + recSep);
   lbObjects.Items.Add(space8 + '"uco-vocabulary": "https://unifiedcyberontology.org/ontology/uco/vocabulary#",' + recSep);
@@ -281,17 +283,20 @@ begin
     case cbTrace.ItemIndex of
       0: formTraceApplication.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       1: formTraceApplicationAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      2: formTraceMessage.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      2: formTraceChat.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       3: formTraceComputer.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       4: formTraceDisk.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      5: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      6: formTraceFile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      7: formTraceDiskPartition.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      8: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      9: formTraceMobile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      10: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      11: formTraceSIM.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
-      12: formTraceSMS.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      5: formTraceEmail.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      6: formTraceEmailAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      7: formTraceFile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      8: formTraceDiskPartition.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      9: formTraceMobileAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      10: formTraceMobile.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      11: formTracePhoneAccount.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      12: formTracePhoneCall.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      13: formTraceSIM.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      14: formTraceSMS.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
+      15: formTraceUrlHistory.ShowWithParamater(FhomeCases + FpathCase, FuuidCase);
       else
         ShowMessage('Form has not implemented yet');
     end

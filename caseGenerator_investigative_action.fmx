@@ -330,14 +330,6 @@ object formInvestigativeAction: TformInvestigativeAction
     TabOrder = 3
   end
   object cbStartYear: TComboBox
-    Items.Strings = (
-      '1950'
-      '1951'
-      '1952'
-      '1953'
-      '1954'
-      '1955'
-      '1956')
     Position.X = 530.000000000000000000
     Position.Y = 13.000000000000000000
     TabOrder = 4
@@ -422,14 +414,6 @@ object formInvestigativeAction: TformInvestigativeAction
     TabOrder = 7
   end
   object cbEndYear: TComboBox
-    Items.Strings = (
-      '1950'
-      '1951'
-      '1952'
-      '1953'
-      '1954'
-      '1955'
-      '1956')
     Position.X = 530.000000000000000000
     Position.Y = 37.000000000000000000
     TabOrder = 8
