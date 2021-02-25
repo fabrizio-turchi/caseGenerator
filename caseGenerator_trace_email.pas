@@ -141,7 +141,7 @@ end;
 
 procedure TformTraceEmail.lbMessageChange(Sender: TObject);
 var
-  line, uuidTo, sentDate, sDay, sMonth, sYear, sDate, messageType: String;
+  line, uuidTo, sentDate, sDay, sMonth, sYear, sDate, messageType, value: String;
   idx, posTo: Integer;
   mobileTo: TStringList;
 begin
@@ -149,32 +149,30 @@ begin
   begin
     line := lbMessage.Items[lbMessage.ItemIndex];
     edApplication.Text := ExtractField(line, '"uco-observable:application":"');
-    memoMessageText.Lines.Text := ExtractField(line, '"uco-observable:messageText":"');
-    line := ExtractField(line, '"uco-observable:from":"');
+    memoMessageText.Lines.Text := ExtractField(line, '"uco-observable:body":"');
+    value := ExtractRefId(line, '"uco-observable:fromRef":{');
     for idx:=0 to cbEmailFrom.Items.Count - 1 do
     begin
-      if AnsiContainsStr(cbEmailFrom.Items[idx], line) then
+      if AnsiContainsStr(cbEmailFrom.Items[idx], value) then
       begin
         cbEmailFrom.ItemIndex := idx;
         Break;
       end;
     end;
 
-    posTo := Pos('"uco-observable:to":[', line);
-    uuidTo := Copy(line, posTo + 22, Length(line));
-    uuidTo := ExtractField(uuidTo, '@id":"');
+    value := ExtractRefId(line, '"uco-observable:toRef":[{');
     for idx:=0 to cbEmailTo.Count - 1 do
     begin
-      if Pos(uuidTo, cbEmailTo.Items[idx]) > 0  then
+      if AnsiContainsStr(cbEmailTo.Items[idx], value) then
       begin
         cbEmailTo.ItemIndex := idx;
-        break;
+        Break;
       end;
     end;
 
-    sentDate := ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"@value":"');
+    sentDate := ExtractDateValue(line, '"uco-observable:sentTime":{');
     sDate := Copy(sentDate, 1, 10);
-    sDay := Copy(sDate, 7, 2);
+    sDay := Copy(sDate, 9, 2);
     for idx:=0 to cbDay.Items.Count - 1 do
     begin
       if cbDay.Items[idx] = sDay then
@@ -184,7 +182,7 @@ begin
       end;
     end;
 
-    sMonth := Copy(sDate, 5, 2);
+    sMonth := Copy(sDate, 6, 2);
     for idx:=0 to cbMonth.Items.Count - 1 do
     begin
       if cbMonth.Items[idx] = sMonth then
@@ -204,12 +202,9 @@ begin
       end;
     end;
 
-    emailTime.Text := Copy(sentDate, 10, 8);
+    emailTime.Text := Copy(sentDate, 11, 8);
 
   end;
-
-    // read trace-MOBILE fro extracting all ID with model and MSISDN
-
 
 end;
 
@@ -247,16 +242,13 @@ begin
   msgTime := msgTime +  TimeToStr(emailTime.Time);
   line := line + '"@value":"' + msgTime + '"},' + recSep;
   idLine := ExtractID(cbEmailFrom.Items[cbEmailFrom.ItemIndex]);
-  line := line + '"uco-observable:fromRef":"' + idLine + '",' + recSep;
-  idLine := ExtractID(cbEmailTo.Items[cbEmailFrom.ItemIndex]);
-  line := line + '"uco-observable:toRef":["' + idLine + '"],' + recSep;
+  line := line + '"uco-observable:fromRef":{"@id":"' + idLine + '"},' + recSep;
+  idLine := ExtractID(cbEmailTo.Items[cbEmailTo.ItemIndex]);
+  line := line + '"uco-observable:toRef":[{"@id":"' + idLine + '"}],' + recSep;
   line := line + '"uco-observable:ccRefs":[],' + recSep;
   line := line + '"uco-observable:bccRefs":[],' + recSep;
-  line := line + '"uco-observable:body":"' + memoMessageText.Text + '",' + recSep;
+  line := line + '"uco-observable:body":"' + memoMessageText.Text + '"' + recSep;
 
-  line := line + RepeatString(indent, 2) + '"uco-observable:sentTime":"' + cbYear.Items[cbYear.ItemIndex];
-  line := line + cbMonth.Items[cbMonth.ItemIndex];
-  line := line + cbDay.Items[cbDay.ItemIndex] + 'T' + emailTime.Text + 'Z",' + recSep;
   line := line  + indent + '}]' + recSep + '}' + recSep;
   Result := line;
 end;
@@ -301,7 +293,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inEmail then
           begin

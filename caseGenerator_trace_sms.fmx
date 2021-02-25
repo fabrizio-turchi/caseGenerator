@@ -1,7 +1,7 @@
 object formTraceSMS: TformTraceSMS
   Left = 0
   Top = 0
-  Caption = 'Trace Message'
+  Caption = 'Trace SMS'
   ClientHeight = 601
   ClientWidth = 736
   FormFactor.Width = 320
@@ -138,14 +138,6 @@ object formTraceSMS: TformTraceSMS
       TabOrder = 7
     end
     object cbSentYear: TComboBox
-      Items.Strings = (
-        '1950'
-        '1951'
-        '1952'
-        '1953'
-        '1954'
-        '1955'
-        '1956')
       Position.X = 306.000000000000000000
       Position.Y = 74.000000000000000000
       TabOrder = 6
@@ -208,7 +200,7 @@ object formTraceSMS: TformTraceSMS
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
     TextSettings.Font.Size = 18.000000000000000000
-    Text = 'Messages'
+    Text = 'SMSs'
     TabOrder = 0
   end
   object lbMessage: TListBox
@@ -243,7 +235,7 @@ object formTraceSMS: TformTraceSMS
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
-    Text = 'Add message'
+    Text = 'Add SMS'
     OnClick = btnAddMessageClick
   end
   object btnRemoveMessage: TButton
@@ -253,7 +245,7 @@ object formTraceSMS: TformTraceSMS
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 6
-    Text = 'Remove message'
+    Text = 'Remove SMS'
     OnClick = btnRemoveMessageClick
   end
   object Label6: TLabel
@@ -300,7 +292,7 @@ object formTraceSMS: TformTraceSMS
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 12
-    Text = 'Modify message'
+    Text = 'Modify SMS'
     OnClick = btnModifyMessageClick
   end
   object Label2: TLabel
@@ -311,15 +303,5 @@ object formTraceSMS: TformTraceSMS
     Size.PlatformDefault = False
     Text = 'Message text'
     TabOrder = 3
-  end
-  object cbMessageType: TComboBox
-    Items.Strings = (
-      'Incoming'
-      'Outgoing')
-    Position.X = 104.000000000000000000
-    Position.Y = 116.000000000000000000
-    Size.Width = 185.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
   end
 end

@@ -70,7 +70,6 @@ type
     btnModifyProvenanceRecord: TButton;
     btnModify: TButton;
     cbActions: TComboBox;
-    cbActionsName: TComboBox;
     Label16: TLabel;
     edDescription: TEdit;
     Label17: TLabel;
@@ -229,14 +228,14 @@ end;
 procedure TformInvestigativeAction.cbActionsChange(Sender: TObject);
 begin
   if cbActions.ItemIndex > -1 then
-    cbActionsFill(cbActionsName.Items[cbActions.ItemIndex]);
+    cbActionsFill(cbActions.Items[cbActions.ItemIndex]);
 end;
 
 
 procedure TformInvestigativeAction.cbActionsFill(action: String);
 begin
   cbInstrument.Items.Clear;
-  if (action = 'preserved') or (action = 'transferred') then
+  if (action = 'Search and Seizure') or (action = 'Transfer') then
     cbInstrument.Items := FlistWarrants
   else
     cbInstrument.Items := FlistTools;
@@ -292,7 +291,7 @@ begin
             description := jreader.Value.AsString;
 
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
           if inExhibitNumber then begin
             exhibitNumber := jreader.Value.AsString;
             for idx:= 1 to  Length(ListIdProvenance) do
@@ -332,7 +331,7 @@ var
 begin
   cbStartYear.Items.Clear;
   cbEndYear.Items.Clear;
-  for idx:=2000 to 2020 do
+  for idx:=2021 to 2030 do
   begin
     cbStartYear.Items.Add(IntToStr(idx));
     cbEndYear.Items.Add(IntToStr(idx));
@@ -341,7 +340,6 @@ begin
   cbStartYear.ItemIndex := 0;
   cbEndYear.ItemIndex := 0;
 
-  cbActionsName.Visible := False;
   cbActions.ItemIndex := -1;
   cbInstrument.Items.Clear;
   lbArguments.Items.Clear;
@@ -357,7 +355,7 @@ begin
   readWarrantFromFile;
   readIdentityFromFile;
   readLocationFromFile;
-  readTraceFromFile;
+  //readTraceFromFile;
   readProvenanceRecordFromFile;
 end;
 
@@ -426,7 +424,7 @@ begin
 
     for idx:= 0 to cbActions.Items.Count - 1 do
     begin
-      if AnsiContainsStr(cbActionsName.Items[idx], sField) then
+      if AnsiContainsStr(cbActions.Items[idx], sField) then
       begin
         cbActions.ItemIndex := idx;
         break;
@@ -619,14 +617,14 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     end
     else
       guidNoBraces :=  ExtractField(lbInvestigativeAction.Items[idx], '"@id":"');
 
     line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
     line := line + indent +  '"@type":"uco-action:Action",' + recSep;
-    line := line + indent +  '"uco-action:name":"' + cbActionsName.Items[cbActions.ItemIndex] + '",' + recSep;
+    line := line + indent +  '"uco-action:name":"' + cbActions.Items[cbActions.ItemIndex] + '",' + recSep;
     line := line + indent + '"uco-action:description":"' + edDescription.Text + '",' + recSep;
     actionTime := cbStartYear.Items[cbStartYear.ItemIndex] + '-';
     actionTime := actionTime + cbStartMonth.Items[cbStartMonth.ItemIndex] + '-';
@@ -710,12 +708,12 @@ begin
     Result := line;
 end;
 
-procedure TformInvestigativeAction.readLocationFromFile;
+procedure TformInvestigativeAction.readLocationFromFile               ;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
-  inName, inID, inLocality, inRegion, inStreet: Boolean;
+  inID, inLocality, inRegion, inStreet: Boolean;
   id, locality, region, street: string;
   listLocation: TStringList;
   idx:integer;
@@ -737,17 +735,17 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'uco-location:name' then
-            inName := True
+          if jreader.Value.AsString = 'uco-location:locality' then
+            inStreet := True
           else
-            inName := False;
+            inStreet := False;
 
           if jreader.Value.AsString = '@id' then
             inID := True
           else
             inID := False;
 
-          if jreader.Value.AsString = 'uco-location:locality' then
+          if jreader.Value.AsString = 'uco-location:street' then
             inLocality := True
           else
             inLocality := False;
@@ -765,19 +763,11 @@ begin
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
-          if inName then
-            name := jreader.Value.AsString;
-
-          if inID then
-{
-*---  the first 36 chars represent the guuid, in the property propertyBundle the property @type is
-*---  identified by the guid + "-" + propertyName, such as in the location property whose value is
-*---  "BA100CD9-A3D7-46C8-9537-053451DBD620-SimpleAddress",
-}
-            id := Copy(jreader.Value.AsString, 1, 37);
-
           if inLocality then
             locality := jreader.Value.AsString;
+
+          if inID then
+            id := jreader.Value.AsString;
 
           if inRegion then
             region := jreader.Value.AsString;
@@ -785,7 +775,8 @@ begin
           if inStreet then
           begin
             street := jreader.Value.AsString;
-            cbLocation.Items.Add(street + ' ' + locality + ' ' + region + '@' + id);
+            cbLocation.Items.Add(street + ' ' + locality + ' ' + region +
+                  StringOfChar(' ', 100) + '@' + id);
             street := '';
             locality := '';
             region := '';
@@ -852,12 +843,14 @@ begin
             description := jreader.Value.AsString;
 
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inExhibitNumber then begin
             exhibitNumber := jreader.Value.AsString;
-            cbObject.Items.Add(description + ' ' + exhibitNumber + ' ' + '@' + id);
-            cbProvenanceRecord.Items.Add(description + ' ' + exhibitNumber + ' ' + '@' + id);
+            cbObject.Items.Add(description + ' ' + exhibitNumber +
+              StringOfChar(' ', 100) + '@' + id);
+            cbProvenanceRecord.Items.Add(description + ' ' + exhibitNumber +
+              StringOfChar(' ', 100) + '@' + id);
           end;
 
 
@@ -904,12 +897,14 @@ begin
           if jreader.Value.AsString = 'uco-observable:source' then
             inSource := True
           else
-            inSource := False;
+            if (jreader.Value.AsString <> '@id') then
+              inSource := False;
 
           if jreader.Value.AsString = 'uco-observable:target' then
             inTarget := True
           else
-            inTarget := False;
+            if (jreader.Value.AsString <> '@id') then
+              inTarget := False;
 
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
@@ -979,7 +974,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            idRole := Copy(jreader.Value.AsString, 1, 37);
+            idRole := jreader.Value.AsString;
 
           if inName then
           begin
@@ -1049,7 +1044,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inGivenName then
             givenName := jreader.Value.AsString;
@@ -1076,7 +1071,8 @@ begin
               if idx > -1 then begin
                 roleName := Copy(listRole[idx], Pos('@', listRole[idx]) + 1, Length(listRole[idx]));
 
-                cbPerformer.Items.Add(givenName + ' ' + familyName + ' (' + roleName + ')' + '@' + id);
+                cbPerformer.Items.Add(givenName + ' ' + familyName + ' (' +
+                    roleName + ')' + StringOfChar(' ', 100) + '@' + id);
               end;
               givenName := '';
               familyName := '';
@@ -1147,7 +1143,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inName then
             name := jreader.Value.AsString;
@@ -1158,9 +1154,8 @@ begin
           if inVersion then
           begin
             version := jreader.Value.AsString;
-            //  the character # is to extract the name of the tool for setting the property "@type:name:ToolArguments" of
-            //  the InvestigativeAction Object in CASE
-            FListTools.Add(name + '#' + toolType + ' ' + version + '@' + id);
+            FListTools.Add(name + ' ' + toolType + ' ' +
+              version + StringOfChar(' ', 100) + '@' + id);
           end;
 
         end;
@@ -1219,7 +1214,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inName then
             name := jreader.Value.AsString;
@@ -1309,7 +1304,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inManufacturer then
             manufacturer := jreader.Value.AsString;
@@ -1378,7 +1373,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inSIMType then
             simType := jreader.Value.AsString;
@@ -1405,8 +1400,8 @@ var
   json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
-  inID, inType, inIssuedDate: Boolean;
-  id, typeWarrant, issuedDate: string;
+  inID, inType, inIdentifier: Boolean;
+  id, typeWarrant, identifier: string;
   listTrace: TStringList;
   idx:integer;
 begin
@@ -1429,34 +1424,35 @@ begin
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = '@type' then
+          if jreader.Value.AsString = 'uco-investigation:authorizationType' then
             inType := True
           else
             inType := False;
+
+          if jreader.Value.AsString = 'uco-investigation:authorizationIdentifier' then
+            inIdentifier := True
+          else
+            inIdentifier := False;
 
           if jreader.Value.AsString = '@id' then
             inID := True
           else
             inID := False;
 
-          if jreader.Value.AsString = 'uco-investigation:authorizationIssuedDate' then
-            inIssuedDate := True
-          else
-            inIssuedDate := False;
-
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inType then
             typeWarrant := jreader.Value.AsString;
 
-          if inIssuedDate then
+          if inIdentifier then
           begin
-            issuedDate := jreader.Value.AsString;
-            FlistWarrants.Add(typeWarrant + ' ' + issuedDate + '@' + id);
+            identifier := jreader.Value.AsString;
+            FlistWarrants.Add(typeWarrant + ' ' + identifier +
+                StringOfChar(' ', 100) + '@' + id);
           end;
 
         end;

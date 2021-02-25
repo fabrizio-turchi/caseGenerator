@@ -69,7 +69,7 @@ begin
   if lbAppAccount.ItemIndex > - 1 then
   begin
     line := lbAppAccount.Items[lbAppAccount.ItemIndex];
-    edAppName.Text := ExtractField(line, '"uco-core:proposed:appName":"');
+    edAppName.Text := ExtractField(line, '"uco-core:drafting:appName":"');
   end;
 end;
 
@@ -100,7 +100,7 @@ begin
     line := line + indent + '"uco-core:facets":[' + recSep;
     line := line + indent + '{' + recSep;
     line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Application",' + recSep;
-    line := line + indent + '"uco-core:proposed:appName":"' + edAppName.Text + '"' + recSep;;
+    line := line + indent + '"uco-core:drafting:appName":"' + edAppName.Text + '"' + recSep;;
     line := line + indent + '}' + recSep;
     line := line + indent + ']' + recSep + '}';
   end;

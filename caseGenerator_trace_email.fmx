@@ -188,8 +188,8 @@ object formTraceEmail: TformTraceEmail
     DefaultItemStyles.GroupHeaderStyle = ''
     DefaultItemStyles.GroupFooterStyle = ''
     OnChange = lbMessageChange
-    Viewport.Width = 693.000000000000000000
-    Viewport.Height = 93.000000000000000000
+    Viewport.Width = 697.000000000000000000
+    Viewport.Height = 97.000000000000000000
   end
   object btnClose: TButton
     Position.X = 227.000000000000000000

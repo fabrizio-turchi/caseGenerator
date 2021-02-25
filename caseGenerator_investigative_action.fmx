@@ -2,7 +2,7 @@ object formInvestigativeAction: TformInvestigativeAction
   Left = 0
   Top = 0
   Caption = 'Investigative Action'
-  ClientHeight = 682
+  ClientHeight = 627
   ClientWidth = 734
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -11,9 +11,9 @@ object formInvestigativeAction: TformInvestigativeAction
   DesignerMasterStyle = 0
   object panelTarget: TPanel
     Position.X = 16.000000000000000000
-    Position.Y = 394.000000000000000000
+    Position.Y = 374.000000000000000000
     Size.Width = 697.000000000000000000
-    Size.Height = 151.000000000000000000
+    Size.Height = 119.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
     TabOrder = 17
@@ -46,7 +46,7 @@ object formInvestigativeAction: TformInvestigativeAction
       Position.X = 136.000000000000000000
       Position.Y = 74.000000000000000000
       Size.Width = 553.000000000000000000
-      Size.Height = 73.000000000000000000
+      Size.Height = 39.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 21
       DisableFocusEffect = True
@@ -55,7 +55,7 @@ object formInvestigativeAction: TformInvestigativeAction
       DefaultItemStyles.GroupFooterStyle = ''
       OnChange = lbProvenanceRecordsChange
       Viewport.Width = 549.000000000000000000
-      Viewport.Height = 69.000000000000000000
+      Viewport.Height = 35.000000000000000000
     end
     object Label3: TLabel
       Position.X = 2.000000000000000000
@@ -112,7 +112,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Position.X = 16.000000000000000000
     Position.Y = 313.000000000000000000
     Size.Width = 697.000000000000000000
-    Size.Height = 71.000000000000000000
+    Size.Height = 56.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'panelstyle'
     TabOrder = 18
@@ -147,7 +147,7 @@ object formInvestigativeAction: TformInvestigativeAction
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
     Position.X = 16.000000000000000000
-    Position.Y = 550.000000000000000000
+    Position.Y = 498.000000000000000000
     Size.Width = 193.000000000000000000
     Size.Height = 33.000000000000000000
     Size.PlatformDefault = False
@@ -157,7 +157,7 @@ object formInvestigativeAction: TformInvestigativeAction
   end
   object lbInvestigativeAction: TListBox
     Position.X = 16.000000000000000000
-    Position.Y = 578.000000000000000000
+    Position.Y = 526.000000000000000000
     Size.Width = 697.000000000000000000
     Size.Height = 66.000000000000000000
     Size.PlatformDefault = False
@@ -181,7 +181,7 @@ object formInvestigativeAction: TformInvestigativeAction
   end
   object btnClose: TButton
     Position.X = 251.000000000000000000
-    Position.Y = 654.000000000000000000
+    Position.Y = 602.000000000000000000
     Size.Width = 110.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -191,7 +191,7 @@ object formInvestigativeAction: TformInvestigativeAction
   end
   object btnAddAction: TButton
     Position.X = 204.000000000000000000
-    Position.Y = 551.000000000000000000
+    Position.Y = 499.000000000000000000
     Size.Width = 160.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -201,7 +201,7 @@ object formInvestigativeAction: TformInvestigativeAction
   end
   object btnDeleteAction: TButton
     Position.X = 548.000000000000000000
-    Position.Y = 551.000000000000000000
+    Position.Y = 499.000000000000000000
     Size.Width = 161.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -434,7 +434,7 @@ object formInvestigativeAction: TformInvestigativeAction
     Size.Width = 697.000000000000000000
     Size.Height = 113.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 30
+    TabOrder = 29
     object edArgumentName: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 6
@@ -528,14 +528,14 @@ object formInvestigativeAction: TformInvestigativeAction
   end
   object btnCancel: TButton
     Position.X = 374.000000000000000000
-    Position.Y = 654.000000000000000000
+    Position.Y = 602.000000000000000000
     TabOrder = 28
     Text = 'Cancel'
     OnClick = btnCancelClick
   end
   object btnModifyInvestigativeAction: TButton
     Position.X = 372.000000000000000000
-    Position.Y = 551.000000000000000000
+    Position.Y = 499.000000000000000000
     Size.Width = 161.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
@@ -549,8 +549,7 @@ object formInvestigativeAction: TformInvestigativeAction
       'Search and Seizure'
       'Transfer'
       'Forensic Acquisition'
-      'Forensic Extraction'
-      'Forensic Analysis')
+      'Forensic Extraction')
     Position.X = 83.000000000000000000
     Position.Y = 14.000000000000000000
     Size.Width = 214.000000000000000000
@@ -560,20 +559,6 @@ object formInvestigativeAction: TformInvestigativeAction
     ParentShowHint = False
     ShowHint = True
     OnChange = cbActionsChange
-  end
-  object cbActionsName: TComboBox
-    Items.Strings = (
-      'preserved'
-      'transferred'
-      'extracted'
-      'extracted'
-      'parsed')
-    Position.X = 579.000000000000000000
-    Position.Y = 78.000000000000000000
-    Size.Width = 136.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 29
   end
   object Label16: TLabel
     Position.X = 12.000000000000000000

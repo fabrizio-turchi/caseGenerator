@@ -147,14 +147,6 @@ object formProvenanceRecord: TformProvenanceRecord
       TabOrder = 4
     end
     object cbPRYear: TComboBox
-      Items.Strings = (
-        '1950'
-        '1951'
-        '1952'
-        '1953'
-        '1954'
-        '1955'
-        '1956')
       Position.X = 252.000000000000000000
       Position.Y = 92.000000000000000000
       TabOrder = 5

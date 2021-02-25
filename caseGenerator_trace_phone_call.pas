@@ -199,7 +199,7 @@ begin
     end;
 
     timeSent.Text := Copy(sentDate, 10, 8);
-    edDuration.Text := ExtractNumericValue(line, '"uco-observable:duration":"');
+    edDuration.Text := ExtractNumericValue(line, '"uco-observable:duration":{');
 
   end;
 
@@ -249,8 +249,8 @@ begin
   line := line +  RepeatString(indent, 3)  + '"@type":"xsd:long",' + recSep;
   line := line +  RepeatString(indent, 3)  + '"@value":' + edDuration.Text + recSep;
   line := line + RepeatString(indent, 2) + '},' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:proposed:outcome":"Established",' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:proposed:allocationStatus":"Intact"' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:drafting:outcome":"Established",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:allocationStatus":"Intact"' + recSep;
   line := line  + indent + '}]' + recSep + '}' + recSep;
   Result := line;
 end;
@@ -258,9 +258,9 @@ end;
 procedure TformTracePhoneCall.readTraceFromFile;
 
 begin
-  readTraceMobileFromFile;
+  //readTraceMobileFromFile;
   readTracePhoneAccountFromFile;
-  readTraceFacebookAccountFromFile;
+  //readTraceFacebookAccountFromFile;
 end;
 
 procedure TformTracePhoneCall.readTraceMobileFromFile;
@@ -309,7 +309,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);  // only the guuid
+            id := jreader.Value.AsString;
 
           if inModel then
             model := jreader.Value.AsString;
@@ -322,8 +322,10 @@ begin
                   for instance for Identity it can be @id:"...-...-SimpleName" ---*)
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
-            cbMobileFrom.Items.Add(model + ' ' + msisdn + StringOfChar(' ', 100) + '@' + id);
-            cbMobileTo.Items.Add(model + ' ' + msisdn + StringOfChar(' ', 100) +'@' + id);
+            cbMobileFrom.Items.Add(model + ' ' + msisdn +
+                StringOfChar(' ', 100) + '@' + id);
+            cbMobileTo.Items.Add(model + ' ' + msisdn +
+                StringOfChar(' ', 100) +'@' + id);
           end;
 
         end;
@@ -341,8 +343,8 @@ var
   json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
-  inID, inPhoneNumber: Boolean;
-  id, phoneNumber: string;
+  inID, inPhoneNumber, inPhoneName: Boolean;
+  id, phoneNumber, phoneName: string;
   listTrace: TStringList;
   idx, nHypens: integer;
 begin
@@ -374,13 +376,21 @@ begin
           else
             inPhoneNumber := False;
 
+          if jreader.Value.AsString = 'uco-observable:name' then
+            inPhoneName := True
+          else
+            inPhoneName := False;
+
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inPhoneNumber then
+            phoneNumber := jreader.Value.AsString;
+
+          if inPhoneName then
           begin
             nHypens := CountOccurrences('-', id);
             (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
@@ -388,9 +398,11 @@ begin
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
 
-            phoneNumber := jreader.Value.AsString;
-            cbMobileFrom.Items.Add('Phone account ' + phoneNumber + '@' + id);
-            cbMobileTo.Items.Add('Phone account ' + phoneNumber + '@' + id);
+            phoneName := jreader.Value.AsString;
+            cbMobileFrom.Items.Add(phoneName + ' ' + phoneNumber +
+              StringOfChar(' ', 100) + '@' + id);
+            cbMobileTo.Items.Add(phoneName + ' ' + phoneNumber +
+              StringOfChar(' ', 100) + '@' + id);
           end;
 
         end;
@@ -445,7 +457,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inAccountID then
           begin

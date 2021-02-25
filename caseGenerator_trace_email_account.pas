@@ -74,7 +74,7 @@ end;
 
 function TformTraceEmailAccount.prepareTrace(operation: String): String;
 var
-  line, recSep, indent: string;
+  line, recSep, indent, guidNoBraces: string;
   Uid: TGUID;
   idx: Integer;
 begin
@@ -89,7 +89,8 @@ begin
     if operation = 'add' then
     begin
       CreateGUID(Uid);
-      line := line + '"@id":"kb:' + GuidToString(Uid) + '", ' + recSep;
+      guidNoBraces := Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+      line := line + '"@id":"kb:' + guidNoBraces + '", ' + recSep;
     end
     else
     begin

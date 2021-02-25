@@ -83,7 +83,7 @@ var
   idValues: TStringList;
 begin
   cbYear.Items.Clear;
-  for idx:=2000 to 2020 do
+  for idx:=2020 to 2030 do
     cbYear.Items.Add(IntToStr(idx));
 {
   - the cbAuthority values must be taken combining Role and Relationship:
@@ -176,7 +176,7 @@ begin
       end;
     end;
 
-    line := ExtractField(line, '"uco-investigation:authorizationAuthority":"');
+    line := ExtractRefId(line, '"uco-investigation:authorizationAuthority":"');
     for idx:=0 to cbAuthority.Items.Count - 1 do
     begin
       if AnsiContainsStr(cbAuthority.Items[idx],  line) then
@@ -214,7 +214,7 @@ begin
   line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationType":"' + edAuthorizationType.Text + '",' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationIdentifier":"' + edIdentifier.Text + '",' + recSep;
   lineID := extractID(cbAuthority.Items[cbAuthority.ItemIndex]);
-  line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationAuthority":"' + lineID + '",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationAuthority":{"@id":"' + lineID + '"},' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-investigation:authorizationIssuedDate":"' + cbYear.Items[cbYear.ItemIndex];
   line := line + cbMonth.Items[cbMonth.ItemIndex];
   line := line + cbDay.Items[cbDay.ItemIndex] + '"' + recSep;
@@ -268,7 +268,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then begin
-            idIdentity := Copy(jreader.Value.AsString, 1, 37);
+            idIdentity := jreader.Value.AsString
           end;
 
           if inName then
@@ -322,25 +322,31 @@ begin
           if jreader.Value.AsString = 'uco-observable:source' then
             inSource := True
           else
-            inSource := False;
+            if (jreader.Value.AsString <> '@id') then
+              inSource := False;
 
           if jreader.Value.AsString = 'uco-observable:target' then
             inTarget := True
           else
-            inTarget := False;
+            if (jreader.Value.AsString <> '@id') then
+              inTarget := False;
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
-          if inTarget then begin
+          if inSource then
+            source := jreader.Value.AsString;
+
+          if inTarget then
+          begin
             target := jreader.Value.AsString;
 
             for idx:=0 to idRoles.Count - 1 do
               if idRoles[idx] =  target then
                 idIdentities.Add(source);
+            inSource := False;
+            inTarget := False;
           end;
 
-          if inSource then
-            source := jreader.Value.AsString;;
         end;
       end;
     finally
@@ -404,7 +410,7 @@ begin
           end;
 
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
         end;
       end;
     finally

@@ -160,7 +160,7 @@ begin
     line := lbTrace.Items[lbTrace.ItemIndex];
     memoName.Lines.Text := ExtractField(line, '"uco-observable:fileName":"');
     edPath.Text := ExtractField(line, '"uco-observable:filePath":"');
-    edExtractionPath.Text := ExtractField(line, '"uco-observable:__fileLocalPath":"');
+    edExtractionPath.Text := ExtractField(line, '"uco-observable:drafting:fileLocalPath":"');
     edExtension.Text := ExtractField(line, '"uco-observable:extension":"');
 
     sTag :=  ExtractField(line, '"tag":["');
@@ -260,7 +260,7 @@ begin
     line := line + RepeatString(indent, 2) + '"@type":"uco-observable:File",' + recSep;
     line := line + RepeatString(indent, 2) + '"uco-observable:fileName":"' + memoName.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"uco-observable:filePath":"' + edPath.Text + '",' + recSep;
-    line := line + RepeatString(indent, 2) + '"uco-observable:__fileLocalPath":"' + edExtractionPath.Text + '",' + recSep;
+    line := line + RepeatString(indent, 2) + '"uco-observable:drafting:fileLocalPath":"' + edExtractionPath.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"uco-observable:extension":"' + edExtension.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"uco-observable:fileSystemType":"' + edSystemType.Text + '",' + recSep;
     line := line + RepeatString(indent, 2) + '"uco-observable:isDirectory":"' + cbDirectory.Items[cbDirectory.ItemIndex] + '",' + recSep;
@@ -272,11 +272,12 @@ begin
     cTime := cbCreationYear.Items[cbCreationYear.ItemIndex] + '-';
     cTime := cTime + cbCreationMonth.Items[cbCreationMonth.ItemIndex] + '-';
     cTime := cTime + cbCreationDay.Items[cbCreationDay.ItemIndex] + 'T';
-    line := line + '{@type":"xsd:dateTime",' + recSep;
-    line := line + '"@value":"' + cTime + TimeToStr(timeCreation.Time) + 'Z"},' + recSep;
+    line := line + '{"@type":"xsd:dateTime",' + recSep;
+    line := line + '"@value":"' + cTime + TimeToStr(timeCreation.Time) + 'Z"}' + recSep;
+    line := line + RepeatString(indent, 2) + '},' + recSep;
     line := line + RepeatString(indent, 2) + '{' + recSep;
     line := line + RepeatString(indent, 3) + '"type":"uco-observable:ContentData",' + recSep;
-    line := line + RepeatString(indent, 3) + '""uco-observable:hash":[' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:hash":[' + recSep;
     line := line + RepeatString(indent, 3) + '{' + recSep;
     line := line + RepeatString(indent, 4) + '"@type":"uco-types:Hash",' + recSep;
     line := line + RepeatString(indent, 4) + '"uco-types:hashMethod":' + recSep;
@@ -288,9 +289,8 @@ begin
     line := line + RepeatString(indent, 5) + '"@type": "xsd:hexBinary",' + recSep;
     line := line + RepeatString(indent, 5) + '"@value":"' + edHashValue.Text  + '"' + recSep;
     line := line + RepeatString(indent, 4) + '}' + recSep;
-    line := line + RepeatString(indent, 3) + '}], ' + recSep;
-    line := line + RepeatString(indent, 3) +  '"uco-observable:SizeInBytes":"' + edHashSize.Text + '"' + recSep;
-    line := line + RepeatString(indent, 2) + '}' + recSep;
+    line := line + RepeatString(indent, 3) + '}' + recSep;
+    line := line + RepeatString(indent, 3) + ']} ' + recSep;
     line := line + indent + ']}';
 
     Result := line;

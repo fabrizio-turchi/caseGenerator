@@ -112,7 +112,7 @@ end;
 
 procedure TformProvenanceRecord.FormShow(Sender: TObject);
 var
-  idx: Integer;
+  idx, idy: Integer;
 begin
 {
   The Provenance Record object take the object property values from all Trace Objects
@@ -121,8 +121,16 @@ begin
   lbObjects.Items.Clear;
   edDescription.Text := '';
   edExhibitNumber.Text := '';
-  for idx:=2000 to  2020 do
+  idy := 0;
+  for idx:=2021 to  2030 do
+  begin
     cbPRYear.Items.Add(IntToStr(idx));
+    if idx = CurrentYear then
+      cbPRYear.ItemIndex := idy;
+    Inc(idy);
+  end;
+  cbPRMonth.ItemIndex := 0;
+  cbPRDay.ItemIndex := 0;
   // Fill in the combo box cbObject with Trace Object read from files (MOBILE, SIM, FILE)
   readTraceFromFile;
 end;
@@ -166,7 +174,6 @@ begin
   begin
     idx := 0;
     line := lbObjects.Items[lbObjects.ItemIndex];
-    line := stringreplace(line, '"', '',[rfReplaceAll]);
     for idx := 0 to cbObject.Count - 1 do
     begin
       if AnsiContainsStr(cbObject.Items[idx], line) then
@@ -182,7 +189,7 @@ procedure TformProvenanceRecord.lbProvenanceRecordChange(Sender: TObject);
 var
   line, creationDate, sDate, sDay, sMonth, sYear, idObject: string;
   idx: Integer;
-  objectList: TStringList;
+  objectList: TArray<String>;
   exitLoop: Boolean;
 begin
   if lbProvenanceRecord.ItemIndex > - 1 then
@@ -224,11 +231,11 @@ begin
     end;
 
     timePR.Text := Copy(creationDate, 12, 8);
-    objectList := ExtractArray(line, '"uco-investigation:object":[');
+    objectList := ExtractArrayRefId(line, '"uco-investigation:object":[');
     exitLoop := false;
 
-    for idx := 0 to objectList.Count -1 do
-      lbObjects.Items.Add('"' + objectList[idx] + '"');
+    for idx := 0 to Length(objectList) - 1 do
+      lbObjects.Items.Add(objectList[idx]);
 
     lbObjects.ItemIndex := 0; //slect the first object of the list that activates the OnChange event on lbObjects
 
@@ -265,9 +272,9 @@ begin
   line := line +  indent + '"uco-investigation:object":[';
   idx := 0;
   for idx:=0 to lbObjects.Count - 2 do
-    line := line +  RepeatString(indent, 2)  + lbObjects.Items[idx] + ',';
+    line := line +  RepeatString(indent, 2)  + '{"@id":"' + lbObjects.Items[idx] + '"},';
 
-  line := line +  RepeatString(indent, 2)  + lbObjects.Items[idx] + recSep + indent + ']' + recSep + '}';
+  line := line +  RepeatString(indent, 2)  + '{"@id":"' + lbObjects.Items[idx] + '"}' + recSep + indent + ']' + recSep + '}';
   Result := line;
 end;
 
@@ -858,7 +865,7 @@ begin
   if cbObject.ItemIndex > - 1 then
   begin
     line := cbObject.Items[cbObject.ItemIndex];
-    lbObjects.Items.Add('"' + Copy(line, Pos('@', line) + 1, Length(line)) + '"');
+    lbObjects.Items.Add(Copy(line, Pos('@', line) + 1, Length(line)));
   end;
 end;
 

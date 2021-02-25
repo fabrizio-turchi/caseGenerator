@@ -10,7 +10,7 @@ object formWarrant: TformWarrant
   OnShow = FormShow
   DesignerMasterStyle = 0
   object panelWarrant: TPanel
-    Position.X = 11.000000000000000000
+    Position.X = 19.000000000000000000
     Position.Y = 66.000000000000000000
     Size.Width = 702.000000000000000000
     Size.Height = 143.000000000000000000

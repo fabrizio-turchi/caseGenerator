@@ -402,7 +402,7 @@ end;
 
 procedure TformMain.btnGenerateCaseJsonClick(Sender: TObject);
 var
-  idx, guuidLength: Integer;
+  idx: Integer;
   crlf, recSep, space4, space8, line, subStr: String;
 begin
   if lbObjects.Items.Count = 0 then
@@ -427,8 +427,6 @@ begin
       space4 := '    ';
       space8 := space4 + space4;
       subStr := 'investigation-';
-      guuidLength := 37; // includes the initial :
-
 
       for idx:=0 to lbObjects.Items.Count - 1 do
       begin
@@ -701,7 +699,7 @@ begin
       begin
         line := Trim(caseList[idx]);
         // first or last line or root element
-        if (line = '{') or (line = '}') or  (line = ']') or (AnsiContainsStr(line, 'OBJECTS_'))  then
+        if ((line = '') or (line = '{') or (line = '}') or  (line = ']') or (AnsiContainsStr(line, 'OBJECTS_')))  then
         else
         begin
           if Copy(line, Length(line), 1) = ',' then

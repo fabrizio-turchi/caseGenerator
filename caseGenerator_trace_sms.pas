@@ -58,9 +58,6 @@ type
     property uuidCase: string read FuuidCase write SetuuidCase;
     property pathCase: String read FpathCase write SetpathCase;
     function JsonTokenToString(const t: TJsonToken): string;
-    procedure readTraceFromFile;
-    procedure readTraceMobileFromFile;
-    procedure readTraceFacebookAccountFromFile;
     procedure readTracePhoneAccountFromFile;
     function  extractID(line: String): String;
     function extractLastID(line: String): String;
@@ -109,7 +106,7 @@ procedure TformTraceSMS.FormShow(Sender: TObject);
 var
   idx: Integer;
 begin
-  for idx:=2000 to 2020 do
+  for idx:=2019 to 2030 do
     cbSentYear.Items.Add(IntToStr(idx));
 
   edApplication.Text := '';
@@ -117,7 +114,7 @@ begin
   cbSentDay.ItemIndex := -1;
   cbSentMonth.ItemIndex := -1;
   cbSentYear.ItemIndex := -1;
-  readTraceFromFile;
+  readTracePhoneAccountFromFile;
   cbMobileFrom.ItemIndex := -1;
   cbMobileTo.ItemIndex := -1;
   lbMobile.Items.Clear;
@@ -158,9 +155,8 @@ end;
 
 procedure TformTraceSMS.lbMessageChange(Sender: TObject);
 var
-  line, sentDate, sDay, sMonth, sYear, sDate, messageType: String;
+  line, sentDate, sDay, sMonth, sYear, sDate, messageType, field: String;
   idx: Integer;
-  mobileTo: TStringList;
 begin
   if lbMessage.ItemIndex > - 1 then
   begin
@@ -168,7 +164,8 @@ begin
     line := lbMessage.Items[lbMessage.ItemIndex];
     edApplication.Text := ExtractField(line, '"uco-observable:application":"');
     memoMessageText.Lines.Text := ExtractField(line, '"uco-observable:messageText":"');
-    line := ExtractField(line, '"uco-observable:from":"');
+    line := ExtractRefId(line, '"uco-observable:from":{');
+
     for idx:=0 to cbMobileFrom.Items.Count - 1 do
     begin
       if AnsiContainsStr(cbMobileFrom.Items[idx], line) then
@@ -177,15 +174,28 @@ begin
         Break;
       end;
     end;
-    mobileTo := ExtractArray(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:to":[');
+
+    field := ExtractRefId(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:to":[');
+    {
     if mobileTo.Count > 0 then
     begin
       for idx:=0 to mobileTo.Count - 1 do
-        lbMobile.Items.Add('"' + mobileTo[idx] + '"');
+        lbMobile.Items.Add(mobileTo[idx]);
       lbMobile.ItemIndex := 0;
     end;
+     }
+    // only one single To phone number
 
-    sentDate := ExtractField(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:sentTime":"');
+    for idx:=0 to cbMobileTo.Items.Count - 1 do
+    begin
+      if AnsiContainsStr(cbMobileTo.Items[idx], field) then
+      begin
+        cbMobileTo.ItemIndex := idx;
+        Break;
+      end;
+    end;
+
+    sentDate := ExtractDateValue(lbMessage.Items[lbMessage.ItemIndex], '"uco-observable:sentTime":"');
     sDate := Copy(sentDate, 1, 10);
     sDay := Copy(sDate, 7, 2);
     for idx:=0 to cbSentDay.Items.Count - 1 do
@@ -219,9 +229,6 @@ begin
 
     timeSent.Text := Copy(sentDate, 10, 8);
   end;
-
-    // read trace-MOBILE fro extracting all ID with model and MSISDN
-
 
 end;
 
@@ -274,7 +281,8 @@ begin
   line := line + RepeatString(indent, 2) + '"@type":"uco-observable:Message",' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-observable:application":"' + edApplication.Text + '",' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-observable:messageText":"' + memoMessageText.Text + '", ' + recSep;
-  line := line + RepeatString(indent, 2) + '"uco-observable:proposed:allocationStatus":"Intact",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:SMSmessage":"True",' + recSep;
+  line := line + RepeatString(indent, 2) + '"uco-observable:allocationStatus":"Intact",' + recSep;
   idLine := cbMobileFrom.Items[cbMobileFrom.ItemIndex];
   line := line + RepeatString(indent, 2) + '"uco-observable:from":{' + recSep;
   line := line + RepeatString(indent, 3) + '"@id":"' + extractID(idLine) + '"' + recSep;
@@ -282,9 +290,9 @@ begin
   line := line + RepeatString(indent, 2) + '"uco-observable:to":[' + recSep;
   idx := 0;
   for idx:=0 to lbMobile.Items.Count - 2 do
-    line := line  + RepeatString(indent, 2) + '"@id":"' + lbMobile.Items[idx] + '"},';
+    line := line  + RepeatString(indent, 2) + '{"@id":"' + lbMobile.Items[idx] + '"},';
 
-  line := line  + RepeatString(indent, 2) + '"@id":"' +lbMobile.Items[idx] + '"}],' + recSep;
+  line := line  + RepeatString(indent, 2) + '{"@id":"' +lbMobile.Items[idx] + '"}],' + recSep;
   line := line + RepeatString(indent, 2) + '"uco-observable:sentTime":{' + recSep;
   line := line + RepeatString(indent, 3) +  '"@type": "xsd:dateTime", ' + recSep;
   line := line + RepeatString(indent, 3) +  '"@value": "' + cbSentYear.Items[cbSentYear.ItemIndex];
@@ -295,85 +303,6 @@ begin
   Result := line;
 end;
 
-procedure TformTraceSMS.readTraceFromFile;
-
-begin
-  readTraceMobileFromFile;
-  readTracePhoneAccountFromFile;
-  readTraceFacebookAccountFromFile;
-end;
-
-procedure TformTraceSMS.readTraceMobileFromFile;
-var
-  json, recSep, crlf: string;
-  sreader: TStringReader;
-  jreader: TJsonTextReader;
-  inID, inModel, inMSISDN: Boolean;
-  id, model, msisdn: string;
-  listTrace: TStringList;
-  idx, nHypens: integer;
-begin
-  //dir := GetCurrentDir;
-  recSep := #30 + #30;
-  crlf := #13 + #10;
-  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-traceMOBILE.json') then
-  begin
-    listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceMOBILE.json');
-    //JSON string here
-    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
-    try
-      sreader := TStringReader.Create(json);
-      jreader := TJsonTextReader.Create(sreader);
-
-      while jreader.Read do
-      begin
-        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
-        begin
-          if jreader.Value.AsString = '@id' then
-            inID := True
-          else
-            inID := False;
-
-          if jreader.Value.AsString = 'model' then
-            inModel := True
-          else
-            inModel := False;
-
-          if jreader.Value.AsString = 'MSISDN' then
-            inMSISDN := True
-          else
-            inMSISDN := False;
-        end;
-        if JsonTokenToString(jreader.TokenType) = 'String' then
-        begin
-          if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);  // only the guuid
-
-          if inModel then
-            model := jreader.Value.AsString;
-
-          if inMSISDN then
-          begin
-            msisdn := jreader.Value.AsString;
-            nHypens := CountOccurrences('-', id);
-            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
-                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
-            if nHypens > 4  then
-              id := Copy(id, 1, LastDelimiter('-', id) - 1);
-            cbMobileFrom.Items.Add(model + ' ' + msisdn + '@' + id);
-            cbMobileTo.Items.Add(model + ' ' + msisdn + '@' + id);
-          end;
-
-        end;
-      end;
-    finally
-      jreader.Free;
-      sreader.Free;
-    end;
-  end;
-end;
 
 
 procedure TformTraceSMS.readTracePhoneAccountFromFile;
@@ -381,12 +310,13 @@ var
   json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
-  inID, inPhoneNumber: Boolean;
-  id, phoneNumber: string;
+  inID, inPhoneNumber, inPhoneIssuer, inPhoneName: Boolean;
+  id, phoneNumber, phoneIssuer, phoneName: string;
   listTrace: TStringList;
   idx, nHypens: integer;
 begin
   //dir := GetCurrentDir;
+  
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
@@ -414,91 +344,43 @@ begin
           else
             inPhoneNumber := False;
 
+         if jreader.Value.AsString = 'uco-observable:accountIssuer' then
+            inPhoneIssuer := True
+          else
+            inPhoneIssuer := False;
+
+         if jreader.Value.AsString = 'uco-observable:name' then
+            inPhoneName := True
+          else
+            inPhoneName := False;
+
         end;
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
+
+          if inPhoneIssuer then
+            phoneIssuer := jreader.Value.AsString;
 
           if inPhoneNumber then
-          begin
-            nHypens := CountOccurrences('-', id);
-            (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
-                  for instance for Identity it can be @id:"...-...-SimpleName" ---*)
-            if nHypens > 4  then
-              id := Copy(id, 1, LastDelimiter('-', id) - 1);
-
             phoneNumber := jreader.Value.AsString;
-            cbMobileFrom.Items.Add('Phone account ' + phoneNumber + '@' + id);
-            cbMobileTo.Items.Add('Phone account ' + phoneNumber + '@' + id);
-          end;
 
-        end;
-      end;
-    finally
-      jreader.Free;
-      sreader.Free;
-    end;
-  end;
-
-end;
-
-procedure TformTraceSMS.readTraceFacebookAccountFromFile;
-var
-  json, recSep, crlf: string;
-  sreader: TStringReader;
-  jreader: TJsonTextReader;
-  inAccountID, inID: Boolean;
-  accountID, id: string;
-  listTrace: TStringList;
-  idx, nHypens: integer;
-begin
-  //dir := GetCurrentDir;
-  recSep := #30 + #30;
-  crlf := #13 + #10;
-  // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json') then
-  begin
-    listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceFACEBOOK_ACCOUNT.json');
-    //JSON string here
-    json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
-    try
-      sreader := TStringReader.Create(json);
-      jreader := TJsonTextReader.Create(sreader);
-
-      while jreader.Read do
-      begin
-        if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
-        begin
-          if jreader.Value.AsString = 'accountID' then
-            inAccountID := True
-          else
-            inAccountID := False;
-
-          if jreader.Value.AsString = '@id' then
-            inID := True
-          else
-            inID := False;
-        end;
-
-        if JsonTokenToString(jreader.TokenType) = 'String' then
-        begin
-          if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
-
-          if inAccountID then
+          if inPhoneName then
           begin
-            accountID := jreader.Value.AsString;
             nHypens := CountOccurrences('-', id);
             (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
                   for instance for Identity it can be @id:"...-...-SimpleName" ---*)
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
-            accountID := stringreplace(accountID, '@', '#',[rfReplaceAll]);
-            cbMobileFrom.Items.Add('Facebook account ' + accountID + '@' + id);
-            cbMobileTo.Items.Add('Facebook account ' + accountID + '@' + id);
+
+            phoneName := jreader.Value.AsString;
+            cbMobileFrom.Items.Add(phoneName + ' ' + phoneNumber + ' ' +
+                phoneIssuer + StringOfChar(' ', 100) + '@' + id);
+             cbMobileTo.Items.Add(phoneName + ' ' + phoneNumber + ' ' +
+                phoneIssuer + StringOfChar(' ', 100) + '@' + id);
           end;
+
         end;
       end;
     finally
@@ -508,6 +390,8 @@ begin
   end;
 
 end;
+
+
 
 procedure TformTraceSMS.btnAddMobileClick(Sender: TObject);
 var
@@ -518,7 +402,7 @@ begin
   else
   begin
     line := cbMobileTo.Items[cbMobileTo.ItemIndex];
-    line := '"' + extractLastID(line) + '"';
+    line := extractID(line);
     lbMobile.Items.Add(line);
   end;
 
@@ -556,7 +440,7 @@ begin
     CloseFile(fileJSON);
   end
   else
-    deleteFile(FpathCase + FuuidCase + '-traceMESSAGE.json');
+    deleteFile(FpathCase + FuuidCase + '-traceSMS.json');
 
   formTraceSMS.Close;
 end;

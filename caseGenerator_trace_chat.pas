@@ -155,7 +155,7 @@ begin
   if (Trim(edNewChatName.Text) <> '')  then
   begin
     CreateGUID(Uid);
-    guidNoBraces := ':' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
+    guidNoBraces := 'kb:' + Copy(GuidToString(Uid), 2, Length(GuidToString(Uid)) - 2);
     cbChatName.Items.Add(edNewChatName.Text + StringofChar(' ', 100) + '@' +  guidNoBraces);
     cbChatName.ItemIndex := cbChatName.Count - 1;
     edNumMessages.Text := '0';
@@ -438,7 +438,7 @@ begin
   sId := ExtractID(lbAccountTo.Items[idx], '@id');
   line := line  + RepeatString(indent, 2) + '{"@id":"' + sId + '"}],' + recSep;
   line := line  + indent + '"uco-observable:allocationStatus":"Intact",' + recSep;
-  line := line  + indent +  '"uco-observable:__outcome":"",' + recSep;
+  line := line  + indent +  '"uco-observable:drafting:outcome":"",' + recSep;
   sValue := cbMessageType.Items[cbMessageType.ItemIndex];
   line := line  + indent + 	'"uco-observable:messageType":"' + sValue + '"' + recSep;
   line := line  + indent + '}]' + recSep + '}' + recSep;
@@ -515,7 +515,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);  // only the guuid
+            id := jreader.Value.AsString;
 
           if inIssuer then
             issuer := jreader.Value.AsString;
@@ -590,7 +590,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inAppName then
           begin
@@ -661,7 +661,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inID then
-            id := Copy(jreader.Value.AsString, 1, 37);
+            id := jreader.Value.AsString;
 
           if inChatName then
             chatName := jreader.Value.AsString;
@@ -808,7 +808,7 @@ begin
           if JsonTokenToString(jreader.TokenType) = 'String' then
           begin
             if inID then
-              id := Copy(jreader.Value.AsString, 1, 37);
+              id := jreader.Value.AsString;
             if inChatText then
               chatText := jreader.Value.AsString;
             if inChatAppId then

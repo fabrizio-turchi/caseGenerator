@@ -227,7 +227,7 @@ begin
         if JsonTokenToString(jreader.TokenType) = 'String' then
         begin
           if inAppID then
-            appID := Copy(jreader.Value.AsString, 1, 37);  // only the guuid
+            appID := jreader.Value.AsString;
 
           if inAppName then begin
             appName := jreader.Value.AsString;

@@ -76,7 +76,7 @@ type
     procedure readTraceComputerFromFile;
     procedure readTraceDiskFromFile;
     procedure readTraceDiskPartitionFromFile;
-    procedure readTraceEmailAccountFromFile;
+    procedure readTraceEmailFromFile;
     procedure readTraceFileFromFile;
     procedure readTraceMessageFromFile;
     function prepareObjectCaseLine(operation: String): String;
@@ -247,7 +247,7 @@ begin
   cbTargetTrace.Items.Clear;
   readIdentityFromFile;
   readRoleFromFile;
-  readAppAccountFromFile;
+  //readAppAccountFromFile;
   readLocationFromFile;
   readTraceFromFile;
   cbSourceIdentity.Enabled := False;
@@ -315,7 +315,7 @@ begin
         break;
       end;
     end;
-    edSourceID.Text := ExtractField(line, '"uco-observable:source":"');
+    edSourceID.Text := ExtractRefId(line, '"uco-observable:source":{');
 
     // to be optimized: when a cb Sourcexxx is enable the other two must not be
     // processed
@@ -355,7 +355,7 @@ begin
       end;
     end;
 
-    edTargetID.Text := ExtractField(line, '"uco-observable:target":"');
+    edTargetID.Text := ExtractRefId(line, '"uco-observable:target":{');
 
     // to be optimized: when a cb Sourcexxx is enable the other two must not be
     // processed
@@ -420,8 +420,8 @@ begin
 
   line := line + indent + '"@id":"' + guidNoBraces + '",' + recSep;
   line := line + indent + '"@type":"uco-observable:Relationship",' + recSep;
-  line := line + indent + '"uco-observable:source":"' + edSourceID.Text + '",' + recSep;
-  line := line + indent + '"uco-observable:target":"' + edTargetID.Text + '",' + recSep;
+  line := line + indent + '"uco-observable:source":{"@id":"' + edSourceID.Text + '"},' + recSep;
+  line := line + indent + '"uco-observable:target":{"@id":"' + edTargetID.Text + '"},' + recSep;
   line := line + indent + '"uco-observable:kindOfRelationship":"' + edNameRelationship.Text + '",' + recSep;
   line := line + indent + '"uco-observable:isDirectional":"' + cbDirectional.Items[cbDirectional.ItemIndex]+ '"' + recSep;
   line := line + '}';
@@ -566,7 +566,7 @@ begin
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
 
-            cbSourceIdentity.Items.Add(name + ' ' + familyName + '@' + id);
+            cbSourceIdentity.Items.Add(name + ' ' + familyName + STringOfChar(' ' , 100) + '@' + id);
             name := '';
             id:= '';
           end;
@@ -710,8 +710,8 @@ begin
         begin
           if inName then begin
             name := jreader.Value.AsString;
-            cbSourceRole.Items.Add(name + ' ' + '@' + id);
-            cbTargetRole.Items.Add(name + ' ' + '@' + id);
+            cbSourceRole.Items.Add(name + StringOfChar(' ', 100)  + '@' + id);
+            cbTargetRole.Items.Add(name + StringOfChar(' ', 100) + '@' + id);
             name := '';
             id := '';
           end;
@@ -973,41 +973,51 @@ begin
 
 end;
 
-procedure TformRelationship.readTraceEmailAccountFromFile;
+procedure TformRelationship.readTraceEmailFromFile;
 var
   json, recSep, crlf: string;
   sreader: TStringReader;
   jreader: TJsonTextReader;
-  inEmailAddress, inID: Boolean;
-  id, emailAddress: string;
+  inEmailBody, inID: Boolean;
+  id, emailBody: string;
   listTrace: TStringList;
   idx, nHypens:integer;
+  firstUuid: Boolean;
 begin
   //dir := GetCurrentDir;
   recSep := #30 + #30;
   crlf := #13 + #10;
   // read file JSON uuidCase-identity.json: fill in cbSourceIdentity component
-  if FileExists(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json') then
+  if FileExists(FpathCase + FuuidCase + '-traceEMAIL.json') then
   begin
     listTrace := TStringList.Create;
-    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceEMAIL_ACCOUNT.json');
+    listTrace.LoadFromFile(FpathCase + FuuidCase + '-traceEMAIL.json');
     //JSON string here
     json := stringreplace(listTrace.Text, recSep, crlf,[rfReplaceAll]);
     try
       sreader := TStringReader.Create(json);
       jreader := TJsonTextReader.Create(sreader);
+      firstUuid := False;
 
       while jreader.Read do
       begin
         if JsonTokenToString(jreader.TokenType) = 'PropertyName' then
         begin
-          if jreader.Value.AsString = 'uco-observable:emailAddress' then
-            inEmailAddress := True
+          if jreader.Value.AsString = 'uco-observable:body' then
+            inEmailBody := True
           else
-            inEmailAddress := False;
+            inEmailBody := False;
 
           if jreader.Value.AsString = '@id' then
-            inID := True
+          begin
+            if not firstUuid then
+            begin
+              inID := True;
+              firstUuid := True
+            end
+            else
+              inId := False;
+          end
           else
             inID := False;
         end;
@@ -1016,17 +1026,17 @@ begin
           if inID then
             id := jreader.Value.AsString;
 
-          if inEmailAddress then
+          if inEmailBody then
           begin
-            emailAddress := stringreplace(jreader.Value.AsString, '@', 'AT', [rfReplaceAll]);
+            emailBody := Copy(jreader.Value.AsString, 1, 50) + ' ...';
             nHypens := CountOccurrences('-', id);
             (*--- if nHypens > 4 then it is the case of id related to @type inside an Object,
                   for instance for Identity it can be @id:"...-...-SimpleName" ---*)
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
 
-            cbTargetTrace.Items.Add(emailAddress + ' '  + '@' + id);
-            cbSourceTrace.Items.Add(emailAddress + ' '  + '@' + id);
+            cbTargetTrace.Items.Add(emailBody + StringOfChar(' ', 50)  + '@' + id);
+            cbSourceTrace.Items.Add(emailBody + StringOfChar(' ', 50)  + '@' + id);
           end;
 
         end;
@@ -1091,8 +1101,8 @@ begin
             if nHypens > 4  then
               id := Copy(id, 1, LastDelimiter('-', id) - 1);
 
-            cbSourceTrace.Items.Add(fileName + ' '  + '@' + id);
-            cbTargetTrace.Items.Add(fileName + ' '  + '@' + id);
+            cbSourceTrace.Items.Add(fileName + StringOfChar(' ', 100)  + '@' + id);
+            cbTargetTrace.Items.Add(fileName + StringOfChar(' ', 100)  + '@' + id);
           end;
 
         end;
@@ -1112,7 +1122,7 @@ begin
   readTraceComputerFromFile;
   readTraceDiskFromFile;
   readTraceDiskPartitionFromFile;
-  readTraceEmailAccountFromFile;
+  readTraceEmailFromFile;
   readTraceFileFromFile;
   readTraceMessageFromFile;
   readTraceSIMFromFile;

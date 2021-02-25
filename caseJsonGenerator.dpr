@@ -28,7 +28,9 @@ uses
   caseGenerator_trace_application_account in 'caseGenerator_trace_application_account.pas' {formTraceApplicationAccount},
   caseGenerator_trace_url_history in 'caseGenerator_trace_url_history.pas' {formTraceUrlHistory},
   caseGenerator_trace_email in 'caseGenerator_trace_email.pas' {formTraceEmail},
-  caseGenerator_trace_phone_call in 'caseGenerator_trace_phone_call.pas' {formTracePhoneCall};
+  caseGenerator_trace_phone_call in 'caseGenerator_trace_phone_call.pas' {formTracePhoneCall},
+  caseGenerator_trace_sms in 'caseGenerator_trace_sms.pas' {formTraceSMS},
+  caseGenerator_trace_application in 'caseGenerator_trace_application.pas' {formTraceApplication};
 
 {$R *.res}
 
@@ -62,5 +64,7 @@ begin
   Application.CreateForm(TformTraceUrlHistory, formTraceUrlHistory);
   Application.CreateForm(TformTraceEmail, formTraceEmail);
   Application.CreateForm(TformTracePhoneCall, formTracePhoneCall);
+  Application.CreateForm(TformTraceSMS, formTraceSMS);
+  Application.CreateForm(TformTraceApplication, formTraceApplication);
   Application.Run;
 end.

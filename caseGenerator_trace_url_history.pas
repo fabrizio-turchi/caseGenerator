@@ -242,8 +242,8 @@ begin
     line := line + cbLastVisitDay.Items[cbLastVisitDay.ItemIndex] + 'T';
     line := line + timeLastVisit.Text + '"' + recSep;
     line := line +  RepeatString(indent, 3)  + '},' + recSep;
-    line := line + RepeatString(indent, 3) + '"uco-observable:expiration":"NOT_PROVIDED"' + recSep;
-    line := line + RepeatString(indent, 3) + '"uco-observable:userProfile":"NOT_PROVIDED"' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:expiration":"NOT_PROVIDED",' + recSep;
+    line := line + RepeatString(indent, 3) + '"uco-observable:userProfile":"NOT_PROVIDED",' + recSep;
     line := line + RepeatString(indent, 3) + '"uco-observable:url":{' + recSep;
     line := line + RepeatString(indent, 4) + '"@id":"' + uuidURL + '"' + recSep;
     line := line +  RepeatString(indent, 3)  + '},' + recSep;
@@ -252,9 +252,9 @@ begin
     line := line +  RepeatString(indent, 3)  + '"uco-observable:visitCount":"' + edVisitCount.Text + '",' + recSep;
     line := line +  RepeatString(indent, 3)  + '"uco-observable:manuallyEnteredCount":0,' + recSep;
     line := line +  RepeatString(indent, 3)  + '"uco-observable:keywordSearchTerm":"",' + recSep;
-    line := line +  RepeatString(indent, 3)  + '"uco-observable:proposed:allocationStatus":"Intact"' + recSep;
+    line := line +  RepeatString(indent, 3)  + '"uco-observable:allocationStatus":"Intact"' + recSep;
     line := line + indent + '}' + recSep;
-    line := line + indent + ']' + recSep + '}';
+    line := line + indent + ']' + recSep + '}]}';
   end;
   Result := line;
 

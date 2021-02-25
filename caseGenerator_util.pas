@@ -48,7 +48,7 @@ begin
   posId := Pos(subline, line);
   lineValue := Copy(line, posId + Length(subline) + 1, Length(line));
   posValue := Pos('"@value":', lineValue);
-  numValue  := Copy(lineValue, posValue + Length('"@value":') + 1, Length(lineValue));
+  numValue  := Copy(lineValue, posValue + Length('"@value":'), Length(lineValue));
   posRecSep  := Pos(recSep, numValue);
   Result := Copy(numValue, 1, posRecSep - 1);
 end;
@@ -150,8 +150,8 @@ function ExtractArrayID(line, subLine: String): TStringList;
 var
   fieldValue, recSep: String;
   fieldStart, fieldEnd: Integer;
-  itemsArray: String;
-  commaPos: Integer;
+  itemsArray, field: String;
+  commaPos, uuidPos: Integer;
   itemsList: TStringList;
 begin
   recSep := #30 + #30;
@@ -165,7 +165,12 @@ begin
   commaPos := Pos(',', itemsArray);
   while commaPos > 0 do
   begin
-    itemsList.Add(Copy(itemsArray, 1, commaPos - 1));
+    field := Copy(itemsArray, 1, commaPos - 1);
+    uuidPos := Pos('"@id":"', field);
+    field := Copy(field, uuidPos + 7, Length(field));
+    uuidPos := Pos('"', field);
+    field := Copy(field, 1, uuidPos - 1);
+    itemsList.Add(field);
     itemsArray := Copy(itemsArray, commaPos + 1, Length(itemsArray));
     commaPos := Pos(',', itemsArray);
   end;
@@ -183,9 +188,16 @@ begin
   fieldValue := Copy(line, posStart + Length(subLine), Length(line));
   posEnd := Pos(']', fieldValue);
   fieldValue := Copy(fieldValue, 1, posEnd - 1);
-  listId := SplitString(',', fieldValue);
+  if Pos(',', fieldValue) > 0 then
+    //listId := SplitString(',', fieldValue)
+    listId := fieldValue.Split([','])
+  else
+  begin
+    setLength(listId, 1);
+    listId[0] := fieldValue;
+  end;
 
-  for idx:=1 to Length(listId) do
+  for idx:=0 to Length(listId) - 1 do
   begin
     fieldValue := ExtractField(listId[idx], '"@id":"');
     listId[idx] := fieldValue;
